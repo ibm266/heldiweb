@@ -134,6 +134,13 @@ function Wordmark({
       width={1934}
       height={609}
       priority={large}
+      sizes={
+        large
+          ? "(max-width: 899px) 78vw, (max-width: 1280px) 52vw, 720px"
+          : footer
+            ? "120px"
+            : "140px"
+      }
     />
   );
 }
@@ -303,6 +310,7 @@ export function HeldiHomepage({
   const [joined, setJoined] = useState(false);
   const [jar, setJar] = useState<"gold" | "silver">("gold");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobileNav, setIsMobileNav] = useState(false);
 
   const total = useMemo(
     () =>
@@ -322,45 +330,94 @@ export function HeldiHomepage({
     );
   }
 
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 899px)");
+
+    function syncMobileNav() {
+      setIsMobileNav(media.matches);
+      if (!media.matches) setMenuOpen(false);
+    }
+
+    syncMobileNav();
+    media.addEventListener("change", syncMobileNav);
+
+    return () => media.removeEventListener("change", syncMobileNav);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    function closeMenu() {
+      setMenuOpen(false);
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") closeMenu();
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", closeMenu);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", closeMenu);
+    };
+  }, [menuOpen]);
+
   return (
     <main>
       <nav className="nav" aria-label="Main navigation">
-        <a href="#top" aria-label="Heldi home">
+        <a href="#top" aria-label="Heldi home" className="nav-home">
           <Wordmark onDark />
+          <span className="nav-elephant-badge">
+            <Image
+              className="nav-elephant-logo"
+              src="/images/elephant-large-transparent.png"
+              alt="Heldi"
+              width={2048}
+              height={2048}
+              priority
+            />
+          </span>
         </a>
-        <button
-          className="nav-burger"
-          type="button"
-          aria-expanded={menuOpen}
-          aria-controls="nav-menu"
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
-          <span className="nav-burger-bar" aria-hidden="true" />
-          <span className="nav-burger-bar" aria-hidden="true" />
-          <span className="nav-burger-bar" aria-hidden="true" />
-        </button>
+        {isMobileNav ? (
+          <button
+            className="nav-burger"
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="nav-menu"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
+            <span className="nav-burger-bar" aria-hidden="true" />
+            <span className="nav-burger-bar" aria-hidden="true" />
+            <span className="nav-burger-bar" aria-hidden="true" />
+          </button>
+        ) : null}
         <div
-          className={`nav-links${menuOpen ? " is-open" : ""}`}
+          className={`nav-links${isMobileNav && menuOpen ? " is-open" : ""}`}
           id="nav-menu"
         >
           <a href="#pouch" onClick={() => setMenuOpen(false)}>The pouch</a>
           <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
           <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
           <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
-          <a
-            className="button button--pill nav-cta"
-            href="#join"
-            onClick={() => setMenuOpen(false)}
-          >
-            Join waitlist
-          </a>
+          {!isMobileNav ? (
+            <a
+              className="button button--pill nav-cta"
+              href="#join"
+            >
+              Join waitlist
+            </a>
+          ) : null}
         </div>
       </nav>
 
-      <a className="floating-cta" href="#join">
-        Join waitlist
-      </a>
+      {isMobileNav ? (
+        <a className="floating-cta" href="#join">
+          Join waitlist
+        </a>
+      ) : null}
 
       <section className="hero" id="top">
         <div className="hero-inner">
