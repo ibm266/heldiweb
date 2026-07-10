@@ -4,6 +4,7 @@ import Image from "next/image";
 import {
   FormEvent,
   useEffect,
+  useRef,
   useState
 } from "react";
 import { MenuGallery } from "@/components/menu-gallery";
@@ -30,12 +31,12 @@ const FAQS = [
   {
     question: "Will my food taste different?",
     answer:
-      "No. The blend is tuned with spices that already belong in the dish, coriander, cumin, turmeric, so the protein does not sit on top of the flavour. It disappears into it. No chalky film, no protein-shake aftertaste."
+      "No. The spices are designed to disappear into the dish, not sit on top of the flavour. Heldi blends clean into what you already cook. No chalky film, no protein-shake aftertaste."
   },
   {
-    question: "Do I cook with it or add it after?",
+    question: "How do I use it?",
     answer:
-      "Add it after cooking. Mix a spoonful with a splash of water into a quick paste and stir it into the bowl, or put the pouch on the table and let each person add their own."
+      "Once the pot is done cooking and has cooled a little, stir the powder straight into the full dal, curry or raita and mix it through. If you are adding to a whole pot, a splash of water can help loosen it. Or leave the jar on the table and let each person add as much as they like to their own bowl."
   },
   {
     question: "Can I use it in dishes that are not on the pouch?",
@@ -76,23 +77,6 @@ const AUDIENCES = [
       "99% lactose-free isolate",
       "Not a single recipe changes"
     ]
-  }
-];
-
-const JARS = [
-  {
-    id: "gold" as const,
-    label: "Gold",
-    image: "/images/jar-gold.png",
-    width: 777,
-    height: 620
-  },
-  {
-    id: "silver" as const,
-    label: "Silver",
-    image: "/images/jar-silver.png",
-    width: 850,
-    height: 629
   }
 ];
 
@@ -268,11 +252,12 @@ export function HeldiHomepage({
 }: HeldiHomepageProps) {
   const [faqOpen, setFaqOpen] = useState(-1);
   const [joined, setJoined] = useState(false);
-  const [jar, setJar] = useState<"gold" | "silver">("gold");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobileNav, setIsMobileNav] = useState(false);
-
-  const selectedJar = JARS.find((option) => option.id === jar) ?? JARS[0];
+  const [floatingCtaSuppressed, setFloatingCtaSuppressed] = useState(true);
+  const heroWaitlistRef = useRef<HTMLDivElement>(null);
+  const footerWaitlistRef = useRef<HTMLDivElement>(null);
+  const menuSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 899px)");
@@ -307,6 +292,38 @@ export function HeldiHomepage({
       window.removeEventListener("resize", closeMenu);
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    if (!isMobileNav) {
+      setFloatingCtaSuppressed(true);
+      return;
+    }
+
+    const anchors = [
+      heroWaitlistRef.current,
+      footerWaitlistRef.current,
+      menuSectionRef.current
+    ].filter((element): element is HTMLDivElement | HTMLElement => element !== null);
+    if (!anchors.length) return;
+
+    const visibility = new Map<Element, boolean>();
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          visibility.set(entry.target, entry.isIntersecting);
+        });
+        setFloatingCtaSuppressed([...visibility.values()].some(Boolean));
+      },
+      { threshold: 0.15 }
+    );
+
+    anchors.forEach((anchor) => observer.observe(anchor));
+
+    return () => observer.disconnect();
+  }, [isMobileNav, joined]);
+
+  const showFloatingCta = isMobileNav && !floatingCtaSuppressed;
 
   return (
     <main>
@@ -357,7 +374,7 @@ export function HeldiHomepage({
         </div>
       </nav>
 
-      {isMobileNav ? (
+      {showFloatingCta ? (
         <a className="floating-cta" href="#join">
           Join waitlist
         </a>
@@ -389,11 +406,14 @@ export function HeldiHomepage({
             <p className="hero-subline">Never drink another protein shake again.</p>
             <p className="hero-body">
               Heldi is a protein made to disappear straight into your dal, curry,
-              raita and every other home-cooked favourite. One pouch, stirred into
-              the dishes your family already eats. Same recipes, same taste, more
-              protein.
+              raita and every other home-cooked favourite.
+              <strong className="hero-body__tagline">
+                Same recipes, same taste, more protein.
+              </strong>
             </p>
-            <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="hero-email" />
+            <div ref={heroWaitlistRef}>
+              <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="hero-email" />
+            </div>
           </div>
           <Image
             className="hero-elephant"
@@ -404,17 +424,16 @@ export function HeldiHomepage({
             priority
           />
         </div>
+        {ticker ? (
+          <div className="ticker" aria-label={TICKER_COPY}>
+            <div className="ticker-track" aria-hidden="true">
+              <span>{TICKER_COPY}</span>
+              <span>{TICKER_COPY}</span>
+            </div>
+          </div>
+        ) : null}
         <div className="double-rule" aria-hidden="true" />
       </section>
-
-      {ticker ? (
-        <div className="ticker" aria-label={TICKER_COPY}>
-          <div className="ticker-track" aria-hidden="true">
-            <span>{TICKER_COPY}</span>
-            <span>{TICKER_COPY}</span>
-          </div>
-        </div>
-      ) : null}
 
       <section className="section section--cream" id="pouch">
         <div className="split-layout split-layout--center">
@@ -448,7 +467,7 @@ export function HeldiHomepage({
         </div>
       </section>
 
-      <section className="section section--ink" id="thali">
+      <section className="section section--ink" id="thali" ref={menuSectionRef}>
         <MenuGallery gramsPerTbsp={grams} />
       </section>
 
@@ -520,39 +539,29 @@ export function HeldiHomepage({
         <div className="split-layout split-layout--center split-layout--between">
           <div className="section-copy section-copy--dark">
             <p className="eyebrow eyebrow--gold">WITH YOUR FIRST ORDER</p>
-            <h2>A jar for the masala dabba. On us.</h2>
+            <h2>A jar for the table. On us.</h2>
             <p>
-              Every first order ships with a refillable Heldi jar for the spice
-              shelf, a proper home on the counter, not a plastic tub in the
-              cupboard. Pick your jar at checkout.
+              Every first order ships with a refillable Heldi jar that sits on
+              the dinner table, where it belongs. Not the cupboard. Right there
+              beside the dal, where everyone can reach for it.
+            </p>
+            <p>
+              Silver or gold? That is a choice every mama likes to make. Gold
+              when the table is set for guests. Silver for the meal the whole
+              family eats every night. We ship both finishes with your first
+              pouch. You pick the one that stays.
             </p>
           </div>
           <div className="jar-card">
-            <p>PICK YOUR JAR</p>
             <div className="jar-preview-card">
               <Image
-                src={selectedJar.image}
-                alt={`Heldi pouch with ${selectedJar.label.toLowerCase()} jar`}
-                width={selectedJar.width}
-                height={selectedJar.height}
+                src="/images/jars-both.png"
+                alt="Heldi pouch with silver and gold table jars"
+                width={1024}
+                height={680}
                 sizes="(max-width: 700px) 90vw, 420px"
               />
             </div>
-            <div className="jar-options" role="radiogroup" aria-label="Jar colour">
-              {JARS.map((option) => (
-                <button
-                  className={`jar-option jar-option--${option.id}${jar === option.id ? " is-active" : ""}`}
-                  type="button"
-                  role="radio"
-                  aria-checked={jar === option.id}
-                  onClick={() => setJar(option.id)}
-                  key={option.id}
-                >
-                  {option.label}
-                </button>
-              ))}
-            </div>
-            <em>{jar === "gold" ? "Gold it is." : "Silver it is."}</em>
           </div>
         </div>
       </section>
@@ -562,7 +571,9 @@ export function HeldiHomepage({
         <div className="final-cta-copy">
           <h2>Be first to stir it in.</h2>
           <p>One email the day we launch, and a free jar with your first order.</p>
-          <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
+          <div ref={footerWaitlistRef}>
+            <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
+          </div>
         </div>
         <Image className="cta-elephant cta-elephant--right" src="/images/elephant-small.png" alt="" width={270} height={280} />
       </section>
