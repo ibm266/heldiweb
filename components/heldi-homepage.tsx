@@ -34,22 +34,22 @@ const FAQS = [
   {
     question: "Is whey protein vegetarian?",
     answer:
-      "Yes. Whey is the pale liquid left when milk curdles — the same one you see when paneer is made at home. We simply filter it to concentrate the protein and gently dry it into a fine powder. Nothing added, just the part of milk that has always been there."
+      "Yes. Whey is the pale liquid left when milk curdles, the same one you see when paneer is made at home. We simply filter it to concentrate the protein and gently dry it into a fine powder. Nothing added, just the part of milk that has always been there."
   },
   {
     question: "Will my food taste different?",
     answer:
-      "No. The blend is tuned with spices that already belong in the dish — coriander, cumin, turmeric — so the protein does not sit on top of the flavour. It disappears into it. No chalky film, no protein-shake aftertaste."
+      "No. The blend is tuned with spices that already belong in the dish, coriander, cumin, turmeric, so the protein does not sit on top of the flavour. It disappears into it. No chalky film, no protein-shake aftertaste."
   },
   {
     question: "Do I cook with it or add it after?",
     answer:
-      "Add it after cooking. Mix a spoonful with a splash of water into a quick paste and stir it into the bowl — or put the pouch on the table and let each person add their own."
+      "Add it after cooking. Mix a spoonful with a splash of water into a quick paste and stir it into the bowl, or put the pouch on the table and let each person add their own."
   },
   {
     question: "Can I use it in dishes that are not on the pouch?",
     answer:
-      "Yes. Anything with a gravy, a dal or a yoghurt base works — sambar, kadhi, korma, bhindi in gravy, even a chaat with dahi on top. If a spoon can stir it, Heldi can disappear into it."
+      "Yes. Anything with a gravy, a dal or a yoghurt base works, sambar, kadhi, korma, bhindi in gravy, even a chaat with dahi on top. If a spoon can stir it, Heldi can disappear into it."
   },
   {
     question: "Is it safe for parents and grandparents?",
@@ -63,7 +63,7 @@ const AUDIENCES = [
     label: "FOR YOU",
     title: "Hit your protein target without another shake.",
     points: [
-      "Stir into two or three dishes and add 20–30g across one meal",
+      "Stir into two or three dishes and add 20-30g across one meal",
       "Whey isolate absorbs fast and blends clean",
       "Zero change to the food you love"
     ]
@@ -85,6 +85,23 @@ const AUDIENCES = [
       "99% lactose-free isolate",
       "Not a single recipe changes"
     ]
+  }
+];
+
+const JARS = [
+  {
+    id: "gold" as const,
+    label: "Gold",
+    image: "/images/jar-gold.png",
+    width: 777,
+    height: 620
+  },
+  {
+    id: "silver" as const,
+    label: "Silver",
+    image: "/images/jar-silver.png",
+    width: 850,
+    height: 629
   }
 ];
 
@@ -230,7 +247,7 @@ function WaitlistForm({
 
   return joined ? (
     <p className="waitlist-success" role="status">
-      You&apos;re on the list — one email the day we launch.
+      You&apos;re on the list. One email the day we launch.
     </p>
   ) : (
     <form className="waitlist-form" onSubmit={submit}>
@@ -285,6 +302,7 @@ export function HeldiHomepage({
   const [faqOpen, setFaqOpen] = useState(-1);
   const [joined, setJoined] = useState(false);
   const [jar, setJar] = useState<"gold" | "silver">("gold");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const total = useMemo(
     () =>
@@ -296,6 +314,7 @@ export function HeldiHomepage({
   );
   const displayTotal = useAnimatedNumber(total);
   const heldiCount = dishOn.filter(Boolean).length;
+  const selectedJar = JARS.find((option) => option.id === jar) ?? JARS[0];
 
   function toggleDish(index: number) {
     setDishOn((current) =>
@@ -309,16 +328,39 @@ export function HeldiHomepage({
         <a href="#top" aria-label="Heldi home">
           <Wordmark onDark />
         </a>
-        <div className="nav-links">
-          <a href="#pouch">The pouch</a>
-          <a href="#thali">Tonight&apos;s table</a>
-          <a href="#how">How it works</a>
-          <a href="#faq">FAQ</a>
-          <a className="button button--pill" href="#join">
+        <button
+          className="nav-burger"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="nav-menu"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
+          <span className="nav-burger-bar" aria-hidden="true" />
+          <span className="nav-burger-bar" aria-hidden="true" />
+          <span className="nav-burger-bar" aria-hidden="true" />
+        </button>
+        <div
+          className={`nav-links${menuOpen ? " is-open" : ""}`}
+          id="nav-menu"
+        >
+          <a href="#pouch" onClick={() => setMenuOpen(false)}>The pouch</a>
+          <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
+          <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
+          <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
+          <a
+            className="button button--pill nav-cta"
+            href="#join"
+            onClick={() => setMenuOpen(false)}
+          >
             Join waitlist
           </a>
         </div>
       </nav>
+
+      <a className="floating-cta" href="#join">
+        Join waitlist
+      </a>
 
       <section className="hero" id="top">
         <div className="hero-inner">
@@ -333,7 +375,7 @@ export function HeldiHomepage({
           <div className="hero-copy">
             <Wordmark large />
             <p className="pronunciation">
-              /hel-dee/ — <em>adj.</em> how my nani says “healthy.”
+              /hel-dee/ <em>adj.</em> how my nani says “healthy.”
             </p>
             <h1>Desi protein for</h1>
             <div className="word-board">
@@ -347,7 +389,7 @@ export function HeldiHomepage({
             <p className="hero-body">
               Heldi is a protein made to disappear straight into your dal, curry,
               raita and every other home-cooked favourite. One pouch, stirred into
-              the dishes your family already eats — same recipes, same taste, more
+              the dishes your family already eats. Same recipes, same taste, more
               protein.
             </p>
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="hero-email" />
@@ -379,7 +421,7 @@ export function HeldiHomepage({
             <Image
               className="pouch-image"
               src="/images/pouch.png"
-              alt="Heldi pouch — same recipes, same taste, more protein"
+              alt="Heldi pouch, same recipes, same taste, more protein"
               width={1360}
               height={2048}
               sizes="(max-width: 700px) 80vw, 440px"
@@ -391,7 +433,7 @@ export function HeldiHomepage({
             <p>
               One blend, tuned to vanish into anything with a gravy, a dal or a
               yoghurt base. A 90%+ whey isolate from British dairy that dissolves
-              clean — no chalky film, no protein-shake aftertaste, no new habits.
+              clean. No chalky film, no protein-shake aftertaste, no new habits.
             </p>
             <div className="stats">
               <div><strong>{grams}g</strong><span>protein per bowl</span></div>
@@ -462,7 +504,7 @@ export function HeldiHomepage({
             </article>
             <article>
               <strong>2</strong><h3>Stir in a spoonful</h3>
-              <p>A spoonful, a splash of water, a quick stir into the bowl — or let everyone add their own at the table.</p>
+              <p>A spoonful, a splash of water, a quick stir into the bowl, or let everyone add their own at the table.</p>
             </article>
             <article>
               <strong>3</strong><h3>Eat what you love</h3>
@@ -523,24 +565,32 @@ export function HeldiHomepage({
             <h2>A jar for the masala dabba. On us.</h2>
             <p>
               Every first order ships with a refillable Heldi jar for the spice
-              shelf — a proper home on the counter, not a plastic tub in the
-              cupboard. Pick your lid at checkout.
+              shelf, a proper home on the counter, not a plastic tub in the
+              cupboard. Pick your jar at checkout.
             </p>
           </div>
           <div className="jar-card">
-            <p>PICK YOUR LID</p>
-            <div className="jar-options" role="radiogroup" aria-label="Jar lid colour">
-              {(["gold", "silver"] as const).map((colour) => (
+            <p>PICK YOUR JAR</p>
+            <div className="jar-preview-card">
+              <Image
+                src={selectedJar.image}
+                alt={`Heldi pouch with ${selectedJar.label.toLowerCase()} jar`}
+                width={selectedJar.width}
+                height={selectedJar.height}
+                sizes="(max-width: 700px) 90vw, 420px"
+              />
+            </div>
+            <div className="jar-options" role="radiogroup" aria-label="Jar colour">
+              {JARS.map((option) => (
                 <button
-                  className={jar === colour ? "is-active" : ""}
+                  className={`jar-option jar-option--${option.id}${jar === option.id ? " is-active" : ""}`}
                   type="button"
                   role="radio"
-                  aria-checked={jar === colour}
-                  onClick={() => setJar(colour)}
-                  key={colour}
+                  aria-checked={jar === option.id}
+                  onClick={() => setJar(option.id)}
+                  key={option.id}
                 >
-                  <span className={`lid-swatch lid-swatch--${colour}`} />
-                  {colour[0].toUpperCase() + colour.slice(1)}
+                  {option.label}
                 </button>
               ))}
             </div>
@@ -553,7 +603,7 @@ export function HeldiHomepage({
         <Image className="cta-elephant cta-elephant--left" src="/images/elephant-small.png" alt="" width={270} height={280} />
         <div className="final-cta-copy">
           <h2>Be first to stir it in.</h2>
-          <p>One email the day we launch — and a free jar with your first order.</p>
+          <p>One email the day we launch, and a free jar with your first order.</p>
           <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
         </div>
         <Image className="cta-elephant cta-elephant--right" src="/images/elephant-small.png" alt="" width={270} height={280} />
