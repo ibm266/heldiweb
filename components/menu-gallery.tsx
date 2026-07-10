@@ -345,16 +345,16 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
   return (
     <div className="menu-gallery">
       <header className="menu-gallery__header">
-        <p className="eyebrow eyebrow--gold">PUT IT ON TONIGHT&apos;S TABLE</p>
-        <h2>Tonight&apos;s menus.</h2>
+        <p className="eyebrow eyebrow--gold">PUT IT ON THE TABLE</p>
+        <h2>Lunch and dinner menus.</h2>
         <p className="menu-gallery__lede">
-          <strong>Five ways to lay the table — swipe through.</strong> Dishes in
+          <strong>Five ways to lay the table. Swipe through.</strong> Dishes in
           gold are{" "}
-          <span className="menu-gallery__gold">boosted with Heldi</span> —{" "}
+          <span className="menu-gallery__gold">boosted with Heldi</span>,{" "}
           <span className="menu-gallery__gold">
             +{gramsPerTbsp}g of protein per tablespoon
-          </span>{" "}
-          — <strong>counted for one person&apos;s plate.</strong>
+          </span>,{" "}
+          <strong>counted for one person&apos;s plate.</strong>
         </p>
       </header>
 

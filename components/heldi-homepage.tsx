@@ -7,6 +7,7 @@ import {
   useRef,
   useState
 } from "react";
+import { AudienceGallery } from "@/components/audience-gallery";
 import { MenuGallery } from "@/components/menu-gallery";
 
 type HeroAnimation = "split-flap" | "dissolve";
@@ -47,36 +48,6 @@ const FAQS = [
     question: "Is it safe for parents and grandparents?",
     answer:
       "Heldi is designed for the whole table. Protein contributes to the maintenance of muscle mass, and the isolate is 99% lactose-free, 100% vegetarian and free from added sugar, preservatives and gluten."
-  }
-];
-
-const AUDIENCES = [
-  {
-    label: "FOR YOU",
-    title: "Hit your protein target without another shake.",
-    points: [
-      "Stir into two or three dishes and add 20-30g across one meal",
-      "Whey isolate absorbs fast and blends clean",
-      "Zero change to the food you love"
-    ]
-  },
-  {
-    label: "FOR THE FAMILY",
-    title: "One pouch, the whole table.",
-    points: [
-      "Disappears into the dal, the curry, the raita everyone already eats",
-      "Works for fussy eaters and big appetites alike",
-      "No separate “healthy” cooking required"
-    ]
-  },
-  {
-    label: "FOR PARENTS & GRANDPARENTS",
-    title: "Built for the way they already cook.",
-    points: [
-      "Protein contributes to the maintenance of muscle mass",
-      "99% lactose-free isolate",
-      "Not a single recipe changes"
-    ]
   }
 ];
 
@@ -449,7 +420,7 @@ export function HeldiHomepage({
           </div>
           <div className="section-copy">
             <p className="eyebrow">THE POUCH</p>
-            <h2>Same recipes. Same taste. More protein.</h2>
+            <h2>The food you love with the nutrients you need.</h2>
             <p>
               One blend, tuned to vanish into anything with a gravy, a dal or a
               yoghurt base. A 90%+ whey isolate from British dairy that dissolves
@@ -473,7 +444,7 @@ export function HeldiHomepage({
 
       <section className="section section--cream" id="how">
         <div className="content">
-          <h2 className="centered">No shaking. No blending. Ten seconds a bowl.</h2>
+          <h2 className="centered">No shaking. No blending. Just stir in.</h2>
           <div className="steps">
             <article>
               <strong>1</strong><h3>Cook like always</h3>
@@ -481,7 +452,7 @@ export function HeldiHomepage({
             </article>
             <article>
               <strong>2</strong><h3>Stir in a spoonful</h3>
-              <p>A spoonful, a splash of water, a quick stir into the bowl, or let everyone add their own at the table.</p>
+              <p>A spoonful stirred straight into the bowl. Loosen if needed, or let everyone add their own at the table.</p>
             </article>
             <article>
               <strong>3</strong><h3>Eat what you love</h3>
@@ -494,17 +465,7 @@ export function HeldiHomepage({
       <section className="section section--gold section--bordered">
         <div className="content">
           <h2 className="centered">Built for you. Made for the whole family.</h2>
-          <div className="audience-grid">
-            {AUDIENCES.map((audience) => (
-              <article className="sticker-card" key={audience.label}>
-                <p className="eyebrow">{audience.label}</p>
-                <h3>{audience.title}</h3>
-                <ul>
-                  {audience.points.map((point) => <li key={point}>{point}</li>)}
-                </ul>
-              </article>
-            ))}
-          </div>
+          <AudienceGallery />
         </div>
       </section>
 
@@ -536,7 +497,7 @@ export function HeldiHomepage({
       </section>
 
       <section className="section section--ink" id="jar">
-        <div className="split-layout split-layout--center split-layout--between">
+        <div className="jar-layout">
           <div className="section-copy section-copy--dark">
             <p className="eyebrow eyebrow--gold">WITH YOUR FIRST ORDER</p>
             <h2>A jar for the table. On us.</h2>
@@ -544,12 +505,6 @@ export function HeldiHomepage({
               Every first order ships with a refillable Heldi jar that sits on
               the dinner table, where it belongs. Not the cupboard. Right there
               beside the dal, where everyone can reach for it.
-            </p>
-            <p>
-              Silver or gold? That is a choice every mama likes to make. Gold
-              when the table is set for guests. Silver for the meal the whole
-              family eats every night. We ship both finishes with your first
-              pouch. You pick the one that stays.
             </p>
           </div>
           <div className="jar-card">
@@ -562,6 +517,14 @@ export function HeldiHomepage({
                 sizes="(max-width: 700px) 90vw, 420px"
               />
             </div>
+          </div>
+          <div className="section-copy section-copy--dark">
+            <p>
+              Silver or gold? That is a choice every mama likes to make. Gold
+              when the table is set for guests. Silver for the meal the whole
+              family eats every night. We ship both finishes with your first
+              pouch. You pick the one that stays.
+            </p>
           </div>
         </div>
       </section>
