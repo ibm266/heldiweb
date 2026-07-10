@@ -4,10 +4,9 @@ import Image from "next/image";
 import {
   FormEvent,
   useEffect,
-  useMemo,
-  useRef,
   useState
 } from "react";
+import { MenuGallery } from "@/components/menu-gallery";
 
 type HeroAnimation = "split-flap" | "dissolve";
 
@@ -21,14 +20,6 @@ type HeldiHomepageProps = {
 const WORDS = ["INDIAN FOOD", "DAL", "CURRY", "RAITA", "DAHI", "CHAAT"];
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const COLS = 11;
-
-const DISHES = [
-  { name: "Dal tadka", grams: 9 },
-  { name: "Chana masala", grams: 8 },
-  { name: "Cucumber raita", grams: 3 },
-  { name: "Bowl of dahi", grams: 5 },
-  { name: "Aloo chaat", grams: 4 }
-];
 
 const FAQS = [
   {
@@ -269,66 +260,19 @@ function WaitlistForm({
   );
 }
 
-function useAnimatedNumber(target: number) {
-  const [display, setDisplay] = useState(target);
-  const previous = useRef(target);
-
-  useEffect(() => {
-    const from = previous.current;
-    previous.current = target;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      const frame = requestAnimationFrame(() => setDisplay(target));
-      return () => cancelAnimationFrame(frame);
-    }
-
-    const startedAt = performance.now();
-    let frame = 0;
-
-    const tick = (time: number) => {
-      const progress = Math.min(1, (time - startedAt) / 550);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplay(from + (target - from) * eased);
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [target]);
-
-  return Math.round(display);
-}
-
 export function HeldiHomepage({
   grams = 10,
   heroAnimation = "split-flap",
   flapDwellMs = 2200,
   ticker = true
 }: HeldiHomepageProps) {
-  const [dishOn, setDishOn] = useState(() => DISHES.map(() => false));
   const [faqOpen, setFaqOpen] = useState(-1);
   const [joined, setJoined] = useState(false);
   const [jar, setJar] = useState<"gold" | "silver">("gold");
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobileNav, setIsMobileNav] = useState(false);
 
-  const total = useMemo(
-    () =>
-      DISHES.reduce(
-        (sum, dish, index) => sum + dish.grams + (dishOn[index] ? grams : 0),
-        0
-      ),
-    [dishOn, grams]
-  );
-  const displayTotal = useAnimatedNumber(total);
-  const heldiCount = dishOn.filter(Boolean).length;
   const selectedJar = JARS.find((option) => option.id === jar) ?? JARS[0];
-
-  function toggleDish(index: number) {
-    setDishOn((current) =>
-      current.map((value, dishIndex) => (dishIndex === index ? !value : value))
-    );
-  }
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 899px)");
@@ -505,50 +449,7 @@ export function HeldiHomepage({
       </section>
 
       <section className="section section--ink" id="thali">
-        <div className="split-layout split-layout--top">
-          <div className="thali-list">
-            <p className="eyebrow eyebrow--gold">PUT IT ON TONIGHT&apos;S TABLE</p>
-            <h2>One pouch. Every dish with a gravy, a dal or a dahi.</h2>
-            <p className="muted">
-              Tap a dish to stir Heldi in and watch the table add up. No one at
-              dinner notices a thing.
-            </p>
-            <div className="dish-rows">
-              {DISHES.map((dish, index) => {
-                const active = dishOn[index];
-                return (
-                  <div className="dish-row" key={dish.name}>
-                    <div className="dish-name">
-                      <h3>{dish.name}</h3>
-                      <span>{dish.grams}g protein on its own</span>
-                    </div>
-                    <strong className={active ? "active" : ""}>
-                      {dish.grams + (active ? grams : 0)}g
-                    </strong>
-                    <button
-                      className={`toggle${active ? " is-active" : ""}`}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() => toggleDish(index)}
-                    >
-                      {active ? `Heldi in · +${grams}g` : "+ Stir in Heldi"}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <aside className="total-card" aria-live="polite">
-            <span>ON THE TABLE TONIGHT</span>
-            <strong>{displayTotal}g</strong>
-            <span>OF PROTEIN</span>
-            <em>
-              {heldiCount
-                ? `+${heldiCount * grams}g from Heldi`
-                : "Tap a dish to stir Heldi in"}
-            </em>
-          </aside>
-        </div>
+        <MenuGallery gramsPerTbsp={grams} />
       </section>
 
       <section className="section section--cream" id="how">
