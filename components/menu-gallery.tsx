@@ -351,9 +351,6 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
           <strong>Five ways to lay the table. Swipe through.</strong> Dishes in
           gold are{" "}
           <span className="menu-gallery__gold">boosted with Heldi</span>,{" "}
-          <span className="menu-gallery__gold">
-            +{gramsPerTbsp}g of protein per tablespoon
-          </span>,{" "}
           <strong>counted for one person&apos;s plate.</strong>
         </p>
       </header>

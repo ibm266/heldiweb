@@ -379,7 +379,7 @@ export function HeldiHomepage({
               Heldi is a protein made to disappear straight into your dal, curry,
               raita and every other home-cooked favourite.
               <strong className="hero-body__tagline">
-                Same recipes, same taste, more protein.
+                The same food, just a little Heldier.
               </strong>
             </p>
             <div ref={heroWaitlistRef}>
