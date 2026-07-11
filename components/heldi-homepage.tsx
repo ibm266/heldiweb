@@ -11,7 +11,7 @@ import { AudienceGallery } from "@/components/audience-gallery";
 import { MenuGallery } from "@/components/menu-gallery";
 
 type HeroAnimation = "split-flap" | "dissolve";
-type HeroLayout = "video" | "classic";
+type HeroLayout = "video" | "classic" | "reveal";
 
 type HeldiHomepageProps = {
   grams?: number;
@@ -23,6 +23,76 @@ type HeldiHomepageProps = {
 
 const HERO_VIDEO_SRC = "/videos/heldi-hero-v3.mp4";
 const HERO_VIDEO_POSTER = "/images/hero-video-poster.png";
+const ELEPHANT_RUN_GOLD_SRC = "/videos/elephant-run-gold.mp4";
+const ELEPHANT_RUN_MS = 2800;
+const ELEPHANT_RUN_END_AT_S = 2.6;
+const ELEPHANT_KEY_TOLERANCE = 46;
+
+function sampleCurtainKeyColor(
+  data: Uint8ClampedArray,
+  width: number,
+  height: number
+): [number, number, number] {
+  const points = [
+    [2, 2],
+    [width - 3, 2],
+    [2, height - 3],
+    [width - 3, height - 3]
+  ];
+  let r = 0;
+  let g = 0;
+  let b = 0;
+
+  for (const [x, y] of points) {
+    const index = (y * width + x) * 4;
+    r += data[index];
+    g += data[index + 1];
+    b += data[index + 2];
+  }
+
+  return [
+    Math.round(r / points.length),
+    Math.round(g / points.length),
+    Math.round(b / points.length)
+  ];
+}
+
+function isCurtainBackgroundPixel(
+  r: number,
+  g: number,
+  b: number,
+  key: [number, number, number],
+  tolerance: number
+) {
+  const dr = Math.abs(r - key[0]);
+  const dg = Math.abs(g - key[1]);
+  const db = Math.abs(b - key[2]);
+
+  if (dr + dg + db > tolerance * 3) return false;
+
+  // Keep cream smoke and ink elephants; only remove warm gold backdrop tones.
+  return r > 145 && g > 95 && b < 130 && r >= g && g >= b;
+}
+
+function drawCurtainCover(
+  ctx: CanvasRenderingContext2D,
+  video: HTMLVideoElement,
+  width: number,
+  height: number
+) {
+  const vw = video.videoWidth;
+  const vh = video.videoHeight;
+  if (!vw || !vh) return;
+
+  const scale = Math.max(width / vw, height / vh);
+  const drawWidth = vw * scale;
+  const drawHeight = vh * scale;
+  const offsetX = (width - drawWidth) / 2;
+  const offsetY = (height - drawHeight) / 2;
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
+}
 
 const WORDS = ["INDIAN FOOD", "DAL", "CURRY", "RAITA", "DAHI", "CHAAT"];
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -172,27 +242,59 @@ function SplitFlapBoard({ dwellMs }: { dwellMs: number }) {
   );
 }
 
-function DissolveBoard() {
+function DissolveBoard({ active = true }: { active?: boolean }) {
   const [wordIndex, setWordIndex] = useState(0);
 
   useEffect(() => {
-    const timer = window.setInterval(
-      () => setWordIndex((index) => (index + 1) % WORDS.length),
-      2600
-    );
-    return () => window.clearInterval(timer);
-  }, []);
+    if (!active) {
+      setWordIndex(0);
+      return;
+    }
+
+    setWordIndex(0);
+    let index = 0;
+    let timer: number;
+
+    function scheduleNext() {
+      const dwellMs = index === 0 ? 3200 : 2600;
+      timer = window.setTimeout(() => {
+        index = (index + 1) % WORDS.length;
+        setWordIndex(index);
+        scheduleNext();
+      }, dwellMs);
+    }
+
+    scheduleNext();
+
+    return () => window.clearTimeout(timer);
+  }, [active]);
 
   return (
     <div className="dissolve-board" aria-live="polite">
-      {WORDS[wordIndex].split("").map((letter, index) => (
-        <span
-          key={`${wordIndex}-${index}`}
-          style={{ animationDelay: `${index * 55}ms` }}
-        >
-          {letter}
-        </span>
-      ))}
+      {WORDS[wordIndex].split(" ").map((part, wordPartIndex, parts) => {
+        const wordKey = `${wordIndex}-w${wordPartIndex}`;
+
+        return (
+          <span className="dissolve-word" key={wordKey}>
+            {part.split("").map((letter, letterIndex) => {
+              const delayIndex =
+                parts
+                  .slice(0, wordPartIndex)
+                  .reduce((total, segment) => total + segment.length + 1, 0) +
+                letterIndex;
+
+              return (
+                <span
+                  key={`${wordKey}-${letterIndex}`}
+                  style={{ animationDelay: `${delayIndex * 55}ms` }}
+                >
+                  {letter}
+                </span>
+              );
+            })}
+          </span>
+        );
+      })}
     </div>
   );
 }
@@ -200,30 +302,68 @@ function DissolveBoard() {
 function WaitlistForm({
   joined,
   onJoin,
-  id
+  id,
+  buttonStyle = "square"
 }: {
   joined: boolean;
   onJoin: () => void;
   id: string;
+  buttonStyle?: "square" | "pill";
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (expanded) inputRef.current?.focus();
+  }, [expanded]);
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     onJoin();
   }
 
-  return joined ? (
-    <p className="waitlist-success" role="status">
-      You&apos;re on the list. One email the day we launch.
-    </p>
-  ) : (
-    <form className="waitlist-form" onSubmit={submit}>
-      <label className="sr-only" htmlFor={id}>
-        Email address
-      </label>
-      <input id={id} name="email" type="email" placeholder="you@example.com" required />
-      <button className="button button--square" type="submit">
-        Join waitlist
-      </button>
+  const buttonClassName =
+    buttonStyle === "pill" ? "button button--pill" : "button button--square";
+
+  if (joined) {
+    return (
+      <p className="waitlist-success" role="status">
+        You&apos;re on the list. One email the day we launch.
+      </p>
+    );
+  }
+
+  return (
+    <form
+      className={`waitlist-form${expanded ? " waitlist-form--expanded" : ""}`}
+      onSubmit={submit}
+    >
+      {expanded ? (
+        <>
+          <label className="sr-only" htmlFor={id}>
+            Email address
+          </label>
+          <input
+            ref={inputRef}
+            id={id}
+            name="email"
+            type="email"
+            placeholder="you@example.com"
+            required
+          />
+          <button className={buttonClassName} type="submit">
+            Join waitlist
+          </button>
+        </>
+      ) : (
+        <button
+          className={buttonClassName}
+          type="button"
+          onClick={() => setExpanded(true)}
+        >
+          Join waitlist
+        </button>
+      )}
     </form>
   );
 }
@@ -273,6 +413,215 @@ function HeroVideo() {
   );
 }
 
+function HeroReveal({
+  joined,
+  onJoin,
+  onIntroComplete
+}: {
+  joined: boolean;
+  onJoin: () => void;
+  onIntroComplete?: () => void;
+}) {
+  const [revealed, setRevealed] = useState(false);
+  const [curtainGone, setCurtainGone] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const curtainRef = useRef<HTMLDivElement>(null);
+  const keyColorRef = useRef<[number, number, number] | null>(null);
+  const frameRef = useRef<number>(0);
+  const onIntroCompleteRef = useRef(onIntroComplete);
+
+  useEffect(() => {
+    onIntroCompleteRef.current = onIntroComplete;
+  }, [onIntroComplete]);
+
+  useEffect(() => {
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (motionQuery.matches) {
+      setRevealed(true);
+      setCurtainGone(true);
+      onIntroCompleteRef.current?.();
+      return;
+    }
+
+    const el = videoRef.current;
+    const canvas = canvasRef.current;
+    const curtain = curtainRef.current;
+    let unmountTimer: number | undefined;
+
+    function finishReveal() {
+      setRevealed(true);
+      onIntroCompleteRef.current?.();
+      unmountTimer = window.setTimeout(() => setCurtainGone(true), 560);
+    }
+
+    function onTimeUpdate() {
+      if (!el || el.currentTime < ELEPHANT_RUN_END_AT_S) return;
+      el.pause();
+      el.removeEventListener("timeupdate", onTimeUpdate);
+      finishReveal();
+    }
+
+    function paintCurtainFrame() {
+      if (!el || !canvas || !curtain || el.readyState < 2) return;
+
+      const ctx = canvas.getContext("2d", { willReadFrequently: true });
+      if (!ctx) return;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const { width, height } = curtain.getBoundingClientRect();
+      if (!width || !height) return;
+
+      const pixelWidth = Math.round(width * dpr);
+      const pixelHeight = Math.round(height * dpr);
+
+      if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
+        canvas.width = pixelWidth;
+        canvas.height = pixelHeight;
+        keyColorRef.current = null;
+      }
+
+      drawCurtainCover(ctx, el, pixelWidth, pixelHeight);
+
+      const frame = ctx.getImageData(0, 0, pixelWidth, pixelHeight);
+      if (!keyColorRef.current) {
+        keyColorRef.current = sampleCurtainKeyColor(
+          frame.data,
+          pixelWidth,
+          pixelHeight
+        );
+      }
+
+      const key = keyColorRef.current;
+      const pixels = frame.data;
+
+      for (let i = 0; i < pixels.length; i += 4) {
+        if (
+          isCurtainBackgroundPixel(
+            pixels[i],
+            pixels[i + 1],
+            pixels[i + 2],
+            key,
+            ELEPHANT_KEY_TOLERANCE
+          )
+        ) {
+          pixels[i + 3] = 0;
+        }
+      }
+
+      ctx.putImageData(frame, 0, 0);
+    }
+
+    function renderCurtainFrame() {
+      paintCurtainFrame();
+
+      if (!el || el.paused || el.ended) return;
+      frameRef.current = window.requestAnimationFrame(renderCurtainFrame);
+    }
+
+    function startCurtainRender() {
+      window.cancelAnimationFrame(frameRef.current);
+      keyColorRef.current = null;
+      renderCurtainFrame();
+    }
+
+    if (el && canvas && curtain) {
+      el.addEventListener("ended", finishReveal);
+      el.addEventListener("timeupdate", onTimeUpdate);
+      el.addEventListener("play", startCurtainRender);
+      el.addEventListener("loadeddata", paintCurtainFrame);
+      el.play().catch(finishReveal);
+    } else {
+      const fallbackTimer = window.setTimeout(finishReveal, ELEPHANT_RUN_MS);
+      return () => window.clearTimeout(fallbackTimer);
+    }
+
+    const safetyTimer = window.setTimeout(finishReveal, ELEPHANT_RUN_MS + 500);
+
+    return () => {
+      window.cancelAnimationFrame(frameRef.current);
+      el?.removeEventListener("ended", finishReveal);
+      el?.removeEventListener("timeupdate", onTimeUpdate);
+      el?.removeEventListener("play", startCurtainRender);
+      el?.removeEventListener("loadeddata", paintCurtainFrame);
+      window.clearTimeout(safetyTimer);
+      if (unmountTimer) window.clearTimeout(unmountTimer);
+    };
+  }, []);
+
+  return (
+    <div className="hero-reveal">
+      <div className={`hero-reveal-panel${revealed ? " is-revealed" : ""}`}>
+        <div className="hero-reveal-columns">
+          <div className="hero-reveal-showcase">
+            <h1 className="hero-reveal-lede">
+              <span className="hero-reveal-lede__prefix">
+                <span className="hero-reveal-lede__prefix-line">Protein </span>
+                <span className="hero-reveal-lede__prefix-line">Powder </span>
+                <span className="hero-reveal-lede__prefix-line">for</span>
+              </span>
+              <span className="word-board">
+                <DissolveBoard active={revealed} />
+              </span>
+            </h1>
+            <div className="hero-reveal-pouch">
+              <Image
+                className="hero-reveal-pouch__image"
+                src={imageSrc("/images/pouch.png")}
+                alt="Heldi pouch, same recipes, same taste, more protein"
+                width={1360}
+                height={2048}
+                priority
+                sizes="(max-width: 899px) 52vw, 240px"
+              />
+            </div>
+            <p className="pronunciation pronunciation--showcase">
+              /hel-dee/ <em>adj.</em> how my nani says “healthy.”
+            </p>
+          </div>
+          <div className="hero-reveal-actions">
+            <WaitlistForm
+              joined={joined}
+              onJoin={onJoin}
+              id="hero-reveal-email"
+              buttonStyle="pill"
+            />
+            <a className="button button--pill button--outline" href="#how">
+              How it works
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {!curtainGone ? (
+        <div
+          ref={curtainRef}
+          className={`hero-reveal-curtain${revealed ? " is-fading" : ""}`}
+          aria-hidden={revealed}
+        >
+          <video
+            ref={videoRef}
+            className="hero-reveal-curtain__video"
+            muted
+            playsInline
+            preload="auto"
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            <source src={ELEPHANT_RUN_GOLD_SRC} type="video/mp4" />
+          </video>
+          <canvas
+            ref={canvasRef}
+            className="hero-reveal-curtain__canvas"
+            aria-label="Decorated ink-blue elephants and comic dust cloud sweep across the screen"
+          />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export function HeldiHomepage({
   grams = 10,
   heroAnimation = "split-flap",
@@ -285,6 +634,9 @@ export function HeldiHomepage({
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobileNav, setIsMobileNav] = useState(false);
   const [floatingCtaSuppressed, setFloatingCtaSuppressed] = useState(true);
+  const [heroIntroComplete, setHeroIntroComplete] = useState(
+    heroLayout !== "reveal"
+  );
   const heroSectionRef = useRef<HTMLElement>(null);
   const footerWaitlistRef = useRef<HTMLDivElement>(null);
   const menuSectionRef = useRef<HTMLElement>(null);
@@ -353,11 +705,17 @@ export function HeldiHomepage({
     return () => observer.disconnect();
   }, [isMobileNav, joined]);
 
-  const showFloatingCta = isMobileNav && !floatingCtaSuppressed;
+  const showFloatingCta =
+    isMobileNav && !floatingCtaSuppressed && heroIntroComplete;
 
   return (
     <main>
-      <nav className="nav" aria-label="Main navigation">
+      <nav
+        className={`nav${
+          heroLayout === "reveal" && !heroIntroComplete ? " nav--intro" : ""
+        }`}
+        aria-label="Main navigation"
+      >
         <a href="#top" aria-label="Heldi home" className="nav-home">
           <Wordmark onDark />
           <span className="nav-elephant-badge">
@@ -412,10 +770,22 @@ export function HeldiHomepage({
 
       <section
         ref={heroSectionRef}
-        className={`hero${heroLayout === "video" ? " hero--video" : ""}`}
+        className={`hero${
+          heroLayout === "video"
+            ? " hero--video"
+            : heroLayout === "reveal"
+              ? " hero--reveal"
+              : ""
+        }${heroLayout === "reveal" && !heroIntroComplete ? " hero--intro" : ""}`}
         id="top"
       >
-        {heroLayout === "video" ? (
+        {heroLayout === "reveal" ? (
+          <HeroReveal
+            joined={joined}
+            onJoin={() => setJoined(true)}
+            onIntroComplete={() => setHeroIntroComplete(true)}
+          />
+        ) : heroLayout === "video" ? (
           <div className="hero-video-inner">
             <header className="hero-video-header">
               <Wordmark large />
