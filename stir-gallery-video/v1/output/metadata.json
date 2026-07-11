@@ -1,0 +1,24 @@
+{
+  "dish": "Dal tadka",
+  "version": 4,
+  "model": "seedance_2_0",
+  "resolution": "1080p",
+  "aspect_ratio": "1:1",
+  "duration_s": 4,
+  "trimmed": false,
+  "job_id": "de43412e-4998-4903-b637-0ea986b4ca2e",
+  "credits": 36,
+  "focus": "visible spoon stirring arcs, powder dissolving, spoon exits right",
+  "keyframes": {
+    "clean_start": "30e601bc-115c-4cfd-83ed-6f717b8d0f60",
+    "spoon_enters_heaped": "4558ba78-cd26-4b27-a580-3981f997d826",
+    "mid_stir_visible": "2ddf4914-2e47-4361-92e0-1b47c0a6da5f",
+    "end_spoon_out_right": "09147eff-51f4-46d5-911e-20eb4d53fa5e"
+  },
+  "files": {
+    "raw": "stir-gallery-video/v1/output/dal-tadka-stir-raw.mp4",
+    "public": "public/videos/stir-gallery/dal-tadka-stir.mp4",
+    "fade_target": "public/images/stir-gallery/dal-tadka.png"
+  },
+  "generated_at": "2026-07-11"
+}

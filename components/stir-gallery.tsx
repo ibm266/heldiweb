@@ -9,6 +9,7 @@ type Dish = {
   tag: "THE MAIN" | "ON THE SIDE";
   base: number;
   image: string;
+  video?: string;
 };
 
 const DISHES: Dish[] = [
@@ -16,7 +17,8 @@ const DISHES: Dish[] = [
     name: "Dal tadka",
     tag: "THE MAIN",
     base: 9,
-    image: "/images/stir-gallery/dal-tadka.png"
+    image: "/images/stir-gallery/dal-tadka.png",
+    video: "/videos/stir-gallery/dal-tadka-stir.mp4"
   },
   {
     name: "Chana masala",
@@ -64,6 +66,7 @@ const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
 
 const BURST_MS = 1300;
 const POP_MS = 250;
+const VIDEO_FADE_MS = 450;
 const PROGRAMMATIC_SCROLL_MS = 900;
 
 type StirGalleryProps = {
@@ -77,11 +80,16 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   const [active, setActive] = useState(0);
   const [burstAt, setBurstAt] = useState(-1);
   const [popping, setPopping] = useState(false);
+  const [popAt, setPopAt] = useState(-1);
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [animatingAt, setAnimatingAt] = useState(-1);
+  const [videoFading, setVideoFading] = useState(false);
 
   const railRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const burstTimer = useRef<number | undefined>(undefined);
   const popTimer = useRef<number | undefined>(undefined);
+  const fadeTimer = useRef<number | undefined>(undefined);
   const scrollFlagTimer = useRef<number | undefined>(undefined);
   const isProgrammaticScroll = useRef(false);
 
@@ -99,23 +107,61 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     return () => {
       window.clearTimeout(burstTimer.current);
       window.clearTimeout(popTimer.current);
+      window.clearTimeout(fadeTimer.current);
       window.clearTimeout(scrollFlagTimer.current);
     };
   }, []);
 
+  useEffect(() => {
+    if (animatingAt < 0) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    setVideoFading(false);
+    video.currentTime = 0;
+    void video.play().catch(() => {
+      finishVideoStir();
+    });
+  }, [animatingAt]);
+
+  function triggerPop(index: number) {
+    setPopAt(index);
+    setPopping(true);
+    window.clearTimeout(popTimer.current);
+    popTimer.current = window.setTimeout(() => setPopping(false), POP_MS);
+  }
+
+  function finishVideoStir() {
+    setVideoFading(true);
+    window.clearTimeout(fadeTimer.current);
+    fadeTimer.current = window.setTimeout(() => {
+      setAnimatingAt(-1);
+      setVideoFading(false);
+    }, VIDEO_FADE_MS);
+  }
+
   function stir(index: number) {
+    if (animatingAt === index) return;
+
+    const dish = DISHES[index];
+    const useVideo = Boolean(dish.video) && !reducedMotion;
+
     setSpoons((current) =>
       current.map((count, i) => (i === index ? count + 1 : count))
     );
 
+    if (useVideo) {
+      setAnimatingAt(index);
+      triggerPop(index);
+      return;
+    }
+
     if (reducedMotion) return;
 
+    triggerPop(index);
     setBurstAt(index);
-    setPopping(true);
     window.clearTimeout(burstTimer.current);
-    window.clearTimeout(popTimer.current);
     burstTimer.current = window.setTimeout(() => setBurstAt(-1), BURST_MS);
-    popTimer.current = window.setTimeout(() => setPopping(false), POP_MS);
   }
 
   function scrollToIndex(index: number) {
@@ -188,8 +234,10 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
             const count = spoons[index];
             const grams = dish.base + count * boostGrams;
             const boosted = count > 0;
-            const bursting = burstAt === index && !reducedMotion;
-            const poppingHere = popping && burstAt === index;
+            const isAnimating = animatingAt === index;
+            const bursting =
+              burstAt === index && !reducedMotion && !DISHES[index].video;
+            const poppingHere = popping && popAt === index;
             const caption = boosted
               ? CAPTIONS[(count - 1) % CAPTIONS.length]
               : "";
@@ -216,6 +264,19 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
                       height={380}
                       sizes="190px"
                     />
+                    {isAnimating && dish.video ? (
+                      <video
+                        ref={videoRef}
+                        className={`stir-card__video${
+                          videoFading ? " is-fading" : ""
+                        }`}
+                        src={dish.video}
+                        muted
+                        playsInline
+                        preload="none"
+                        onEnded={finishVideoStir}
+                      />
+                    ) : null}
                   </div>
                   {bursting ? (
                     <div
@@ -254,8 +315,14 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
                   type="button"
                   className="stir-card__button"
                   onClick={() => stir(index)}
+                  disabled={isAnimating}
+                  aria-busy={isAnimating}
                 >
-                  {count === 0 ? "Stir in a spoonful" : "Stir in another"}
+                  {isAnimating
+                    ? "Adding Heldi…"
+                    : count === 0
+                      ? "Stir in a spoonful"
+                      : "Stir in another"}
                 </button>
 
                 <p className="stir-card__caption" aria-live="polite">
