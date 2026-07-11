@@ -19,3 +19,38 @@
 
 # deployment
 .vercel
+
+# --- Video production pipelines (not served by the site) ---
+hero-video/
+stir-gallery-video/
+
+# Experimental / alternate video renders (site uses heldi-hero-v3 + elephant-run-gold)
+public/videos/elephant-run-alpha.webm
+public/videos/elephant-run-cream.mp4
+public/videos/elephant-run-gold-alpha.mp4
+public/videos/heldi-hero-v4.mp4
+
+# Design archives
+*.zip
+
+# --- Image assets not served at runtime ---
+# Live images are under public/images/variants/ink-blue/ (see imageSrc in heldi-homepage.tsx)
+public/images/originals/
+
+# Root copies superseded by ink-blue variants
+public/images/elephant-large-transparent.png
+public/images/elephant-large.png
+public/images/elephant-small.png
+public/images/heldi-wordmark.png
+public/images/how-it-works/
+public/images/jar-gold.png
+public/images/jar-silver.png
+public/images/jars-both.png
+public/images/pouch.png
+public/images/pouch-2k.png
+
+# Unused variants and badge source sheets
+public/images/variants/ink-blue/elephant-large.png
+public/images/variants/ink-blue/jar-gold.png
+public/images/variants/ink-blue/jar-silver.png
+public/images/pouch-badges/sheet.png

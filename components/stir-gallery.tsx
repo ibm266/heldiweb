@@ -24,19 +24,22 @@ const DISHES: Dish[] = [
     name: "Chana masala",
     tag: "THE MAIN",
     base: 8,
-    image: "/images/stir-gallery/chana-masala.png"
+    image: "/images/stir-gallery/chana-masala.png",
+    video: "/videos/stir-gallery/chana-masala-stir.mp4"
   },
   {
     name: "Cucumber raita",
     tag: "ON THE SIDE",
     base: 3,
-    image: "/images/stir-gallery/cucumber-raita.png"
+    image: "/images/stir-gallery/cucumber-raita.png",
+    video: "/videos/stir-gallery/cucumber-raita-stir.mp4"
   },
   {
     name: "Kadhi",
     tag: "THE MAIN",
     base: 7,
-    image: "/images/stir-gallery/kadhi.png"
+    image: "/images/stir-gallery/kadhi.png",
+    video: "/videos/stir-gallery/kadhi-stir.mp4"
   },
   {
     name: "Bowl of dahi",
