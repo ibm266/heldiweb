@@ -18,35 +18,35 @@ const DISHES: Dish[] = [
     name: "Dal tadka",
     tag: "THE MAIN",
     base: 9,
-    image: "/images/stir-gallery/dal-tadka.png",
+    image: "/images/stir-gallery/dal-tadka.webp",
     video: "/videos/stir-gallery/dal-tadka-stir.mp4"
   },
   {
     name: "Chana masala",
     tag: "THE MAIN",
     base: 8,
-    image: "/images/stir-gallery/chana-masala.png",
+    image: "/images/stir-gallery/chana-masala.webp",
     video: "/videos/stir-gallery/chana-masala-stir.mp4"
   },
   {
     name: "Cucumber raita",
     tag: "ON THE SIDE",
     base: 3,
-    image: "/images/stir-gallery/cucumber-raita.png",
+    image: "/images/stir-gallery/cucumber-raita.webp",
     video: "/videos/stir-gallery/cucumber-raita-stir.mp4"
   },
   {
     name: "Kadhi",
     tag: "THE MAIN",
     base: 7,
-    image: "/images/stir-gallery/kadhi.png",
+    image: "/images/stir-gallery/kadhi.webp",
     video: "/videos/stir-gallery/kadhi-stir.mp4"
   },
   {
     name: "Bowl of dahi",
     tag: "ON THE SIDE",
     base: 5,
-    image: "/images/stir-gallery/bowl-of-dahi-clean.png",
+    image: "/images/stir-gallery/bowl-of-dahi-clean.webp",
     video: "/videos/stir-gallery/bowl-of-dahi-stir.mp4"
   }
 ];

@@ -54,3 +54,10 @@ public/images/variants/ink-blue/elephant-large.png
 public/images/variants/ink-blue/jar-gold.png
 public/images/variants/ink-blue/jar-silver.png
 public/images/pouch-badges/sheet.png
+
+# Stir gallery PNG sources superseded by WebP (kept locally for reference)
+public/images/stir-gallery/dal-tadka.png
+public/images/stir-gallery/chana-masala.png
+public/images/stir-gallery/cucumber-raita.png
+public/images/stir-gallery/kadhi.png
+public/images/stir-gallery/bowl-of-dahi-clean.png
