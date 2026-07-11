@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { CopyHighlight } from "@/components/copy-highlight";
 
 type DishItem = {
   name: string;
@@ -349,8 +350,7 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
         <h2>Lunch and dinner menus.</h2>
         <p className="menu-gallery__lede">
           <strong>Five ways to lay the table. Swipe through.</strong> Dishes in
-          gold are{" "}
-          <span className="menu-gallery__gold">boosted with Heldi</span>,{" "}
+          gold are <CopyHighlight>boosted with Heldi</CopyHighlight>,{" "}
           <strong>counted for one person&apos;s plate.</strong>
         </p>
       </header>

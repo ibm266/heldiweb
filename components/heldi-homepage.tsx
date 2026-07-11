@@ -3,12 +3,15 @@
 import Image from "next/image";
 import {
   FormEvent,
+  ReactNode,
   useEffect,
   useRef,
   useState
 } from "react";
 import { AudienceGallery } from "@/components/audience-gallery";
+import { CopyHighlight } from "@/components/copy-highlight";
 import { MenuGallery } from "@/components/menu-gallery";
+import { StirGallery } from "@/components/stir-gallery";
 
 type HeroAnimation = "split-flap" | "dissolve";
 type HeroLayout = "video" | "classic" | "reveal";
@@ -136,24 +139,41 @@ const POUCH_BADGE_ICONS = {
   vegetarian: "/images/pouch-badges/vegetarian.png"
 } as const;
 
-const HOW_IT_WORKS_STEPS = [
+const HOW_IT_WORKS_STEPS: {
+  icon: string;
+  title: string;
+  description: ReactNode | ((grams: number) => ReactNode);
+}[] = [
   {
     icon: "/images/how-it-works/step-1-cook.png",
     title: "Cook like always",
-    description: "Your dal, curry or raita — same as ever."
+    description: (
+      <>
+        Your dal, curry or raita, <CopyHighlight>same as ever</CopyHighlight>.
+      </>
+    )
   },
   {
     icon: "/images/how-it-works/step-2-stir.png",
     title: "Stir in a spoonful",
-    description: "Stir straight into the pot, or at the table."
+    description: (
+      <>
+        Stir straight into the pot, or <CopyHighlight>at the table</CopyHighlight>
+        .
+      </>
+    )
   },
   {
     icon: "/images/how-it-works/step-3-eat.png",
     title: "Eat what you love",
-    description: (grams: number) =>
-      `The meal you grew up with, +${grams}g protein.`
+    description: (grams: number) => (
+      <>
+        The meal you grew up with, +{grams}g{" "}
+        <CopyHighlight>protein</CopyHighlight>.
+      </>
+    )
   }
-] as const;
+];
 
 const IMAGE_VERSION = "ink-blue-3";
 const IMAGE_BASE = "/images/variants/ink-blue";
@@ -411,7 +431,7 @@ function HeroVideo() {
       }
 
       el.play().catch(() => {
-        /* autoplay blocked — poster remains visible */
+        /* autoplay blocked, poster remains visible */
       });
     }
 
@@ -897,8 +917,10 @@ export function HeldiHomepage({
           <div className="pouch-section__copy">
             <h2>Food you love. Nutrients you need.</h2>
             <p>
-              One blend that vanishes into any gravy, dal or yoghurt base.
-              Dissolves clean. No chalk, no aftertaste.
+              One blend that <CopyHighlight>vanishes</CopyHighlight> into any
+              gravy, dal or yoghurt base.{" "}
+              <CopyHighlight>Dissolves clean</CopyHighlight>. No chalk, no
+              aftertaste.
             </p>
           </div>
           <div className="pouch-section__stats">
@@ -960,15 +982,24 @@ export function HeldiHomepage({
         </div>
       </section>
 
-      <section className="section section--ink" id="thali" ref={menuSectionRef}>
-        <MenuGallery gramsPerTbsp={grams} />
+      <section
+        className="section section--ink section--bordered"
+        id="stir"
+      >
+        <StirGallery boostGrams={grams} />
       </section>
 
       <section className="section section--cream" id="how">
         <div className="how-it-works">
           <header className="how-it-works__header">
             <p className="eyebrow">HOW IT WORKS</p>
-            <h2>No shaking. No blending. Just stir in.</h2>
+            <h2>
+              No shaking.
+              <br />
+              No blending.
+              <br />
+              More protein.
+            </h2>
           </header>
           <ol className="how-it-works__steps">
             {HOW_IT_WORKS_STEPS.map((step) => (
@@ -993,6 +1024,10 @@ export function HeldiHomepage({
             ))}
           </ol>
         </div>
+      </section>
+
+      <section className="section section--ink" id="thali" ref={menuSectionRef}>
+        <MenuGallery gramsPerTbsp={grams} />
       </section>
 
       <section className="section section--gold section--bordered">
@@ -1036,8 +1071,10 @@ export function HeldiHomepage({
             <h2>A jar for the table. On us.</h2>
             <p>
               Every first order ships with a refillable Heldi jar that sits on
-              the dinner table, where it belongs. Not the cupboard. Right there
-              beside the dal, where everyone can reach for it.
+              the <CopyHighlight>dinner table</CopyHighlight>, where it belongs.
+              Not the cupboard. Right there{" "}
+              <CopyHighlight>beside the dal</CopyHighlight>, where everyone can
+              reach for it.
             </p>
           </div>
           <div className="jar-card">
@@ -1068,7 +1105,10 @@ export function HeldiHomepage({
         <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-small.png")} alt="" width={270} height={280} />
         <div className="final-cta-copy">
           <h2>Be first to stir it in.</h2>
-          <p>One email the day we launch, and a free jar with your first order.</p>
+          <p>
+            One email the day we launch, and a{" "}
+            <CopyHighlight>free jar</CopyHighlight> with your first order.
+          </p>
           <div ref={footerWaitlistRef}>
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
           </div>

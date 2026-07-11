@@ -1,35 +1,40 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { CopyHighlight } from "@/components/copy-highlight";
 
 const CARD_STEP = 304;
 
-const AUDIENCES = [
+const AUDIENCES: {
+  label: string;
+  title: string;
+  points: ReactNode[];
+}[] = [
   {
     label: "FOR YOU",
     title: "Hit your protein target without another shake.",
     points: [
-      "Stir into two or three dishes and add 20-30g across one meal",
-      "Whey isolate absorbs fast and blends clean",
-      "Zero change to the food you love"
+      <>Stir into two or three dishes and add <CopyHighlight>20-30g</CopyHighlight> across one meal.</>,
+      <>Whey isolate absorbs fast and <CopyHighlight>blends clean</CopyHighlight>.</>,
+      <>Zero change to the food you love.</>
     ]
   },
   {
     label: "FOR THE FAMILY",
     title: "One pouch, the whole table.",
     points: [
-      "Disappears into the dal, the curry, the raita everyone already eats",
-      "Works for fussy eaters and big appetites alike",
-      "No separate “healthy” cooking required"
+      <><CopyHighlight>Disappears into</CopyHighlight> the dal, the curry, the raita everyone already eats.</>,
+      <>Works for fussy eaters and big appetites alike.</>,
+      <>No separate “healthy” cooking required.</>
     ]
   },
   {
     label: "FOR PARENTS & GRANDPARENTS",
     title: "Built for the way they already cook.",
     points: [
-      "Protein contributes to the maintenance of muscle mass",
-      "99% lactose-free isolate",
-      "Not a single recipe changes"
+      <>Protein contributes to the maintenance of muscle mass.</>,
+      <>99% lactose-free isolate.</>,
+      <>Not a single <CopyHighlight>recipe changes</CopyHighlight>.</>
     ]
   }
 ];
@@ -76,8 +81,10 @@ export function AudienceGallery() {
             <p className="eyebrow">{audience.label}</p>
             <h3>{audience.title}</h3>
             <ul>
-              {audience.points.map((point) => (
-                <li key={point}>{point}</li>
+              {audience.points.map((point, index) => (
+                <li key={index}>
+                  <span>{point}</span>
+                </li>
               ))}
             </ul>
           </article>

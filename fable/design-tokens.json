@@ -1,0 +1,134 @@
+{
+  "brand": "Heldi",
+  "tagline": "Bringing something new to the table",
+  "pronunciation": "/hel-dee/, adj. how my nani says \"healthy.\"",
+  "productPromise": "Same recipes. Same taste. More protein.",
+  "colors": {
+    "gold": {
+      "hex": "#eda31d",
+      "name": "Marigold",
+      "usage": "Primary brand background, nav text on ink, ticker text, CTA accents, active states"
+    },
+    "ink": {
+      "hex": "#011246",
+      "rgb": "1 18 70",
+      "name": "Ink blue",
+      "usage": "Primary text, dark sections, borders, wordmark/elephant fill, button default bg"
+    },
+    "cream": {
+      "hex": "#f8f0de",
+      "name": "Cream",
+      "usage": "Card backgrounds, section alternates, input backgrounds, body on dark sections"
+    },
+    "terracotta": {
+      "hex": "#a8432b",
+      "name": "Terracotta",
+      "usage": "Eyebrows, stat numerals, step numbers, FAQ toggles, link hover"
+    },
+    "brown": {
+      "hex": "#4a4238",
+      "name": "Brown",
+      "usage": "Body copy on light backgrounds"
+    },
+    "muted": {
+      "hex": "#8a8378",
+      "name": "Muted grey-brown",
+      "usage": "Footer secondary text"
+    },
+    "darkMuted": {
+      "hex": "#b5ad9f",
+      "name": "Muted on dark",
+      "usage": "Body copy on ink sections"
+    },
+    "heroBody": {
+      "hex": "#2c2418",
+      "name": "Warm dark brown",
+      "usage": "Hero sublines and body on marigold"
+    },
+    "white": {
+      "hex": "#ffffff",
+      "usage": "Pouch card interior, jar preview card bg"
+    }
+  },
+  "typography": {
+    "display": {
+      "family": "Rozha One",
+      "source": "Google Fonts",
+      "weights": [400],
+      "usage": "H1, H2, H3, wordmark, stat numbers, menu titles, split-flap tiles"
+    },
+    "body": {
+      "family": "Gelasio",
+      "source": "Google Fonts",
+      "weights": [400, 500, 600],
+      "styles": ["normal", "italic"],
+      "usage": "Paragraphs, nav, buttons, labels, FAQ, forms"
+    },
+    "scale": {
+      "heroWordmark": "clamp(18rem, 52vw, 42rem) width",
+      "heroLede": "clamp(1.375rem, 3.5vw, 2rem)",
+      "sectionH2": "clamp(2rem, 4.5vw, 3rem)",
+      "eyebrow": "0.875rem, letter-spacing 0.22em, uppercase, weight 600",
+      "bodyLarge": "1.125rem, line-height 1.65",
+      "ticker": "0.875rem, letter-spacing 0.24em, uppercase, weight 600"
+    },
+    "rules": [
+      "No sans-serif anywhere",
+      "Eyebrows always uppercase with wide letter-spacing",
+      "Italic Gelasio for pronunciation line and emotional sublines",
+      "Terracotta or Rozha One for numerals in stats and steps"
+    ]
+  },
+  "spacing": {
+    "sectionPadding": "clamp(3.5rem, 8vw, 6rem) clamp(1.25rem, 5vw, 4rem)",
+    "contentMaxWidth": "1152px",
+    "heroMaxWidth": "960px",
+    "faqMaxWidth": "860px"
+  },
+  "shape": {
+    "borderRadius": {
+      "input": "8px",
+      "button": "8px or 999px (pill)",
+      "card": "18px–24px",
+      "pouchCard": "20px",
+      "pill": "999px"
+    },
+    "borderWidth": "2px or 3px solid ink",
+    "stickerShadow": {
+      "small": "6px 6px 0 #011246",
+      "large": "8px 8px 0 #011246",
+      "goldOnDark": "6px 6px 0 rgba(237, 163, 29, 0.9)",
+      "creamOnDark": "6px 6px 0 rgba(248, 240, 222, 0.85)"
+    }
+  },
+  "components": {
+    "nav": {
+      "background": "#011246",
+      "text": "#eda31d",
+      "borderBottom": "3px solid #eda31d"
+    },
+    "buttonPrimary": {
+      "background": "#011246",
+      "text": "#eda31d",
+      "hoverBackground": "#a8432b",
+      "hoverText": "#f8f0de"
+    },
+    "buttonPillOnHero": {
+      "background": "#011246",
+      "text": "#eda31d",
+      "borderRadius": "999px"
+    },
+    "ticker": {
+      "background": "#011246",
+      "text": "#eda31d"
+    },
+    "doubleRule": {
+      "description": "Two horizontal ink rules, 3px top, 3px bottom, 7px total height"
+    }
+  },
+  "imagery": {
+    "variant": "ink-blue",
+    "recolorRule": "Black/near-black elements → #011246; keep marigold, cream, silver, gold, white unchanged",
+    "motifs": ["decorated Indian elephant line art", "marigold pouch with ink elephant", "masala dabba jar gold/silver lids"]
+  }
+}

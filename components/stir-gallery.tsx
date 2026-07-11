@@ -1,0 +1,286 @@
+"use client";
+
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { CopyHighlight } from "@/components/copy-highlight";
+
+type Dish = {
+  name: string;
+  tag: "THE MAIN" | "ON THE SIDE";
+  base: number;
+  image: string;
+};
+
+const DISHES: Dish[] = [
+  {
+    name: "Dal tadka",
+    tag: "THE MAIN",
+    base: 9,
+    image: "/images/stir-gallery/dal-tadka.png"
+  },
+  {
+    name: "Chana masala",
+    tag: "THE MAIN",
+    base: 8,
+    image: "/images/stir-gallery/chana-masala.png"
+  },
+  {
+    name: "Cucumber raita",
+    tag: "ON THE SIDE",
+    base: 3,
+    image: "/images/stir-gallery/cucumber-raita.png"
+  },
+  {
+    name: "Kadhi",
+    tag: "THE MAIN",
+    base: 7,
+    image: "/images/stir-gallery/kadhi.png"
+  },
+  {
+    name: "Bowl of dahi",
+    tag: "ON THE SIDE",
+    base: 5,
+    image: "/images/stir-gallery/bowl-of-dahi.png"
+  }
+];
+
+const CAPTIONS = [
+  "One spoonful in. Nothing changes but the number.",
+  "Still tastes exactly the same.",
+  "Going back for more? Good.",
+  "Okay beta, that's plenty.",
+  "Nani is impressed.",
+  "Save some for the raita.",
+  "A very strong bowl indeed.",
+  "Even mama approves of this one.",
+  "The dal did not even notice.",
+  "At this point, keep the jar on the table."
+];
+
+const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
+  left: `${10 + ((i * 79) % 80)}%`,
+  delay: `${((i * 0.11) % 0.7).toFixed(2)}s`
+}));
+
+const BURST_MS = 1300;
+const POP_MS = 250;
+const PROGRAMMATIC_SCROLL_MS = 900;
+
+type StirGalleryProps = {
+  boostGrams?: number;
+};
+
+export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
+  const [spoons, setSpoons] = useState<number[]>(() =>
+    Array(DISHES.length).fill(0)
+  );
+  const [active, setActive] = useState(0);
+  const [burstAt, setBurstAt] = useState(-1);
+  const [popping, setPopping] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  const railRef = useRef<HTMLDivElement>(null);
+  const burstTimer = useRef<number | undefined>(undefined);
+  const popTimer = useRef<number | undefined>(undefined);
+  const scrollFlagTimer = useRef<number | undefined>(undefined);
+  const isProgrammaticScroll = useRef(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    function sync() {
+      setReducedMotion(media.matches);
+    }
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      window.clearTimeout(burstTimer.current);
+      window.clearTimeout(popTimer.current);
+      window.clearTimeout(scrollFlagTimer.current);
+    };
+  }, []);
+
+  function stir(index: number) {
+    setSpoons((current) =>
+      current.map((count, i) => (i === index ? count + 1 : count))
+    );
+
+    if (reducedMotion) return;
+
+    setBurstAt(index);
+    setPopping(true);
+    window.clearTimeout(burstTimer.current);
+    window.clearTimeout(popTimer.current);
+    burstTimer.current = window.setTimeout(() => setBurstAt(-1), BURST_MS);
+    popTimer.current = window.setTimeout(() => setPopping(false), POP_MS);
+  }
+
+  function scrollToIndex(index: number) {
+    const rail = railRef.current;
+    const clamped = Math.max(0, Math.min(DISHES.length - 1, index));
+
+    if (rail) {
+      const card = rail.children[clamped] as HTMLElement | undefined;
+      if (card) {
+        isProgrammaticScroll.current = true;
+        window.clearTimeout(scrollFlagTimer.current);
+        scrollFlagTimer.current = window.setTimeout(() => {
+          isProgrammaticScroll.current = false;
+        }, PROGRAMMATIC_SCROLL_MS);
+
+        const target =
+          card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2;
+        rail.scrollTo({
+          left: Math.max(0, target),
+          behavior: reducedMotion ? "auto" : "smooth"
+        });
+      }
+    }
+
+    setActive(clamped);
+  }
+
+  function onRailScroll() {
+    if (isProgrammaticScroll.current) return;
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const center = rail.scrollLeft + rail.clientWidth / 2;
+    let best = 0;
+    let bestDist = Infinity;
+
+    Array.from(rail.children).forEach((child, index) => {
+      const card = child as HTMLElement;
+      const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = index;
+      }
+    });
+
+    setActive((current) => (current === best ? current : best));
+  }
+
+  return (
+    <div className="stir-gallery">
+      <header className="stir-gallery__header">
+          <p className="eyebrow eyebrow--gold">SEE IT IN ACTION</p>
+          <h2>Stir it into everything.</h2>
+          <p className="stir-gallery__lede">
+            Every dish on tonight&apos;s table takes a spoonful. Keep stirring.
+            Nothing changes but <CopyHighlight>the number</CopyHighlight>.
+          </p>
+        </header>
+
+        <p className="stir-gallery__hint" aria-hidden="true">
+          swipe the table &#8594;
+        </p>
+
+        <div
+          className="stir-gallery__rail"
+          ref={railRef}
+          onScroll={onRailScroll}
+        >
+          {DISHES.map((dish, index) => {
+            const count = spoons[index];
+            const grams = dish.base + count * boostGrams;
+            const boosted = count > 0;
+            const bursting = burstAt === index && !reducedMotion;
+            const poppingHere = popping && burstAt === index;
+            const caption = boosted
+              ? CAPTIONS[(count - 1) % CAPTIONS.length]
+              : "";
+
+            return (
+              <article
+                key={dish.name}
+                className={`stir-card stir-card--${
+                  index % 2 === 1 ? "marigold" : "cream"
+                }`}
+                aria-label={dish.name}
+              >
+                <div className="stir-card__head">
+                  <span className="stir-card__name">{dish.name}</span>
+                  <span className="stir-card__tag">{dish.tag}</span>
+                </div>
+
+                <div className="stir-card__photo">
+                  <div className="stir-card__photo-circle">
+                    <Image
+                      src={dish.image}
+                      alt={`${dish.name}, home-cooked bowl`}
+                      width={380}
+                      height={380}
+                      sizes="190px"
+                    />
+                  </div>
+                  {bursting ? (
+                    <div
+                      className="stir-card__burst"
+                      key={count}
+                      aria-hidden="true"
+                    >
+                      {PARTICLES.map((particle, particleIndex) => (
+                        <span
+                          key={particleIndex}
+                          style={{
+                            left: particle.left,
+                            animationDelay: particle.delay
+                          }}
+                        />
+                      ))}
+                    </div>
+                  ) : null}
+                  {boosted ? (
+                    <span className="stir-card__badge">
+                      {count === 1 ? "1 spoonful" : `${count} spoonfuls`}
+                    </span>
+                  ) : null}
+                </div>
+
+                <p
+                  className={`stir-card__counter${
+                    boosted ? " is-boosted" : ""
+                  }${poppingHere ? " is-popping" : ""}`}
+                >
+                  {grams}g
+                </p>
+                <p className="stir-card__counter-label">protein in this bowl</p>
+
+                <button
+                  type="button"
+                  className="stir-card__button"
+                  onClick={() => stir(index)}
+                >
+                  {count === 0 ? "Stir in a spoonful" : "Stir in another"}
+                </button>
+
+                <p className="stir-card__caption" aria-live="polite">
+                  {caption}
+                </p>
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="stir-gallery__dots" role="tablist" aria-label="Dishes">
+          {DISHES.map((dish, index) => (
+            <button
+              key={dish.name}
+              type="button"
+              role="tab"
+              className={`stir-gallery__dot${
+                index === active ? " is-active" : ""
+              }`}
+              aria-label={dish.name}
+              aria-selected={index === active}
+              onClick={() => scrollToIndex(index)}
+            />
+          ))}
+        </div>
+    </div>
+  );
+}
