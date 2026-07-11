@@ -284,8 +284,8 @@ export function HeldiHomepage({
   const [joined, setJoined] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobileNav, setIsMobileNav] = useState(false);
-  const [floatingCtaSuppressed, setFloatingCtaSuppressed] = useState(false);
-  const heroWaitlistRef = useRef<HTMLDivElement>(null);
+  const [floatingCtaSuppressed, setFloatingCtaSuppressed] = useState(true);
+  const heroSectionRef = useRef<HTMLElement>(null);
   const footerWaitlistRef = useRef<HTMLDivElement>(null);
   const menuSectionRef = useRef<HTMLElement>(null);
 
@@ -329,9 +329,8 @@ export function HeldiHomepage({
       return;
     }
 
-    const includeHeroWaitlist = heroLayout === "classic";
     const anchors = [
-      includeHeroWaitlist ? heroWaitlistRef.current : null,
+      heroSectionRef.current,
       footerWaitlistRef.current,
       menuSectionRef.current
     ].filter((element): element is HTMLDivElement | HTMLElement => element !== null);
@@ -412,6 +411,7 @@ export function HeldiHomepage({
       ) : null}
 
       <section
+        ref={heroSectionRef}
         className={`hero${heroLayout === "video" ? " hero--video" : ""}`}
         id="top"
       >
@@ -431,7 +431,7 @@ export function HeldiHomepage({
               <br />
               other home-cooked favourites.
             </h2>
-            <div ref={heroWaitlistRef} className="hero-video-actions">
+            <div className="hero-video-actions">
               <a className="button button--pill" href="#join">
                 Join waitlist
               </a>
@@ -471,9 +471,7 @@ export function HeldiHomepage({
                   The same food, just a little Heldier.
                 </strong>
               </p>
-              <div ref={heroWaitlistRef}>
-                <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="hero-email" />
-              </div>
+              <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="hero-email" />
             </div>
             <Image
               className="hero-elephant"
