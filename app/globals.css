@@ -347,12 +347,29 @@ h2 {
   gap: 0.75rem;
 }
 
+.hero-video-header .pronunciation {
+  font-family: var(--font-display), serif;
+  font-size: clamp(0.9375rem, 2vw, 1.125rem);
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.hero-video-header .pronunciation em {
+  font-family: var(--font-body), Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+}
+
 .hero-video-lede {
   max-width: 36rem;
   margin: 0;
-  color: #2c2418;
-  font-size: clamp(0.9375rem, 2vw, 1.0625rem);
-  line-height: 1.55;
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.375rem, 3.5vw, 2rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
 }
 
 .hero-inner {
@@ -1263,7 +1280,7 @@ h2 {
 }
 
 .jar-layout {
-  max-width: 640px;
+  max-width: min(720px, 100%);
   margin: 0 auto;
 }
 
@@ -1279,27 +1296,30 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 460px;
+  width: 100%;
+  max-width: min(100%, 520px);
   margin-inline: auto;
-  padding: 2.125rem 2rem;
+  padding: clamp(1.25rem, 4vw, 2.125rem) clamp(1rem, 3vw, 2rem);
   border: 2px dashed var(--gold);
   border-radius: 24px;
   text-align: center;
 }
 
 .jar-preview-card {
-  width: min(100%, 380px);
-  padding: 1.5rem;
+  width: 100%;
+  max-width: 420px;
+  padding: clamp(0.875rem, 2.5vw, 1.5rem);
   border: 3px solid var(--ink);
   border-radius: 20px;
   background: #fff;
   box-shadow: 8px 8px 0 var(--ink);
 }
 
-.jar-preview-card img {
+.jar-preview-image {
   display: block;
   width: 100%;
   height: auto;
+  object-fit: contain;
 }
 
 .final-cta {

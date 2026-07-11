@@ -423,10 +423,13 @@ export function HeldiHomepage({
               </p>
             </header>
             <HeroVideo />
-            <p className="hero-video-lede">
-              Desi protein that disappears into dal, curry, raita and every
-              home-cooked favourite.
-            </p>
+            <h2 className="hero-video-lede">
+              Desi protein that disappears into
+              <br />
+              dal, curry, raita and
+              <br />
+              other home-cooked favourites.
+            </h2>
             <div ref={heroWaitlistRef} className="hero-video-actions">
               <a className="button button--pill" href="#join">
                 Join waitlist
@@ -596,11 +599,12 @@ export function HeldiHomepage({
           <div className="jar-card">
             <div className="jar-preview-card">
               <Image
+                className="jar-preview-image"
                 src={imageSrc("/images/jars-both.png")}
                 alt="Heldi pouch with silver and gold table jars"
                 width={1024}
-                height={680}
-                sizes="(max-width: 700px) 90vw, 420px"
+                height={1024}
+                sizes="(max-width: 560px) calc(100vw - 4rem), (max-width: 899px) min(90vw, 420px), 420px"
               />
             </div>
           </div>
