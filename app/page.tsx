@@ -4,8 +4,7 @@ export default function Home() {
   return (
     <HeldiHomepage
       grams={10}
-      heroAnimation="split-flap"
-      flapDwellMs={2200}
+      heroLayout="video"
       ticker
     />
   );

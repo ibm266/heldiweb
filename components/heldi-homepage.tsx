@@ -11,13 +11,18 @@ import { AudienceGallery } from "@/components/audience-gallery";
 import { MenuGallery } from "@/components/menu-gallery";
 
 type HeroAnimation = "split-flap" | "dissolve";
+type HeroLayout = "video" | "classic";
 
 type HeldiHomepageProps = {
   grams?: number;
   heroAnimation?: HeroAnimation;
+  heroLayout?: HeroLayout;
   flapDwellMs?: number;
   ticker?: boolean;
 };
+
+const HERO_VIDEO_SRC = "/videos/heldi-hero-v3.mp4";
+const HERO_VIDEO_POSTER = "/images/hero-video-poster.png";
 
 const WORDS = ["INDIAN FOOD", "DAL", "CURRY", "RAITA", "DAHI", "CHAAT"];
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -54,6 +59,14 @@ const FAQS = [
 const TICKER_COPY =
   "MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% VEGETARIAN  •  FREE JAR WITH YOUR FIRST ORDER  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
 
+const IMAGE_VERSION = "ink-blue-2";
+const IMAGE_BASE = "/images/variants/ink-blue";
+
+function imageSrc(path: string) {
+  const file = path.replace(/^\/images\//, "");
+  return `${IMAGE_BASE}/${file}?v=${IMAGE_VERSION}`;
+}
+
 function Wordmark({
   large = false,
   onDark = false,
@@ -75,7 +88,7 @@ function Wordmark({
   return (
     <Image
       className={className}
-      src="/images/heldi-wordmark.png"
+      src={imageSrc("/images/heldi-wordmark.png")}
       alt="Heldi"
       width={1934}
       height={609}
@@ -215,9 +228,55 @@ function WaitlistForm({
   );
 }
 
+function HeroVideo() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function syncPlayback() {
+      const el = videoRef.current;
+      if (!el) return;
+
+      if (motionQuery.matches) {
+        el.pause();
+        el.removeAttribute("autoplay");
+        return;
+      }
+
+      el.play().catch(() => {
+        /* autoplay blocked — poster remains visible */
+      });
+    }
+
+    syncPlayback();
+    motionQuery.addEventListener("change", syncPlayback);
+
+    return () => motionQuery.removeEventListener("change", syncPlayback);
+  }, []);
+
+  return (
+    <div className="hero-video-shell">
+      <video
+        ref={videoRef}
+        className="hero-video"
+        autoPlay
+        loop
+        muted
+        playsInline
+        poster={HERO_VIDEO_POSTER}
+        aria-label="Heldi hero film: a family dinner table, ink-blue elephants cross the scene, smoke clears to reveal the Heldi pouch and tagline, Bringing something new to the table."
+      >
+        <source src={HERO_VIDEO_SRC} type="video/mp4" />
+      </video>
+    </div>
+  );
+}
+
 export function HeldiHomepage({
   grams = 10,
   heroAnimation = "split-flap",
+  heroLayout = "video",
   flapDwellMs = 2200,
   ticker = true
 }: HeldiHomepageProps) {
@@ -304,7 +363,7 @@ export function HeldiHomepage({
           <span className="nav-elephant-badge">
             <Image
               className="nav-elephant-logo"
-              src="/images/elephant-large-transparent.png"
+              src={imageSrc("/images/elephant-large-transparent.png")}
               alt="Heldi"
               width={2048}
               height={2048}
@@ -351,50 +410,77 @@ export function HeldiHomepage({
         </a>
       ) : null}
 
-      <section className="hero" id="top">
-        <div className="hero-inner">
-          <Image
-            className="hero-elephant hero-elephant--left"
-            src="/images/elephant-large-transparent.png"
-            alt="Decorated Indian elephant illustration"
-            width={2048}
-            height={2048}
-            priority
-          />
-          <div className="hero-copy">
-            <Wordmark large />
-            <p className="pronunciation">
-              /hel-dee/ <em>adj.</em> how my nani says “healthy.”
+      <section
+        className={`hero${heroLayout === "video" ? " hero--video" : ""}`}
+        id="top"
+      >
+        {heroLayout === "video" ? (
+          <div className="hero-video-inner">
+            <header className="hero-video-header">
+              <Wordmark large />
+              <p className="pronunciation">
+                /hel-dee/ <em>adj.</em> how my nani says “healthy.”
+              </p>
+            </header>
+            <HeroVideo />
+            <p className="hero-video-lede">
+              Desi protein that disappears into dal, curry, raita and every
+              home-cooked favourite.
             </p>
-            <h1>Desi protein for</h1>
-            <div className="word-board">
-              {heroAnimation === "split-flap" ? (
-                <SplitFlapBoard dwellMs={flapDwellMs} />
-              ) : (
-                <DissolveBoard />
-              )}
-            </div>
-            <p className="hero-subline">Never drink another protein shake again.</p>
-            <p className="hero-body">
-              Heldi is a protein made to disappear straight into your dal, curry,
-              raita and every other home-cooked favourite.
-              <strong className="hero-body__tagline">
-                The same food, just a little Heldier.
-              </strong>
-            </p>
-            <div ref={heroWaitlistRef}>
-              <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="hero-email" />
+            <div ref={heroWaitlistRef} className="hero-video-actions">
+              <a className="button button--pill" href="#join">
+                Join waitlist
+              </a>
+              <a className="button button--pill button--outline" href="#how">
+                How it works
+              </a>
             </div>
           </div>
-          <Image
-            className="hero-elephant"
-            src="/images/elephant-large-transparent.png"
-            alt="Decorated Indian elephant illustration"
-            width={2048}
-            height={2048}
-            priority
-          />
-        </div>
+        ) : (
+          <div className="hero-inner">
+            <Image
+              className="hero-elephant hero-elephant--left"
+              src={imageSrc("/images/elephant-large-transparent.png")}
+              alt="Decorated Indian elephant illustration"
+              width={2048}
+              height={2048}
+              priority
+            />
+            <div className="hero-copy">
+              <Wordmark large />
+              <p className="pronunciation">
+                /hel-dee/ <em>adj.</em> how my nani says “healthy.”
+              </p>
+              <h1>Desi protein for</h1>
+              <div className="word-board">
+                {heroAnimation === "split-flap" ? (
+                  <SplitFlapBoard dwellMs={flapDwellMs} />
+                ) : (
+                  <DissolveBoard />
+                )}
+              </div>
+              <p className="hero-subline">Never drink another protein shake again.</p>
+              <p className="hero-body">
+                Heldi is a protein made to disappear straight into your dal, curry,
+                raita and every other home-cooked favourite.
+                <strong className="hero-body__tagline">
+                  The same food, just a little Heldier.
+                </strong>
+              </p>
+              <div ref={heroWaitlistRef}>
+                <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="hero-email" />
+              </div>
+            </div>
+            <Image
+              className="hero-elephant"
+              src={imageSrc("/images/elephant-large-transparent.png")}
+              alt="Decorated Indian elephant illustration"
+              width={2048}
+              height={2048}
+              priority
+            />
+          </div>
+        )}
         {ticker ? (
           <div className="ticker" aria-label={TICKER_COPY}>
             <div className="ticker-track" aria-hidden="true">
@@ -411,7 +497,7 @@ export function HeldiHomepage({
           <div className="pouch-card">
             <Image
               className="pouch-image"
-              src="/images/pouch.png"
+              src={imageSrc("/images/pouch.png")}
               alt="Heldi pouch, same recipes, same taste, more protein"
               width={1360}
               height={2048}
@@ -510,7 +596,7 @@ export function HeldiHomepage({
           <div className="jar-card">
             <div className="jar-preview-card">
               <Image
-                src="/images/jars-both.png"
+                src={imageSrc("/images/jars-both.png")}
                 alt="Heldi pouch with silver and gold table jars"
                 width={1024}
                 height={680}
@@ -530,7 +616,7 @@ export function HeldiHomepage({
       </section>
 
       <section className="final-cta section--bordered" id="join">
-        <Image className="cta-elephant cta-elephant--left" src="/images/elephant-small.png" alt="" width={270} height={280} />
+        <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-small.png")} alt="" width={270} height={280} />
         <div className="final-cta-copy">
           <h2>Be first to stir it in.</h2>
           <p>One email the day we launch, and a free jar with your first order.</p>
@@ -538,7 +624,7 @@ export function HeldiHomepage({
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
           </div>
         </div>
-        <Image className="cta-elephant cta-elephant--right" src="/images/elephant-small.png" alt="" width={270} height={280} />
+        <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-small.png")} alt="" width={270} height={280} />
       </section>
 
       <footer>
