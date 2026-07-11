@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
       {
         pathname: "/images/**",
         search: "?v=ink-blue-2"
+      },
+      {
+        pathname: "/images/pouch-badges/**"
       }
     ]
   }

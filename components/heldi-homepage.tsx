@@ -24,8 +24,8 @@ type HeldiHomepageProps = {
 const HERO_VIDEO_SRC = "/videos/heldi-hero-v3.mp4";
 const HERO_VIDEO_POSTER = "/images/hero-video-poster.png";
 const ELEPHANT_RUN_GOLD_SRC = "/videos/elephant-run-gold.mp4";
-const ELEPHANT_RUN_MS = 2800;
-const ELEPHANT_RUN_END_AT_S = 2.6;
+const ELEPHANT_RUN_MS = 4050;
+const ELEPHANT_RUN_END_AT_S = 3.85;
 const ELEPHANT_KEY_TOLERANCE = 46;
 
 function sampleCurtainKeyColor(
@@ -128,6 +128,13 @@ const FAQS = [
 
 const TICKER_COPY =
   "MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% VEGETARIAN  •  FREE JAR WITH YOUR FIRST ORDER  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
+
+const POUCH_BADGE_ICONS = {
+  lactoseFree: "/images/pouch-badges/lactose-free.png",
+  noSugar: "/images/pouch-badges/no-sugar.png",
+  glutenFree: "/images/pouch-badges/gluten-free.png",
+  vegetarian: "/images/pouch-badges/vegetarian.png"
+} as const;
 
 const IMAGE_VERSION = "ink-blue-2";
 const IMAGE_BASE = "/images/variants/ink-blue";
@@ -865,34 +872,71 @@ export function HeldiHomepage({
       </section>
 
       <section className="section section--cream" id="pouch">
-        <div className="split-layout split-layout--center">
-          <div className="pouch-card">
-            <Image
-              className="pouch-image"
-              src={imageSrc("/images/pouch.png")}
-              alt="Heldi pouch, same recipes, same taste, more protein"
-              width={1360}
-              height={2048}
-              sizes="(max-width: 700px) 80vw, 440px"
-            />
-          </div>
-          <div className="section-copy">
+        <div className="pouch-section">
+          <div className="pouch-section__copy">
             <p className="eyebrow">THE POUCH</p>
-            <h2>The food you love with the nutrients you need.</h2>
+            <h2>Food you love. Nutrients you need.</h2>
             <p>
-              One blend, tuned to vanish into anything with a gravy, a dal or a
-              yoghurt base. A 90%+ whey isolate from British dairy that dissolves
-              clean. No chalky film, no protein-shake aftertaste, no new habits.
+              One blend that vanishes into any gravy, dal or yoghurt base.
+              Dissolves clean. No chalk, no aftertaste.
             </p>
-            <div className="stats">
-              <div><strong>{grams}g</strong><span>protein per bowl</span></div>
-              <div><strong>90%+</strong><span>whey protein isolate</span></div>
-              <div><strong>99%</strong><span>lactose-free</span></div>
-              <div><b>No added sugar</b></div>
-              <div><b>Gluten free</b></div>
-              <div><b>100% vegetarian</b></div>
+          </div>
+          <div className="pouch-section__stats">
+            <div className="pouch-stat pouch-stat--gold">
+              <strong>{grams}g</strong>
+              <span>protein per bowl</span>
+            </div>
+            <div className="pouch-stat pouch-stat--white">
+              <strong>90%+</strong>
+              <span>whey isolate</span>
             </div>
           </div>
+          <ul className="pouch-section__badges" aria-label="Product attributes">
+            <li className="pouch-badge">
+              <Image
+                className="pouch-badge__icon"
+                src={POUCH_BADGE_ICONS.lactoseFree}
+                alt=""
+                width={280}
+                height={377}
+                aria-hidden="true"
+              />
+              99% lactose-free
+            </li>
+            <li className="pouch-badge">
+              <Image
+                className="pouch-badge__icon"
+                src={POUCH_BADGE_ICONS.noSugar}
+                alt=""
+                width={386}
+                height={390}
+                aria-hidden="true"
+              />
+              No added sugar
+            </li>
+            <li className="pouch-badge">
+              <Image
+                className="pouch-badge__icon"
+                src={POUCH_BADGE_ICONS.glutenFree}
+                alt=""
+                width={328}
+                height={225}
+                aria-hidden="true"
+              />
+              Gluten free
+            </li>
+            <li className="pouch-badge">
+              <Image
+                className="pouch-badge__icon"
+                src={POUCH_BADGE_ICONS.vegetarian}
+                alt=""
+                width={286}
+                height={367}
+                aria-hidden="true"
+              />
+              Vegetarian
+            </li>
+          </ul>
         </div>
       </section>
 
