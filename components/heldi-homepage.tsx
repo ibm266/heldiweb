@@ -136,7 +136,26 @@ const POUCH_BADGE_ICONS = {
   vegetarian: "/images/pouch-badges/vegetarian.png"
 } as const;
 
-const IMAGE_VERSION = "ink-blue-2";
+const HOW_IT_WORKS_STEPS = [
+  {
+    icon: "/images/how-it-works/step-1-cook.png",
+    title: "Cook like always",
+    description: "Your dal, curry or raita — same as ever."
+  },
+  {
+    icon: "/images/how-it-works/step-2-stir.png",
+    title: "Stir in a spoonful",
+    description: "Stir straight into the pot, or at the table."
+  },
+  {
+    icon: "/images/how-it-works/step-3-eat.png",
+    title: "Eat what you love",
+    description: (grams: number) =>
+      `The meal you grew up with, +${grams}g protein.`
+  }
+] as const;
+
+const IMAGE_VERSION = "ink-blue-3";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -754,7 +773,9 @@ export function HeldiHomepage({
           className={`nav-links${isMobileNav && menuOpen ? " is-open" : ""}`}
           id="nav-menu"
         >
-          <a href="#pouch" onClick={() => setMenuOpen(false)}>The pouch</a>
+          {!isMobileNav ? (
+            <a href="#pouch" onClick={() => setMenuOpen(false)}>The pouch</a>
+          ) : null}
           <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
           <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
           <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
@@ -874,7 +895,6 @@ export function HeldiHomepage({
       <section className="section section--cream" id="pouch">
         <div className="pouch-section">
           <div className="pouch-section__copy">
-            <p className="eyebrow">THE POUCH</p>
             <h2>Food you love. Nutrients you need.</h2>
             <p>
               One blend that vanishes into any gravy, dal or yoghurt base.
@@ -945,22 +965,33 @@ export function HeldiHomepage({
       </section>
 
       <section className="section section--cream" id="how">
-        <div className="content">
-          <h2 className="centered">No shaking. No blending. Just stir in.</h2>
-          <div className="steps">
-            <article>
-              <strong>1</strong><h3>Cook like always</h3>
-              <p>Make your dal, curry or raita exactly the way you always have.</p>
-            </article>
-            <article>
-              <strong>2</strong><h3>Stir in a spoonful</h3>
-              <p>A spoonful stirred straight into the bowl. Loosen if needed, or let everyone add their own at the table.</p>
-            </article>
-            <article>
-              <strong>3</strong><h3>Eat what you love</h3>
-              <p>The same meal you grew up with, now with {grams}g more protein per bowl.</p>
-            </article>
-          </div>
+        <div className="how-it-works">
+          <header className="how-it-works__header">
+            <p className="eyebrow">HOW IT WORKS</p>
+            <h2>No shaking. No blending. Just stir in.</h2>
+          </header>
+          <ol className="how-it-works__steps">
+            {HOW_IT_WORKS_STEPS.map((step) => (
+              <li key={step.title} className="how-it-works__step">
+                <div className="how-it-works__icon" aria-hidden="true">
+                  <Image
+                    src={imageSrc(step.icon)}
+                    alt=""
+                    width={256}
+                    height={256}
+                  />
+                </div>
+                <div className="how-it-works__copy">
+                  <h3>{step.title}</h3>
+                  <p>
+                    {typeof step.description === "function"
+                      ? step.description(grams)
+                      : step.description}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -1017,7 +1048,8 @@ export function HeldiHomepage({
                 alt="Heldi pouch with silver and gold table jars"
                 width={1024}
                 height={1024}
-                sizes="(max-width: 560px) calc(100vw - 4rem), (max-width: 899px) min(90vw, 420px), 420px"
+                sizes="(max-width: 560px) calc(100vw - 3rem), (max-width: 899px) min(92vw, 560px), 560px"
+                style={{ width: "100%", height: "auto" }}
               />
             </div>
           </div>
