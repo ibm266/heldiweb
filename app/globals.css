@@ -2344,7 +2344,19 @@ footer {
   background: var(--gold);
 }
 
-.stir-card__photo-circle img {
+.stir-card__photo-frame {
+  position: absolute;
+  inset: 0;
+  transform-origin: center center;
+}
+
+.stir-card__photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.stir-card__photo-circle > img {
   width: 100%;
   height: 100%;
   object-fit: cover;

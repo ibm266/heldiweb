@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CopyHighlight } from "@/components/copy-highlight";
+import { getStirFrameStyle, getStirImageFrame } from "@/lib/stir-gallery-frames";
 
 type Dish = {
   name: string;
@@ -45,15 +46,14 @@ const DISHES: Dish[] = [
     name: "Bowl of dahi",
     tag: "ON THE SIDE",
     base: 5,
-    image: "/images/stir-gallery/bowl-of-dahi.png"
+    image: "/images/stir-gallery/bowl-of-dahi-clean.png",
+    video: "/videos/stir-gallery/bowl-of-dahi-stir.mp4"
   }
 ];
 
 const CAPTIONS = [
-  "One spoonful in. Nothing changes but the number.",
   "Still tastes exactly the same.",
-  "Going back for more? Good.",
-  "Okay beta, that's plenty.",
+  "The same food, just a little heldier.",
   "Nani is impressed.",
   "Save some for the raita.",
   "A very strong bowl indeed.",
@@ -61,6 +61,10 @@ const CAPTIONS = [
   "The dal did not even notice.",
   "At this point, keep the jar on the table."
 ];
+
+const MAX_SPOONS = 2;
+const MAX_CAPTION =
+  "That's 2 tbsp, the most we recommend stirring into one dish.";
 
 const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
   left: `${10 + ((i * 79) % 80)}%`,
@@ -79,6 +83,9 @@ type StirGalleryProps = {
 export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   const [spoons, setSpoons] = useState<number[]>(() =>
     Array(DISHES.length).fill(0)
+  );
+  const [captions, setCaptions] = useState<string[]>(() =>
+    Array(DISHES.length).fill("")
   );
   const [active, setActive] = useState(0);
   const [burstAt, setBurstAt] = useState(-1);
@@ -145,12 +152,21 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
 
   function stir(index: number) {
     if (animatingAt === index) return;
+    if (spoons[index] >= MAX_SPOONS) return;
 
     const dish = DISHES[index];
     const useVideo = Boolean(dish.video) && !reducedMotion;
+    const nextCount = spoons[index] + 1;
+    const nextCaption =
+      nextCount >= MAX_SPOONS
+        ? MAX_CAPTION
+        : CAPTIONS[Math.floor(Math.random() * CAPTIONS.length)];
 
     setSpoons((current) =>
-      current.map((count, i) => (i === index ? count + 1 : count))
+      current.map((count, i) => (i === index ? nextCount : count))
+    );
+    setCaptions((current) =>
+      current.map((caption, i) => (i === index ? nextCaption : caption))
     );
 
     if (useVideo) {
@@ -220,7 +236,7 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
           <h2>Stir it into everything.</h2>
           <p className="stir-gallery__lede">
             Every dish on tonight&apos;s table takes a spoonful. Keep stirring.
-            Nothing changes but <CopyHighlight>the number</CopyHighlight>.
+            Nothing changes but <CopyHighlight>the protein</CopyHighlight>.
           </p>
         </header>
 
@@ -241,9 +257,11 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
             const bursting =
               burstAt === index && !reducedMotion && !DISHES[index].video;
             const poppingHere = popping && popAt === index;
-            const caption = boosted
-              ? CAPTIONS[(count - 1) % CAPTIONS.length]
-              : "";
+            const maxedOut = count >= MAX_SPOONS;
+            const caption = boosted ? captions[index] : "";
+
+            const imageFrame = getStirImageFrame(dish.name);
+            const imageSrc = imageFrame?.source ?? dish.image;
 
             return (
               <article
@@ -260,26 +278,33 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
 
                 <div className="stir-card__photo">
                   <div className="stir-card__photo-circle">
-                    <Image
-                      src={dish.image}
-                      alt={`${dish.name}, home-cooked bowl`}
-                      width={380}
-                      height={380}
-                      sizes="190px"
-                    />
-                    {isAnimating && dish.video ? (
-                      <video
-                        ref={videoRef}
-                        className={`stir-card__video${
-                          videoFading ? " is-fading" : ""
-                        }`}
-                        src={dish.video}
-                        muted
-                        playsInline
-                        preload="none"
-                        onEnded={finishVideoStir}
+                    <div
+                      className={`stir-card__photo-frame${
+                        imageFrame ? " stir-card__photo-frame--custom" : ""
+                      }`}
+                      style={getStirFrameStyle(imageFrame)}
+                    >
+                      <Image
+                        src={imageSrc}
+                        alt={`${dish.name}, home-cooked bowl`}
+                        width={380}
+                        height={380}
+                        sizes="190px"
                       />
-                    ) : null}
+                      {isAnimating && dish.video ? (
+                        <video
+                          ref={videoRef}
+                          className={`stir-card__video${
+                            videoFading ? " is-fading" : ""
+                          }`}
+                          src={dish.video}
+                          muted
+                          playsInline
+                          preload="none"
+                          onEnded={finishVideoStir}
+                        />
+                      ) : null}
+                    </div>
                   </div>
                   {bursting ? (
                     <div
@@ -318,14 +343,16 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
                   type="button"
                   className="stir-card__button"
                   onClick={() => stir(index)}
-                  disabled={isAnimating}
+                  disabled={isAnimating || maxedOut}
                   aria-busy={isAnimating}
                 >
                   {isAnimating
                     ? "Adding Heldi…"
-                    : count === 0
-                      ? "Stir in a spoonful"
-                      : "Stir in another"}
+                    : maxedOut
+                      ? "This dish is Heldi."
+                      : count === 0
+                        ? "Stir in a spoonful"
+                        : "Stir in another"}
                 </button>
 
                 <p className="stir-card__caption" aria-live="polite">
