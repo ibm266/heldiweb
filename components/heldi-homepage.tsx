@@ -284,7 +284,7 @@ export function HeldiHomepage({
   const [joined, setJoined] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobileNav, setIsMobileNav] = useState(false);
-  const [floatingCtaSuppressed, setFloatingCtaSuppressed] = useState(true);
+  const [floatingCtaSuppressed, setFloatingCtaSuppressed] = useState(false);
   const heroWaitlistRef = useRef<HTMLDivElement>(null);
   const footerWaitlistRef = useRef<HTMLDivElement>(null);
   const menuSectionRef = useRef<HTMLElement>(null);
@@ -329,8 +329,9 @@ export function HeldiHomepage({
       return;
     }
 
+    const includeHeroWaitlist = heroLayout === "classic";
     const anchors = [
-      heroWaitlistRef.current,
+      includeHeroWaitlist ? heroWaitlistRef.current : null,
       footerWaitlistRef.current,
       menuSectionRef.current
     ].filter((element): element is HTMLDivElement | HTMLElement => element !== null);
