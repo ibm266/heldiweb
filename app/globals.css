@@ -2611,8 +2611,7 @@ footer {
 /* ── Laptop & wide-screen layout (≥900px) ─────────────────────────────── */
 
 @media (min-width: 900px) {
-  /* Menu gallery stays mobile-only; stir shows as a wrapped grid on laptop+ */
-  #thali,
+  /* Pouch stays mobile-only; menu and stir show as wrapped grids on laptop+ */
   #pouch {
     display: none;
   }

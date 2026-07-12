@@ -960,12 +960,7 @@ export function HeldiHomepage({
           className={`nav-links${isMobileNav && menuOpen ? " is-open" : ""}`}
           id="nav-menu"
         >
-          {!isMobileNav ? (
-            <a href="#pouch" onClick={() => setMenuOpen(false)}>The pouch</a>
-          ) : null}
-          {isMobileNav ? (
-            <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
-          ) : null}
+          <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
           <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
           <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
           {!isMobileNav ? (
