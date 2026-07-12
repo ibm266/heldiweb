@@ -1,92 +1,120 @@
 # Heldi design context for Claude Design (Fable)
 
-This folder is the **single source of context** for generating graphics, illustrations, and marketing visuals that match the live Heldi homepage at [heldiweb](https://github.com/) (Next.js site in this repo).
+This folder is the **single source of context** for generating graphics, illustrations, and marketing visuals that match the live Heldi homepage (Next.js site in this repo).
 
-Attach this folder (or individual files) when prompting Claude Design / Fable so outputs stay on-brand.
+**Attach this entire folder** when prompting Claude Design / Fable so outputs stay on-brand.
 
 ## Quick start
 
-1. **Read first:** `brand-voice.md` + `visual-style.md`, tone and look.
-2. **Match exactly:** `design-tokens.json`, colors, type, spacing (live CSS values).
-3. **Copy from:** `homepage-copy.md`, approved headlines and body text.
-4. **Attach references:** files in `references/`, pouch, wordmark, elephants, hero poster.
-5. **Use templates:** `generation-prompts.md`, starter prompts for common asset types.
+1. **Compliance only:** `compliance-requirements.md` — nutrition, ingredients, statutory text, how-to-use (substance only)
+2. **Layout & styling:** `homepage-layout.md` + `homepage-styling.md` + `design-tokens.json` — how the live page looks today (all flexible)
+3. **Visual anchors:** `screenshots/` + `references/` — live captures and brand/product images
+4. **Tone:** `brand-voice.md` + `visual-style.md`
+5. **Marketing copy:** `homepage-copy.md` — current homepage text (**optional — can delete or rewrite**)
+6. **Pack design reference:** `back-prompt-master.md` — back-of-pouch prompt spec; **not a website layout or copy constraint**
 
 ## What Heldi is
 
-Heldi is a **single-SKU protein powder** made for home-cooked Indian food, dal, curry, raita, dahi, chaat, not shakes. It dissolves into gravies and yoghurt bases. One pouch for the whole table. Launching autumn 2026, made in the UK.
+Heldi is a **single-SKU protein powder** made for home-cooked Indian food — dal, curry, raita, dahi, chaat, not shakes. It dissolves into gravies and yoghurt bases. One pouch for the whole table. Launching autumn 2026, made in the UK.
 
 **Brand promise:** Same recipes. Same taste. More protein.
 
-**Tagline (hero film):** "Bringing something new to the table"
+---
 
-**Pronunciation line:** `/hel-dee/, adj. how my nani says "healthy."`
+## What is fixed vs free
 
-## Live site vs. original handoff
+| Fixed (compliance) | Free (everything else) |
+|--------------------|------------------------|
+| Nutrition figures (100g + serving) | Hero copy, headlines, lede |
+| Ingredients list + `Contains: Milk.` | Section order and layout |
+| Statutory footer text | Kicker, explainer, claim icons |
+| A how-to-use section (substance only) | Menu gallery, audience cards, FAQ prose |
+| | All marketing copy in `homepage-copy.md` |
 
-The homepage was built from `design_handoff_heldi_homepage/` but has evolved:
+**Rule:** Read `compliance-requirements.md` for the four must-haves. Use `homepage-layout.md` and `screenshots/` for visual direction. **Do not** treat `back-prompt-master.md` as a website blueprint — it is pack-design source data. Marketing text can be cut, rewritten, or replaced entirely.
+
+### The four must-haves
+
+1. **Nutrition information** — exact figures from `compliance-requirements.md`
+2. **Ingredients + allergen** — exact list from `compliance-requirements.md`
+3. **Compliance footer** — statutory warnings, net weight, storage, company address
+4. **How to use** — any section that explains stirring in (pot while cooling + optional at-table); copy and design fully flexible
+
+---
+
+## Live homepage (July 2026)
 
 | Area | Current live site |
 |------|-------------------|
-| Primary dark color | Ink blue `#011246` (was black `#1a171b` in handoff) |
-| Nav | Ink background, marigold text (inverted from early mock) |
-| Hero | Video hero (`heroLayout="video"`) with wordmark + lede, not split-flap board |
-| Product stats | 10g protein per bowl (placeholder, confirm before launch) |
-| Imagery | Ink-blue recoloured assets in `public/images/variants/ink-blue/` |
+| Hero layout | **Reveal** — elephant intro curtain → white sticker card with lede + pouch |
+| Primary dark colour | Ink blue `#011246` |
+| Stir gallery | Interactive dish cards with stir-in videos (`#stir`) |
+| How to use | `#how` — example implementation, not required format |
+| Compliance data | Not yet on homepage — see `compliance-requirements.md` |
 
-Always treat **this folder + live CSS** as authoritative for new graphics, not the older handoff alone.
+Visual authority: **this folder + live CSS** (`app/globals.css`).
+
+---
 
 ## File index
 
 | File | Purpose |
 |------|---------|
-| `design-tokens.json` | Machine-readable colors, fonts, radii, shadows |
-| `design-tokens.md` | Human-readable design system notes |
-| `brand-voice.md` | Tone, vocabulary, do/don't |
-| `visual-style.md` | Illustration, photography, layout, UI patterns |
-| `homepage-copy.md` | All live homepage copy by section |
-| `generation-prompts.md` | Reusable prompt templates for Claude Design |
-| `references/` | Brand assets to attach as visual anchors |
+| **`compliance-requirements.md`** | **Minimum legal/product facts — nutrition, ingredients, statutory text, how-to substance** |
+| `back-prompt-master.md` | Pack back-of-pouch prompt master (source for compliance figures; ignore layout/marketing blocks for web) |
+| `homepage-layout.md` | Current section map, wireframes, screenshots (**flexible**) |
+| `homepage-styling.md` | CSS class → visual property reference |
+| `homepage-copy.md` | Current marketing copy (**optional**) |
+| `screenshots/` | Live homepage screenshots |
+| `references/` | Brand and product image assets |
+| `design-tokens.json` / `design-tokens.md` | Colours, fonts, shadows |
+| `brand-voice.md` / `visual-style.md` | Tone and illustration direction |
+| `generation-prompts.md` | Prompt templates for Claude Design |
 
-## Reference assets
+---
+
+## Reference assets (`references/`)
+
+See `references/README.md` for the full list. Key files:
 
 | File | Use when generating… |
 |------|------------------------|
-| `references/pouch.png` | Product shots, packaging colour truth, elephant motif |
-| `references/heldi-wordmark.png` | Logo placement, ink-blue wordmark colour |
-| `references/elephant-large-transparent.png` | Decorative Indian elephant (hero scale) |
-| `references/elephant-small.png` | Footer/CTA elephant scale |
-| `references/jars-both.png` | Free jar offer, gold/silver lid chips |
-| `references/hero-video-poster.png` | Hero film look: dining table, family meal, pouch reveal |
+| `pouch.png` | Product shots, packaging colour truth |
+| `heldi-wordmark.png` | Logo placement |
+| `elephant-*.png` | Decorative elephant motifs |
+| `jars-both.png`, `jar-gold.png`, `jar-silver.png` | Jar offer |
+| `how-it-works/*.png` | Step icons |
+| `pouch-badges/*.png` | Product attribute badges |
+| `stir-gallery/*.webp` | Dish photos |
 
-Full asset library: `public/images/variants/ink-blue/` (live) and `public/images/originals/` (pre-recolour backups).
+Regenerate screenshots: `node scripts/capture-fable-screenshots.mjs`
+
+---
 
 ## Typography (Google Fonts)
 
-- **Display:** Rozha One Regular (400), headings, wordmark, numerals, menu dish names
-- **Body:** Gelasio (400/500/600, italic), paragraphs, nav, buttons, labels
-- **No sans-serif**, entire brand is serif-forward; this is intentional
+- **Display:** Rozha One Regular (400)
+- **Body:** Gelasio (400/500/600, italic)
+- **No sans-serif**
 
-## Core palette (memorise these)
+## Core palette
 
-- **Marigold** `#eda31d`, primary brand warmth, backgrounds, accents on dark
-- **Ink** `#011246`, text, dark sections, borders, elephant/wordmark fill
-- **Cream** `#f8f0de`, card and section backgrounds
-- **Terracotta** `#a8432b`, accent numerals, eyebrows, links on hover
+- **Marigold** `#eda31d`
+- **Ink** `#011246`
+- **Cream** `#f8f0de`
+- **Terracotta** `#a8432b`
 
 ## Do not
 
-- Use black `#000` or generic navy, always Heldi ink `#011246`
+- Change nutrition figures or ingredients list without updating `compliance-requirements.md`
+- Paraphrase statutory footer, ingredients, or allergen line
+- Use black `#000` — always Heldi ink `#011246`
 - Show protein shakes, blenders, or gym imagery
-- Say "scoop", use **spoon**, **spoonful**, **stir**
-- Reference retired three-SKU line (Chai / Khana / Dahi), one pouch only
-- Use soft drop shadows, use **hard offset sticker shadows** (`6px 6px 0` or `8px 8px 0`)
-- Use sans-serif type in marketing graphics
+- Say "scoop" — use **spoon**, **spoonful**, **stir**, **tablespoon**
+- Treat `back-prompt-master.md` block order or marketing copy as required on the website
 
 ## Source code pointers
 
-- Homepage component: `components/heldi-homepage.tsx`
+- Homepage: `components/heldi-homepage.tsx`
 - Styles: `app/globals.css`
-- Fonts: `app/layout.tsx`
-- Menu cards: `components/menu-gallery.tsx`
-- Audience cards: `components/audience-gallery.tsx`
+- Screenshot script: `scripts/capture-fable-screenshots.mjs`

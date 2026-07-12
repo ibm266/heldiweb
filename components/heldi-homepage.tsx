@@ -133,11 +133,57 @@ const TICKER_COPY =
   "MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% VEGETARIAN  •  FREE JAR WITH YOUR FIRST ORDER  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
 
 const POUCH_BADGE_ICONS = {
+  highProtein: "/images/pouch-badges/high-protein.png",
+  allNatural: "/images/pouch-badges/all-natural.png",
   lactoseFree: "/images/pouch-badges/lactose-free.png",
   noSugar: "/images/pouch-badges/no-sugar.png",
   glutenFree: "/images/pouch-badges/gluten-free.png",
   vegetarian: "/images/pouch-badges/vegetarian.png"
 } as const;
+
+const HERO_SHOWCASE_PILLS: {
+  icon: string;
+  label: string;
+  width: number;
+  height: number;
+}[] = [
+  {
+    icon: POUCH_BADGE_ICONS.highProtein,
+    label: "High protein",
+    width: 256,
+    height: 256
+  },
+  {
+    icon: POUCH_BADGE_ICONS.allNatural,
+    label: "All natural",
+    width: 256,
+    height: 256
+  },
+  {
+    icon: POUCH_BADGE_ICONS.lactoseFree,
+    label: "99% lactose-free",
+    width: 280,
+    height: 377
+  },
+  {
+    icon: POUCH_BADGE_ICONS.noSugar,
+    label: "No added sugar",
+    width: 386,
+    height: 390
+  },
+  {
+    icon: POUCH_BADGE_ICONS.glutenFree,
+    label: "Gluten free",
+    width: 328,
+    height: 225
+  },
+  {
+    icon: POUCH_BADGE_ICONS.vegetarian,
+    label: "Vegetarian",
+    width: 286,
+    height: 367
+  }
+];
 
 const HOW_IT_WORKS_STEPS: {
   icon: string;
@@ -181,6 +227,118 @@ const IMAGE_BASE = "/images/variants/ink-blue";
 function imageSrc(path: string) {
   const file = path.replace(/^\/images\//, "");
   return `${IMAGE_BASE}/${file}?v=${IMAGE_VERSION}`;
+}
+
+function HeroShowcasePills() {
+  return (
+    <ul className="hero-reveal-showcase__pills" aria-label="Product attributes">
+      {HERO_SHOWCASE_PILLS.map((pill) => (
+        <li key={pill.label} className="hero-reveal-showcase__pill">
+          <Image
+            className="hero-reveal-showcase__pill-icon"
+            src={pill.icon}
+            alt=""
+            width={pill.width}
+            height={pill.height}
+            aria-hidden="true"
+          />
+          {pill.label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function HeroRevealActions({
+  joined,
+  onJoin,
+  id,
+  className
+}: {
+  joined: boolean;
+  onJoin: () => void;
+  id: string;
+  className: string;
+}) {
+  return (
+    <div className={className}>
+      <WaitlistForm
+        joined={joined}
+        onJoin={onJoin}
+        id={id}
+        buttonStyle="pill"
+      />
+      <a className="button button--pill button--outline" href="#how">
+        How it works
+      </a>
+    </div>
+  );
+}
+
+function PouchStats({ grams, className }: { grams: number; className: string }) {
+  return (
+    <div className={className}>
+      <div className="pouch-stat pouch-stat--gold">
+        <strong>{grams}g</strong>
+        <span>protein per bowl</span>
+      </div>
+      <div className="pouch-stat pouch-stat--white">
+        <strong>90%+</strong>
+        <span>whey isolate</span>
+      </div>
+    </div>
+  );
+}
+
+function PouchBadgesList({ className }: { className: string }) {
+  return (
+    <ul className={className} aria-label="Product attributes">
+      <li className="pouch-badge">
+        <Image
+          className="pouch-badge__icon"
+          src={POUCH_BADGE_ICONS.lactoseFree}
+          alt=""
+          width={280}
+          height={377}
+          aria-hidden="true"
+        />
+        99% lactose-free
+      </li>
+      <li className="pouch-badge">
+        <Image
+          className="pouch-badge__icon"
+          src={POUCH_BADGE_ICONS.noSugar}
+          alt=""
+          width={386}
+          height={390}
+          aria-hidden="true"
+        />
+        No added sugar
+      </li>
+      <li className="pouch-badge">
+        <Image
+          className="pouch-badge__icon"
+          src={POUCH_BADGE_ICONS.glutenFree}
+          alt=""
+          width={328}
+          height={225}
+          aria-hidden="true"
+        />
+        Gluten free
+      </li>
+      <li className="pouch-badge">
+        <Image
+          className="pouch-badge__icon"
+          src={POUCH_BADGE_ICONS.vegetarian}
+          alt=""
+          width={286}
+          height={367}
+          aria-hidden="true"
+        />
+        Vegetarian
+      </li>
+    </ul>
+  );
 }
 
 function Wordmark({
@@ -601,42 +759,51 @@ function HeroReveal({
       <div className={`hero-reveal-panel${revealed ? " is-revealed" : ""}`}>
         <div className="hero-reveal-columns">
           <div className="hero-reveal-showcase">
-            <h1 className="hero-reveal-lede">
-              <span className="hero-reveal-lede__prefix">
-                <span className="hero-reveal-lede__prefix-line">Protein </span>
-                <span className="hero-reveal-lede__prefix-line">Powder </span>
-                <span className="hero-reveal-lede__prefix-line">for</span>
-              </span>
-              <span className="word-board">
-                <DissolveBoard active={revealed} />
-              </span>
-            </h1>
-            <div className="hero-reveal-pouch">
-              <Image
-                className="hero-reveal-pouch__image"
-                src={imageSrc("/images/pouch.png")}
-                alt="Heldi pouch, same recipes, same taste, more protein"
-                width={1360}
-                height={2048}
-                priority
-                sizes="(max-width: 899px) 52vw, 240px"
-              />
+            <div className="hero-reveal-showcase__main">
+              <div className="hero-reveal-showcase__copy">
+                <h1 className="hero-reveal-lede">
+                  <span className="hero-reveal-lede__prefix">
+                    <span className="hero-reveal-lede__prefix-line">Protein </span>
+                    <span className="hero-reveal-lede__prefix-line">Powder </span>
+                    <span className="hero-reveal-lede__prefix-line">for</span>
+                  </span>
+                  <span className="word-board">
+                    <DissolveBoard active={revealed} />
+                  </span>
+                </h1>
+                <HeroRevealActions
+                  joined={joined}
+                  onJoin={onJoin}
+                  id="hero-reveal-email"
+                  className="hero-reveal-actions hero-reveal-actions--in-showcase"
+                />
+              </div>
+              <div className="hero-reveal-pouch">
+                <Image
+                  className="hero-reveal-pouch__image"
+                  src={imageSrc("/images/pouch.png")}
+                  alt="Heldi pouch, same recipes, same taste, more protein"
+                  width={1360}
+                  height={2048}
+                  priority
+                  sizes="(max-width: 899px) 52vw, (max-width: 1280px) 320px, 420px"
+                />
+              </div>
             </div>
-            <p className="pronunciation pronunciation--showcase">
-              /hel-dee/ <em>adj.</em> how my nani says “healthy.”
-            </p>
+            <div className="hero-reveal-showcase__foot">
+              <p className="pronunciation pronunciation--showcase">
+                /hel-dee/ <em>adj.</em> how my nani says “healthy.”
+              </p>
+              <div className="hero-reveal-showcase__rule" aria-hidden="true" />
+              <HeroShowcasePills />
+            </div>
           </div>
-          <div className="hero-reveal-actions">
-            <WaitlistForm
-              joined={joined}
-              onJoin={onJoin}
-              id="hero-reveal-email"
-              buttonStyle="pill"
-            />
-            <a className="button button--pill button--outline" href="#how">
-              How it works
-            </a>
-          </div>
+          <HeroRevealActions
+            joined={joined}
+            onJoin={onJoin}
+            id="hero-reveal-email-mobile"
+            className="hero-reveal-actions hero-reveal-actions--below"
+          />
         </div>
       </div>
 
@@ -796,7 +963,9 @@ export function HeldiHomepage({
           {!isMobileNav ? (
             <a href="#pouch" onClick={() => setMenuOpen(false)}>The pouch</a>
           ) : null}
-          <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
+          {isMobileNav ? (
+            <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
+          ) : null}
           <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
           <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
           {!isMobileNav ? (
@@ -923,62 +1092,8 @@ export function HeldiHomepage({
               aftertaste.
             </p>
           </div>
-          <div className="pouch-section__stats">
-            <div className="pouch-stat pouch-stat--gold">
-              <strong>{grams}g</strong>
-              <span>protein per bowl</span>
-            </div>
-            <div className="pouch-stat pouch-stat--white">
-              <strong>90%+</strong>
-              <span>whey isolate</span>
-            </div>
-          </div>
-          <ul className="pouch-section__badges" aria-label="Product attributes">
-            <li className="pouch-badge">
-              <Image
-                className="pouch-badge__icon"
-                src={POUCH_BADGE_ICONS.lactoseFree}
-                alt=""
-                width={280}
-                height={377}
-                aria-hidden="true"
-              />
-              99% lactose-free
-            </li>
-            <li className="pouch-badge">
-              <Image
-                className="pouch-badge__icon"
-                src={POUCH_BADGE_ICONS.noSugar}
-                alt=""
-                width={386}
-                height={390}
-                aria-hidden="true"
-              />
-              No added sugar
-            </li>
-            <li className="pouch-badge">
-              <Image
-                className="pouch-badge__icon"
-                src={POUCH_BADGE_ICONS.glutenFree}
-                alt=""
-                width={328}
-                height={225}
-                aria-hidden="true"
-              />
-              Gluten free
-            </li>
-            <li className="pouch-badge">
-              <Image
-                className="pouch-badge__icon"
-                src={POUCH_BADGE_ICONS.vegetarian}
-                alt=""
-                width={286}
-                height={367}
-                aria-hidden="true"
-              />
-              Vegetarian
-            </li>
-          </ul>
+          <PouchStats grams={grams} className="pouch-section__stats" />
+          <PouchBadgesList className="pouch-section__badges" />
         </div>
       </section>
 
@@ -993,13 +1108,24 @@ export function HeldiHomepage({
         <div className="how-it-works">
           <header className="how-it-works__header">
             <p className="eyebrow">HOW IT WORKS</p>
-            <h2>
-              No shaking.
-              <br />
-              No blending.
-              <br />
-              More protein.
-            </h2>
+            <div className="how-it-works__header-mobile">
+              <h2>
+                No shaking.
+                <br />
+                No blending.
+                <br />
+                More protein.
+              </h2>
+            </div>
+            <div className="how-it-works__header-laptop">
+              <h2>Food you love. Nutrients you need.</h2>
+              <p>
+                One blend that <CopyHighlight>vanishes</CopyHighlight> into any
+                gravy, dal or yoghurt base.{" "}
+                <CopyHighlight>Dissolves clean</CopyHighlight>. No chalk, no
+                aftertaste.
+              </p>
+            </div>
           </header>
           <ol className="how-it-works__steps">
             {HOW_IT_WORKS_STEPS.map((step) => (
@@ -1030,7 +1156,7 @@ export function HeldiHomepage({
         <MenuGallery gramsPerTbsp={grams} />
       </section>
 
-      <section className="section section--gold section--bordered">
+      <section className="section section--gold section--bordered" id="audience">
         <div className="content">
           <h2 className="centered">Built for you. Made for the whole family.</h2>
           <AudienceGallery />

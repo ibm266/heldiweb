@@ -116,6 +116,10 @@ Safe to echo homepage UI:
 - **Stat grid:** terracotta Rozha One number + brown Gelasio label, 2px top rule
 - **Pill CTA:** ink fill, gold text, fully rounded
 - **Double rule:** signature section break
+- **Stir card:** circular dish photo, gram counter, "Stir it in" pill button
+- **Hero reveal card:** white sticker card with lede + pouch side-by-side
+
+See `homepage-layout.md` and `screenshots/` for exact section shapes.
 
 ## Aspect ratios
 

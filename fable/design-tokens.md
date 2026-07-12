@@ -17,16 +17,17 @@ Values below match the **live homepage** (`app/globals.css`). Use these exactly 
 
 ### Section backgrounds (alternating rhythm)
 
-1. **Hero**, marigold
-2. **Ticker**, ink (full-width band)
+1. **Hero**, marigold (`heroLayout="reveal"` — elephant intro → sticker card)
+2. **Ticker**, ink (full-width band inside hero)
 3. **The Pouch**, cream
-4. **Tonight's table / menus**, ink
+4. **Stir gallery**, ink (top border 3px)
 5. **How it works**, cream
-6. **Who it's for**, marigold (top border 3px ink)
-7. **FAQ**, cream (top border)
-8. **Free jar**, ink
-9. **Final CTA**, marigold
-10. **Footer**, ink
+6. **Tonight's table / menus**, ink
+7. **Who it's for**, marigold (top border 3px ink)
+8. **FAQ**, cream (top border)
+9. **Free jar**, ink
+10. **Final CTA**, marigold
+11. **Footer**, ink
 
 ## Typography
 

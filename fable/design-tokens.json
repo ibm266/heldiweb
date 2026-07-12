@@ -101,6 +101,27 @@
       "creamOnDark": "6px 6px 0 rgba(248, 240, 222, 0.85)"
     }
   },
+  "homepageSections": [
+    { "id": "top", "name": "Hero reveal", "background": "#eda31d", "screenshot": "screenshots/01-hero-desktop.png" },
+    { "id": "pouch", "name": "The Pouch", "background": "#f8f0de", "screenshot": "screenshots/03-pouch-desktop.png" },
+    { "id": "stir", "name": "Stir gallery", "background": "#011246", "screenshot": "screenshots/04-stir-gallery-desktop.png" },
+    { "id": "how", "name": "How it works", "background": "#f8f0de", "screenshot": "screenshots/05-how-it-works-desktop.png" },
+    { "id": "thali", "name": "Menu gallery", "background": "#011246", "screenshot": "screenshots/06-menu-gallery-desktop.png" },
+    { "name": "Audience", "background": "#eda31d", "screenshot": "screenshots/07-audience-desktop.png" },
+    { "id": "faq", "name": "FAQ", "background": "#f8f0de", "screenshot": "screenshots/08-faq-desktop.png" },
+    { "id": "jar", "name": "Free jar", "background": "#011246", "screenshot": "screenshots/09-jar-desktop.png" },
+    { "id": "join", "name": "Final CTA", "background": "#eda31d", "screenshot": "screenshots/10-final-cta-desktop.png" }
+  ],
+  "heroLayout": {
+    "live": "reveal",
+    "alternates": ["video", "classic"],
+    "revealShowcase": {
+      "background": "#ffffff",
+      "border": "3px solid #011246",
+      "borderRadius": "20px",
+      "shadow": "8px 8px 0 #011246"
+    }
+  },
   "components": {
     "nav": {
       "background": "#011246",

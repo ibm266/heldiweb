@@ -18,20 +18,19 @@ All copy from the production homepage as of July 2026. Use verbatim in graphics 
 
 ---
 
-## Hero (video layout)
+## Hero (reveal layout — live default)
 
-**Wordmark:** HELDI (image)
+**Headline (H1):**
+> Protein Powder for  
+> [INDIAN FOOD · DAL · CURRY · RAITA · DAHI · CHAAT] *(rotating dissolve words)*
 
 **Pronunciation:** /hel-dee/ *adj.* how my nani says "healthy."
 
-**Lede (H2):**
-> Desi protein that disappears into  
-> dal, curry, raita and  
-> other home-cooked favourites.
-
 **CTAs:** Join waitlist · How it works
 
-**Hero video aria-label:** Heldi hero film: a family dinner table, ink-blue elephants cross the scene, smoke clears to reveal the Heldi pouch and tagline, Bringing something new to the table.
+**Intro aria-label:** Decorated ink-blue elephants and comic dust cloud sweep across the screen
+
+**Pouch alt text:** Heldi pouch, same recipes, same taste, more protein
 
 ---
 
@@ -43,22 +42,70 @@ MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% 
 
 ## The Pouch
 
-**Eyebrow:** THE POUCH
-
-**Headline:** The food you love with the nutrients you need.
+**Headline:** Food you love. Nutrients you need.
 
 **Body:**
-> One blend, tuned to vanish into anything with a gravy, a dal or a yoghurt base. A 90%+ whey isolate from British dairy that dissolves clean. No chalky film, no protein-shake aftertaste, no new habits.
+> One blend that **vanishes** into any gravy, dal or yoghurt base. **Dissolves clean**. No chalk, no aftertaste.
 
 **Stats:**
 - **10g** protein per bowl
 - **90%+** whey protein isolate
-- **99%** lactose-free
+
+**Badges:**
+- 99% lactose-free
 - No added sugar
 - Gluten free
-- 100% vegetarian
+- Vegetarian
 
-**Pouch alt text:** Heldi pouch, same recipes, same taste, more protein
+---
+
+## Stir gallery
+
+**Eyebrow:** SEE IT IN ACTION
+
+**Headline:** Stir it into everything.
+
+**Lede:** Every dish on tonight's table takes a spoonful. Keep stirring. Nothing changes but **the protein**.
+
+**Hint:** swipe the table →
+
+**Dishes:**
+| Dish | Tag | Base protein |
+|------|-----|--------------|
+| Dal tadka | THE MAIN | 9g |
+| Chana masala | THE MAIN | 8g |
+| Cucumber raita | ON THE SIDE | 3g |
+| Kadhi | THE MAIN | 7g |
+| Bowl of dahi | ON THE SIDE | 5g |
+
+**Button:** Stir it in
+
+**Captions (rotate):**
+- Still tastes exactly the same.
+- The same food, just a little heldier.
+- Nani is impressed.
+- Save some for the raita.
+- A very strong bowl indeed.
+- Even mama approves of this one.
+- The dal did not even notice.
+- At this point, keep the jar on the table.
+
+**Max caption:** That's 2 tbsp, the most we recommend stirring into one dish.
+
+---
+
+## How it works
+
+**Eyebrow:** HOW IT WORKS
+
+**Headline:**
+> No shaking.  
+> No blending.  
+> More protein.
+
+1. **Cook like always.** Your dal, curry or raita, **same as ever**.
+2. **Stir in a spoonful.** Stir straight into the pot, or **at the table**.
+3. **Eat what you love.** The meal you grew up with, +10g **protein**.
 
 ---
 
@@ -99,29 +146,19 @@ MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% 
 
 ---
 
-## How it works
-
-**Headline:** No shaking. No blending. Just stir in.
-
-1. **Cook like always.** Make your dal, curry or raita exactly the way you always have.
-2. **Stir in a spoonful.** A spoonful stirred straight into the bowl. Loosen if needed, or let everyone add their own at the table.
-3. **Eat what you love.** The same meal you grew up with, now with 10g more protein per bowl.
-
----
-
 ## Who it's for
 
 **Headline:** Built for you. Made for the whole family.
 
 ### FOR YOU
 **Hit your protein target without another shake.**
-- Stir into two or three dishes and add 20-30g across one meal
-- Whey isolate absorbs fast and blends clean
+- Stir into two or three dishes and add **20-30g** across one meal
+- Whey isolate absorbs fast and **blends clean**
 - Zero change to the food you love
 
 ### FOR THE FAMILY
 **One pouch, the whole table.**
-- Disappears into the dal, the curry, the raita everyone already eats
+- **Disappears into** the dal, the curry, the raita everyone already eats
 - Works for fussy eaters and big appetites alike
 - No separate "healthy" cooking required
 
@@ -129,7 +166,7 @@ MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% 
 **Built for the way they already cook.**
 - Protein contributes to the maintenance of muscle mass
 - 99% lactose-free isolate
-- Not a single recipe changes
+- Not a single **recipe changes**
 
 ---
 
@@ -161,7 +198,7 @@ MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% 
 **Headline:** A jar for the table. On us.
 
 **Body (block 1):**
-> Every first order ships with a refillable Heldi jar that sits on the dinner table, where it belongs. Not the cupboard. Right there beside the dal, where everyone can reach for it.
+> Every first order ships with a refillable Heldi jar that sits on the **dinner table**, where it belongs. Not the cupboard. Right there **beside the dal**, where everyone can reach for it.
 
 **Body (block 2):**
 > Silver or gold? That is a choice every mama likes to make. Gold when the table is set for guests. Silver for the meal the whole family eats every night. We ship both finishes with your first pouch. You pick the one that stays.
@@ -174,7 +211,7 @@ MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% 
 
 **Headline:** Be first to stir it in.
 
-**Subline:** One email the day we launch, and a free jar with your first order.
+**Subline:** One email the day we launch, and a **free jar** with your first order.
 
 **Form:** Join waitlist
 
@@ -188,17 +225,16 @@ MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% 
 
 ---
 
-## Classic hero (alternate layout, not live by default)
+## Alternate hero layouts (not live by default)
 
-**H1:** Desi protein for
+### Video layout
+**Lede:** Desi protein that disappears into dal, curry, raita and other home-cooked favourites.
 
-**Animated words:** INDIAN FOOD · DAL · CURRY · RAITA · DAHI · CHAAT
-
-**Subline:** Never drink another protein shake again.
-
-**Body:**
-> Heldi is a protein made to disappear straight into your dal, curry, raita and every other home-cooked favourite.  
-> **The same food, just a little Heldier.**
+### Classic layout
+**H1:** Desi protein for  
+**Animated words:** INDIAN FOOD · DAL · CURRY · RAITA · DAHI · CHAAT  
+**Subline:** Never drink another protein shake again.  
+**Body:** Heldi is a protein made to disappear straight into your dal, curry, raita and every other home-cooked favourite. **The same food, just a little Heldier.**
 
 ---
 
