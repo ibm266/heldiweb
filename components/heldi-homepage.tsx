@@ -283,8 +283,8 @@ function PouchStats({ grams, className }: { grams: number; className: string }) 
         <span>protein per bowl</span>
       </div>
       <div className="pouch-stat pouch-stat--white">
-        <strong>90%+</strong>
-        <span>whey isolate</span>
+        <strong>All natural</strong>
+        <span>ingredients</span>
       </div>
     </div>
   );
