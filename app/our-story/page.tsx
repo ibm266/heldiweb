@@ -75,10 +75,10 @@ export default function OurStoryPage() {
 
           <Image
             className="story__elephant"
-            src="/images/variants/ink-blue/elephant-small.png?v=ink-blue-3"
+            src="/images/variants/ink-blue/elephant-large-transparent.png?v=ink-blue-3"
             alt=""
-            width={270}
-            height={280}
+            width={2048}
+            height={2048}
             aria-hidden="true"
           />
         </div>

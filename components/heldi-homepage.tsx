@@ -242,7 +242,7 @@ const HOW_IT_WORKS_STEPS: {
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-4";
+const IMAGE_VERSION = "ink-blue-7";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -1325,7 +1325,9 @@ export function HeldiHomepage({
               the <CopyHighlight>dinner table</CopyHighlight>, where it belongs.
               Not the cupboard. Right there{" "}
               <CopyHighlight>beside the dal</CopyHighlight>, where everyone can
-              reach for it.
+              reach for it. Silver or gold? That is a choice every mama likes
+              to make. Gold when the table is set for guests. Silver for the
+              meal the whole family eats every night.
             </p>
           </div>
           <div className="jar-card">
@@ -1333,20 +1335,13 @@ export function HeldiHomepage({
               <Image
                 className="jar-preview-image"
                 src={imageSrc("/images/jar-pouch.png")}
-                alt="Heldi pouch with stainless steel table jar"
-                width={1024}
-                height={1024}
-                sizes="(max-width: 560px) calc(100vw - 3rem), (max-width: 899px) min(92vw, 560px), 560px"
+                alt="Heldi pouch with silver and gold table jars"
+                width={768}
+                height={768}
+                sizes="(max-width: 560px) calc(100vw - 3rem), (max-width: 899px) min(92vw, 380px), 320px"
                 style={{ width: "100%", height: "auto" }}
               />
             </div>
-          </div>
-          <div className="section-copy section-copy--dark">
-            <p>
-              A brushed stainless steel jar with a spoon built in. Refill it
-              from every pouch. It lives on the table where everyone can reach
-              for it themselves.
-            </p>
           </div>
         </div>
       </section>
