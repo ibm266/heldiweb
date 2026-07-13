@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const IMAGE_VERSION = "ink-blue-3";
 const IMAGE_BASE = "/images/variants/ink-blue";
@@ -9,6 +12,28 @@ function imageSrc(path: string) {
 }
 
 export function SubpageNav() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    function closeMenu() {
+      setMenuOpen(false);
+    }
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") closeMenu();
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", closeMenu);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", closeMenu);
+    };
+  }, [menuOpen]);
+
   return (
     <nav className="nav nav--subpage" aria-label="Main navigation">
       <a href="/" aria-label="Heldi home" className="nav-home">
@@ -30,10 +55,25 @@ export function SubpageNav() {
           />
         </span>
       </a>
-      <div className="nav-links nav-links--subpage">
-        <a href="/#how">How it works</a>
-        <a href="/truth">The truth</a>
-        <a href="/our-story">Our story</a>
+      <button
+        className="nav-burger"
+        type="button"
+        aria-expanded={menuOpen}
+        aria-controls="nav-menu"
+        onClick={() => setMenuOpen((open) => !open)}
+      >
+        <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
+        <span className="nav-burger-bar" aria-hidden="true" />
+        <span className="nav-burger-bar" aria-hidden="true" />
+        <span className="nav-burger-bar" aria-hidden="true" />
+      </button>
+      <div
+        className={`nav-links nav-links--subpage${menuOpen ? " is-open" : ""}`}
+        id="nav-menu"
+      >
+        <a href="/#how" onClick={() => setMenuOpen(false)}>How it works</a>
+        <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
+        <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
       </div>
     </nav>
   );

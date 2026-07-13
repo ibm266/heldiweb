@@ -27,8 +27,9 @@ type HeldiHomepageProps = {
 const HERO_VIDEO_SRC = "/videos/heldi-hero-v3.mp4";
 const HERO_VIDEO_POSTER = "/images/hero-video-poster.png";
 const ELEPHANT_RUN_GOLD_SRC = "/videos/elephant-run-gold.mp4";
-const ELEPHANT_RUN_MS = 4050;
-const ELEPHANT_RUN_END_AT_S = 3.85;
+const ELEPHANT_RUN_MS = 3000;
+const ELEPHANT_RUN_END_AT_S = 3;
+const CURTAIN_FADE_MS = 520;
 const ELEPHANT_KEY_TOLERANCE = 46;
 
 function sampleCurtainKeyColor(
@@ -103,6 +104,11 @@ const COLS = 11;
 
 const FAQS = [
   {
+    question: "Why do I need more protein?",
+    answer:
+      "Protein contributes to the maintenance of muscle mass, which declines gradually from your 30s onward. A typical home-cooked vegetarian day delivers 35 to 45g, while an active adult needs 75g or more. That gap, eaten daily for decades, is what Heldi closes."
+  },
+  {
     question: "Is whey protein vegetarian?",
     answer:
       "Yes, and it is made without animal rennet. Whey is the pale liquid left when milk curdles, the same one you see when paneer is made at home. We simply filter it to concentrate the protein and gently dry it into a fine powder. Nothing added, just the part of milk that has always been there."
@@ -125,7 +131,7 @@ const FAQS = [
   {
     question: "Can I use it in dishes that are not on the pouch?",
     answer:
-      "Yes. Anything with a gravy, a dal or a yoghurt base works, sambar, kadhi, korma, bhindi in gravy, even a chaat with dahi on top. If a spoon can stir it, Heldi can disappear into it."
+      "Yes. Anything with a gravy, a dal or a yoghurt base works, sambar, kadhi, korma, bhindi in gravy, even a chaat with dahi on top. Non-veg pots too: chicken curry, keema and egg bhurji all take a spoonful for an extra protein boost. If a spoon can stir it, Heldi can disappear into it."
   },
   {
     question: "Is it safe for kids?",
@@ -236,7 +242,7 @@ const HOW_IT_WORKS_STEPS: {
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-3";
+const IMAGE_VERSION = "ink-blue-4";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -668,25 +674,41 @@ function HeroReveal({
   onIntroComplete?: () => void;
 }) {
   const [revealed, setRevealed] = useState(false);
-  const [curtainGone, setCurtainGone] = useState(false);
+  const [curtainDismissed, setCurtainDismissed] = useState(false);
+  const [curtainFading, setCurtainFading] = useState(false);
+  const [canCallElephants, setCanCallElephants] = useState(false);
+  const [replayNonce, setReplayNonce] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
   const keyColorRef = useRef<[number, number, number] | null>(null);
   const frameRef = useRef<number>(0);
   const onIntroCompleteRef = useRef(onIntroComplete);
+  const introCompletedRef = useRef(false);
 
   useEffect(() => {
     onIntroCompleteRef.current = onIntroComplete;
   }, [onIntroComplete]);
+
+  function handleCallElephants() {
+    if (!canCallElephants || !curtainDismissed) return;
+    setCurtainDismissed(false);
+    setCurtainFading(false);
+    setCanCallElephants(false);
+    setReplayNonce((nonce) => nonce + 1);
+  }
 
   useEffect(() => {
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     if (motionQuery.matches) {
       setRevealed(true);
-      setCurtainGone(true);
-      onIntroCompleteRef.current?.();
+      setCurtainDismissed(true);
+      setCanCallElephants(true);
+      if (!introCompletedRef.current) {
+        introCompletedRef.current = true;
+        onIntroCompleteRef.current?.();
+      }
       return;
     }
 
@@ -694,11 +716,22 @@ function HeroReveal({
     const canvas = canvasRef.current;
     const curtain = curtainRef.current;
     let unmountTimer: number | undefined;
+    let finished = false;
 
     function finishReveal() {
+      if (finished) return;
+      finished = true;
+
       setRevealed(true);
-      onIntroCompleteRef.current?.();
-      unmountTimer = window.setTimeout(() => setCurtainGone(true), 560);
+      if (!introCompletedRef.current) {
+        introCompletedRef.current = true;
+        onIntroCompleteRef.current?.();
+      }
+      setCurtainFading(true);
+      unmountTimer = window.setTimeout(() => {
+        setCurtainDismissed(true);
+        setCanCallElephants(true);
+      }, CURTAIN_FADE_MS + 40);
     }
 
     function onTimeUpdate() {
@@ -772,10 +805,14 @@ function HeroReveal({
     }
 
     if (el && canvas && curtain) {
+      window.cancelAnimationFrame(frameRef.current);
+      el.pause();
+      el.currentTime = 0;
       el.addEventListener("ended", finishReveal);
       el.addEventListener("timeupdate", onTimeUpdate);
       el.addEventListener("play", startCurtainRender);
       el.addEventListener("loadeddata", paintCurtainFrame);
+      paintCurtainFrame();
       el.play().catch(finishReveal);
     } else {
       const fallbackTimer = window.setTimeout(finishReveal, ELEPHANT_RUN_MS);
@@ -793,13 +830,35 @@ function HeroReveal({
       window.clearTimeout(safetyTimer);
       if (unmountTimer) window.clearTimeout(unmountTimer);
     };
-  }, []);
+  }, [replayNonce]);
 
   return (
     <div className="hero-reveal">
       <div className={`hero-reveal-panel${revealed ? " is-revealed" : ""}`}>
         <div className="hero-reveal-columns">
           <div className="hero-reveal-showcase">
+            {revealed ? (
+              <button
+                type="button"
+                className={`hero-reveal-call-elephants${
+                  canCallElephants ? " is-visible" : ""
+                }`}
+                onClick={handleCallElephants}
+                disabled={!canCallElephants}
+                aria-label="Press to call the elephants"
+                aria-hidden={!canCallElephants}
+                tabIndex={canCallElephants ? 0 : -1}
+                data-tooltip="Press to call the elephants"
+              >
+                <Image
+                  className="hero-reveal-call-elephants__icon"
+                  src={imageSrc("/images/elephant-large-transparent.png")}
+                  alt=""
+                  width={2048}
+                  height={2048}
+                />
+              </button>
+            ) : null}
             <div className="hero-reveal-showcase__main">
               <div className="hero-reveal-showcase__copy">
                 <h1 className="hero-reveal-lede">
@@ -848,30 +907,30 @@ function HeroReveal({
         </div>
       </div>
 
-      {!curtainGone ? (
-        <div
-          ref={curtainRef}
-          className={`hero-reveal-curtain${revealed ? " is-fading" : ""}`}
-          aria-hidden={revealed}
+      <div
+        ref={curtainRef}
+        className={`hero-reveal-curtain${curtainFading ? " is-fading" : ""}${
+          curtainDismissed ? " is-dismissed" : ""
+        }`}
+        aria-hidden={curtainDismissed}
+      >
+        <video
+          ref={videoRef}
+          className="hero-reveal-curtain__video"
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          tabIndex={-1}
         >
-          <video
-            ref={videoRef}
-            className="hero-reveal-curtain__video"
-            muted
-            playsInline
-            preload="auto"
-            aria-hidden="true"
-            tabIndex={-1}
-          >
-            <source src={ELEPHANT_RUN_GOLD_SRC} type="video/mp4" />
-          </video>
-          <canvas
-            ref={canvasRef}
-            className="hero-reveal-curtain__canvas"
-            aria-label="Decorated ink-blue elephants and comic dust cloud sweep across the screen"
-          />
-        </div>
-      ) : null}
+          <source src={ELEPHANT_RUN_GOLD_SRC} type="video/mp4" />
+        </video>
+        <canvas
+          ref={canvasRef}
+          className="hero-reveal-curtain__canvas"
+          aria-label="Decorated ink-blue elephants and comic dust cloud sweep across the screen"
+        />
+      </div>
     </div>
   );
 }
@@ -1187,8 +1246,10 @@ export function HeldiHomepage({
           <p className="eyebrow">THE HONEST TRUTH</p>
           <h2>The internet says 18g. Your dal says 6.</h2>
           <p>
-            Most protein numbers online are measured dry, not in the bowl you
-            actually eat. Here is the <CopyHighlight>honest fix</CopyHighlight>.
+            Protein contributes to the maintenance of muscle mass, and that
+            matters more every year past 30. Yet most protein numbers online
+            are measured dry, not in the bowl you actually eat. Here is the{" "}
+            <CopyHighlight>honest fix</CopyHighlight>.
           </p>
           <PouchEquation />
           <p className="pouch-section__ingredient">
@@ -1271,8 +1332,8 @@ export function HeldiHomepage({
             <div className="jar-preview-card">
               <Image
                 className="jar-preview-image"
-                src={imageSrc("/images/jars-both.png")}
-                alt="Heldi pouch with silver and gold table jars"
+                src={imageSrc("/images/jar-pouch.png")}
+                alt="Heldi pouch with stainless steel table jar"
                 width={1024}
                 height={1024}
                 sizes="(max-width: 560px) calc(100vw - 3rem), (max-width: 899px) min(92vw, 560px), 560px"
@@ -1282,10 +1343,9 @@ export function HeldiHomepage({
           </div>
           <div className="section-copy section-copy--dark">
             <p>
-              Silver or gold? That is a choice every mama likes to make. Gold
-              when the table is set for guests. Silver for the meal the whole
-              family eats every night. We ship both finishes with your first
-              pouch. You pick the one that stays.
+              A brushed stainless steel jar with a spoon built in. Refill it
+              from every pouch. It lives on the table where everyone can reach
+              for it themselves.
             </p>
           </div>
         </div>

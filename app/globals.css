@@ -184,7 +184,9 @@ h2 {
   height: 2px;
   margin: 0 auto;
   background: var(--gold);
-  transition: transform 200ms ease, opacity 200ms ease;
+  transition:
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 200ms ease;
 }
 
 .nav-burger[aria-expanded="true"] .nav-burger-bar:nth-child(2) {
@@ -373,6 +375,7 @@ h2 {
 
 .hero-reveal-showcase {
   grid-row: 1;
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: clamp(1rem, 2.5vw, 1.5rem);
@@ -380,6 +383,86 @@ h2 {
   border-radius: 20px;
   background: #fff;
   box-shadow: 8px 8px 0 var(--ink);
+}
+
+.hero-reveal-call-elephants {
+  position: absolute;
+  right: clamp(0.5rem, 1.25vw, 0.75rem);
+  bottom: clamp(0.375rem, 1vw, 0.625rem);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(1.875rem, 3.2vw, 2.125rem);
+  height: clamp(1.875rem, 3.2vw, 2.125rem);
+  padding: 0.2rem;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: var(--gold);
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 480ms ease,
+    transform 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.hero-reveal-call-elephants.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-reveal-call-elephants:disabled {
+  cursor: default;
+}
+
+.hero-reveal-call-elephants:hover:not(:disabled),
+.hero-reveal-call-elephants:focus-visible:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.hero-reveal-call-elephants:active:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.hero-reveal-call-elephants__icon {
+  display: block;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+}
+
+.hero-reveal-call-elephants::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.5rem);
+  width: max-content;
+  max-width: min(220px, 70vw);
+  padding: 0.4375rem 0.625rem;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  font-size: 0.75rem;
+  line-height: 1.25;
+  text-align: center;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 140ms ease, visibility 140ms ease;
+}
+
+.hero-reveal-call-elephants:hover::after,
+.hero-reveal-call-elephants:focus-visible::after {
+  opacity: 1;
+  visibility: visible;
 }
 
 .hero-reveal-showcase__main {
@@ -522,8 +605,19 @@ h2 {
   overflow: hidden;
   background: var(--gold);
   opacity: 1;
+  visibility: visible;
   transition: opacity 520ms ease;
   pointer-events: auto;
+}
+
+.hero-reveal-curtain.is-fading,
+.hero-reveal-curtain.is-dismissed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-reveal-curtain.is-dismissed {
+  visibility: hidden;
 }
 
 .hero-reveal-curtain__video {
@@ -540,9 +634,10 @@ h2 {
   height: 100%;
 }
 
-.hero-reveal-curtain.is-fading {
-  opacity: 0;
-  pointer-events: none;
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal-call-elephants {
+    transition: none;
+  }
 }
 
 .pronunciation--on-gold {
@@ -620,11 +715,17 @@ h2 {
     display: block;
     grid-column: 1 / -1;
     grid-row: 2;
+    padding-right: clamp(2.25rem, 8vw, 2.75rem);
   }
 
   .hero-reveal-showcase__rule,
   .hero-reveal-showcase__pills {
     display: none;
+  }
+
+  .hero-reveal-call-elephants::after {
+    font-size: 0.6875rem;
+    max-width: min(180px, 62vw);
   }
 
   .hero-reveal-showcase__foot .pronunciation--showcase {
@@ -2160,6 +2261,10 @@ footer {
 }
 
 @media (min-width: 900px) {
+  .nav-burger {
+    display: none;
+  }
+
   .nav-links {
     position: static;
     flex-direction: row;
@@ -2218,23 +2323,47 @@ footer {
     border-bottom: 3px solid var(--gold);
     background: var(--ink);
     gap: 0;
+    visibility: hidden;
     transform: translateY(-110%);
     opacity: 0;
     pointer-events: none;
-    transition: transform 240ms ease, opacity 200ms ease;
+    transition:
+      transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
+      opacity 240ms ease,
+      visibility 0s linear 320ms;
   }
 
   .nav-links.is-open {
+    visibility: visible;
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
+    transition:
+      transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 260ms ease,
+      visibility 0s;
   }
 
   .nav-links a {
     padding: 0.875rem 0;
     border-bottom: 1px solid rgb(237 163 29 / 20%);
     font-size: 1.0625rem;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 180ms ease, transform 200ms ease;
   }
+
+  .nav-links.is-open a {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 260ms ease,
+      transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-links.is-open a:nth-child(1) { transition-delay: 70ms; }
+  .nav-links.is-open a:nth-child(2) { transition-delay: 130ms; }
+  .nav-links.is-open a:nth-child(3) { transition-delay: 190ms; }
 }
 
 @media (max-width: 719px) {
@@ -2325,6 +2454,7 @@ footer {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
   }
 }
 
@@ -2766,6 +2896,32 @@ footer {
   .hero-reveal-showcase__pills {
     order: 3;
     gap: 0.375rem 0.5rem;
+    padding-right: clamp(2rem, 3vw, 2.5rem);
+  }
+
+  .hero-reveal-call-elephants {
+    right: clamp(0.625rem, 1.1vw, 0.875rem);
+    bottom: clamp(0.5rem, 1vw, 0.75rem);
+    width: clamp(1.625rem, 2.4vw, 1.875rem);
+    height: clamp(1.625rem, 2.4vw, 1.875rem);
+    padding: 0.15rem;
+    border-width: 1.5px;
+    border-radius: 6px;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+
+  .hero-reveal-call-elephants:hover:not(:disabled),
+  .hero-reveal-call-elephants:focus-visible:not(:disabled) {
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+
+  .hero-reveal-call-elephants:active:not(:disabled) {
+    box-shadow: 1px 1px 0 var(--ink);
+  }
+
+  .hero-reveal-call-elephants::after {
+    font-size: 0.6875rem;
+    max-width: min(180px, 62vw);
   }
 
   .hero-reveal-pouch {
@@ -3284,15 +3440,11 @@ footer {
   opacity: 1;
 }
 
-.nav-links--subpage {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-@media (max-width: 899px) {
-  .nav-links--subpage a:not(.nav-cta) {
-    display: none;
+@media (min-width: 900px) {
+  .nav-links--subpage {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
   }
 }
 
@@ -3586,60 +3738,111 @@ footer {
   background: var(--gold);
 }
 
-/* ---------- Protein comparison table ---------- */
+/* ---------- Powder squares ---------- */
 
-.truth-compare-wrap {
-  max-width: 680px;
-  margin: 1.75rem auto 0;
-  padding: 0 6px 6px 0;
-  overflow-x: auto;
+.powder-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
 }
 
-.truth-compare {
-  width: 100%;
-  min-width: 560px;
-  border-collapse: separate;
-  border-spacing: 0;
+.powder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1.25rem 1.25rem 1.375rem;
   border: 3px solid var(--ink);
   border-radius: 18px;
-  overflow: hidden;
   background: var(--cream);
   box-shadow: 6px 6px 0 var(--ink);
-  text-align: left;
-  font-size: 0.9375rem;
-}
-
-.truth-compare th,
-.truth-compare td {
-  padding: 0.75rem 1.125rem;
   color: var(--ink);
 }
 
-.truth-compare thead th {
-  font-size: 0.75rem;
+.powder svg {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 0.375rem;
+}
+
+.powder__name {
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  border-bottom: 3px solid var(--ink);
 }
 
-.truth-compare tbody tr + tr th,
-.truth-compare tbody tr + tr td {
-  border-top: 2px solid rgb(1 18 70 / 0.15);
+.powder__grams {
+  font-family: var(--font-display), serif;
+  font-size: 2.25rem;
+  line-height: 1.1;
 }
 
-.truth-compare tbody th {
+.powder__per {
+  font-size: 0.6875rem;
   font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brown);
 }
 
-.truth-compare .is-whey th,
-.truth-compare .is-whey td {
+.powder__note {
+  margin-top: 0.375rem;
+  max-width: 220px;
+  text-align: center;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--brown);
+}
+
+.powder--hero {
+  min-width: min(260px, 100%);
+  max-width: 280px;
+  padding: 1.375rem 1.5rem 1.5rem;
   background: var(--ink);
   color: var(--cream);
+  box-shadow: 6px 6px 0 rgb(1 18 70 / 0.35);
 }
 
-.truth-compare .is-whey th {
+.powder--hero svg {
+  width: 30px;
+  height: 30px;
   color: var(--gold);
+}
+
+.powder--hero .powder__name {
+  color: var(--gold);
+}
+
+.powder--hero .powder__grams {
+  font-size: 2.5rem;
+}
+
+.powder--hero .powder__per,
+.powder--hero .powder__note {
+  color: var(--dark-muted);
+}
+
+.powder-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.powder-row .powder {
+  flex: 1 1 150px;
+  max-width: 180px;
+  padding: 1.125rem 0.75rem 1.25rem;
+}
+
+.truth-block > p.truth-whey__nonveg {
+  max-width: 560px;
+  margin: 3.5rem auto 0;
+  font-style: italic;
 }
 
 .truth-bowl__name {

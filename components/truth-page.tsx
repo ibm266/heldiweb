@@ -324,59 +324,107 @@ export function TruthPage() {
           <p className="eyebrow">THE GOLD STANDARD</p>
           <h2>What is the best protein source for vegetarians?</h2>
           <p>
-            Whey protein isolate. Around{" "}
-            <CopyHighlight>90g of protein per 100g</CopyHighlight>, all nine
-            essential amino acids at full strength, and virtually no lactose.
-            It is vegetarian, made from milk like paneer and dahi. And it is
-            not just for vegetarians: if you eat meat, a spoonful is still the
-            easiest daily protein top-up there is. That is why Heldi is built
-            on it.
+            <CopyHighlight>Whey protein isolate</CopyHighlight>. It is vegetarian,
+            made from milk like paneer and dahi, and it is whey with the extra
+            filtering done. Every other powder gives something up.
           </p>
 
-          <div className="truth-compare-wrap">
-            <table className="truth-compare">
-              <thead>
-                <tr>
-                  <th scope="col">Source</th>
-                  <th scope="col">Protein per 100g</th>
-                  <th scope="col">Amino acids</th>
-                  <th scope="col">Lactose</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="is-whey">
-                  <th scope="row">Whey isolate</th>
-                  <td>90g</td>
-                  <td>All nine, full strength</td>
-                  <td>Virtually none</td>
-                </tr>
-                <tr>
-                  <th scope="row">Chicken breast</th>
-                  <td>31g</td>
-                  <td>All nine</td>
-                  <td>None</td>
-                </tr>
-                <tr>
-                  <th scope="row">Paneer</th>
-                  <td>18g</td>
-                  <td>All nine</td>
-                  <td>Some</td>
-                </tr>
-                <tr>
-                  <th scope="row">Eggs</th>
-                  <td>13g</td>
-                  <td>All nine</td>
-                  <td>None</td>
-                </tr>
-                <tr>
-                  <th scope="row">Dal, cooked</th>
-                  <td>6g</td>
-                  <td>Low on methionine</td>
-                  <td>None</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className="powder-stack">
+            <div className="powder powder--hero">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.6L12 17l-5.9 3.2 1.3-6.6L2.5 9l6.6-.8z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span className="powder__name">Whey Protein Isolate</span>
+              <span className="powder__grams">90g</span>
+              <span className="powder__per">protein per 100g</span>
+              <span className="powder__note">
+                All nine aminos, full strength. Virtually no lactose.
+                Disappears into the dish.
+              </span>
+            </div>
+
+            <div className="powder-row">
+              <div className="powder">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M12 3c3.5 4.5 6 7.8 6 11a6 6 0 1 1-12 0c0-3.2 2.5-6.5 6-11z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                </svg>
+                <span className="powder__name">Whey concentrate</span>
+                <span className="powder__grams">75g</span>
+                <span className="powder__per">protein per 100g</span>
+                <span className="powder__note">More lactose, less protein.</span>
+              </div>
+              <div className="powder">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle
+                    cx="12"
+                    cy="12"
+                    r="9"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  />
+                  <path
+                    d="M12 7v5l3.5 2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span className="powder__name">Casein</span>
+                <span className="powder__grams">78g</span>
+                <span className="powder__per">protein per 100g</span>
+                <span className="powder__note">Slow, thickens the pot.</span>
+              </div>
+              <div className="powder">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M5 19C5 10.5 10.5 5 19 5c0 8.5-5.5 14-14 14z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M5 19c3-3 6-6 9-9"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span className="powder__name">Soy isolate</span>
+                <span className="powder__grams">88g</span>
+                <span className="powder__per">protein per 100g</span>
+                <span className="powder__note">Beany aftertaste to hide.</span>
+              </div>
+              <div className="powder">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="6" cy="14" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
+                  <circle cx="13" cy="11" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
+                  <circle cx="19" cy="7" r="3" fill="none" stroke="currentColor" strokeWidth="2" />
+                </svg>
+                <span className="powder__name">Pea protein</span>
+                <span className="powder__grams">78g</span>
+                <span className="powder__per">protein per 100g</span>
+                <span className="powder__note">One amino acid runs short.</span>
+              </div>
+            </div>
           </div>
+
+          <p className="truth-whey__nonveg">
+            Not a vegetarian? Heldi still earns its place. The same spoonful
+            stirs into chicken curry, mutton curry or butter chicken for an
+            extra 10g, on top of whatever the meat brings.
+          </p>
         </div>
       </section>
 
