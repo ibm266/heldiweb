@@ -5,7 +5,8 @@
       "name": "heldi-dev",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--prefix", "/Users/mihir/Projects/heldiweb"],
-      "port": 3000
+      "port": 3001,
+      "autoPort": true
     }
   ]
 }
