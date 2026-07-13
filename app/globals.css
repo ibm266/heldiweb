@@ -629,7 +629,7 @@ h2 {
 
   .hero-reveal-showcase__foot .pronunciation--showcase {
     margin-top: clamp(0.625rem, 2vw, 0.875rem);
-    font-size: clamp(0.75rem, 2.8vw, 0.875rem);
+    font-size: clamp(0.875rem, 3.2vw, 1rem);
     text-align: center;
   }
 
@@ -1578,14 +1578,33 @@ h2 {
 }
 
 .menu-card__from-food {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
   margin: 0;
   font-size: 0.875rem;
+  gap: 0.5rem;
 }
 
 .menu-card__from-food strong {
   font-family: var(--font-display), serif;
   font-size: 1rem;
   font-weight: 400;
+}
+
+.menu-card__grams-stat {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.125rem;
+}
+
+.menu-card__grams-note {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  opacity: 0.72;
 }
 
 .menu-card__heldi-band {
@@ -1622,19 +1641,19 @@ h2 {
 
 .menu-card__table-total {
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
   margin: 0.125rem 0 0;
   gap: 0.5rem;
 }
 
-.menu-card__table-total > span {
+.menu-card__table-total > span:first-child {
   font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 0.14em;
 }
 
-.menu-card__table-total > strong {
+.menu-card__grams-stat--table strong {
   font-family: var(--font-display), serif;
   font-size: clamp(1.75rem, 6vw, 2.25rem);
   font-weight: 400;
@@ -1644,19 +1663,31 @@ h2 {
 
 @media (min-width: 900px) {
   .menu-gallery__scroller {
-    flex-wrap: wrap;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     justify-content: center;
-    margin: 0;
+    max-width: calc(3 * 300px + 2 * 12px);
+    margin-inline: auto;
     padding: 0;
     overflow: visible;
-    row-gap: 12px;
     scroll-snap-type: none;
+    gap: 12px;
   }
 
   .menu-card {
-    width: 300px;
+    grid-column: span 2;
+    justify-self: center;
+    width: 100%;
+    max-width: 300px;
     scroll-snap-align: none;
+  }
+
+  .menu-card:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .menu-card:nth-child(5) {
+    grid-column: 4 / span 2;
   }
 
   .menu-gallery__dots {
@@ -2620,32 +2651,52 @@ footer {
     padding: clamp(2.75rem, 4.5vw, 4.25rem) clamp(1.25rem, 5vw, 4rem);
   }
 
-  /* Hero reveal — hug content, no dead space between lede & pouch */
+  /* Hero reveal — hug content; scale down only when viewport is short */
+  .hero--reveal {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero--reveal .ticker,
+  .hero--reveal .double-rule {
+    flex-shrink: 0;
+  }
+
   .hero-reveal {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: min(920px, 92vw);
     min-height: auto;
-    padding-bottom: clamp(1.5rem, 3vw, 2.75rem);
+    margin-inline: auto;
+    padding: clamp(1rem, 2.5vh, 1.5rem) clamp(1.25rem, 4vw, 2.5rem)
+      clamp(0.5rem, 1.25vh, 0.875rem);
+  }
+
+  .hero-reveal-panel {
+    height: auto;
   }
 
   .hero-reveal-columns {
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: clamp(1rem, 2.5vw, 1.25rem);
-    max-width: min(1120px, 96vw);
+    row-gap: clamp(0.75rem, 1.5vw, 1rem);
+    width: 100%;
+    max-width: 100%;
   }
 
   .hero-reveal-showcase {
     width: 100%;
-    padding: clamp(1.75rem, 3vw, 2.5rem) clamp(2rem, 3.5vw, 3rem)
-      clamp(1.5rem, 2.5vw, 2rem);
-    border-radius: 22px;
+    padding: clamp(1.125rem, 2vw, 1.625rem) clamp(1.375rem, 2.5vw, 2rem)
+      clamp(1rem, 1.75vw, 1.375rem);
+    border-radius: 20px;
   }
 
   .hero-reveal-showcase__main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: clamp(1.5rem, 4vw, 3rem);
+    gap: clamp(1rem, 2.5vw, 2rem);
   }
 
   .hero-reveal-showcase__copy {
@@ -2655,19 +2706,19 @@ footer {
     align-items: flex-start;
     min-width: 0;
     max-width: none;
-    gap: clamp(1rem, 1.75vw, 1.25rem);
+    gap: clamp(0.625rem, 1.25vw, 0.875rem);
   }
 
   .hero-reveal-lede {
     container-type: normal;
     width: auto;
     max-width: none;
-    font-size: clamp(2.75rem, 5vw, 5.25rem);
+    font-size: clamp(2.25rem, 3.2vw + 0.8vh, 4.25rem);
   }
 
   .hero-reveal-lede__prefix {
-    margin-bottom: 0.06em;
-    font-size: calc(1em + 8px);
+    margin-bottom: 0.04em;
+    font-size: calc(1em + 6px);
   }
 
   .hero-reveal-lede__prefix-line:nth-child(1),
@@ -2687,7 +2738,7 @@ footer {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: baseline;
-    font-size: calc(1em + 12px);
+    font-size: calc(1em + 8px);
     color: var(--gold);
   }
 
@@ -2703,15 +2754,15 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
-    gap: 0.875rem;
+    margin-top: clamp(0.75rem, 1.5vw, 1.125rem);
+    gap: 0.625rem;
   }
 
   .hero-reveal-showcase__foot .pronunciation--showcase {
     order: 1;
     margin: 0;
     text-align: center;
-    font-size: clamp(1rem, 1.35vw, 1.125rem);
+    font-size: clamp(1rem, min(1.5vw, 2.2svh), 1.25rem);
   }
 
   .hero-reveal-showcase__rule {
@@ -2722,11 +2773,21 @@ footer {
 
   .hero-reveal-showcase__pills {
     order: 3;
+    gap: 0.375rem 0.5rem;
   }
 
   .hero-reveal-pouch {
     flex: 0 0 auto;
-    width: clamp(260px, 30vw, 420px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(260px, 30vw, 440px);
+  }
+
+  .hero-reveal-pouch__image {
+    width: 100%;
+    max-width: clamp(200px, 20vw + 2vh, 340px);
+    height: auto;
   }
 
   .hero-reveal-actions--in-showcase {
@@ -2755,11 +2816,12 @@ footer {
   }
 
   .hero-reveal-showcase__pill {
-    font-size: clamp(0.75rem, 0.95vw, 0.8125rem);
+    padding: 0.3125rem 0.625rem;
+    font-size: clamp(0.6875rem, min(0.9vw, 1.4svh), 0.75rem);
   }
 
   .hero-reveal-showcase__pill-icon {
-    height: 1.5rem;
+    height: clamp(1.125rem, 2svh, 1.375rem);
   }
 
   /* How it works — laptop header copy from former pouch section */
@@ -2779,7 +2841,7 @@ footer {
     font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
   }
 
-  /* Stir gallery — static wrapped grid, no horizontal rail */
+  /* Stir gallery — 3+2 grid, or 5 across when wide enough (never 4+1) */
   .stir-gallery__hint {
     display: none;
   }
@@ -2790,9 +2852,11 @@ footer {
   }
 
   .stir-gallery__rail {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     justify-content: center;
-    margin: 0;
+    max-width: calc(3 * 280px + 2 * 16px);
+    margin-inline: auto;
     padding: 0;
     overflow: visible;
     scroll-snap-type: none;
@@ -2800,9 +2864,20 @@ footer {
   }
 
   .stir-card {
-    flex: 0 0 auto;
-    width: clamp(220px, 17vw, 280px);
+    grid-column: span 2;
+    flex: none;
+    justify-self: center;
+    width: 100%;
+    max-width: 280px;
     scroll-snap-align: none;
+  }
+
+  .stir-card:nth-child(4) {
+    grid-column: 2 / span 2;
+  }
+
+  .stir-card:nth-child(5) {
+    grid-column: 4 / span 2;
   }
 
   .stir-gallery__dots {
@@ -2960,24 +3035,28 @@ footer {
 }
 
 @media (min-width: 1280px) {
-  .hero-reveal-columns {
-    max-width: 1180px;
+  .hero-reveal {
+    max-width: min(960px, 90vw);
   }
 
   .hero-reveal-lede {
-    font-size: clamp(3rem, 4.8vw, 5.5rem);
+    font-size: clamp(2.5rem, 3.5vw + 0.8vh, 4.5rem);
   }
 
   .hero-reveal-columns .dissolve-board {
-    font-size: calc(1em + 14px);
+    font-size: calc(1em + 10px);
   }
 
   .hero-reveal-pouch {
-    width: clamp(300px, 28vw, 480px);
+    width: clamp(300px, 24vw, 480px);
+  }
+
+  .hero-reveal-pouch__image {
+    max-width: clamp(220px, 18vw + 2vh, 380px);
   }
 
   .hero-reveal-showcase__main {
-    gap: clamp(2rem, 5vw, 3.5rem);
+    gap: clamp(1.25rem, 3vw, 2.25rem);
   }
 
   .content > h2.centered {
@@ -2995,5 +3074,96 @@ footer {
 
   .final-cta-copy {
     max-width: 800px;
+  }
+}
+
+/* Stir gallery — all 5 on one row when viewport is wide enough */
+@media (min-width: 1500px) {
+  .stir-gallery {
+    max-width: min(1500px, 94vw);
+  }
+
+  .stir-gallery__rail {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    max-width: calc(5 * 280px + 4 * 16px);
+  }
+
+  .stir-card,
+  .stir-card:nth-child(4),
+  .stir-card:nth-child(5) {
+    grid-column: auto;
+  }
+
+  .menu-gallery {
+    max-width: min(1560px, 94vw);
+  }
+
+  .menu-gallery__scroller {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    max-width: calc(5 * 300px + 4 * 12px);
+  }
+
+  .menu-card,
+  .menu-card:nth-child(4),
+  .menu-card:nth-child(5) {
+    grid-column: auto;
+  }
+}
+
+/* Moderate laptop height — gentle scale so ticker stays visible */
+@media (min-width: 900px) and (max-height: 900px) {
+  .hero-reveal-lede {
+    font-size: clamp(2rem, 3vw + 1vh, 3.5rem);
+  }
+
+  .hero-reveal-pouch__image {
+    max-width: clamp(180px, 16vw + 1.5vh, 280px);
+  }
+
+  .hero-reveal-showcase {
+    padding: clamp(1rem, 1.75vh, 1.375rem) clamp(1.25rem, 2.5vw, 1.75rem)
+      clamp(0.875rem, 1.5vh, 1.125rem);
+  }
+}
+
+/* Short laptop viewports — scale hero so nav + card + ticker fit */
+@media (min-width: 900px) and (max-height: 820px) {
+  .hero-reveal {
+    padding-top: 0.75rem;
+    padding-bottom: 0.375rem;
+  }
+
+  .hero-reveal-showcase {
+    padding: 0.875rem 1.25rem 0.75rem;
+  }
+
+  .hero-reveal-lede {
+    font-size: clamp(1.75rem, 4.5vh + 1.5vw, 2.75rem);
+  }
+
+  .hero-reveal-pouch__image {
+    max-width: clamp(140px, 14vh + 8vw, 220px);
+  }
+
+  .hero-reveal-showcase__main {
+    gap: 0.875rem;
+  }
+
+  .hero-reveal-showcase__copy {
+    gap: 0.5rem;
+  }
+
+  .hero-reveal-showcase__foot {
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .hero-reveal-showcase__pill {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.625rem;
+  }
+
+  .hero-reveal-showcase__pill-icon {
+    height: 1rem;
   }
 }

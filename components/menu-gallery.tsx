@@ -46,24 +46,24 @@ const MENUS: Menu[] = [
     title: "The Weeknight Dinner",
     tag: "DINNER",
     scheme: "cream",
-    foodTotal: 18,
-    heldiTbsp: 2,
-    heldiTotal: 20,
-    tableTotal: 38,
+    foodTotal: 36,
+    heldiTbsp: 4,
+    heldiTotal: 40,
+    tableTotal: 76,
     courses: [
       {
         label: "TO START",
-        dishes: [{ name: "Papad & chutney", grams: 2 }]
+        dishes: [{ name: "Papad & chutney", grams: 4 }]
       },
       {
         label: "THE MAIN",
-        dishes: [{ name: "Dal tadka", grams: 9, heldi: true }]
+        dishes: [{ name: "Dal tadka", grams: 18, heldi: true }]
       },
       {
         label: "ON THE SIDE",
         dishes: [
-          { name: "Jeera rice", grams: 4 },
-          { name: "Cucumber raita", grams: 3, heldi: true }
+          { name: "Jeera rice", grams: 8 },
+          { name: "Cucumber raita", grams: 6, heldi: true }
         ]
       }
     ]
@@ -73,24 +73,24 @@ const MENUS: Menu[] = [
     title: "The Saturday Lunch",
     tag: "LUNCH",
     scheme: "marigold",
-    foodTotal: 20,
-    heldiTbsp: 3,
-    heldiTotal: 30,
-    tableTotal: 50,
+    foodTotal: 40,
+    heldiTbsp: 6,
+    heldiTotal: 60,
+    tableTotal: 100,
     courses: [
       {
         label: "TO START",
-        dishes: [{ name: "Aloo chaat", grams: 4, heldi: true }]
+        dishes: [{ name: "Aloo chaat", grams: 8, heldi: true }]
       },
       {
         label: "THE MAIN",
-        dishes: [{ name: "Chana masala", grams: 8, heldi: true }]
+        dishes: [{ name: "Chana masala", grams: 16, heldi: true }]
       },
       {
         label: "ON THE SIDE",
         dishes: [
-          { name: "Steamed rice", grams: 3 },
-          { name: "Bowl of dahi", grams: 5, heldi: true }
+          { name: "Steamed rice", grams: 6 },
+          { name: "Bowl of dahi", grams: 10, heldi: true }
         ]
       }
     ]
@@ -100,24 +100,24 @@ const MENUS: Menu[] = [
     title: "The Friday Feast",
     tag: "DINNER",
     scheme: "cream",
-    foodTotal: 23,
-    heldiTbsp: 2,
-    heldiTotal: 20,
-    tableTotal: 43,
+    foodTotal: 46,
+    heldiTbsp: 4,
+    heldiTotal: 40,
+    tableTotal: 86,
     courses: [
       {
         label: "TO START",
-        dishes: [{ name: "Vegetable samosa", grams: 3 }]
+        dishes: [{ name: "Vegetable samosa", grams: 6 }]
       },
       {
         label: "THE MAIN",
-        dishes: [{ name: "Paneer butter masala", grams: 12, heldi: true }]
+        dishes: [{ name: "Paneer butter masala", grams: 24, heldi: true }]
       },
       {
         label: "ON THE SIDE",
         dishes: [
-          { name: "Jeera rice", grams: 4 },
-          { name: "Boondi raita", grams: 4, heldi: true }
+          { name: "Jeera rice", grams: 8 },
+          { name: "Boondi raita", grams: 8, heldi: true }
         ]
       }
     ],
@@ -127,16 +127,16 @@ const MENUS: Menu[] = [
         {
           id: "veg",
           label: "VEG",
-          mainDish: { name: "Paneer butter masala", grams: 12, heldi: true },
-          foodTotal: 23,
-          tableTotal: 43
+          mainDish: { name: "Paneer butter masala", grams: 24, heldi: true },
+          foodTotal: 46,
+          tableTotal: 86
         },
         {
           id: "non-veg",
           label: "NON-VEG",
-          mainDish: { name: "Butter chicken", grams: 20, heldi: true },
-          foodTotal: 31,
-          tableTotal: 51
+          mainDish: { name: "Butter chicken", grams: 40, heldi: true },
+          foodTotal: 62,
+          tableTotal: 102
         }
       ]
     }
@@ -146,24 +146,24 @@ const MENUS: Menu[] = [
     title: "The Light Lunch",
     tag: "LUNCH",
     scheme: "marigold",
-    foodTotal: 17,
-    heldiTbsp: 2,
-    heldiTotal: 20,
-    tableTotal: 37,
+    foodTotal: 34,
+    heldiTbsp: 4,
+    heldiTotal: 40,
+    tableTotal: 74,
     courses: [
       {
         label: "TO START",
-        dishes: [{ name: "Dahi puri", grams: 5, heldi: true }]
+        dishes: [{ name: "Dahi puri", grams: 10, heldi: true }]
       },
       {
         label: "THE MAIN",
-        dishes: [{ name: "Kadhi", grams: 7, heldi: true }]
+        dishes: [{ name: "Kadhi", grams: 14, heldi: true }]
       },
       {
         label: "ON THE SIDE",
         dishes: [
-          { name: "Steamed rice", grams: 3 },
-          { name: "Roasted papad", grams: 2 }
+          { name: "Steamed rice", grams: 6 },
+          { name: "Roasted papad", grams: 4 }
         ]
       }
     ]
@@ -173,24 +173,24 @@ const MENUS: Menu[] = [
     title: "The Sunday Thali",
     tag: "DINNER",
     scheme: "cream",
-    foodTotal: 23,
-    heldiTbsp: 3,
-    heldiTotal: 30,
-    tableTotal: 53,
+    foodTotal: 46,
+    heldiTbsp: 6,
+    heldiTotal: 60,
+    tableTotal: 106,
     courses: [
       {
         label: "TO START",
-        dishes: [{ name: "Samosa chaat", grams: 5, heldi: true }]
+        dishes: [{ name: "Samosa chaat", grams: 10, heldi: true }]
       },
       {
         label: "THE MAIN",
-        dishes: [{ name: "Dal makhani", grams: 11, heldi: true }]
+        dishes: [{ name: "Dal makhani", grams: 22, heldi: true }]
       },
       {
         label: "ON THE SIDE",
         dishes: [
-          { name: "Two rotis", grams: 4 },
-          { name: "Cucumber raita", grams: 3, heldi: true }
+          { name: "Two rotis", grams: 8 },
+          { name: "Cucumber raita", grams: 6, heldi: true }
         ]
       }
     ]
@@ -201,8 +201,15 @@ type MenuGalleryProps = {
   gramsPerTbsp: number;
 };
 
-function dishGrams(dish: DishItem, gramsPerTbsp: number) {
-  return dish.grams + (dish.heldi ? gramsPerTbsp : 0);
+function dishGrams(
+  dish: DishItem,
+  gramsPerTbsp: number,
+  heldiTbsp: number,
+  heldiDishCount: number
+) {
+  if (!dish.heldi || heldiDishCount === 0) return dish.grams;
+  const tbspPerDish = heldiTbsp / heldiDishCount;
+  return dish.grams + Math.round(tbspPerDish * gramsPerTbsp);
 }
 
 function MenuCard({
@@ -231,6 +238,10 @@ function MenuCard({
   const foodTotal = activeVariant?.foodTotal ?? menu.foodTotal;
   const heldiTotal = menu.heldiTotal;
   const tableTotal = activeVariant?.tableTotal ?? menu.tableTotal;
+  const heldiDishCount = courses.reduce(
+    (count, course) => count + course.dishes.filter((dish) => dish.heldi).length,
+    0
+  );
 
   return (
     <article
@@ -282,7 +293,7 @@ function MenuCard({
                   <span className="menu-card__dish-name">{dish.name}</span>
                   <span className="menu-card__dish-leader" aria-hidden="true" />
                   <span className="menu-card__dish-grams">
-                    {dishGrams(dish, gramsPerTbsp)}g
+                    {dishGrams(dish, gramsPerTbsp, menu.heldiTbsp, heldiDishCount)}g
                   </span>
                 </li>
               ))}
@@ -293,7 +304,8 @@ function MenuCard({
 
       <div className="menu-card__summary">
         <p className="menu-card__from-food">
-          From the food <strong>{foodTotal}g</strong>
+          <span>From the food</span>
+          <strong>{foodTotal}g</strong>
         </p>
         <div className="menu-card__heldi-band">
           <span className="menu-card__heldi-label">
@@ -303,7 +315,10 @@ function MenuCard({
         </div>
         <p className="menu-card__table-total">
           <span>ON THE TABLE</span>
-          <strong>{tableTotal}g</strong>
+          <span className="menu-card__grams-stat menu-card__grams-stat--table">
+            <strong>{tableTotal}g</strong>
+            <span className="menu-card__grams-note">of protein</span>
+          </span>
         </p>
       </div>
     </article>
@@ -351,7 +366,7 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
         <p className="menu-gallery__lede">
           <strong>Five ways to lay the table. Swipe through.</strong> Dishes in
           gold are <CopyHighlight>boosted with Heldi</CopyHighlight>,{" "}
-          <strong>counted for one person&apos;s plate.</strong>
+          <strong>counted for a couple.</strong>
         </p>
       </header>
 
