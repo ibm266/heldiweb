@@ -132,7 +132,7 @@ export function TruthPage() {
 
   return (
     <>
-      <section className="section section--cream truth-hero">
+      <section className="section section--cream truth-hero" data-nav-hero>
         <div className="truth-hero__inner">
           <p className="eyebrow">THE HONEST TRUTH</p>
           <h1>How much protein is in dal, really?</h1>

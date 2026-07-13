@@ -7,7 +7,7 @@ type HeldiLivingPostViewProps = {
 
 export function HeldiLivingPostView({ post }: HeldiLivingPostViewProps) {
   return (
-    <section className="section section--gold living-post-section">
+    <section className="section section--gold living-post-section" data-nav-hero>
       <div className="living-post-shell">
         <a className="living-back" href="/heldi-living">
           ← Heldi Living

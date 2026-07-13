@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import { Gelasio, Rozha_One } from "next/font/google";
+import { CartProvider } from "@/components/cart/cart-context";
+import { CartDrawer } from "@/components/cart/cart-drawer";
+import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const gelasio = Gelasio({
@@ -18,6 +22,7 @@ const rozhaOne = Rozha_One({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Heldi, desi protein for Indian food",
   description:
     "Protein that disappears into dal, curry and raita. They shake, we stir."
@@ -29,7 +34,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${gelasio.variable} ${rozhaOne.variable}`}>
-        {children}
+        <CartProvider>
+          {children}
+          <CartDrawer />
+          <DevModeToggle />
+        </CartProvider>
       </body>
     </html>
   );

@@ -5,15 +5,16 @@ import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 export const metadata: Metadata = {
   title: "Our story · Heldi",
   description:
-    "Heldi began with a word my nani made up. The story of protein made for the family table."
+    "Heldi began with a word my nani made up. The story of protein made for the family table.",
+  alternates: { canonical: "/our-story" }
 };
 
 export default function OurStoryPage() {
   return (
     <main>
-      <SubpageNav />
+      <SubpageNav tone="cream" />
 
-      <section className="section section--cream story">
+      <section className="section section--cream story" data-nav-hero>
         <div className="story__inner">
           <p className="eyebrow">OUR STORY</p>
           <h1 className="story__title">

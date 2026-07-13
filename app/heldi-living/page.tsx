@@ -7,15 +7,16 @@ import { getAllTags, HELDI_LIVING_POSTS } from "@/lib/heldi-living";
 export const metadata: Metadata = {
   title: "Heldi Living · Honest writing on protein and desi cooking",
   description:
-    "What we wish more people knew about the food we already love. Protein, strength, ageing, and desi kitchens — without the gym-bro noise."
+    "What we wish more people knew about the food we already love. Protein, strength, ageing, and desi kitchens — without the gym-bro noise.",
+  alternates: { canonical: "/heldi-living" }
 };
 
 export default function HeldiLivingPage() {
   return (
     <main>
-      <SubpageNav />
+      <SubpageNav tone="gold" />
 
-      <section className="section section--gold living-index">
+      <section className="section section--gold living-index" data-nav-hero>
         <div className="living-index__hero">
           <p className="eyebrow">HELDI LIVING</p>
           <h1 className="living-index__title">Heldi Living</h1>

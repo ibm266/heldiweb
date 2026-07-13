@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { CartIcon } from "@/components/cart/cart-icon";
+import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 
 const IMAGE_VERSION = "ink-blue-3";
 const IMAGE_BASE = "/images/variants/ink-blue";
@@ -11,8 +13,13 @@ function imageSrc(path: string) {
   return `${IMAGE_BASE}/${file}?v=${IMAGE_VERSION}`;
 }
 
-export function SubpageNav() {
+/** @deprecated Tone no longer colours the nav shell — hero pad owns the colour. */
+export type NavTone = "gold" | "cream" | "ink";
+
+export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { hidden: scrollHidden } = useNavScrollState();
+  const navHidden = scrollHidden && !menuOpen;
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -35,48 +42,70 @@ export function SubpageNav() {
   }, [menuOpen]);
 
   return (
-    <nav className="nav nav--subpage" aria-label="Main navigation">
-      <a href="/" aria-label="Heldi home" className="nav-home">
-        <Image
-          className="heldi-logo heldi-logo--on-dark"
-          src={imageSrc("/images/heldi-wordmark.png")}
-          alt="Heldi"
-          width={1934}
-          height={609}
-          sizes="140px"
-        />
-        <span className="nav-elephant-badge">
-          <Image
-            className="nav-elephant-logo"
-            src={imageSrc("/images/elephant-large-transparent.png")}
-            alt="Heldi"
-            width={2048}
-            height={2048}
-          />
-        </span>
-      </a>
-      <button
-        className="nav-burger"
-        type="button"
-        aria-expanded={menuOpen}
-        aria-controls="nav-menu"
-        onClick={() => setMenuOpen((open) => !open)}
-      >
-        <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
-        <span className="nav-burger-bar" aria-hidden="true" />
-        <span className="nav-burger-bar" aria-hidden="true" />
-        <span className="nav-burger-bar" aria-hidden="true" />
-      </button>
-      <div
-        className={`nav-links nav-links--subpage${menuOpen ? " is-open" : ""}`}
-        id="nav-menu"
-      >
-        <a href="/#how" onClick={() => setMenuOpen(false)}>How it works</a>
-        <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
-        <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
-        <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
+    <div className={`nav-shell${navHidden ? " nav-shell--hidden" : ""}`}>
+      <div className="nav-menu-toggle">
+        <button
+          className="nav-burger"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="nav-menu"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
+          <span className="nav-burger-bar" aria-hidden="true" />
+          <span className="nav-burger-bar" aria-hidden="true" />
+          <span className="nav-burger-bar" aria-hidden="true" />
+        </button>
       </div>
-    </nav>
+      <nav className="nav nav--subpage" aria-label="Main navigation">
+        <a href="/" aria-label="Heldi home" className="nav-home">
+          <span className="nav-brand">
+            <Image
+              className="nav-elephant-logo nav-elephant-logo--face-in"
+              src={imageSrc("/images/elephant-large-transparent.png")}
+              alt=""
+              width={2048}
+              height={2048}
+            />
+            <Image
+              className="heldi-logo"
+              src={imageSrc("/images/heldi-wordmark.png")}
+              alt="Heldi"
+              width={1934}
+              height={609}
+              sizes="140px"
+            />
+            <Image
+              className="nav-elephant-logo"
+              src={imageSrc("/images/elephant-large-transparent.png")}
+              alt=""
+              width={2048}
+              height={2048}
+            />
+          </span>
+        </a>
+        <div className="nav-links nav-links--desktop">
+          <a href="/#how">How it works</a>
+          <a href="/truth">The truth</a>
+          <a href="/our-story">Our story</a>
+          <a href="/heldi-living">Heldi Living</a>
+          <a href="/shop">Shop</a>
+        </div>
+        <div
+          className={`nav-links nav-links--mobile${menuOpen ? " is-open" : ""}`}
+          id="nav-menu"
+        >
+          <a href="/#how" onClick={() => setMenuOpen(false)}>How it works</a>
+          <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
+          <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
+          <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
+          <a href="/shop" onClick={() => setMenuOpen(false)}>Shop</a>
+        </div>
+      </nav>
+      <div className="nav-cart">
+        <CartIcon />
+      </div>
+    </div>
   );
 }
 

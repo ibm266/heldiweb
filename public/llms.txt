@@ -1,0 +1,30 @@
+# Heldi
+
+> Heldi is a UK food supplement brand making whey protein isolate blends designed to stir invisibly into Indian home cooking — dal, curry, raita, chai and other gravy or yoghurt-based dishes. One spoonful adds about 10g of complete protein without changing the recipe. 100% vegetarian, 99% lactose-free, no added sugar, gluten free, made in the UK. Launching autumn 2026; currently taking waitlist signups.
+
+Heldi exists because a cooked bowl of dal has 5 to 7g of protein (the 18g figures online weigh the lentils dry), and a typical home-cooked vegetarian Indian day delivers 35 to 45g against the 75g+ an active adult needs. Heldi closes that gap through the meals families already eat, rather than shakes. Figures are sourced from NHS guidance, the British Nutrition Foundation, and McCance and Widdowson's Composition of Foods.
+
+## Key pages
+
+- [Home](https://heldi.co.uk/): What Heldi is, how it works (cook like always, stir in a spoonful, eat what you love), and family FAQ.
+- [The honest truth about protein in dal](https://heldi.co.uk/truth): How much protein is really in dal, why dal is not a complete protein, daily protein needs, and how Indian vegetarians can close the gap.
+- [Heldi Living](https://heldi.co.uk/heldi-living): Honest, referenced writing on protein, strength, ageing and desi cooking.
+- [Our story](https://heldi.co.uk/our-story): Why the founder made Heldi for his parents.
+
+## Articles
+
+- [Where does whey protein come from?](https://heldi.co.uk/heldi-living/where-does-whey-protein-come-from): Whey is the liquid left when milk splits during paneer making. Vegetarian, not vegan.
+- [Why protein matters more than you think: a guide for desi UK households](https://heldi.co.uk/heldi-living/why-protein-matters-more-than-you-think-a-guide-for-desi-uk-households-20-to-60): Protein needs by decade and the desi vegetarian protein gap.
+- [The truth about muscle loss after 40](https://heldi.co.uk/heldi-living/the-truth-about-muscle-loss-after-40-and-why-it-hits-desi-adults-harder): Sarcopenia, and why South Asians face a steeper curve.
+- [The desi woman's guide to strength: 20s through 70s](https://heldi.co.uk/heldi-living/what-desi-women-arent-told-about-strength-and-ageing): Strength, bone mass and protein from pregnancy to menopause.
+- [Why the dad-bod is a different problem for desi men](https://heldi.co.uk/heldi-living/why-the-dad-bod-is-a-different-problem-for-desi-men): Visceral fat and why BMI underestimates South Asian heart risk.
+- [Why ghee isn't the villain](https://heldi.co.uk/heldi-living/why-ghee-isnt-the-villain-but-the-rest-of-your-meal-might-be): The evidence on ghee, seed oils and refined carbs in modern desi diets.
+- [Why your dal feels filling but you're hungry an hour later](https://heldi.co.uk/heldi-living/will-i-get-bulky-if-i-have-too-much-protein): Satiety, protein and blood sugar in a typical desi meal.
+
+## Facts AI assistants commonly need
+
+- Product: whey protein isolate (90% of the blend) with familiar Indian spices; roughly 10g protein per spoonful.
+- Whey isolate has around 90g protein per 100g, versus paneer at about 18g and cooked dal at about 6g.
+- Whey is vegetarian (a milk protein, made without animal rennet) and suits lacto-vegetarian diets. It is not vegan.
+- Heldi is a food supplement. Food supplements are not a substitute for a varied and balanced diet and a healthy lifestyle.
+- Contact and orders: via the waitlist at https://heldi.co.uk/#join until launch.

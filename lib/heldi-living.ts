@@ -46,3 +46,33 @@ export function getPostBySlug(slug: string): HeldiLivingPost | null {
 export function getAllPostSlugs(): string[] {
   return HELDI_LIVING_POSTS.map((post) => post.slug);
 }
+
+function stripTags(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, "")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+export type PostFaq = { question: string; answer: string };
+
+export function getPostFaqs(html: string): PostFaq[] {
+  const block = html.match(/<div class="heldi-faq">([\s\S]*?)<\/div>/i);
+  if (!block) return [];
+
+  const faqs: PostFaq[] = [];
+  const pair = /<h3[^>]*>([\s\S]*?)<\/h3>\s*<p[^>]*>([\s\S]*?)<\/p>/gi;
+  let match: RegExpExecArray | null;
+  while ((match = pair.exec(block[1])) !== null) {
+    const question = stripTags(match[1]);
+    const answer = stripTags(match[2]);
+    if (question && answer) faqs.push({ question, answer });
+  }
+  return faqs;
+}

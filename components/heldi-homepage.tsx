@@ -9,9 +9,12 @@ import {
   useState
 } from "react";
 import { AudienceGallery } from "@/components/audience-gallery";
+import { CartIcon } from "@/components/cart/cart-icon";
 import { CopyHighlight } from "@/components/copy-highlight";
+import { HOME_FAQS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
 import { StirGallery } from "@/components/stir-gallery";
+import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 
 type HeroAnimation = "split-flap" | "dissolve";
 type HeroLayout = "video" | "classic" | "reveal";
@@ -102,53 +105,7 @@ const WORDS = ["INDIAN FOOD", "DAL", "CURRY", "RAITA", "DAHI", "CHAAT"];
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const COLS = 11;
 
-const FAQS = [
-  {
-    question: "Why do I need more protein?",
-    answer:
-      "Protein contributes to the maintenance of muscle mass, which declines gradually from your 30s onward. A typical home-cooked vegetarian day delivers 35 to 45g, while an active adult needs 75g or more. That gap, eaten daily for decades, is what Heldi closes."
-  },
-  {
-    question: "Is whey protein vegetarian?",
-    answer:
-      "Yes, and it is made without animal rennet. Whey is the pale liquid left when milk curdles, the same one you see when paneer is made at home. We simply filter it to concentrate the protein and gently dry it into a fine powder. Nothing added, just the part of milk that has always been there."
-  },
-  {
-    question: "Why not just drink a protein shake?",
-    answer:
-      "You can, if you like them. Most of our parents don't. Heldi hits the same protein number through the meals you were going to eat anyway. Same dal, same raita, ten more grams per bowl. Nothing new to swallow, nothing to give up."
-  },
-  {
-    question: "Will my food taste different?",
-    answer:
-      "No. The spices are designed to disappear into the dish, not sit on top of the flavour. Heldi blends clean into what you already cook. No chalky film, no protein-shake aftertaste."
-  },
-  {
-    question: "How do I use it?",
-    answer:
-      "Once the pot is done cooking and has cooled a little, stir the powder straight into the full dal, curry or raita and mix it through. Or leave the jar on the table and let each person add as much as they like to their own bowl. One to two spoonfuls per dish is the sweet spot."
-  },
-  {
-    question: "Can I use it in dishes that are not on the pouch?",
-    answer:
-      "Yes. Anything with a gravy, a dal or a yoghurt base works, sambar, kadhi, korma, bhindi in gravy, even a chaat with dahi on top. Non-veg pots too: chicken curry, keema and egg bhurji all take a spoonful for an extra protein boost. If a spoon can stir it, Heldi can disappear into it."
-  },
-  {
-    question: "Is it safe for kids?",
-    answer:
-      "Yes. Whey is a part of milk, the same protein kids already get from dahi and paneer, and protein is part of every balanced diet. Nothing artificial, no sweeteners, no caffeine. If the family pot gets a spoonful, everyone eats from it. Growing kids get what they need from normal meals, so there is no need to add extra to their bowls."
-  },
-  {
-    question: "Is it safe for parents and grandparents?",
-    answer:
-      "Heldi is designed for the whole table. Protein contributes to the maintenance of muscle mass, and the isolate is 99% lactose-free, 100% vegetarian and free from added sugar, preservatives and gluten."
-  },
-  {
-    question: "I have diabetes. Is it OK for me?",
-    answer:
-      "Heldi is almost entirely protein: no added sugar and under 1g of carbohydrate per spoonful. We cannot give medical advice, so if you manage diabetes, show the label to your GP or dietitian. It fits in the palm of a hand, take it with you."
-  }
-];
+const FAQS = HOME_FAQS;
 
 const TICKER_COPY =
   "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  FREE JAR WITH YOUR FIRST ORDER  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
@@ -950,6 +907,8 @@ export function HeldiHomepage({
   const [heroIntroComplete, setHeroIntroComplete] = useState(
     heroLayout !== "reveal"
   );
+  const { hidden: scrollHidden } = useNavScrollState();
+  const navHidden = scrollHidden && !menuOpen;
   const heroSectionRef = useRef<HTMLElement>(null);
   const footerWaitlistRef = useRef<HTMLDivElement>(null);
   const menuSectionRef = useRef<HTMLElement>(null);
@@ -1025,26 +984,12 @@ export function HeldiHomepage({
 
   return (
     <main>
-      <nav
-        className={`nav${
-          heroLayout === "reveal" && !heroIntroComplete ? " nav--intro" : ""
-        }`}
-        aria-label="Main navigation"
+      <div
+        className={`nav-shell${
+          heroLayout === "reveal" && !heroIntroComplete ? " nav-shell--intro" : ""
+        }${navHidden ? " nav-shell--hidden" : ""}`}
       >
-        <a href="#top" aria-label="Heldi home" className="nav-home">
-          <Wordmark onDark />
-          <span className="nav-elephant-badge">
-            <Image
-              className="nav-elephant-logo"
-              src={imageSrc("/images/elephant-large-transparent.png")}
-              alt="Heldi"
-              width={2048}
-              height={2048}
-              priority
-            />
-          </span>
-        </a>
-        {isMobileNav ? (
+        <div className="nav-menu-toggle">
           <button
             className="nav-burger"
             type="button"
@@ -1057,17 +1002,58 @@ export function HeldiHomepage({
             <span className="nav-burger-bar" aria-hidden="true" />
             <span className="nav-burger-bar" aria-hidden="true" />
           </button>
-        ) : null}
-        <div
-          className={`nav-links${isMobileNav && menuOpen ? " is-open" : ""}`}
-          id="nav-menu"
-        >
-          <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
-          <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
-          <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
-          <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
         </div>
-      </nav>
+        <nav
+          className={`nav${
+            heroLayout === "reveal" && !heroIntroComplete ? " nav--intro" : ""
+          }`}
+          aria-label="Main navigation"
+        >
+          <a href="#top" aria-label="Heldi home" className="nav-home">
+            <span className="nav-brand">
+              <Image
+                className="nav-elephant-logo nav-elephant-logo--face-in"
+                src={imageSrc("/images/elephant-large-transparent.png")}
+                alt=""
+                width={2048}
+                height={2048}
+                priority
+              />
+              <Wordmark />
+              <Image
+                className="nav-elephant-logo"
+                src={imageSrc("/images/elephant-large-transparent.png")}
+                alt=""
+                width={2048}
+                height={2048}
+                priority
+              />
+            </span>
+          </a>
+          <div className="nav-links nav-links--desktop">
+            <a href="#how">How it works</a>
+            <a href="/truth">The truth</a>
+            <a href="/our-story">Our story</a>
+            <a href="/heldi-living">Heldi Living</a>
+            <a href="/shop">Shop</a>
+          </div>
+          <div
+            className={`nav-links nav-links--mobile${
+              menuOpen ? " is-open" : ""
+            }`}
+            id="nav-menu"
+          >
+            <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
+            <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
+            <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
+            <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
+            <a href="/shop" onClick={() => setMenuOpen(false)}>Shop</a>
+          </div>
+        </nav>
+        <div className="nav-cart">
+          <CartIcon />
+        </div>
+      </div>
 
       {showFloatingCta ? (
         <a className="floating-cta" href="#join">
@@ -1077,6 +1063,7 @@ export function HeldiHomepage({
 
       <section
         ref={heroSectionRef}
+        data-nav-hero
         className={`hero${
           heroLayout === "video"
             ? " hero--video"

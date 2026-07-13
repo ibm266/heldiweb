@@ -6,7 +6,8 @@ import { TRUTH_FAQS } from "@/components/truth-faqs";
 export const metadata: Metadata = {
   title: "How much protein is in dal? The honest truth · Heldi",
   description:
-    "A cooked bowl of dal has 5 to 7g of protein, not 18. What a vegetarian Indian day really delivers, why dal isn't complete, and how to get more protein without shakes."
+    "A cooked bowl of dal has 5 to 7g of protein, not 18. What a vegetarian Indian day really delivers, why dal isn't complete, and how to get more protein without shakes.",
+  alternates: { canonical: "/truth" }
 };
 
 const faqSchema = {
@@ -29,7 +30,7 @@ export default function TruthRoute() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <SubpageNav />
+      <SubpageNav tone="cream" />
       <TruthPage />
       <SubpageFooter />
     </main>
