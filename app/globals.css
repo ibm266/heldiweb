@@ -4156,3 +4156,475 @@ footer {
   margin-top: 1.25rem;
   color: var(--brown);
 }
+
+/* ---------- Heldi Living ---------- */
+
+.living-index,
+.living-post-section {
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+}
+
+.living-index__hero {
+  max-width: 720px;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.living-index__title {
+  margin: 0.75rem 0 1rem;
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+.living-index__lede {
+  margin: 0 auto;
+  max-width: 540px;
+  color: var(--brown);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.living-feed {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+.living-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.living-tag {
+  padding: 0.4375rem 0.875rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.living-tag:hover {
+  background: #fff;
+  transform: translateY(-1px);
+}
+
+.living-tag.is-active {
+  background: var(--ink);
+  color: var(--gold);
+}
+
+.living-feed__count {
+  margin: 0 0 1.5rem;
+  text-align: center;
+  color: var(--brown);
+  font-size: 0.9375rem;
+}
+
+.living-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.living-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 6px 6px 0 var(--ink);
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.living-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.living-card__media {
+  display: block;
+  border-bottom: 3px solid var(--ink);
+  background: var(--cream);
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.living-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.living-card:hover .living-card__media img {
+  transform: scale(1.03);
+}
+
+.living-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.25rem 1.25rem 1.5rem;
+}
+
+.living-card__tags,
+.living-post-header__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0 0 0.875rem;
+  padding: 0;
+  list-style: none;
+}
+
+.living-card__tag {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color 160ms ease;
+}
+
+button.living-card__tag {
+  font: inherit;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.living-card__tag:hover,
+a.living-card__tag:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.living-card__title {
+  margin: 0 0 0.875rem;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.375rem, 2.5vw, 1.625rem);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.living-card__title a:hover {
+  color: var(--terracotta);
+}
+
+.living-card__lede {
+  margin: 0 0 0.5rem;
+  color: var(--terracotta);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.living-card__summary {
+  margin: 0 0 1.25rem;
+  padding-left: 1.125rem;
+  color: var(--brown);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.living-card__summary li + li {
+  margin-top: 0.375rem;
+}
+
+.living-card__body .pill-link {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+.living-post-shell {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.living-back {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.living-back:hover {
+  color: var(--terracotta);
+}
+
+.living-post-header {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.living-post-header__tags {
+  justify-content: center;
+  margin: 1rem 0 0;
+}
+
+.living-post-header__title {
+  margin: 0 0 0.875rem;
+  font-family: var(--font-display), serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--ink);
+}
+
+.living-post-header__desc {
+  margin: 0 auto;
+  max-width: 560px;
+  color: var(--brown);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.living-post-hero {
+  margin: 0 auto 1.5rem;
+  overflow: hidden;
+  max-width: 560px;
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.living-post-hero img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.living-post-panel {
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 8px 8px 0 var(--ink);
+  color: var(--ink);
+}
+
+.heldi-post > p,
+.heldi-post li,
+.heldi-post td,
+.heldi-post th {
+  color: var(--brown);
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+.heldi-post > p {
+  margin: 0 0 1.25rem;
+}
+
+.heldi-post h2 {
+  margin: 2rem 0 0.875rem;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.5rem, 3vw, 1.875rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.heldi-post h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-family: var(--font-display), serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.heldi-post ul,
+.heldi-post ol {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.heldi-post li + li {
+  margin-top: 0.375rem;
+}
+
+.heldi-post a {
+  color: var(--terracotta);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.heldi-post a:hover {
+  color: var(--ink);
+}
+
+.heldi-post sup a {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.heldi-tldr {
+  margin: 0 0 1.75rem;
+  padding: 1.25rem 1.25rem 1.125rem;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--cream);
+}
+
+.heldi-tldr h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  color: var(--terracotta);
+}
+
+.heldi-tldr ul {
+  margin: 0;
+}
+
+.heldi-tldr li {
+  color: var(--ink);
+}
+
+.heldi-callout {
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.125rem;
+  border-left: 4px solid var(--gold);
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.heldi-callout-number {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--terracotta);
+}
+
+.heldi-decade {
+  margin: 0 0 1.25rem;
+  padding: 1.125rem 1.25rem 0.25rem;
+  border: 2px solid rgb(var(--ink-rgb) / 12%);
+  border-radius: 14px;
+  background: #fbfaf7;
+}
+
+.heldi-decade h3 {
+  margin-top: 0;
+}
+
+.heldi-table {
+  width: 100%;
+  margin: 0 0 1.5rem;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  overflow-x: auto;
+  display: block;
+}
+
+.heldi-table thead,
+.heldi-table tbody,
+.heldi-table tr {
+  width: 100%;
+}
+
+.heldi-table th,
+.heldi-table td {
+  padding: 0.75rem 0.875rem;
+  border: 1.5px solid rgb(var(--ink-rgb) / 20%);
+  text-align: left;
+  vertical-align: top;
+}
+
+.heldi-table th {
+  background: var(--cream);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.heldi-table td {
+  background: #fff;
+}
+
+.heldi-faq {
+  margin-bottom: 1.5rem;
+}
+
+.heldi-faq h3 {
+  margin-top: 1.75rem;
+}
+
+.heldi-references {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid rgb(var(--ink-rgb) / 15%);
+}
+
+.heldi-references h2 {
+  margin-top: 0;
+  font-size: 1.25rem;
+}
+
+.heldi-references li {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.heldi-disclaimer {
+  margin: 2rem 0 0 !important;
+  padding-top: 1.25rem;
+  border-top: 2px solid rgb(var(--ink-rgb) / 15%);
+  color: var(--muted) !important;
+  font-size: 0.875rem !important;
+  line-height: 1.55 !important;
+}
+
+@media (max-width: 600px) {
+  .living-post-panel {
+    padding: 1.25rem 1.125rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .living-card {
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .living-card:hover {
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .heldi-table {
+    font-size: 0.8125rem;
+  }
+
+  .heldi-table th,
+  .heldi-table td {
+    padding: 0.5rem 0.625rem;
+  }
+}
+

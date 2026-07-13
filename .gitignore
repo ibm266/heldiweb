@@ -16,9 +16,14 @@
 *.log
 *.tsbuildinfo
 .DS_Store
+.claude/
 
 # deployment
 .vercel
+
+# archives / one-off files
+*.zip
+*.pdf
 
 # --- Video production pipelines (not served by the site) ---
 hero-video/
@@ -30,8 +35,13 @@ public/videos/elephant-run-cream.mp4
 public/videos/elephant-run-gold-alpha.mp4
 public/videos/heldi-hero-v4.mp4
 
-# Design archives
-*.zip
+# --- Design / copy / planning archives (not served by the site) ---
+design_handoff_heldi_homepage/
+design_handoff_stir_gallery/
+fable/
+fable_copy/
+fableplan/
+scripts/
 
 # --- Image assets not served at runtime ---
 # Live images are under public/images/variants/ink-blue/ (see imageSrc in heldi-homepage.tsx)
@@ -61,3 +71,5 @@ public/images/stir-gallery/chana-masala.png
 public/images/stir-gallery/cucumber-raita.png
 public/images/stir-gallery/kadhi.png
 public/images/stir-gallery/bowl-of-dahi-clean.png
+public/images/stir-gallery/bowl-of-dahi-framed.png
+public/images/stir-gallery/bowl-of-dahi.png

@@ -233,16 +233,16 @@ const HOW_IT_WORKS_STEPS: {
   {
     icon: "/images/how-it-works/step-3-eat.png",
     title: "Eat what you love",
-    description: (grams: number) => (
+    description: (
       <>
-        The meal you grew up with, +{grams}g{" "}
-        <CopyHighlight>protein</CopyHighlight>.
+        The meal you grew up with, with a{" "}
+        <CopyHighlight>protein</CopyHighlight> boost.
       </>
     )
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-7";
+const IMAGE_VERSION = "ink-blue-8";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -1065,6 +1065,7 @@ export function HeldiHomepage({
           <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
           <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
           <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
+          <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
         </div>
       </nav>
 

@@ -74,6 +74,7 @@ export function SubpageNav() {
         <a href="/#how" onClick={() => setMenuOpen(false)}>How it works</a>
         <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
         <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
+        <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
       </div>
     </nav>
   );
