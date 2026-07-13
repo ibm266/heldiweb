@@ -1097,18 +1097,31 @@ export function HeldiHomepage({
           <div className="pouch-section__copy">
             <h2>Food you love. Nutrients you need.</h2>
             <p>
-              Here is the truth: a bowl of dal has{" "}
-              <CopyHighlight>5 to 7g</CopyHighlight> of protein, not the 18 the
-              internet promises. Heldi stirs{" "}
-              <CopyHighlight>10 more</CopyHighlight> into every bowl. Vanishes
-              clean. No chalk, no aftertaste.
+              The internet says your dal has 18g of protein. It has{" "}
+              <CopyHighlight>6</CopyHighlight>. Here is the honest fix.
             </p>
+            <div className="pouch-equation" aria-label="6 grams in a bowl of dal, plus 10 grams from one spoonful of Heldi, equals 16 grams in the same bowl">
+              <div className="pouch-eq__item">
+                <strong>6g</strong>
+                <span>bowl of dal</span>
+              </div>
+              <span className="pouch-eq__op" aria-hidden="true">+</span>
+              <div className="pouch-eq__item pouch-eq__item--gold">
+                <strong>10g</strong>
+                <span>one spoonful</span>
+              </div>
+              <span className="pouch-eq__op" aria-hidden="true">=</span>
+              <div className="pouch-eq__item pouch-eq__item--ink">
+                <strong>16g</strong>
+                <span>same bowl, same taste</span>
+              </div>
+            </div>
             <p className="pouch-section__ingredient">
-              90% whey protein isolate. The rest, spices you already know.{" "}
-              <a className="pouch-section__truth-link" href="/truth">
-                Read the full truth &#8594;
-              </a>
+              90% whey protein isolate. The rest, spices you already know.
             </p>
+            <a className="pill-link" href="/truth">
+              Read the full truth &#8594;
+            </a>
           </div>
           <PouchStats grams={grams} className="pouch-section__stats" />
           <PouchBadgesList className="pouch-section__badges" />
@@ -1138,11 +1151,9 @@ export function HeldiHomepage({
             <div className="how-it-works__header-laptop">
               <h2>Food you love. Nutrients you need.</h2>
               <p>
-                Here is the truth: a bowl of dal has{" "}
-                <CopyHighlight>5 to 7g</CopyHighlight> of protein, not the 18
-                the internet promises. Heldi stirs{" "}
-                <CopyHighlight>10 more</CopyHighlight> into every bowl. Vanishes
-                clean. No chalk, no aftertaste.
+                One spoonful takes your bowl from 6g to{" "}
+                <CopyHighlight>16g</CopyHighlight>. Vanishes clean. No chalk,
+                no aftertaste.
               </p>
             </div>
           </header>
@@ -1182,6 +1193,20 @@ export function HeldiHomepage({
         </div>
       </section>
 
+      <section className="section section--ink section--bordered founder-band">
+        <div className="founder-band__inner">
+          <p className="founder-band__quote">
+            I made Heldi for my parents. They were never going to drink a
+            shake, and they were never going to give up dal. So the protein
+            came to the table instead.
+          </p>
+          <p className="founder-band__signature">&mdash; Mihir, founder</p>
+          <a className="pill-link pill-link--dark" href="/our-story">
+            Read our story &#8594;
+          </a>
+        </div>
+      </section>
+
       <section className="section section--cream section--bordered" id="faq">
         <div className="faq">
           <h2 className="centered">The questions we hear most.</h2>
@@ -1206,20 +1231,6 @@ export function HeldiHomepage({
               );
             })}
           </div>
-        </div>
-      </section>
-
-      <section className="section section--gold section--bordered founder-band">
-        <div className="founder-band__inner">
-          <p className="founder-band__quote">
-            I made Heldi for my parents. They were never going to drink a
-            shake, and they were never going to give up dal. So the protein
-            came to the table instead.
-          </p>
-          <p className="founder-band__signature">
-            &mdash; Mihir, founder ·{" "}
-            <a href="/our-story">Read our story &#8594;</a>
-          </p>
         </div>
       </section>
 

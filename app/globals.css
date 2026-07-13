@@ -3176,16 +3176,94 @@ footer {
   font-size: 0.9375rem;
 }
 
-.pouch-section__truth-link {
-  color: var(--terracotta);
+.pill-link {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1.25rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
   font-weight: 600;
+  font-size: 0.9375rem;
   text-decoration: none;
-  border-bottom: 2px solid var(--terracotta);
+  transition: transform 160ms ease;
 }
 
-.pouch-section__truth-link:hover {
+.pill-link:hover {
+  transform: translateY(-2px);
+  background: var(--gold);
+}
+
+.pill-link--dark {
+  border-color: var(--gold);
+  background: transparent;
+  box-shadow: 3px 3px 0 rgb(0 0 0 / 0.4);
+  color: var(--gold);
+}
+
+.pill-link--dark:hover {
+  background: var(--gold);
   color: var(--ink);
-  border-bottom-color: var(--ink);
+}
+
+.pouch-equation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.pouch-eq__item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 108px;
+  padding: 0.875rem 1rem;
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.pouch-eq__item strong {
+  font-family: var(--font-display), serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.pouch-eq__item span {
+  font-size: 0.8125rem;
+  color: var(--brown);
+}
+
+.pouch-eq__item--gold {
+  background: var(--gold);
+}
+
+.pouch-eq__item--ink {
+  background: var(--ink);
+}
+
+.pouch-eq__item--ink strong,
+.pouch-eq__item--ink span {
+  color: var(--cream);
+}
+
+.pouch-eq__item--ink strong {
+  color: var(--gold);
+}
+
+.pouch-eq__op {
+  align-self: center;
+  font-family: var(--font-display), serif;
+  font-size: 1.75rem;
+  color: var(--terracotta);
 }
 
 /* ---------- Founder band ---------- */
@@ -3198,7 +3276,7 @@ footer {
 
 .founder-band__quote {
   margin: 0;
-  color: var(--ink);
+  color: var(--cream);
   font-family: var(--font-body), Georgia, serif;
   font-style: italic;
   font-size: clamp(1.25rem, 2.6vw, 1.625rem);
@@ -3207,20 +3285,9 @@ footer {
 
 .founder-band__signature {
   margin: 1.25rem 0 0;
-  color: var(--ink);
+  color: var(--gold);
   font-weight: 600;
   letter-spacing: 0.04em;
-}
-
-.founder-band__signature a {
-  color: var(--terracotta);
-  text-decoration: none;
-  border-bottom: 2px solid var(--terracotta);
-}
-
-.founder-band__signature a:hover {
-  color: var(--ink);
-  border-bottom-color: var(--ink);
 }
 
 /* ---------- Subpage nav + shared blocks ---------- */
@@ -3707,4 +3774,16 @@ footer {
 .truth-fix__cta .button--pill:hover {
   background: var(--cream);
   border-color: var(--cream);
+}
+
+@media (max-width: 600px) {
+  .pouch-equation {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .pouch-eq__item {
+    width: min(260px, 100%);
+    text-align: center;
+  }
 }
