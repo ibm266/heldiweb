@@ -12,29 +12,26 @@ const AUDIENCES: {
 }[] = [
   {
     label: "FOR YOU",
-    title: "Hit your protein target without another shake.",
+    title: "Tired of forcing down another shake?",
     points: [
-      <>Stir into two or three dishes and add <CopyHighlight>20-30g</CopyHighlight> across one meal.</>,
-      <>Whey isolate absorbs fast and <CopyHighlight>blends clean</CopyHighlight>.</>,
+      <>Stir into two or three dishes and add <CopyHighlight>20-30g</CopyHighlight> in one meal.</>,
       <>Zero change to the food you love.</>
     ]
   },
   {
     label: "FOR THE FAMILY",
-    title: "One pouch, the whole table.",
+    title: "One pouch feeds every appetite at the table.",
     points: [
       <><CopyHighlight>Disappears into</CopyHighlight> the dal, the curry, the raita everyone already eats.</>,
-      <>Works for fussy eaters and big appetites alike.</>,
-      <>No separate “healthy” cooking required.</>
+      <>No separate “healthy” cooking. Ever.</>
     ]
   },
   {
     label: "FOR PARENTS & GRANDPARENTS",
-    title: "Built for the way they already cook.",
+    title: "For all the plans still on the list.",
     points: [
       <>Protein contributes to the maintenance of muscle mass.</>,
-      <>99% lactose-free isolate.</>,
-      <>Not a single <CopyHighlight>recipe changes</CopyHighlight>.</>
+      <>Not a single <CopyHighlight>recipe changes</CopyHighlight>. Not a single habit, either.</>
     ]
   }
 ];

@@ -105,7 +105,12 @@ const FAQS = [
   {
     question: "Is whey protein vegetarian?",
     answer:
-      "Yes. Whey is the pale liquid left when milk curdles, the same one you see when paneer is made at home. We simply filter it to concentrate the protein and gently dry it into a fine powder. Nothing added, just the part of milk that has always been there."
+      "Yes, and it is made without animal rennet. Whey is the pale liquid left when milk curdles, the same one you see when paneer is made at home. We simply filter it to concentrate the protein and gently dry it into a fine powder. Nothing added, just the part of milk that has always been there."
+  },
+  {
+    question: "Why not just drink a protein shake?",
+    answer:
+      "You can, if you like them. Most of our parents don't. Heldi hits the same protein number through the meals you were going to eat anyway. Same dal, same raita, ten more grams per bowl. Nothing new to swallow, nothing to give up."
   },
   {
     question: "Will my food taste different?",
@@ -115,7 +120,7 @@ const FAQS = [
   {
     question: "How do I use it?",
     answer:
-      "Once the pot is done cooking and has cooled a little, stir the powder straight into the full dal, curry or raita and mix it through. If you are adding to a whole pot, a splash of water can help loosen it. Or leave the jar on the table and let each person add as much as they like to their own bowl."
+      "Once the pot is done cooking and has cooled a little, stir the powder straight into the full dal, curry or raita and mix it through. Or leave the jar on the table and let each person add as much as they like to their own bowl. One to two spoonfuls per dish is the sweet spot."
   },
   {
     question: "Can I use it in dishes that are not on the pouch?",
@@ -123,14 +128,24 @@ const FAQS = [
       "Yes. Anything with a gravy, a dal or a yoghurt base works, sambar, kadhi, korma, bhindi in gravy, even a chaat with dahi on top. If a spoon can stir it, Heldi can disappear into it."
   },
   {
+    question: "Is it safe for kids?",
+    answer:
+      "Yes. Whey is a part of milk, the same protein kids already get from dahi and paneer, and protein is part of every balanced diet. Nothing artificial, no sweeteners, no caffeine. If the family pot gets a spoonful, everyone eats from it. Growing kids get what they need from normal meals, so there is no need to add extra to their bowls."
+  },
+  {
     question: "Is it safe for parents and grandparents?",
     answer:
       "Heldi is designed for the whole table. Protein contributes to the maintenance of muscle mass, and the isolate is 99% lactose-free, 100% vegetarian and free from added sugar, preservatives and gluten."
+  },
+  {
+    question: "I have diabetes. Is it OK for me?",
+    answer:
+      "Heldi is almost entirely protein: no added sugar and under 1g of carbohydrate per spoonful. We cannot give medical advice, so if you manage diabetes, show the label to your GP or dietitian. It fits in the palm of a hand, take it with you."
   }
 ];
 
 const TICKER_COPY =
-  "MADE IN THE UK  •  FOR INDIAN KITCHENS  •  NO SHAKER, NO BLENDER  •  100% VEGETARIAN  •  FREE JAR WITH YOUR FIRST ORDER  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
+  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  FREE JAR WITH YOUR FIRST ORDER  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -532,7 +547,7 @@ function WaitlistForm({
   if (joined) {
     return (
       <p className="waitlist-success" role="status">
-        You&apos;re on the list. One email the day we launch.
+        You&apos;re on the list. Tell your mum we said hi.
       </p>
     );
   }
@@ -962,6 +977,7 @@ export function HeldiHomepage({
         >
           <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
           <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
+          <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
           <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
           {!isMobileNav ? (
             <a
@@ -1081,10 +1097,17 @@ export function HeldiHomepage({
           <div className="pouch-section__copy">
             <h2>Food you love. Nutrients you need.</h2>
             <p>
-              One blend that <CopyHighlight>vanishes</CopyHighlight> into any
-              gravy, dal or yoghurt base.{" "}
-              <CopyHighlight>Dissolves clean</CopyHighlight>. No chalk, no
-              aftertaste.
+              Here is the truth: a bowl of dal has{" "}
+              <CopyHighlight>5 to 7g</CopyHighlight> of protein, not the 18 the
+              internet promises. Heldi stirs{" "}
+              <CopyHighlight>10 more</CopyHighlight> into every bowl. Vanishes
+              clean. No chalk, no aftertaste.
+            </p>
+            <p className="pouch-section__ingredient">
+              90% whey protein isolate. The rest, spices you already know.{" "}
+              <a className="pouch-section__truth-link" href="/truth">
+                Read the full truth &#8594;
+              </a>
             </p>
           </div>
           <PouchStats grams={grams} className="pouch-section__stats" />
@@ -1115,10 +1138,11 @@ export function HeldiHomepage({
             <div className="how-it-works__header-laptop">
               <h2>Food you love. Nutrients you need.</h2>
               <p>
-                One blend that <CopyHighlight>vanishes</CopyHighlight> into any
-                gravy, dal or yoghurt base.{" "}
-                <CopyHighlight>Dissolves clean</CopyHighlight>. No chalk, no
-                aftertaste.
+                Here is the truth: a bowl of dal has{" "}
+                <CopyHighlight>5 to 7g</CopyHighlight> of protein, not the 18
+                the internet promises. Heldi stirs{" "}
+                <CopyHighlight>10 more</CopyHighlight> into every bowl. Vanishes
+                clean. No chalk, no aftertaste.
               </p>
             </div>
           </header>
@@ -1185,6 +1209,20 @@ export function HeldiHomepage({
         </div>
       </section>
 
+      <section className="section section--gold section--bordered founder-band">
+        <div className="founder-band__inner">
+          <p className="founder-band__quote">
+            I made Heldi for my parents. They were never going to drink a
+            shake, and they were never going to give up dal. So the protein
+            came to the table instead.
+          </p>
+          <p className="founder-band__signature">
+            &mdash; Mihir, founder ·{" "}
+            <a href="/our-story">Read our story &#8594;</a>
+          </p>
+        </div>
+      </section>
+
       <section className="section section--ink" id="jar">
         <div className="jar-layout">
           <div className="section-copy section-copy--dark">
@@ -1228,7 +1266,7 @@ export function HeldiHomepage({
           <h2>Be first to stir it in.</h2>
           <p>
             One email the day we launch, and a{" "}
-            <CopyHighlight>free jar</CopyHighlight> with your first order.
+            <CopyHighlight>free jar</CopyHighlight> for the family table.
           </p>
           <div ref={footerWaitlistRef}>
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
@@ -1239,7 +1277,7 @@ export function HeldiHomepage({
 
       <footer>
         <Wordmark footer onDark />
-        <span>© 2026 Heldi · Made in the UK · Desi protein for Indian food</span>
+        <span>© 2026 Heldi · Made in the UK · They shake, we stir</span>
       </footer>
     </main>
   );

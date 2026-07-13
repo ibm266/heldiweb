@@ -20,7 +20,7 @@ const rozhaOne = Rozha_One({
 export const metadata: Metadata = {
   title: "Heldi, desi protein for Indian food",
   description:
-    "Protein made to disappear into dal, curry, raita and the home-cooked food you already love."
+    "Protein that disappears into dal, curry and raita. They shake, we stir."
 };
 
 export default function RootLayout({

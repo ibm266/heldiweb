@@ -146,14 +146,14 @@ const MENUS: Menu[] = [
     title: "The Light Lunch",
     tag: "LUNCH",
     scheme: "marigold",
-    foodTotal: 34,
+    foodTotal: 36,
     heldiTbsp: 4,
     heldiTotal: 40,
-    tableTotal: 74,
+    tableTotal: 76,
     courses: [
       {
         label: "TO START",
-        dishes: [{ name: "Dahi puri", grams: 10, heldi: true }]
+        dishes: [{ name: "Khaman dhokla", grams: 8 }]
       },
       {
         label: "THE MAIN",
@@ -162,7 +162,7 @@ const MENUS: Menu[] = [
       {
         label: "ON THE SIDE",
         dishes: [
-          { name: "Steamed rice", grams: 6 },
+          { name: "Khichdi", grams: 10, heldi: true },
           { name: "Roasted papad", grams: 4 }
         ]
       }
@@ -364,8 +364,8 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
         <p className="eyebrow eyebrow--gold">PUT IT ON THE TABLE</p>
         <h2>Lunch and dinner menus.</h2>
         <p className="menu-gallery__lede">
-          <strong>Five ways to lay the table. Swipe through.</strong> Dishes in
-          gold are <CopyHighlight>boosted with Heldi</CopyHighlight>,{" "}
+          <strong>Five ways to lay the table.</strong> Gold dishes are{" "}
+          <CopyHighlight>boosted with Heldi</CopyHighlight>,{" "}
           <strong>counted for a couple.</strong>
         </p>
       </header>

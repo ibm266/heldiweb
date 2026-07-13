@@ -63,8 +63,7 @@ const CAPTIONS = [
 ];
 
 const MAX_SPOONS = 2;
-const MAX_CAPTION =
-  "That's 2 tbsp, the most we recommend stirring into one dish.";
+const MAX_CAPTION = "This bowl is fully Heldi'd. Save some for the raita.";
 
 const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
   left: `${10 + ((i * 79) % 80)}%`,
@@ -232,11 +231,11 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   return (
     <div className="stir-gallery">
       <header className="stir-gallery__header">
-          <p className="eyebrow eyebrow--gold">SEE IT IN ACTION</p>
+          <p className="eyebrow eyebrow--gold">THEY SHAKE. WE STIR.</p>
           <h2>Stir it into everything.</h2>
           <p className="stir-gallery__lede">
-            Every dish on tonight&apos;s table takes a spoonful. Keep stirring.
-            Nothing changes but <CopyHighlight>the protein</CopyHighlight>.
+            Every dish on tonight&apos;s table takes a spoonful. Nothing
+            changes but <CopyHighlight>the protein</CopyHighlight>.
           </p>
         </header>
 
