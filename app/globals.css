@@ -2669,7 +2669,7 @@ footer {
     min-height: auto;
     margin-inline: auto;
     padding: clamp(1rem, 2.5vh, 1.5rem) clamp(1.25rem, 4vw, 2.5rem)
-      clamp(0.5rem, 1.25vh, 0.875rem);
+      clamp(1rem, 2vh, 1.5rem);
   }
 
   .hero-reveal-panel {
@@ -2713,12 +2713,12 @@ footer {
     container-type: normal;
     width: auto;
     max-width: none;
-    font-size: clamp(2.25rem, 3.2vw + 0.8vh, 4.25rem);
+    font-size: clamp(2.5rem, 3.6vw + 0.9vh, 4.75rem);
   }
 
   .hero-reveal-lede__prefix {
     margin-bottom: 0.04em;
-    font-size: calc(1em + 6px);
+    font-size: calc(1em + 8px);
   }
 
   .hero-reveal-lede__prefix-line:nth-child(1),
@@ -2738,7 +2738,7 @@ footer {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: baseline;
-    font-size: calc(1em + 8px);
+    font-size: calc(1em + 10px);
     color: var(--gold);
   }
 
@@ -2781,12 +2781,12 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: clamp(260px, 30vw, 440px);
+    width: clamp(280px, 32vw, 480px);
   }
 
   .hero-reveal-pouch__image {
     width: 100%;
-    max-width: clamp(200px, 20vw + 2vh, 340px);
+    max-width: clamp(220px, 22vw + 2vh, 380px);
     height: auto;
   }
 
@@ -3040,19 +3040,19 @@ footer {
   }
 
   .hero-reveal-lede {
-    font-size: clamp(2.5rem, 3.5vw + 0.8vh, 4.5rem);
+    font-size: clamp(2.75rem, 3.8vw + 0.9vh, 5rem);
   }
 
   .hero-reveal-columns .dissolve-board {
-    font-size: calc(1em + 10px);
+    font-size: calc(1em + 12px);
   }
 
   .hero-reveal-pouch {
-    width: clamp(300px, 24vw, 480px);
+    width: clamp(320px, 26vw, 520px);
   }
 
   .hero-reveal-pouch__image {
-    max-width: clamp(220px, 18vw + 2vh, 380px);
+    max-width: clamp(250px, 20vw + 2.5vh, 420px);
   }
 
   .hero-reveal-showcase__main {
@@ -3113,11 +3113,11 @@ footer {
 /* Moderate laptop height — gentle scale so ticker stays visible */
 @media (min-width: 900px) and (max-height: 900px) {
   .hero-reveal-lede {
-    font-size: clamp(2rem, 3vw + 1vh, 3.5rem);
+    font-size: clamp(2.125rem, 3.2vw + 1vh, 3.75rem);
   }
 
   .hero-reveal-pouch__image {
-    max-width: clamp(180px, 16vw + 1.5vh, 280px);
+    max-width: clamp(200px, 17vw + 1.5vh, 300px);
   }
 
   .hero-reveal-showcase {
@@ -3130,7 +3130,7 @@ footer {
 @media (min-width: 900px) and (max-height: 820px) {
   .hero-reveal {
     padding-top: 0.75rem;
-    padding-bottom: 0.375rem;
+    padding-bottom: 0.75rem;
   }
 
   .hero-reveal-showcase {

@@ -204,8 +204,8 @@ const HOW_IT_WORKS_STEPS: {
     title: "Stir in a spoonful",
     description: (
       <>
-        Stir straight into the pot, or <CopyHighlight>at the table</CopyHighlight>
-        .
+        Stir straight into the pot <CopyHighlight>whilst it&apos;s cooling</CopyHighlight>
+        , or at the table.
       </>
     )
   },
