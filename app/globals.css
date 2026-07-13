@@ -3503,12 +3503,29 @@ footer {
   color: var(--terracotta);
 }
 
+.truth-meter__score {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.truth-meter__goal {
+  font-family: var(--font-display), serif;
+  font-size: 1.25rem;
+  color: var(--gold);
+}
+
+.section--cream .truth-meter__goal,
+.section--gold .truth-meter__goal {
+  color: var(--terracotta);
+}
+
 .truth-meter__track {
   position: relative;
   height: 28px;
   border: 3px solid var(--cream);
   border-radius: 999px;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .section--cream .truth-meter__track,
@@ -3525,25 +3542,6 @@ footer {
 
 .truth-meter__fill.is-reached {
   background: var(--terracotta);
-}
-
-.truth-meter__target {
-  position: absolute;
-  top: -8px;
-  bottom: -8px;
-  left: 100%;
-  border-left: 3px dashed var(--terracotta);
-}
-
-.truth-meter__target span {
-  position: absolute;
-  top: calc(100% + 0.375rem);
-  right: 0;
-  white-space: nowrap;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: var(--terracotta);
 }
 
 .truth-day__verdict {
@@ -3586,6 +3584,62 @@ footer {
 
 .truth-bowl--real {
   background: var(--gold);
+}
+
+/* ---------- Protein comparison table ---------- */
+
+.truth-compare-wrap {
+  max-width: 680px;
+  margin: 1.75rem auto 0;
+  padding: 0 6px 6px 0;
+  overflow-x: auto;
+}
+
+.truth-compare {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--cream);
+  box-shadow: 6px 6px 0 var(--ink);
+  text-align: left;
+  font-size: 0.9375rem;
+}
+
+.truth-compare th,
+.truth-compare td {
+  padding: 0.75rem 1.125rem;
+  color: var(--ink);
+}
+
+.truth-compare thead th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-bottom: 3px solid var(--ink);
+}
+
+.truth-compare tbody tr + tr th,
+.truth-compare tbody tr + tr td {
+  border-top: 2px solid rgb(1 18 70 / 0.15);
+}
+
+.truth-compare tbody th {
+  font-weight: 600;
+}
+
+.truth-compare .is-whey th,
+.truth-compare .is-whey td {
+  background: var(--ink);
+  color: var(--cream);
+}
+
+.truth-compare .is-whey th {
+  color: var(--gold);
 }
 
 .truth-bowl__name {

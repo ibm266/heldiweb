@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CopyHighlight } from "@/components/copy-highlight";
+import { TRUTH_FAQS } from "@/components/truth-faqs";
 
 const TARGET = 75;
 
@@ -65,29 +66,6 @@ const FIXES = [
   { name: "+ 2 tbsp Heldi", grams: 20 }
 ];
 
-const TRUTH_FAQS = [
-  {
-    question: "How much protein is in a bowl of dal?",
-    answer:
-      "About 5 to 7g for a standard 80g cooked serving. Bigger bowls reach 9 or 10g. The 18g+ figures online describe dry weight, which nobody eats in one sitting."
-  },
-  {
-    question: "Is dal a complete protein?",
-    answer:
-      "Not on its own. Dal is low in methionine, one of the nine essential amino acids. Pairing it with rice or roti covers the full set, but the combined meal is still modest in total protein."
-  },
-  {
-    question: "How much protein do I need a day?",
-    answer:
-      "Active adults and adults over 50 benefit from roughly 1.2 to 1.6g per kilo of body weight per day. For a 65kg person, that is 78 to 104g. Most home-cooked vegetarian days land well under half of that."
-  },
-  {
-    question: "How do I add protein to Indian food without shakes?",
-    answer:
-      "Add dahi or paneer to more meals, thicken your dal, and stir a clean whey isolate like Heldi straight into gravies, dals and yoghurt dishes. One spoonful adds 10g without changing the recipe."
-  }
-];
-
 function Meter({
   value,
   label
@@ -102,11 +80,14 @@ function Meter({
     <div className="truth-meter">
       <div className="truth-meter__head">
         <span className="truth-meter__label">{label}</span>
-        <span
-          className={`truth-meter__value${reached ? " is-reached" : ""}`}
-          key={value}
-        >
-          {value}g
+        <span className="truth-meter__score">
+          <span
+            className={`truth-meter__value${reached ? " is-reached" : ""}`}
+            key={value}
+          >
+            {value}g
+          </span>
+          <span className="truth-meter__goal">/ {TARGET}g target</span>
         </span>
       </div>
       <div
@@ -118,9 +99,6 @@ function Meter({
           className={`truth-meter__fill${reached ? " is-reached" : ""}`}
           style={{ width: `${fillPercent}%` }}
         />
-        <div className="truth-meter__target">
-          <span>{TARGET}g target</span>
-        </div>
       </div>
     </div>
   );
@@ -157,64 +135,13 @@ export function TruthPage() {
       <section className="section section--cream truth-hero">
         <div className="truth-hero__inner">
           <p className="eyebrow">THE HONEST TRUTH</p>
-          <h1>The truth about protein in Indian food.</h1>
+          <h1>How much protein is in dal, really?</h1>
           <p>
-            A standard bowl of dal has <CopyHighlight>5 to 7g</CopyHighlight>{" "}
-            of protein, not the 18 some blogs claim. A full day of home-cooked
-            vegetarian Indian food typically delivers 35 to 45g, while an
-            active adult needs <CopyHighlight>75g or more</CopyHighlight>. That
-            gap, eaten daily for decades, is the problem nobody talks about.
-          </p>
-        </div>
-      </section>
-
-      <section className="section section--ink section--bordered truth-day">
-        <div className="truth-block">
-          <p className="eyebrow eyebrow--gold">YOUR DAY ON A PLATE</p>
-          <h2>Here is a normal day, weighed honestly.</h2>
-          <p className="truth-block__lede">Tap each meal to add it up.</p>
-
-          <div className="truth-day__cards">
-            {MEALS.map((meal, index) => (
-              <button
-                key={meal.name}
-                type="button"
-                className={`truth-meal${eaten[index] ? " is-eaten" : ""}`}
-                onClick={() =>
-                  setEaten((current) =>
-                    current.map((state, i) => (i === index ? true : state))
-                  )
-                }
-                disabled={eaten[index]}
-              >
-                <span className="truth-meal__tag">{meal.name}</span>
-                <span className="truth-meal__dish">{meal.dish}</span>
-                <span className="truth-meal__grams">
-                  {eaten[index] ? `${meal.grams}g` : "?"}
-                </span>
-              </button>
-            ))}
-          </div>
-
-          <Meter value={dayTotal} label="Protein on the day" />
-
-          <p className="truth-day__verdict" aria-live="polite">
-            {dayDone
-              ? `The gap: ${TARGET - DAY_TOTAL}g. Every single day.`
-              : " "}
-          </p>
-        </div>
-      </section>
-
-      <section className="section section--cream truth-dal">
-        <div className="truth-block">
-          <p className="eyebrow">THE DAL MYTH</p>
-          <h2>How much protein is in dal, really?</h2>
-          <p>
-            An 80g cooked serving of dal gives you{" "}
-            <CopyHighlight>5 to 7g</CopyHighlight> of protein. The 18 to 22g
-            figures online come from weighing dry lentils, then quietly
-            forgetting that nobody eats 100g of dry dal in one sitting.
+            A cooked bowl of dal has <CopyHighlight>5 to 7g</CopyHighlight> of
+            protein, not the 18g the internet claims. Those figures weigh the
+            lentils dry. A full day of home-cooked vegetarian food lands
+            around 35 to 45g. An active adult needs{" "}
+            <CopyHighlight>75g or more</CopyHighlight>.
           </p>
 
           <div className="truth-bowls">
@@ -234,16 +161,65 @@ export function TruthPage() {
         </div>
       </section>
 
+      <section className="section section--ink section--bordered truth-day">
+        <div className="truth-block">
+          <p className="eyebrow eyebrow--gold">YOUR DAY ON A PLATE</p>
+          <h2>How much protein is in a vegetarian Indian day?</h2>
+          <p className="truth-block__lede">
+            Here is a normal day, weighed honestly. Tap each meal to add it
+            up.
+          </p>
+
+          <div className="truth-day__cards">
+            {MEALS.map((meal, index) => (
+              <button
+                key={meal.name}
+                type="button"
+                className={`truth-meal${eaten[index] ? " is-eaten" : ""}`}
+                onClick={() =>
+                  setEaten((current) =>
+                    current.map((state, i) => (i === index ? true : state))
+                  )
+                }
+                disabled={eaten[index]}
+              >
+                <span className="truth-meal__tag">{meal.name}</span>
+                <span className="truth-meal__dish">{meal.dish}</span>
+                <span className="truth-meal__grams">
+                  <span aria-hidden="true">
+                    {eaten[index] ? `${meal.grams}g` : "?"}
+                  </span>
+                  <span className="sr-only">
+                    {meal.grams}g of protein
+                  </span>
+                </span>
+              </button>
+            ))}
+          </div>
+
+          <Meter value={dayTotal} label="Protein on the day" />
+
+          <p className="truth-day__verdict" aria-live="polite">
+            {dayDone
+              ? `The gap: ${TARGET - DAY_TOTAL}g. Every single day.`
+              : " "}
+          </p>
+        </div>
+      </section>
+
       <section className="section section--gold section--bordered truth-team">
         <div className="truth-block">
           <p className="eyebrow">THE FULL TEAM</p>
-          <h2>Why dal alone can&apos;t do the job.</h2>
+          <h2>Is dal a complete protein?</h2>
           <p>
-            Protein is a team of nine essential amino acids, and your body
-            needs all nine at once. Legumes run low on one player, grains run
-            low on another. Dal chawal pairs them, which is genuinely clever,
-            but pairing fixes quality, not quantity. You are still eating 6g
-            servings toward a 75g day.
+            Not on its own. Protein is a team of nine essential amino acids,
+            and your body needs all nine at once. Legumes run low on one
+            player, grains run low on another. Dal chawal pairs them, which is
+            genuinely clever, but pairing fixes quality, not quantity. You are
+            still eating 6g servings toward a 75g day.
+          </p>
+          <p className="truth-block__lede">
+            Tap a food to reveal its amino acid line-up.
           </p>
 
           <div
@@ -275,14 +251,22 @@ export function TruthPage() {
               </span>
             ))}
           </div>
-          <p className="truth-team__caption">{food.caption}</p>
+          {FOODS.map((option, index) => (
+            <p
+              key={option.name}
+              className="truth-team__caption"
+              hidden={foodIndex !== index}
+            >
+              {option.caption}
+            </p>
+          ))}
         </div>
       </section>
 
       <section className="section section--cream truth-decades">
         <div className="truth-block">
           <p className="eyebrow">THE LONG GAME</p>
-          <h2>What the gap does over decades.</h2>
+          <h2>What does a protein gap do over decades?</h2>
           <p>
             Adults lose muscle gradually from their 30s onward, and research
             shows South Asians carry less muscle to begin with. Enough protein
@@ -323,7 +307,7 @@ export function TruthPage() {
             <text x="330" y="105" fill="#011246" fontSize="15" fontWeight="600">
               enough protein + staying active
             </text>
-            <text x="300" y="215" fill="#a8432b" fontSize="15" fontWeight="600">
+            <text x="80" y="205" fill="#a8432b" fontSize="15" fontWeight="600">
               low protein, low activity
             </text>
           </svg>
@@ -335,10 +319,71 @@ export function TruthPage() {
         </div>
       </section>
 
+      <section className="section section--gold section--bordered truth-whey">
+        <div className="truth-block">
+          <p className="eyebrow">THE GOLD STANDARD</p>
+          <h2>What is the best protein source for vegetarians?</h2>
+          <p>
+            Whey protein isolate. Around{" "}
+            <CopyHighlight>90g of protein per 100g</CopyHighlight>, all nine
+            essential amino acids at full strength, and virtually no lactose.
+            It is vegetarian, made from milk like paneer and dahi. And it is
+            not just for vegetarians: if you eat meat, a spoonful is still the
+            easiest daily protein top-up there is. That is why Heldi is built
+            on it.
+          </p>
+
+          <div className="truth-compare-wrap">
+            <table className="truth-compare">
+              <thead>
+                <tr>
+                  <th scope="col">Source</th>
+                  <th scope="col">Protein per 100g</th>
+                  <th scope="col">Amino acids</th>
+                  <th scope="col">Lactose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="is-whey">
+                  <th scope="row">Whey isolate</th>
+                  <td>90g</td>
+                  <td>All nine, full strength</td>
+                  <td>Virtually none</td>
+                </tr>
+                <tr>
+                  <th scope="row">Chicken breast</th>
+                  <td>31g</td>
+                  <td>All nine</td>
+                  <td>None</td>
+                </tr>
+                <tr>
+                  <th scope="row">Paneer</th>
+                  <td>18g</td>
+                  <td>All nine</td>
+                  <td>Some</td>
+                </tr>
+                <tr>
+                  <th scope="row">Eggs</th>
+                  <td>13g</td>
+                  <td>All nine</td>
+                  <td>None</td>
+                </tr>
+                <tr>
+                  <th scope="row">Dal, cooked</th>
+                  <td>6g</td>
+                  <td>Low on methionine</td>
+                  <td>None</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <section className="section section--ink section--bordered truth-fix">
         <div className="truth-block">
           <p className="eyebrow eyebrow--gold">CLOSE THE GAP</p>
-          <h2>How to actually get there.</h2>
+          <h2>How to get more protein as an Indian vegetarian.</h2>
           <p className="truth-block__lede">
             The honest answers, in order. Tap them onto your day.
           </p>
@@ -398,9 +443,9 @@ export function TruthPage() {
                       <b aria-hidden="true">{open ? "–" : "+"}</b>
                     </button>
                   </h3>
-                  {open ? (
-                    <p id={`truth-faq-answer-${index}`}>{faq.answer}</p>
-                  ) : null}
+                  <p id={`truth-faq-answer-${index}`} hidden={!open}>
+                    {faq.answer}
+                  </p>
                 </article>
               );
             })}

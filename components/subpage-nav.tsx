@@ -31,11 +31,9 @@ export function SubpageNav() {
         </span>
       </a>
       <div className="nav-links nav-links--subpage">
-        <a href="/#thali">Tonight&apos;s table</a>
         <a href="/#how">How it works</a>
-        <a className="button button--pill nav-cta" href="/#join">
-          Join waitlist
-        </a>
+        <a href="/truth">The truth</a>
+        <a href="/our-story">Our story</a>
       </div>
     </nav>
   );

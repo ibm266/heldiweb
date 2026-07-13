@@ -1003,18 +1003,9 @@ export function HeldiHomepage({
           className={`nav-links${isMobileNav && menuOpen ? " is-open" : ""}`}
           id="nav-menu"
         >
-          <a href="#thali" onClick={() => setMenuOpen(false)}>Tonight&apos;s table</a>
           <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
+          <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
           <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
-          <a href="#faq" onClick={() => setMenuOpen(false)}>FAQ</a>
-          {!isMobileNav ? (
-            <a
-              className="button button--pill nav-cta"
-              href="#join"
-            >
-              Join waitlist
-            </a>
-          ) : null}
         </div>
       </nav>
 
@@ -1253,7 +1244,9 @@ export function HeldiHomepage({
                       <b aria-hidden="true">{open ? "–" : "+"}</b>
                     </button>
                   </h3>
-                  {open ? <p id={`faq-answer-${index}`}>{faq.answer}</p> : null}
+                  <p id={`faq-answer-${index}`} hidden={!open}>
+                    {faq.answer}
+                  </p>
                 </article>
               );
             })}
