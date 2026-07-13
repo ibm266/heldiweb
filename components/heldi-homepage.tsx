@@ -312,9 +312,6 @@ function PouchEquation() {
           <span>same bowl, same taste</span>
         </div>
       </div>
-      <a className="pill-link" href="/truth">
-        Read the full truth &#8594;
-      </a>
     </>
   );
 }
@@ -897,6 +894,7 @@ export function HeldiHomepage({
   const heroSectionRef = useRef<HTMLElement>(null);
   const footerWaitlistRef = useRef<HTMLDivElement>(null);
   const menuSectionRef = useRef<HTMLElement>(null);
+  const truthSectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 899px)");
@@ -941,7 +939,8 @@ export function HeldiHomepage({
     const anchors = [
       heroSectionRef.current,
       footerWaitlistRef.current,
-      menuSectionRef.current
+      menuSectionRef.current,
+      truthSectionRef.current
     ].filter((element): element is HTMLDivElement | HTMLElement => element !== null);
     if (!anchors.length) return;
 
@@ -1126,12 +1125,8 @@ export function HeldiHomepage({
           <div className="pouch-section__copy">
             <h2>Food you love. Nutrients you need.</h2>
             <p>
-              The internet says your dal has 18g of protein. It has{" "}
-              <CopyHighlight>6</CopyHighlight>. Here is the honest fix.
-            </p>
-            <PouchEquation />
-            <p className="pouch-section__ingredient">
-              90% whey protein isolate. The rest, spices you already know.
+              <CopyHighlight>Vanishes clean</CopyHighlight> into every gravy,
+              dal and yoghurt base. No chalk, no aftertaste.
             </p>
           </div>
           <PouchStats grams={grams} className="pouch-section__stats" />
@@ -1162,10 +1157,9 @@ export function HeldiHomepage({
             <div className="how-it-works__header-laptop">
               <h2>Food you love. Nutrients you need.</h2>
               <p>
-                The internet says your dal has 18g of protein. It has{" "}
-                <CopyHighlight>6</CopyHighlight>. Here is the honest fix.
+                <CopyHighlight>Vanishes clean</CopyHighlight> into every
+                gravy, dal and yoghurt base. No chalk, no aftertaste.
               </p>
-              <PouchEquation />
             </div>
           </header>
           <ol className="how-it-works__steps">
@@ -1190,6 +1184,28 @@ export function HeldiHomepage({
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      <section
+        className="section section--gold section--bordered"
+        id="truth"
+        ref={truthSectionRef}
+      >
+        <div className="truth-block">
+          <p className="eyebrow">THE HONEST TRUTH</p>
+          <h2>The internet says 18g. Your dal says 6.</h2>
+          <p>
+            Most protein numbers online are measured dry, not in the bowl you
+            actually eat. Here is the <CopyHighlight>honest fix</CopyHighlight>.
+          </p>
+          <PouchEquation />
+          <p className="pouch-section__ingredient">
+            90% whey protein isolate. The rest, spices you already know.
+          </p>
+          <a className="pill-link" href="/truth">
+            Read the full truth &#8594;
+          </a>
         </div>
       </section>
 

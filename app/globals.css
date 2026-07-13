@@ -1744,14 +1744,6 @@ h2 {
   margin: 0.75rem auto 0;
 }
 
-.how-it-works__header-laptop p {
-  max-width: 36rem;
-  margin: 1rem auto 0;
-  color: var(--brown);
-  font-size: 1.125rem;
-  line-height: 1.65;
-}
-
 .how-it-works__steps {
   position: relative;
   display: flex;
@@ -2824,7 +2816,7 @@ footer {
     height: clamp(1.125rem, 2svh, 1.375rem);
   }
 
-  /* How it works — laptop header copy from former pouch section */
+  /* How it works — laptop header + protein equation at bottom */
   .how-it-works__header-mobile {
     display: none;
   }
@@ -2835,10 +2827,6 @@ footer {
 
   .how-it-works__header-laptop h2 {
     font-size: clamp(2.25rem, 3.5vw, 3.25rem);
-  }
-
-  .how-it-works__header-laptop p {
-    font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
   }
 
   /* Stir gallery — 3+2 grid, or 5 across when wide enough (never 4+1) */
@@ -3786,4 +3774,13 @@ footer {
     width: min(260px, 100%);
     text-align: center;
   }
+}
+
+#truth .pouch-eq__item--gold {
+  background: var(--cream);
+}
+
+#truth .pouch-section__ingredient {
+  margin-top: 1.25rem;
+  color: var(--brown);
 }
