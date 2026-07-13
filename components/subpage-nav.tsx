@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CartIcon } from "@/components/cart/cart-icon";
+import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 
 const IMAGE_VERSION = "ink-blue-3";
@@ -90,6 +91,7 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
           <a href="/our-story">Our story</a>
           <a href="/heldi-living">Heldi Living</a>
           <a href="/shop">Shop</a>
+          <DevModeToggle variant="menu" />
         </div>
         <div
           className={`nav-links nav-links--mobile${menuOpen ? " is-open" : ""}`}
@@ -100,12 +102,31 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
           <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
           <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
           <a href="/shop" onClick={() => setMenuOpen(false)}>Shop</a>
+          <DevModeToggle variant="menu" />
         </div>
       </nav>
       <div className="nav-cart">
         <CartIcon />
       </div>
     </div>
+  );
+}
+
+export function FooterLegal() {
+  return (
+    <>
+      <nav className="footer-legal" aria-label="Legal">
+        <a href="/legal/terms">Terms</a>
+        <a href="/legal/privacy">Privacy</a>
+        <a href="/legal/returns">Returns</a>
+        <a href="/legal/shipping">Shipping</a>
+        <a href="/legal/cookies">Cookies</a>
+        <a href="mailto:info@heldi.co.uk">info@heldi.co.uk</a>
+      </nav>
+      <span className="footer-company">
+        Heldi LTD · 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ
+      </span>
+    </>
   );
 }
 
@@ -121,6 +142,7 @@ export function SubpageFooter() {
         sizes="120px"
       />
       <span>© 2026 Heldi · Made in the UK · They shake, we stir</span>
+      <FooterLegal />
     </footer>
   );
 }

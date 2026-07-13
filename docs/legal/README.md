@@ -15,7 +15,7 @@ have a solicitor review them before publishing.**
 
 - Company registration number (Companies House)
 - VAT registration number (if/when registered)
-- Contact email address (documents currently assume `hello@heldi.co.uk`)
+- ~~Contact email address~~ — set to info@heldi.co.uk
 - Dispatch time commitment in the shipping policy
 
 ## Where they go

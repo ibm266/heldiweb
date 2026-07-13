@@ -13,7 +13,7 @@ Heldi LTD ("Heldi", "we", "us") is a company registered in England and Wales
 > 71-75 Shelton Street, Covent Garden, London, United Kingdom, WC2H 9JQ
 
 We are the data controller for personal information collected through
-heldi.co.uk. Contact us about privacy at `[hello@heldi.co.uk — TBC]`.
+heldi.co.uk. Contact us about privacy at info@heldi.co.uk.
 
 ## What we collect and why
 
@@ -55,7 +55,7 @@ We may also disclose information where the law requires it.
 Under UK GDPR you can ask us to access, correct, delete, restrict or port
 your personal data, and you can object to processing based on legitimate
 interests. You can withdraw consent (e.g. unsubscribe) at any time. Email
-`[hello@heldi.co.uk — TBC]` and we will respond within one month.
+info@heldi.co.uk and we will respond within one month.
 
 If you are unhappy with how we handle your data, you can complain to the
 Information Commissioner's Office (ico.org.uk).

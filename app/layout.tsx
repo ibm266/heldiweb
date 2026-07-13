@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Gelasio, Rozha_One } from "next/font/google";
 import { CartProvider } from "@/components/cart/cart-context";
 import { CartDrawer } from "@/components/cart/cart-drawer";
-import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -37,7 +36,6 @@ export default function RootLayout({
         <CartProvider>
           {children}
           <CartDrawer />
-          <DevModeToggle />
         </CartProvider>
       </body>
     </html>

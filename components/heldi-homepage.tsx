@@ -10,6 +10,8 @@ import {
 } from "react";
 import { AudienceGallery } from "@/components/audience-gallery";
 import { CartIcon } from "@/components/cart/cart-icon";
+import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
+import { FooterLegal } from "@/components/subpage-nav";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { HOME_FAQS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
@@ -1036,6 +1038,7 @@ export function HeldiHomepage({
             <a href="/our-story">Our story</a>
             <a href="/heldi-living">Heldi Living</a>
             <a href="/shop">Shop</a>
+            <DevModeToggle variant="menu" />
           </div>
           <div
             className={`nav-links nav-links--mobile${
@@ -1048,6 +1051,7 @@ export function HeldiHomepage({
             <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
             <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
             <a href="/shop" onClick={() => setMenuOpen(false)}>Shop</a>
+            <DevModeToggle variant="menu" />
           </div>
         </nav>
         <div className="nav-cart">
@@ -1352,6 +1356,7 @@ export function HeldiHomepage({
       <footer>
         <Wordmark footer onDark />
         <span>© 2026 Heldi · Made in the UK · They shake, we stir</span>
+        <FooterLegal />
       </footer>
     </main>
   );

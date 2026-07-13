@@ -6,7 +6,7 @@
 **Last updated:** 13 July 2026
 
 Heldi LTD, 71-75 Shelton Street, Covent Garden, London, United Kingdom,
-WC2H 9JQ. Contact: `[hello@heldi.co.uk — TBC]`.
+WC2H 9JQ. Contact: info@heldi.co.uk.
 
 ## Changed your mind? (14-day cooling-off)
 
@@ -19,7 +19,7 @@ important exception for food products:
 > hygiene reasons. This is the "sealed goods" exception in regulation
 > 28(3)(a).
 
-To cancel: email `[hello@heldi.co.uk — TBC]` within the 14 days, then send
+To cancel: email info@heldi.co.uk within the 14 days, then send
 the unopened item(s) back to the address above within 14 days of telling us.
 Please include your order number.
 
@@ -38,7 +38,7 @@ Under the Consumer Rights Act 2015 our products must be of satisfactory
 quality, fit for purpose and as described. If something arrives damaged,
 spoiled, past its best-before date, or we sent the wrong thing:
 
-1. Email `[hello@heldi.co.uk — TBC]` with your order number and a photo
+1. Email info@heldi.co.uk with your order number and a photo
    within 30 days of delivery.
 2. We will replace it or refund it in full — your choice — and we cover the
    return postage. You do not need to return perishable or damaged food for

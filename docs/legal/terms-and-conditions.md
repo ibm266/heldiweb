@@ -12,7 +12,7 @@ Heldi LTD, a company registered in England and Wales (company number
 
 > 71-75 Shelton Street, Covent Garden, London, United Kingdom, WC2H 9JQ
 
-Contact: `[hello@heldi.co.uk — TBC]`. These terms apply to purchases made
+Contact: info@heldi.co.uk. These terms apply to purchases made
 through heldi.co.uk. By placing an order you agree to them.
 
 ## 2. Our products
@@ -89,7 +89,7 @@ delay is substantial you may cancel undelivered items for a full refund.
 
 ## 9. Complaints and disputes
 
-Email `[hello@heldi.co.uk — TBC]` first — we read everything and aim to put
+Email info@heldi.co.uk first — we read everything and aim to put
 things right quickly. These terms are governed by the law of England and
 Wales, and the courts of England and Wales have jurisdiction (if you live in
 Scotland or Northern Ireland you may also bring proceedings there). Nothing
