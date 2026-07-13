@@ -34,9 +34,17 @@ lost. This is the most valuable fix while the site is pre-launch.
 
 ## 3. Legal pages (required before selling)
 
-- [ ] Privacy policy
-- [ ] Terms & conditions
-- [ ] Returns / refund policy (UK distance-selling rules require this; Shopify checkout links to it)
+Drafts live in [docs/legal/](docs/legal/README.md) — solicitor review needed,
+plus the `[TBC]` values (company number, VAT number, contact email).
+
+- [x] Privacy policy — drafted (`docs/legal/privacy-policy.md`)
+- [x] Terms & conditions — drafted (`docs/legal/terms-and-conditions.md`)
+- [x] Returns / refund policy — drafted (`docs/legal/returns-refunds-policy.md`)
+- [x] Shipping policy — drafted (`docs/legal/shipping-policy.md`)
+- [x] Cookie policy — drafted (`docs/legal/cookie-policy.md`)
+- [ ] Fill in `[TBC]`s and get solicitor review
+- [ ] Build the site pages (e.g. `/legal/*`) and link them in the footer
+- [ ] Add the policies in Shopify admin (Settings → Policies)
 - [ ] Business address in the site footer
 - [ ] Cookie banner — only needed once analytics with cookies is added (see below)
 
