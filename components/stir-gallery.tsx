@@ -51,20 +51,39 @@ const DISHES: Dish[] = [
   }
 ];
 
-const CAPTIONS = [
+const DAL_CAPTIONS = [
+  "The dal did not even notice.",
+  "Bends into the dal like Beckham."
+];
+
+const SHARED_CAPTIONS = [
   "Still tastes exactly the same.",
   "The same food, just a little heldier.",
   "Nani is impressed.",
   "Save some for the raita.",
   "A very strong bowl indeed.",
   "Even mama approves of this one.",
-  "The dal did not even notice.",
-  "Bends into the dal like Beckham.",
   "At this point, keep the jar on the table."
 ];
 
 const MAX_SPOONS = 2;
-const MAX_CAPTION = "This bowl is fully Heldi'd. Save some for the raita.";
+const MAX_CAPTION = "Protein sorted. Taste unchanged.";
+
+function isDalDish(dish: Dish) {
+  return /dal/i.test(dish.name);
+}
+
+function pickCaption(index: number, usedElsewhere: string[]) {
+  const dish = DISHES[index];
+  if (isDalDish(dish)) {
+    return DAL_CAPTIONS[Math.floor(Math.random() * DAL_CAPTIONS.length)];
+  }
+
+  const used = new Set(usedElsewhere);
+  const available = SHARED_CAPTIONS.filter((caption) => !used.has(caption));
+  const pool = available.length > 0 ? available : SHARED_CAPTIONS;
+  return pool[Math.floor(Math.random() * pool.length)];
+}
 
 const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
   left: `${10 + ((i * 79) % 80)}%`,
@@ -157,17 +176,28 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     const dish = DISHES[index];
     const useVideo = Boolean(dish.video) && !reducedMotion;
     const nextCount = spoons[index] + 1;
-    const nextCaption =
-      nextCount >= MAX_SPOONS
-        ? MAX_CAPTION
-        : CAPTIONS[Math.floor(Math.random() * CAPTIONS.length)];
 
     setSpoons((current) =>
       current.map((count, i) => (i === index ? nextCount : count))
     );
-    setCaptions((current) =>
-      current.map((caption, i) => (i === index ? nextCaption : caption))
-    );
+    setCaptions((current) => {
+      const nextCaption =
+        nextCount >= MAX_SPOONS
+          ? MAX_CAPTION
+          : pickCaption(
+              index,
+              current.filter(
+                (caption, i) =>
+                  i !== index &&
+                  caption.length > 0 &&
+                  caption !== MAX_CAPTION &&
+                  !isDalDish(DISHES[i])
+              )
+            );
+      return current.map((caption, i) =>
+        i === index ? nextCaption : caption
+      );
+    });
 
     if (useVideo) {
       setAnimatingAt(index);

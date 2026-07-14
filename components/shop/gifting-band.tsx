@@ -19,7 +19,7 @@ export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) 
           <CopyHighlight>aunties and uncles</CopyHighlight> full price.
           <br />
           We&apos;d{" "}
-          <CopyHighlight>never hear the end of it</CopyHighlight>.
+          <CopyHighlight>never hear the end of it.</CopyHighlight>
         </h2>
         <p>
           Buying Heldi for your mum, dad, or the auntie who fed you every
