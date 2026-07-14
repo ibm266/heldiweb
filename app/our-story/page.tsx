@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { CopyHighlight } from "@/components/copy-highlight";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 
@@ -22,30 +23,33 @@ export default function OurStoryPage() {
             Heldi began with a word my nani made up.
           </h1>
 
-          <figure className="story-hero__figure">
+          <figure className="story-photo-card story-hero__figure">
             <Image
-              className="story-hero__image"
+              className="story-photo-card__image"
               src="/images/our-story/nani.jpg"
               alt="Mihir with his nani"
               width={1024}
               height={682}
               priority
-              sizes="(max-width: 900px) 100vw, 880px"
+              sizes="(max-width: 560px) calc(100vw - 4.5rem), 440px"
             />
-            <figcaption className="story-hero__caption">
-              My nani — the woman who coined it.
+            <figcaption className="story-photo-card__caption">
+              My nani, the woman who coined it.
             </figcaption>
           </figure>
 
           <p className="story-hero__lede">
-            Ask her if the food was healthy and she would smile and say it was
-            heldi. Not healthy in the clinical sense. Heldi the way home-cooked
-            food is: warm, familiar, made with care, made for you.
+            Ask her if the food was healthy and she would smile and say it was{" "}
+            <CopyHighlight>heldi</CopyHighlight>. Not healthy in the clinical
+            sense. Heldi the way home-cooked food is:{" "}
+            <CopyHighlight>warm, familiar, made with care, made for you</CopyHighlight>.
           </p>
         </div>
       </section>
 
-      <section className="section section--gold section--bordered story-pull">
+      <div className="double-rule" aria-hidden="true" />
+
+      <section className="section section--gold story-pull">
         <p className="story-pull__line">That word stayed with me.</p>
       </section>
 
@@ -54,52 +58,128 @@ export default function OurStoryPage() {
           <p className="eyebrow">MIHIR</p>
           <h2>I grew up on dal. Training asked for more.</h2>
           <p>
-            I&apos;m Mihir. I grew up in a vegetarian house on dal, sabzi, raita
-            and chai, and I loved all of it. Then training became a big part of
-            my life, and the food of my childhood started slipping off my plate.
-            Not because I stopped loving it. Because the numbers didn&apos;t add
-            up. The meals I grew up on are rich in almost everything except
-            protein.
+            I&apos;m Mihir. I grew up in a vegetarian house on dal, sabzi,
+            raita and chai, and I loved all of it. Then training became a big
+            part of my life, and the food of my childhood started slipping off
+            my plate. Not because I stopped loving it. Because{" "}
+            <CopyHighlight>the numbers didn&apos;t add up</CopyHighlight>.
           </p>
+          <div className="story-menu-card">
+            <h3 className="story-menu-card__title">Nani&apos;s menu</h3>
+            <p className="story-menu-card__subtitle">
+              same dishes, since forever
+            </p>
+            <ul className="story-menu-card__list">
+              <li className="story-menu-card__item">
+                <span>Dal tadka</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>6g</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Two rotis</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>6g</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Aloo sabzi</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>3g</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Cucumber raita</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>4g</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Masala chai</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>1g</span>
+              </li>
+            </ul>
+            <div className="story-menu-card__totals">
+              <p>
+                <span>Protein on my plate</span>
+                <strong>20g</strong>
+              </p>
+              <p>
+                <span>What training asked</span>
+                <strong>30g</strong>
+              </p>
+            </div>
+            <p className="story-menu-card__gap">
+              <span>The gap</span>
+              <strong>10g</strong>
+            </p>
+          </div>
+
           <p>
-            I didn&apos;t want bland fitness food, and I didn&apos;t want
-            another shake. I wanted the food I loved to do one more thing for
-            me. So I made Heldi: protein that disappears into the dishes we
-            already cook.
+            The meals I grew up on are rich in almost everything{" "}
+            <CopyHighlight>except protein</CopyHighlight>. I didn&apos;t want
+            bland fitness food, and I didn&apos;t want another shake. I wanted
+            the food I loved to do one more thing for me. So I made Heldi:{" "}
+            <CopyHighlight>one spoonful, ten grams of protein</CopyHighlight>,
+            disappearing into the dishes we already cook.
           </p>
+          <p className="story-note">The same food, just a little Heldier.</p>
         </div>
       </section>
 
       <section className="section section--ink section--bordered story-family">
         <div className="story-family__grid">
-          <figure className="story-family__figure">
+          <figure className="story-photo-card story-photo-card--on-ink story-family__figure">
             <Image
-              className="story-family__image"
+              className="story-photo-card__image"
               src="/images/our-story/mama-papa.jpg"
               alt="Mihir with his mama and papa after a Heldi meal"
               width={672}
               height={1024}
-              sizes="(max-width: 900px) 80vw, 360px"
+              sizes="(max-width: 900px) 70vw, 300px"
             />
+            <figcaption className="story-photo-card__caption">
+              The taste panel, mid-verdict.
+            </figcaption>
           </figure>
           <div className="story-family__copy">
             <p className="eyebrow eyebrow--gold">THE TASTE PANEL</p>
             <h2 className="story-family__tagline">
-              Heldi meal. Cleared plates. Unanimous thumbs-up.
+              One Heldi meal. Two cleared plates.
             </h2>
+            <ul className="story-family__badges" aria-label="The taste panel">
+              <li className="story-family__badge">
+                <strong>Mama</strong> the best cook I know
+              </li>
+              <li className="story-family__badge">
+                <strong>Papa</strong> a dal loyalist
+              </li>
+              <li className="story-family__badge story-family__badge--verdict">
+                <strong>Verdict</strong> thumbs-up, twice
+              </li>
+            </ul>
             <p>
-              Mama — the best cook I know. Papa — a dal lover through and
-              through. Neither was ever going to drink a shake. Both were always
-              going to stay at the table.
+              Neither of them was ever going to drink a shake. Both of them
+              were always going to stay at the table. And anyone with Indian
+              parents knows the rules: every decision is a negotiation, and{" "}
+              <CopyHighlight>every deal ends in a compromise</CopyHighlight>.
+              This one didn&apos;t. The food stayed exactly the same, and the
+              protein came to the table.
             </p>
             <p>
-              As we get older, protein matters more, not less. Protein
-              contributes to the maintenance of muscle mass, and I want as many
-              long walks with my mum and dad as I can get. Their plate is part
-              of that plan.
+              And this is the part that matters. As we get older, protein
+              matters more, not less. Protein contributes to the maintenance
+              of muscle mass, and I want{" "}
+              <CopyHighlight>
+                as many long walks with my mama and papa as I can get
+              </CopyHighlight>
+              . Their plate is part of that plan.
             </p>
           </div>
         </div>
+      </section>
+
+      <section className="section section--gold section--bordered story-pull">
+        <p className="story-pull__line">
+          Not here to replace tradition. Here to back it up.
+        </p>
       </section>
 
       <section className="section section--cream section--bordered story-copy">
@@ -108,38 +188,43 @@ export default function OurStoryPage() {
           <h2>Food first. Family friendly.</h2>
           <p>
             In a lot of desi homes, supplements carry a stigma. Powders are for
-            gym boys, not for the family table. Heldi is built to be the
-            opposite. Food first. Family friendly. Whey, the part of milk that
-            has always been there, stirred into recipes that never change.
+            gym boys, not for the family table. Heldi is built to be{" "}
+            <CopyHighlight>the opposite</CopyHighlight>: whey, the part of milk
+            that has always been there, stirred into{" "}
+            <CopyHighlight>recipes that never change</CopyHighlight>.
           </p>
           <p>
-            Heldi is not here to replace tradition. It is here to back it up.
-            The food we grew up with is already beautiful. Heldi simply helps it
-            carry more of what we need.
+            The food we grew up with is already beautiful. Heldi simply helps
+            it carry more of what we need, for{" "}
+            <CopyHighlight>every generation at the table</CopyHighlight>.
           </p>
         </div>
       </section>
 
-      <section className="section section--gold section--bordered story-close">
-        <div className="story-close__inner">
-          <p className="story-close__prove">
-            Heldi exists to prove what we already know there is.
-          </p>
-          <p className="story-close__signoff">Strength in tradition.</p>
-
-          <div className="story-close__cta">
-            <WaitlistOrShopCta />
-          </div>
-
-          <Image
-            className="story-close__elephant"
-            src="/images/variants/ink-blue/elephant-large-transparent.png?v=ink-blue-3"
-            alt=""
-            width={2048}
-            height={2048}
-            aria-hidden="true"
-          />
+      <section className="final-cta section--bordered story-final">
+        <Image
+          className="cta-elephant cta-elephant--left"
+          src="/images/variants/ink-blue/elephant-large-transparent.png?v=ink-blue-3"
+          alt=""
+          width={2048}
+          height={2048}
+          sizes="240px"
+          aria-hidden="true"
+        />
+        <div className="final-cta-copy">
+          <h2>Strength in tradition.</h2>
+          <p>Heldi exists to prove the strength that was always on the table.</p>
+          <WaitlistOrShopCta />
         </div>
+        <Image
+          className="cta-elephant cta-elephant--right"
+          src="/images/variants/ink-blue/elephant-large-transparent.png?v=ink-blue-3"
+          alt=""
+          width={2048}
+          height={2048}
+          sizes="240px"
+          aria-hidden="true"
+        />
       </section>
 
       <SubpageFooter />
