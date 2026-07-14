@@ -2,43 +2,46 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { giftsForQuantity } from "@/lib/commerce/catalog";
+import { track } from "@/lib/analytics";
+import {
+  SAMPLE_SKU,
+  giftingEligiblePenceForLines,
+  includedItemsForQuantity
+} from "@/lib/commerce/catalog";
 import { COMMERCE_PROVIDER } from "@/lib/commerce/config";
 import { formatMoney, formatPence, moneyToPence } from "@/lib/commerce/money";
 import type { CartLine } from "@/lib/commerce/types";
+import { GIFTING, SAMPLE_PRICE_PENCE, SHIPPING } from "@/lib/pricing";
 import { useCart } from "./cart-context";
 import { FreeShippingMeter } from "./free-shipping-meter";
 
-function LineSavings({ line }: { line: CartLine }) {
-  if (!line.cost.compareAtAmount) return null;
-  const savedPence =
-    moneyToPence(line.cost.compareAtAmount) - moneyToPence(line.cost.totalAmount);
-  if (savedPence <= 0) return null;
-  return (
-    <p className="cart-line__savings">
-      {line.quantity > 1 ? "Bundle price applied, " : ""}
-      you save {formatMoney({ amount: (savedPence / 100).toFixed(2), currencyCode: "GBP" })}
-    </p>
+// One discount per order — the reason the code field or the checkbox is
+// locked once the other has applied the gifting discount.
+const ONE_DISCOUNT_HINT = "Already sorted. One discount per order.";
+// Shown when the basket holds only excluded items (triple blocks, samples).
+const BEST_PRICE_HINT = "This one's already our best price.";
+
+// Launch savings on a line: the RRP total minus what's actually charged.
+function lineSavingsPence(line: CartLine): number {
+  if (!line.cost.compareAtAmount) return 0;
+  return Math.max(
+    0,
+    moneyToPence(line.cost.compareAtAmount) - moneyToPence(line.cost.totalAmount)
   );
 }
 
-// Free gifts that ship with this line (jars, masala dabba), shown with
-// their value struck out. Mirrors the Includes panel on the product page.
-function LineGifts({ line }: { line: CartLine }) {
-  const gifts = giftsForQuantity(line.merchandise, line.quantity);
-  if (gifts.length === 0) return null;
+// Items that ship with this line (jars, masala dabba), their total worth
+// struck out. Mirrors the Includes panel on the product page.
+function LineIncluded({ line }: { line: CartLine }) {
+  const items = includedItemsForQuantity(line.merchandise, line.quantity);
+  if (items.length === 0) return null;
   return (
-    <ul className="cart-line__gifts">
-      {gifts.map((gift) => (
-        <li key={gift.title}>
-          <img src={gift.image} alt="" />
-          <span>
-            {gift.title}
-            {gift.note ? (
-              <span className="cart-line__gift-note"> ({gift.note})</span>
-            ) : null}
-          </span>
-          <s>{formatPence(gift.valuePence)}</s>
+    <ul className="cart-line__included">
+      {items.map((item) => (
+        <li key={item.title}>
+          <img src={item.image} alt="" />
+          <span>{item.title}</span>
+          <s>{formatPence(item.valuePence)}</s>
           <strong>Free</strong>
         </li>
       ))}
@@ -52,6 +55,9 @@ export function CartDrawer() {
     isOpen,
     isPending,
     mode,
+    giftingMethod,
+    applyGifting,
+    removeGifting,
     closeCart,
     updateQuantity,
     removeItem,
@@ -59,7 +65,46 @@ export function CartDrawer() {
   } = useCart();
   const panelRef = useRef<HTMLDivElement>(null);
   const [code, setCode] = useState("");
-  const [codeError, setCodeError] = useState<string | null>(null);
+  const lastTrackedSavings = useRef<number | null>(null);
+
+  const lines = cart?.lines ?? [];
+  const appliedCodes = cart?.discountCodes ?? [];
+
+  const subtotalPence = cart ? moneyToPence(cart.cost.subtotalAmount) : 0;
+  const totalPence = cart ? moneyToPence(cart.cost.totalAmount) : 0;
+
+  // Running savings: launch pricing on each line plus any gifting discount.
+  const savingsPence =
+    lines.reduce((sum, line) => sum + lineSavingsPence(line), 0) +
+    Math.max(0, subtotalPence - totalPence);
+
+  // Gifting discount state. The stored method only counts while the code is
+  // actually on the cart.
+  const eligiblePence = giftingEligiblePenceForLines(lines);
+  const giftingApplied = appliedCodes.some(
+    (entry) => entry.applicable && entry.code.toUpperCase() === GIFTING.code
+  );
+  const activeMethod = giftingApplied ? (giftingMethod ?? "code") : null;
+  const noEligibleItems = lines.length > 0 && eligiblePence === 0;
+  const checkboxLockedByCode = activeMethod === "code";
+  const checkboxDisabled = noEligibleItems || checkboxLockedByCode;
+  const checkboxHint = noEligibleItems
+    ? BEST_PRICE_HINT
+    : checkboxLockedByCode
+      ? ONE_DISCOUNT_HINT
+      : null;
+  const codeFieldLocked = activeMethod === "checkbox";
+
+  // Shipping, recalculated after discounts. A Sample Trio on its own ships
+  // free (Heldi absorbs the Large Letter rate).
+  const sampleOnly =
+    lines.length > 0 && lines.every((line) => line.merchandise.sku === SAMPLE_SKU);
+  const shippingPence =
+    sampleOnly || totalPence >= SHIPPING.freeOverPence ? 0 : SHIPPING.standardPence;
+  const showSampleNudge =
+    !sampleOnly &&
+    shippingPence > 0 &&
+    totalPence + SAMPLE_PRICE_PENCE >= SHIPPING.freeOverPence;
 
   // Close on Escape and keep focus inside the drawer while open.
   useEffect(() => {
@@ -74,7 +119,7 @@ export function CartDrawer() {
       }
       if (event.key !== "Tab" || !panelRef.current) return;
       const focusable = panelRef.current.querySelectorAll<HTMLElement>(
-        "button, input, a[href]"
+        "button:not(:disabled), input:not(:disabled), a[href]"
       );
       if (focusable.length === 0) return;
       const first = focusable[0];
@@ -96,22 +141,47 @@ export function CartDrawer() {
     };
   }, [isOpen, closeCart]);
 
-  if (mode !== "live" || !isOpen) return null;
+  useEffect(() => {
+    if (!isOpen || savingsPence <= 0) return;
+    if (lastTrackedSavings.current === savingsPence) return;
+    lastTrackedSavings.current = savingsPence;
+    track("savings_displayed", { basket_savings_total: savingsPence / 100 });
+  }, [isOpen, savingsPence]);
 
-  const lines = cart?.lines ?? [];
-  const appliedCodes = cart?.discountCodes ?? [];
+  if (mode !== "live" || !isOpen) return null;
 
   async function submitCode(event: React.FormEvent) {
     event.preventDefault();
     const trimmed = code.trim();
-    if (!trimmed) return;
-    setCodeError(null);
-    await applyDiscount(trimmed);
+    if (!trimmed || codeFieldLocked) return;
+    if (trimmed.toUpperCase() === GIFTING.code) {
+      if (eligiblePence > 0) {
+        track("gifting_discount_applied", { method: "code" });
+      }
+      await applyGifting("code");
+    } else {
+      await applyDiscount(trimmed);
+    }
     setCode("");
   }
 
+  async function toggleGiftingCheckbox(checked: boolean) {
+    if (checked) {
+      track("gifting_discount_applied", { method: "checkbox" });
+      await applyGifting("checkbox");
+    } else {
+      await removeGifting();
+    }
+  }
+
   const lastCode = appliedCodes[appliedCodes.length - 1];
-  const showCodeRejected = codeError === null && lastCode && !lastCode.applicable;
+  const showCodeRejected = lastCode && !lastCode.applicable;
+  const rejectionMessage =
+    lastCode && lastCode.code.toUpperCase() === GIFTING.code
+      ? BEST_PRICE_HINT
+      : lastCode
+        ? `“${lastCode.code}” isn’t a valid code`
+        : null;
 
   return (
     <div className="cart-overlay" onClick={closeCart}>
@@ -146,13 +216,16 @@ export function CartDrawer() {
         ) : (
           <>
             <ul className="cart-lines">
-              {lines.map((line) => (
+              {lines.map((line) => {
+                const lineImage =
+                  line.merchandise.image ?? line.merchandise.product.images[0];
+                return (
                 <li className="cart-line" key={line.id}>
-                  {line.merchandise.product.images[0] ? (
+                  {lineImage ? (
                     <Image
                       className="cart-line__image"
-                      src={line.merchandise.product.images[0].url}
-                      alt={line.merchandise.product.images[0].altText}
+                      src={lineImage.url}
+                      alt={lineImage.altText}
                       width={72}
                       height={72}
                     />
@@ -189,7 +262,6 @@ export function CartDrawer() {
                     <span className="cart-line__price">
                       {formatMoney(line.cost.totalAmount)}
                     </span>
-                    <LineSavings line={line} />
                     <button
                       className="cart-line__remove"
                       type="button"
@@ -199,14 +271,39 @@ export function CartDrawer() {
                       Remove
                     </button>
                   </div>
-                  <LineGifts line={line} />
+                  <LineIncluded line={line} />
                 </li>
-              ))}
+                );
+              })}
             </ul>
 
-            {cart ? <FreeShippingMeter cart={cart} /> : null}
+            {cart && !sampleOnly ? <FreeShippingMeter cart={cart} /> : null}
 
-            <form className="discount-field" onSubmit={submitCode}>
+            <div
+              className={`cart-gifting${checkboxDisabled ? " cart-gifting--disabled" : ""}`}
+              title={checkboxHint ?? undefined}
+            >
+              <input
+                id="gifting-checkbox"
+                type="checkbox"
+                checked={activeMethod === "checkbox"}
+                disabled={checkboxDisabled || isPending}
+                onChange={(event) => toggleGiftingCheckbox(event.target.checked)}
+              />
+              <label htmlFor="gifting-checkbox">
+                This one&apos;s for the parents. Aunties and uncles count too.{" "}
+                {GIFTING.percent}% off, from our family to yours.
+              </label>
+              {checkboxHint ? (
+                <p className="cart-gifting__hint">{checkboxHint}</p>
+              ) : null}
+            </div>
+
+            <form
+              className="discount-field"
+              onSubmit={submitCode}
+              title={codeFieldLocked ? ONE_DISCOUNT_HINT : undefined}
+            >
               <label className="sr-only" htmlFor="discount-code">
                 Discount code
               </label>
@@ -217,11 +314,12 @@ export function CartDrawer() {
                 value={code}
                 onChange={(event) => setCode(event.target.value)}
                 autoComplete="off"
+                disabled={codeFieldLocked}
               />
               <button
                 className="button button--square"
                 type="submit"
-                disabled={isPending || code.trim() === ""}
+                disabled={isPending || codeFieldLocked || code.trim() === ""}
               >
                 Apply
               </button>
@@ -233,19 +331,32 @@ export function CartDrawer() {
                   Code <strong>{entry.code}</strong> applied
                 </p>
               ))}
-            {showCodeRejected ? (
+            {showCodeRejected && rejectionMessage ? (
               <p className="discount-field__error" role="alert">
-                “{lastCode.code}” isn’t a valid code
+                {rejectionMessage}
               </p>
             ) : null}
 
             <div className="cart-drawer__summary">
-              {cart &&
-              moneyToPence(cart.cost.subtotalAmount) !==
-                moneyToPence(cart.cost.totalAmount) ? (
+              {savingsPence > 0 ? (
+                <p className="cart-drawer__savings-row">
+                  <span>You&apos;re saving</span>
+                  <strong>{formatPence(savingsPence)}</strong>
+                </p>
+              ) : null}
+              {cart && subtotalPence !== totalPence ? (
                 <p className="cart-drawer__subtotal-row">
                   <span>Subtotal</span>
                   <s>{formatMoney(cart.cost.subtotalAmount)}</s>
+                </p>
+              ) : null}
+              <p className="cart-drawer__shipping-row">
+                <span>Shipping</span>
+                <span>{shippingPence === 0 ? "Free" : formatPence(shippingPence)}</span>
+              </p>
+              {showSampleNudge ? (
+                <p className="cart-drawer__nudge">
+                  Add a Sample Trio and shipping&apos;s on us
                 </p>
               ) : null}
               <p className="cart-drawer__total-row">
@@ -253,7 +364,7 @@ export function CartDrawer() {
                 <strong>{cart ? formatMoney(cart.cost.totalAmount) : "—"}</strong>
               </p>
               <p className="cart-drawer__shipping-note">
-                Shipping and any launch discounts are finalised at checkout.
+                Shipping is finalised at checkout.
               </p>
               {COMMERCE_PROVIDER === "mock" ? (
                 <>

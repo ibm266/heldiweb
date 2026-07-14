@@ -2,20 +2,37 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { HeldiLivingPostMeta } from "@/lib/heldi-living";
+
+const VISIBLE_TAG_COUNT = 4;
 
 type HeldiLivingFeedProps = {
   posts: HeldiLivingPostMeta[];
   tags: string[];
+  header?: ReactNode;
 };
 
-export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
+export function HeldiLivingFeed({ posts, tags, header }: HeldiLivingFeedProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const requestedTag = searchParams.get("tag");
   const activeTag =
     requestedTag && tags.includes(requestedTag) ? requestedTag : null;
+  const [tagsExpanded, setTagsExpanded] = useState(false);
+  const hasMoreTags = tags.length > VISIBLE_TAG_COUNT;
+  const visibleTags = tagsExpanded
+    ? tags
+    : tags.slice(0, VISIBLE_TAG_COUNT);
+
+  useEffect(() => {
+    if (
+      activeTag &&
+      !tags.slice(0, VISIBLE_TAG_COUNT).includes(activeTag)
+    ) {
+      setTagsExpanded(true);
+    }
+  }, [activeTag, tags]);
 
   function setActiveTag(tag: string | null) {
     const next = new URLSearchParams(searchParams.toString());
@@ -34,26 +51,39 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
 
   return (
     <div className="living-feed">
-      <div className="living-tags" role="toolbar" aria-label="Filter by topic">
-        <button
-          type="button"
-          className={`living-tag${activeTag === null ? " is-active" : ""}`}
-          onClick={() => setActiveTag(null)}
-          aria-pressed={activeTag === null}
-        >
-          All
-        </button>
-        {tags.map((tag) => (
+      <div className="living-index__panel">
+        {header}
+        <div className="living-tags" role="toolbar" aria-label="Filter by topic">
           <button
-            key={tag}
             type="button"
-            className={`living-tag${activeTag === tag ? " is-active" : ""}`}
-            onClick={() => setActiveTag(tag === activeTag ? null : tag)}
-            aria-pressed={activeTag === tag}
+            className={`living-tag${activeTag === null ? " is-active" : ""}`}
+            onClick={() => setActiveTag(null)}
+            aria-pressed={activeTag === null}
           >
-            {tag}
+            All
           </button>
-        ))}
+          {visibleTags.map((tag) => (
+            <button
+              key={tag}
+              type="button"
+              className={`living-tag${activeTag === tag ? " is-active" : ""}`}
+              onClick={() => setActiveTag(tag === activeTag ? null : tag)}
+              aria-pressed={activeTag === tag}
+            >
+              {tag}
+            </button>
+          ))}
+          {hasMoreTags ? (
+            <button
+              type="button"
+              className="living-tag living-tag--toggle"
+              onClick={() => setTagsExpanded((open) => !open)}
+              aria-expanded={tagsExpanded}
+            >
+              {tagsExpanded ? "Hide" : "See more"}
+            </button>
+          ) : null}
+        </div>
       </div>
 
       <p className="living-feed__count" aria-live="polite">

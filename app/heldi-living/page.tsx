@@ -17,17 +17,21 @@ export default function HeldiLivingPage() {
       <SubpageNav tone="gold" />
 
       <section className="section section--gold living-index" data-nav-hero>
-        <div className="living-index__hero">
-          <p className="eyebrow">HELDI LIVING</p>
-          <h1 className="living-index__title">Heldi Living</h1>
-          <p className="living-index__lede">
-            Honest writing on protein and desi cooking. What we wish more people
-            knew about the food we already love.
-          </p>
-        </div>
-
         <Suspense fallback={null}>
-          <HeldiLivingFeed posts={HELDI_LIVING_POSTS} tags={getAllTags()} />
+          <HeldiLivingFeed
+            posts={HELDI_LIVING_POSTS}
+            tags={getAllTags()}
+            header={
+              <div className="living-index__hero">
+                <p className="eyebrow">HELDI LIVING</p>
+                <h1 className="living-index__title">Heldi Living</h1>
+                <p className="living-index__lede">
+                  Honest writing on protein and desi cooking. What we wish more
+                  people knew about the food we already love.
+                </p>
+              </div>
+            }
+          />
         </Suspense>
       </section>
 

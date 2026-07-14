@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
+import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 
 const TARGET = 75;
 
@@ -465,9 +466,7 @@ export function TruthPage() {
           </p>
 
           <div className="truth-fix__cta">
-            <a className="button button--pill" href="/#join">
-              Join the waitlist
-            </a>
+            <WaitlistOrShopCta />
           </div>
         </div>
       </section>

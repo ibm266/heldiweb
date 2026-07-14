@@ -1968,6 +1968,517 @@ h2 {
   padding: 0 clamp(1.25rem, 5vw, 2rem);
 }
 
+/* —— Heldi vs The Shaker —— */
+.vs {
+  text-align: center;
+}
+
+.vs__header {
+  margin: 0 auto 2.5rem;
+  max-width: 560px;
+}
+
+.vs__header h2 {
+  margin: 0.75rem auto 1rem;
+  max-width: 24ch;
+  font-family: var(--font-display), serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--cream);
+}
+
+.vs__lede {
+  margin: 0 auto;
+  max-width: 560px;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: rgb(248 240 222 / 82%);
+}
+
+.vs__desktop {
+  display: none;
+}
+
+.vs__mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.vs-side-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+.vs-side-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.vs-side-icon--muted {
+  opacity: 0.6;
+  filter: brightness(0) saturate(100%) invert(26%) sepia(18%) saturate(600%)
+    hue-rotate(350deg) brightness(95%) contrast(88%);
+}
+
+.vs-side-icon--head {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.vs-side-icon--lg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.vs-scorecard__head .vs-side-icon--lg {
+  width: 2rem;
+  height: 2rem;
+}
+
+.vs-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 999px;
+}
+
+.vs-mark svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.vs-mark--yes {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.vs-mark--no {
+  border: 2px solid rgb(1 18 70 / 28%);
+  color: rgb(1 18 70 / 40%);
+}
+
+.vs-table .vs-mark--yes {
+  background: #fff;
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+
+.vs-scorecard .vs-mark--yes {
+  background: #fff;
+  box-shadow: inset 0 0 0 2px var(--ink);
+  color: var(--ink);
+}
+
+.vs-scorecard .vs-mark--no {
+  border-color: rgb(1 18 70 / 28%);
+  color: rgb(1 18 70 / 40%);
+}
+
+/* Mobile scorecard — white card, gold Heldi column, pouch (matches desktop) */
+.vs-scorecard {
+  margin-top: 2.75rem;
+  padding: 0.625rem 0.625rem 0.5rem;
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 6px 6px 0 rgb(237 163 29 / 90%);
+  color: var(--ink);
+  text-align: left;
+}
+
+.vs-scorecard__grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 4.5rem 4.5rem;
+  column-gap: 0.5rem;
+  width: 100%;
+}
+
+.vs-scorecard__panel {
+  position: absolute;
+  z-index: 0;
+  top: -6px;
+  bottom: -8px;
+  left: calc(100% - 4.5rem - 0.5rem - 4.5rem);
+  width: 4.5rem;
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  background: var(--gold);
+  box-shadow: 4px 4px 0 rgb(1 18 70 / 14%);
+  pointer-events: none;
+}
+
+.vs-scorecard__pouch {
+  position: absolute;
+  z-index: 2;
+  top: -52px;
+  left: calc(100% - 4.5rem - 0.5rem - 4.5rem + (4.5rem - 72px) / 2);
+  width: 72px;
+  pointer-events: none;
+}
+
+.vs-scorecard__pouch-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 88px;
+  padding: 0.3rem 0.25rem 0.2rem;
+  border: 3px solid var(--gold);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.vs-scorecard__pouch-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.vs-scorecard__head,
+.vs-scorecard__row {
+  display: contents;
+}
+
+.vs-scorecard__intro,
+.vs-scorecard__label,
+.vs-scorecard__heldi,
+.vs-scorecard__shakes {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+.vs-scorecard__head .vs-scorecard__intro,
+.vs-scorecard__head .vs-scorecard__heldi,
+.vs-scorecard__head .vs-scorecard__shakes {
+  min-height: 2.35rem;
+  padding-bottom: 0.2rem;
+}
+
+.vs-scorecard__row .vs-scorecard__label,
+.vs-scorecard__row .vs-scorecard__heldi,
+.vs-scorecard__row .vs-scorecard__shakes {
+  border-top: 1px solid rgb(1 18 70 / 14%);
+}
+
+.vs-scorecard__heldi,
+.vs-scorecard__shakes {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.vs-scorecard__head .vs-scorecard__shakes {
+  font-family: var(--font-body), serif;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: rgb(74 66 56 / 78%);
+}
+
+.vs-scorecard__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+/* Mobile detail cards */
+.vs-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+  text-align: left;
+}
+
+.vs-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  padding: 0.75rem 0 0;
+  overflow: hidden;
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  background: var(--cream);
+  box-shadow: 6px 6px 0 rgb(237 163 29 / 90%);
+  color: var(--ink);
+}
+
+.vs-card__label {
+  margin: 0 0 0.5rem;
+  padding: 0 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.vs-card__heldi,
+.vs-card__shakes {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0.5rem 0.625rem;
+}
+
+.vs-card__heldi {
+  background: rgb(237 163 29 / 35%);
+}
+
+.vs-card__shakes {
+  flex: 1;
+  background: rgb(74 66 56 / 12%);
+}
+
+.vs-card__heldi p,
+.vs-card__shakes p {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.vs-card__heldi p {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.vs-card__shakes p {
+  font-size: 11.5px;
+  color: var(--brown);
+}
+
+.vs-card .vs-side-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+
+/* Desktop table — white card on ink, gold Heldi column */
+.vs-table-card {
+  position: relative;
+  width: min(1040px, 100%);
+  margin: 3rem auto 0;
+  padding: 0.75rem 1rem 0.875rem;
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 8px 8px 0 rgb(237 163 29 / 90%);
+  color: var(--ink);
+}
+
+.vs-table {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1.05fr) minmax(0, 1fr);
+  width: 100%;
+  text-align: left;
+}
+
+.vs-table__panel {
+  position: absolute;
+  z-index: 0;
+  top: -6px;
+  bottom: -8px;
+  left: calc(100% * 1.35 / 3.4);
+  width: calc(100% * 1.05 / 3.4);
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  background: var(--gold);
+  box-shadow: 5px 5px 0 rgb(1 18 70 / 16%);
+  pointer-events: none;
+}
+
+.vs-table__pouch {
+  position: absolute;
+  z-index: 2;
+  top: -58px;
+  left: calc(100% * 1.35 / 3.4 + (100% * 1.05 / 3.4 - 92px) / 2);
+  width: 92px;
+  pointer-events: none;
+}
+
+.vs-table__pouch-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 92px;
+  height: 112px;
+  padding: 0.4rem 0.35rem 0.3rem;
+  border: 3px solid var(--gold);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.vs-table__pouch-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.vs-table__head,
+.vs-table__row {
+  display: contents;
+}
+
+.vs-table__feature,
+.vs-table__heldi,
+.vs-table__shakes {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0.45rem 0.75rem;
+}
+
+.vs-table__row .vs-table__feature,
+.vs-table__row .vs-table__heldi,
+.vs-table__row .vs-table__shakes {
+  border-top: 1px solid rgb(1 18 70 / 14%);
+}
+
+.vs-table__feature {
+  justify-content: flex-start;
+  padding-left: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.vs-table__heldi {
+  justify-content: center;
+  color: var(--ink);
+}
+
+.vs-table__shakes {
+  justify-content: center;
+  color: var(--brown);
+}
+
+.vs-table__head .vs-table__heldi,
+.vs-table__head .vs-table__shakes {
+  flex-direction: column;
+  gap: 0.25rem;
+  min-height: 2.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.35rem;
+}
+
+.vs-table__heldi-name {
+  font-family: var(--font-display), serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+}
+
+.vs-table__shakes-name {
+  font-family: var(--font-body), serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: rgb(74 66 56 / 78%);
+}
+
+.vs-table__heldi--text {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--ink);
+}
+
+.vs-table__shakes--text {
+  font-size: 0.75rem;
+  line-height: 1.3;
+  text-align: center;
+  color: rgb(74 66 56 / 78%);
+}
+
+.vs-table .vs-mark {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.vs-table .vs-mark svg {
+  width: 0.85rem;
+  height: 0.85rem;
+}
+
+@media (min-width: 900px) {
+  .vs__header {
+    margin-bottom: 1rem;
+  }
+
+  .vs__header h2 {
+    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+  }
+
+  .vs__lede {
+    font-size: 1.125rem;
+  }
+
+  .vs__desktop {
+    display: block;
+  }
+
+  .vs__mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .vs-cards {
+    gap: 10px;
+  }
+
+  .vs-scorecard__grid {
+    grid-template-columns: minmax(0, 1fr) 3.75rem 3.75rem;
+  }
+
+  .vs-scorecard__panel {
+    left: calc(100% - 3.75rem - 0.5rem - 3.75rem);
+    width: 3.75rem;
+  }
+
+  .vs-scorecard__pouch {
+    left: calc(100% - 3.75rem - 0.5rem - 3.75rem + (3.75rem - 64px) / 2);
+    width: 64px;
+  }
+
+  .vs-scorecard__pouch-frame {
+    width: 64px;
+    height: 78px;
+  }
+
+  .vs-card {
+    padding-top: 0.625rem;
+  }
+
+  .vs-card__label {
+    padding: 0 0.5rem;
+  }
+
+  .vs-card__heldi,
+  .vs-card__shakes {
+    padding: 0.4rem 0.5rem;
+  }
+}
+
 .how-it-works__header {
   margin-bottom: clamp(2rem, 5vw, 2.75rem);
   text-align: center;
@@ -2338,13 +2849,15 @@ h2 {
   opacity: 0.9;
 }
 
+/* The elephant faces left in the artwork; flip the left one so both look
+   into the centre of the page. */
 .cta-elephant--left {
   left: 1.5rem;
+  transform: scaleX(-1);
 }
 
 .cta-elephant--right {
   right: 1.5rem;
-  transform: scaleX(-1);
 }
 
 footer {
@@ -3634,6 +4147,15 @@ footer {
   letter-spacing: 0.04em;
 }
 
+/* Gold variant, used when the band sits between two non-gold sections */
+.founder-band--gold .founder-band__quote {
+  color: var(--ink);
+}
+
+.founder-band--gold .founder-band__signature {
+  color: var(--terracotta);
+}
+
 /* ---------- Subpage nav + shared blocks ---------- */
 
 .nav--subpage {
@@ -4360,9 +4882,19 @@ footer {
   padding-top: clamp(2.5rem, 6vw, 4rem);
 }
 
+.living-index__panel {
+  max-width: 920px;
+  margin: 0 auto 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
 .living-index__hero {
   max-width: 720px;
-  margin: 0 auto 2.5rem;
+  margin: 0 auto 1.5rem;
   text-align: center;
 }
 
@@ -4393,7 +4925,7 @@ footer {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
+  margin: 0;
 }
 
 .living-tag {
@@ -4412,13 +4944,18 @@ footer {
 }
 
 .living-tag:hover {
-  background: #fff;
+  background: var(--gold);
   transform: translateY(-1px);
 }
 
 .living-tag.is-active {
   background: var(--ink);
   color: var(--gold);
+}
+
+.living-tag--toggle {
+  border-style: dashed;
+  color: var(--brown);
 }
 
 .living-feed__count {
@@ -4988,8 +5525,8 @@ a.living-card__tag:hover {
   border-bottom: 2px solid rgb(var(--ink-rgb) / 12%);
 }
 
-/* Free gifts listed under a cart line, value struck out */
-.cart-line__gifts {
+/* Items included with a cart line (jars, masala dabba) */
+.cart-line__included {
   display: flex;
   flex-basis: 100%;
   flex-direction: column;
@@ -5000,14 +5537,14 @@ a.living-card__tag:hover {
   list-style: none;
 }
 
-.cart-line__gifts li {
+.cart-line__included li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 0.8125rem;
 }
 
-.cart-line__gifts img {
+.cart-line__included img {
   width: 1.5rem;
   height: 1.5rem;
   object-fit: cover;
@@ -5016,18 +5553,13 @@ a.living-card__tag:hover {
   background: #fff;
 }
 
-.cart-line__gifts s {
+.cart-line__included s {
   margin-left: auto;
   color: var(--muted);
 }
 
-.cart-line__gifts strong {
+.cart-line__included strong {
   color: var(--terracotta);
-}
-
-.cart-line__gift-note {
-  color: var(--muted);
-  font-size: 0.75rem;
 }
 
 .cart-line__image {
@@ -5241,6 +5773,80 @@ a.living-card__tag:hover {
   color: var(--brown);
   font-size: 0.8125rem;
   text-align: center;
+}
+
+/* Gifting (ACHABETA) checkbox above the checkout button */
+
+.cart-gifting {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.625rem;
+  margin: 0 0 0.875rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.cart-gifting label {
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-gifting input {
+  flex-shrink: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0.15rem 0 0;
+  accent-color: var(--terracotta);
+}
+
+.cart-gifting label {
+  color: var(--ink);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.cart-gifting--disabled {
+  opacity: 0.55;
+}
+
+.cart-gifting--disabled label,
+.cart-gifting--disabled input {
+  cursor: default;
+}
+
+.cart-gifting__hint {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--brown);
+  font-size: 0.8125rem;
+}
+
+/* Savings + shipping rows in the drawer summary */
+
+.cart-drawer__savings-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+  color: var(--terracotta);
+  font-weight: 600;
+}
+
+.cart-drawer__shipping-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+}
+
+.cart-drawer__nudge {
+  margin: 0.25rem 0 0.5rem;
+  color: var(--brown);
+  font-size: 0.8125rem;
 }
 
 /* Dev-only waitlist/live switch */
@@ -5878,6 +6484,13 @@ a.living-card__tag:hover {
     gap: 0.625rem;
   }
 
+  /* Keep the flag inside its narrow card */
+  .option-card__flag {
+    padding: 0.15rem 0.45rem;
+    font-size: 0.5625rem;
+    letter-spacing: 0.04em;
+  }
+
   .option-grid--size {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -5893,6 +6506,90 @@ a.living-card__tag:hover {
 
   .nutri-table {
     font-size: 0.75rem;
+  }
+}
+
+/* Launch pricing block above the size/bundle selectors */
+
+.pdp__launch {
+  margin: 1.5rem 0 0.25rem;
+}
+
+.pdp__launch-title {
+  margin: 0.375rem 0 0.25rem;
+  font-family: var(--font-display), serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.pdp__launch-subline {
+  margin: 0;
+  color: var(--brown);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.option-card__flag--gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+.option-card__save {
+  color: var(--terracotta);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Gifting discount band */
+
+.gifting__copy {
+  align-items: center;
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.gifting__cta {
+  margin-top: 1rem;
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* The code chip: a wedding-invite card stub with a dotted tear line */
+
+.gifting__chip {
+  margin-top: 0.375rem;
+  padding: 0.875rem 1.75rem 0.875rem 2rem;
+  border: 2px solid var(--ink);
+  border-left: 3px dotted var(--ink);
+  border-radius: 4px 16px 16px 4px;
+  background: var(--gold);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-display), serif;
+  font-size: 1.375rem;
+  letter-spacing: 0.14em;
+  box-shadow: 4px 4px 0 rgb(237 163 29 / 30%);
+  transition: transform 150ms ease, background-color 150ms ease;
+}
+
+.gifting__chip:hover {
+  background: var(--cream);
+  transform: translateY(-2px);
+}
+
+.gifting__copy p.gifting__small {
+  color: var(--dark-muted);
+  font-size: 0.8125rem;
+}
+
+.audience-heading__line2 {
+  display: inline;
+}
+
+@media (min-width: 900px) {
+  .audience-heading__line2 {
+    display: block;
   }
 }
 

@@ -17,7 +17,7 @@ United Kingdom only (for now).
 | Order | Service | Cost |
 |---|---|---|
 | Orders over £40 | Royal Mail Tracked 48 | **Free** |
-| Sample sachet only | Royal Mail Large Letter (Tracked) | £2.75 |
+| Sample Trio only | Royal Mail Large Letter (Tracked) | **Free** (we cover it) |
 | Pouches and bundles (up to 2kg) | Royal Mail Tracked 48 Small Parcel | £3.55 |
 
 The exact charge is always shown at checkout before you pay.
@@ -30,7 +30,7 @@ You will get an email with tracking when your order ships. Delivery estimates
 are not guaranteed — see the [Terms & Conditions](./terms-and-conditions.md)
 for what happens if an order is late or lost.
 
-## Free gifts
+## Included items
 
-Free items included with bundles (jars, masala dabba) ship in the same
-parcel as your pouches.
+Items included with bundles (jars, masala dabba) ship in the same parcel as
+your pouches.

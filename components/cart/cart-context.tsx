@@ -11,9 +11,11 @@ import {
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { getCommerceProvider } from "@/lib/commerce/provider";
 import type { Cart, CommerceMode } from "@/lib/commerce/types";
+import { GIFTING, type GiftingMethod } from "@/lib/pricing";
 
 const CART_ID_KEY = "heldi_cart_id";
 const MODE_OVERRIDE_KEY = "heldi_mode_override";
+const GIFTING_METHOD_KEY = "heldi_gifting_method";
 
 type CartContextValue = {
   cart: Cart | null;
@@ -22,6 +24,11 @@ type CartContextValue = {
   mode: CommerceMode;
   // Dev-only runtime override of the env flag; null follows the env.
   setModeOverride: (mode: CommerceMode | null) => void;
+  // How the gifting discount was applied — the code field and the checkout
+  // checkbox never stack, so whichever applied first locks the other out.
+  giftingMethod: GiftingMethod | null;
+  applyGifting: (method: GiftingMethod) => Promise<void>;
+  removeGifting: () => Promise<void>;
   openCart: () => void;
   closeCart: () => void;
   addItem: (merchandiseId: string, quantity: number) => Promise<void>;
@@ -44,16 +51,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [modeOverride, setModeOverrideState] = useState<CommerceMode | null>(null);
+  const [giftingMethod, setGiftingMethodState] = useState<GiftingMethod | null>(null);
 
   const mode = modeOverride ?? COMMERCE_MODE;
 
-  // Hydrate cart + dev mode override from storage after mount.
+  // Hydrate cart + dev mode override + gifting method from storage after mount.
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
       const stored = window.localStorage.getItem(MODE_OVERRIDE_KEY);
       if (stored === "waitlist" || stored === "live") {
         setModeOverrideState(stored);
       }
+    }
+
+    const storedMethod = window.localStorage.getItem(GIFTING_METHOD_KEY);
+    if (storedMethod === "code" || storedMethod === "checkbox") {
+      setGiftingMethodState(storedMethod);
     }
 
     const cartId = window.localStorage.getItem(CART_ID_KEY);
@@ -74,6 +87,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (next) window.localStorage.setItem(MODE_OVERRIDE_KEY, next);
     else window.localStorage.removeItem(MODE_OVERRIDE_KEY);
     setIsOpen(false);
+  }, []);
+
+  const setGiftingMethod = useCallback((next: GiftingMethod | null) => {
+    setGiftingMethodState(next);
+    if (next) window.localStorage.setItem(GIFTING_METHOD_KEY, next);
+    else window.localStorage.removeItem(GIFTING_METHOD_KEY);
   }, []);
 
   const runMutation = useCallback(
@@ -134,13 +153,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [runMutation, cart?.discountCodes]
   );
 
-  const clearDiscounts = useCallback(
-    () =>
-      runMutation((cartId) =>
-        getCommerceProvider().updateDiscountCodes(cartId, [])
-      ),
-    [runMutation]
+  const applyGifting = useCallback(
+    async (method: GiftingMethod) => {
+      await runMutation((cartId) => {
+        const existing = cart?.discountCodes.map((entry) => entry.code) ?? [];
+        return getCommerceProvider().updateDiscountCodes(cartId, [
+          ...existing.filter((entry) => entry.toUpperCase() !== GIFTING.code),
+          GIFTING.code
+        ]);
+      });
+      setGiftingMethod(method);
+    },
+    [runMutation, cart?.discountCodes, setGiftingMethod]
   );
+
+  const removeGifting = useCallback(async () => {
+    await runMutation((cartId) => {
+      const remaining = (cart?.discountCodes.map((entry) => entry.code) ?? []).filter(
+        (entry) => entry.toUpperCase() !== GIFTING.code
+      );
+      return getCommerceProvider().updateDiscountCodes(cartId, remaining);
+    });
+    setGiftingMethod(null);
+  }, [runMutation, cart?.discountCodes, setGiftingMethod]);
+
+  const clearDiscounts = useCallback(async () => {
+    await runMutation((cartId) =>
+      getCommerceProvider().updateDiscountCodes(cartId, [])
+    );
+    setGiftingMethod(null);
+  }, [runMutation, setGiftingMethod]);
 
   const value = useMemo<CartContextValue>(
     () => ({
@@ -149,6 +191,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       isPending,
       mode,
       setModeOverride,
+      giftingMethod,
+      applyGifting,
+      removeGifting,
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),
       addItem,
@@ -163,6 +208,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       isPending,
       mode,
       setModeOverride,
+      giftingMethod,
+      applyGifting,
+      removeGifting,
       addItem,
       updateQuantity,
       removeItem,

@@ -48,9 +48,9 @@ or store card details.
 If we discover an obvious pricing error before dispatch we will contact you
 to reconfirm or cancel with a full refund.
 
-Promotions (launch discounts, bundle prices, free gifts such as jars or the
-masala dabba) apply only while advertised, cannot be exchanged for cash, and
-one per order unless stated otherwise.
+Promotions (launch prices, bundle prices, gifting discount codes, included
+items such as jars or the masala dabba) apply only while advertised, cannot
+be exchanged for cash, and one discount per order unless stated otherwise.
 
 ## 5. Delivery
 

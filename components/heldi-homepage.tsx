@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import {
   FormEvent,
   ReactNode,
@@ -10,11 +11,14 @@ import {
 } from "react";
 import { AudienceGallery } from "@/components/audience-gallery";
 import { CartIcon } from "@/components/cart/cart-icon";
+import { useCart } from "@/components/cart/cart-context";
+import { ComparisonSection } from "@/components/comparison-section";
 import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
 import { FooterLegal } from "@/components/subpage-nav";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { HOME_FAQS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
+import { GiftingBand } from "@/components/shop/gifting-band";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 
@@ -110,7 +114,7 @@ const COLS = 11;
 const FAQS = HOME_FAQS;
 
 const TICKER_COPY =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  FREE JAR WITH YOUR FIRST ORDER  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
+  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -522,6 +526,7 @@ function WaitlistForm({
 }) {
   const [expanded, setExpanded] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { mode } = useCart();
 
   useEffect(() => {
     if (expanded) inputRef.current?.focus();
@@ -534,6 +539,14 @@ function WaitlistForm({
 
   const buttonClassName =
     buttonStyle === "pill" ? "button button--pill" : "button button--square";
+
+  if (mode === "live") {
+    return (
+      <Link className={buttonClassName} href="/shop">
+        Shop now
+      </Link>
+    );
+  }
 
   if (joined) {
     return (
@@ -910,6 +923,7 @@ export function HeldiHomepage({
     heroLayout !== "reveal"
   );
   const { hidden: scrollHidden } = useNavScrollState();
+  const { mode } = useCart();
   const navHidden = scrollHidden && !menuOpen;
   const heroSectionRef = useRef<HTMLElement>(null);
   const footerWaitlistRef = useRef<HTMLDivElement>(null);
@@ -1060,9 +1074,15 @@ export function HeldiHomepage({
       </div>
 
       {showFloatingCta ? (
-        <a className="floating-cta" href="#join">
-          Join waitlist
-        </a>
+        mode === "live" ? (
+          <Link className="floating-cta" href="/shop">
+            Shop now
+          </Link>
+        ) : (
+          <a className="floating-cta" href="#join">
+            Join waitlist
+          </a>
+        )
       ) : null}
 
       <section
@@ -1100,9 +1120,15 @@ export function HeldiHomepage({
               other home-cooked favourites.
             </h2>
             <div className="hero-video-actions">
-              <a className="button button--pill" href="#join">
-                Join waitlist
-              </a>
+              {mode === "live" ? (
+                <Link className="button button--pill" href="/shop">
+                  Shop now
+                </Link>
+              ) : (
+                <a className="button button--pill" href="#join">
+                  Join waitlist
+                </a>
+              )}
               <a className="button button--pill button--outline" href="#how">
                 How it works
               </a>
@@ -1229,6 +1255,8 @@ export function HeldiHomepage({
         </div>
       </section>
 
+      <GiftingBand showShopCta />
+
       <section
         className="section section--gold section--bordered"
         id="truth"
@@ -1259,12 +1287,19 @@ export function HeldiHomepage({
 
       <section className="section section--gold section--bordered" id="audience">
         <div className="content">
-          <h2 className="centered">Built for you. Made for the whole family.</h2>
+          <h2 className="centered audience-heading">
+            Built for you.{" "}
+            <span className="audience-heading__line2">
+              Made for the whole family.
+            </span>
+          </h2>
           <AudienceGallery />
         </div>
       </section>
 
-      <section className="section section--ink section--bordered founder-band">
+      <ComparisonSection />
+
+      <section className="section section--gold section--bordered founder-band founder-band--gold">
         <div className="founder-band__inner">
           <p className="founder-band__quote">
             I made Heldi for my parents. They were never going to drink a
@@ -1272,7 +1307,7 @@ export function HeldiHomepage({
             came to the table instead.
           </p>
           <p className="founder-band__signature">&mdash; Mihir, founder</p>
-          <a className="pill-link pill-link--dark" href="/our-story">
+          <a className="pill-link" href="/our-story">
             Read our story &#8594;
           </a>
         </div>
@@ -1310,16 +1345,15 @@ export function HeldiHomepage({
       <section className="section section--ink" id="jar">
         <div className="jar-layout">
           <div className="section-copy section-copy--dark">
-            <p className="eyebrow eyebrow--gold">WITH YOUR FIRST ORDER</p>
+            <p className="eyebrow eyebrow--gold">WITH EVERY ORDER</p>
             <h2>A jar for the table. On us.</h2>
             <p>
-              Every first order ships with a refillable Heldi jar that sits on
-              the <CopyHighlight>dinner table</CopyHighlight>, where it belongs.
-              Not the cupboard. Right there{" "}
-              <CopyHighlight>beside the dal</CopyHighlight>, where everyone can
-              reach for it. Silver or gold? That is a choice every mama likes
-              to make. Gold when the table is set for guests. Silver for the
-              meal the whole family eats every night.
+              Every Heldi order ships with a refillable jar for the{" "}
+              <CopyHighlight>dinner table</CopyHighlight>. Not the cupboard.
+              Right there <CopyHighlight>beside the dal</CopyHighlight>, where
+              everyone can reach for it. Silver or gold? That is a choice
+              every mama likes to make. Gold when the table is set for guests.
+              Silver for the meal the whole family eats every night.
             </p>
           </div>
           <div className="jar-card">
@@ -1338,20 +1372,21 @@ export function HeldiHomepage({
         </div>
       </section>
 
-      <section className="final-cta section--bordered" id="join">
-        <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-small.png")} alt="" width={270} height={280} />
-        <div className="final-cta-copy">
-          <h2>Be first to stir it in.</h2>
-          <p>
-            One email the day we launch, and a{" "}
-            <CopyHighlight>free jar</CopyHighlight> for the family table.
-          </p>
-          <div ref={footerWaitlistRef}>
-            <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
+      {mode !== "live" ? (
+        <section className="final-cta section--bordered" id="join">
+          <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-large-transparent.png")} alt="" width={2048} height={2048} />
+          <div className="final-cta-copy">
+            <h2>Be first to stir it in.</h2>
+            <p>
+              One email the day we <CopyHighlight>launch</CopyHighlight>.
+            </p>
+            <div ref={footerWaitlistRef}>
+              <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
+            </div>
           </div>
-        </div>
-        <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-small.png")} alt="" width={270} height={280} />
-      </section>
+          <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-large-transparent.png")} alt="" width={2048} height={2048} />
+        </section>
+      ) : null}
 
       <footer>
         <Wordmark footer onDark />

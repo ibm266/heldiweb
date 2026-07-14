@@ -1,20 +1,29 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
 import {
-  KHANA_VARIANT_ID,
   POUCH_THUMB,
   SAMPLE_VARIANT_ID,
   SERVINGS_PER_POUCH,
   SERVINGS_PER_SAMPLE,
+  TIER_VARIANT_IDS,
   displayPrice,
-  giftsForQuantity
+  includedItemsForQuantity
 } from "@/lib/commerce/catalog";
-import { SALE } from "@/lib/commerce/config";
-import { formatMoney, formatPence, moneyToPence, penceToMoney } from "@/lib/commerce/money";
-import type { GiftItem, Product } from "@/lib/commerce/types";
+import { formatMoney, formatPence, moneyToPence } from "@/lib/commerce/money";
+import type { IncludedItem, Product, ProductVariant } from "@/lib/commerce/types";
+import {
+  FEATURED_TIER,
+  SHIPPING,
+  TIERS,
+  TIER_ORDER,
+  tierSavingsPence,
+  type TierId
+} from "@/lib/pricing";
 import { NutritionModal } from "./nutrition-modal";
 import { ProductAccordions } from "./product-accordions";
 
@@ -27,54 +36,66 @@ const PDP_PILLS: { icon: string; label: string; width: number; height: number }[
   { icon: "/images/pouch-badges/vegetarian.png", label: "Vegetarian", width: 286, height: 367 }
 ];
 
-const QUANTITY_OPTIONS = [1, 2, 3] as const;
-
 export function BuyBox({ product }: { product: Product }) {
-  const [variantId, setVariantId] = useState(KHANA_VARIANT_ID);
-  const [quantity, setQuantity] = useState(1);
+  const [isPouch, setIsPouch] = useState(true);
+  const [tierId, setTierId] = useState<TierId>("single");
   const [imageOverride, setImageOverride] = useState<number | null>(null);
   const [justAdded, setJustAdded] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const { mode, addItem, isPending } = useCart();
 
-  const pouchVariant = product.variants.find((variant) => variant.id === KHANA_VARIANT_ID);
+  const tierVariants = new Map<TierId, ProductVariant>();
+  for (const id of TIER_ORDER) {
+    const variant = product.variants.find((entry) => entry.id === TIER_VARIANT_IDS[id]);
+    if (variant) tierVariants.set(id, variant);
+  }
   const sampleVariant = product.variants.find((variant) => variant.id === SAMPLE_VARIANT_ID);
-  if (!pouchVariant || !sampleVariant) return null;
+  if (tierVariants.size !== TIER_ORDER.length || !sampleVariant) return null;
 
-  const isPouch = variantId === KHANA_VARIANT_ID;
-  const currentVariant = isPouch ? pouchVariant : sampleVariant;
+  const tier = TIERS[tierId];
+  const selectedVariant = isPouch ? tierVariants.get(tierId)! : sampleVariant;
 
-  function selectVariant(id: string) {
-    setVariantId(id);
+  function selectSize(pouch: boolean) {
+    setIsPouch(pouch);
     setImageOverride(null);
   }
 
-  function selectQuantity(n: number) {
-    setQuantity(n);
+  function selectTier(id: TierId) {
+    setTierId(id);
     setImageOverride(null);
+    track("tier_selected", { tier: id });
   }
 
-  const autoImageIndex = isPouch ? quantity - 1 : product.images.length - 1;
+  // Gallery indexes 0-2 are the single/pair/full-table bundles, index 3 is
+  // the Sample Trio; the image follows the selection unless a thumb was
+  // clicked.
+  const autoImageIndex = isPouch ? TIER_ORDER.indexOf(tierId) : product.images.length - 1;
   const shownIndex = imageOverride ?? autoImageIndex;
   const mainImage = product.images[shownIndex] ?? product.images[0];
 
-  const pouchSingle = displayPrice(pouchVariant, 1);
+  const pouchSingle = displayPrice(tierVariants.get("single")!, 1);
   const sampleSingle = displayPrice(sampleVariant, 1);
-  const selected = displayPrice(currentVariant, isPouch ? quantity : 1);
-  const gifts: GiftItem[] = isPouch ? giftsForQuantity(pouchVariant, quantity) : [];
-
-  // Callouts describe whichever image is on screen: gallery indexes 0-2 are
-  // the 1/2/3-pouch bundles, index 3 is the sample sachet.
-  const annoQuantity = shownIndex < 3 ? shownIndex + 1 : null;
-  const annoPrice = annoQuantity
-    ? displayPrice(pouchVariant, annoQuantity)
-    : sampleSingle;
-  const annoGifts: GiftItem[] = annoQuantity
-    ? giftsForQuantity(pouchVariant, annoQuantity)
+  const selected = displayPrice(selectedVariant, 1);
+  const included: IncludedItem[] = isPouch
+    ? includedItemsForQuantity(selectedVariant, 1)
     : [];
 
+  // The price callout describes whichever image is on screen; prices always
+  // come from the catalog (launch price with the RRP struck).
+  const annoTier = shownIndex < 3 ? TIER_ORDER[shownIndex] : null;
+  const annoPrice = annoTier
+    ? displayPrice(tierVariants.get(annoTier)!, 1)
+    : sampleSingle;
+
+  // "Orders under £40 ship for £3.55." only applies to One pouch; every
+  // other selection clears the threshold or ships free anyway.
+  const shippingNote =
+    isPouch && tierId === "single"
+      ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
+      : "Ships free.";
+
   async function handleAdd() {
-    await addItem(variantId, isPouch ? quantity : 1);
+    await addItem(selectedVariant.id, 1);
     setJustAdded(true);
     window.setTimeout(() => setJustAdded(false), 2000);
   }
@@ -96,16 +117,6 @@ export function BuyBox({ product }: { product: Product }) {
               {annoPrice.compareAt ? <s>{formatMoney(annoPrice.compareAt)}</s> : null}
               {formatMoney(annoPrice.current)}
             </span>
-            {annoGifts.length > 0 ? (
-              <span className="pdp__anno-stack">
-                {annoGifts.map((gift) => (
-                  <span className="pdp__anno" key={gift.title}>
-                    {gift.title} <s>{formatPence(gift.valuePence)}</s>{" "}
-                    <strong>Free</strong>
-                  </span>
-                ))}
-              </span>
-            ) : null}
           </div>
         </div>
         <div className="pdp__thumbs">
@@ -155,17 +166,22 @@ export function BuyBox({ product }: { product: Product }) {
           ))}
         </ul>
 
+        <div className="pdp__launch">
+          <p className="eyebrow">LAUNCH PRICES</p>
+          <p className="pdp__launch-title">Launch prices. Not forever prices.</p>
+        </div>
+
         <p className="pdp__group-label">
-          SIZE: <strong>{currentVariant.title}</strong>
+          SIZE: <strong>{isPouch ? "300G POUCH" : "SAMPLE TRIO"}</strong>
         </p>
         <div className="option-grid option-grid--size">
           <label className={`option-card option-card--slim${isPouch ? " is-selected" : ""}`}>
             <input
               type="radio"
               name="size"
-              value={KHANA_VARIANT_ID}
+              value="pouch"
               checked={isPouch}
-              onChange={() => selectVariant(KHANA_VARIANT_ID)}
+              onChange={() => selectSize(true)}
             />
             <span className="option-card__name">300g pouch</span>
             <span className="option-card__meta">{SERVINGS_PER_POUCH} meals</span>
@@ -178,11 +194,11 @@ export function BuyBox({ product }: { product: Product }) {
             <input
               type="radio"
               name="size"
-              value={SAMPLE_VARIANT_ID}
+              value="sample"
               checked={!isPouch}
-              onChange={() => selectVariant(SAMPLE_VARIANT_ID)}
+              onChange={() => selectSize(false)}
             />
-            <span className="option-card__name">Sample sachet</span>
+            <span className="option-card__name">Sample Trio</span>
             <span className="option-card__meta">{SERVINGS_PER_SAMPLE} servings</span>
             <span className="option-card__price">
               {sampleSingle.compareAt ? <s>{formatMoney(sampleSingle.compareAt)}</s> : null}
@@ -194,35 +210,44 @@ export function BuyBox({ product }: { product: Product }) {
         {isPouch ? (
           <>
             <p className="pdp__group-label">
-              QUANTITY: <strong>{quantity} {quantity > 1 ? "POUCHES" : "POUCH"}</strong>
+              BUNDLE: <strong>{tier.name.toUpperCase()}</strong>
             </p>
             <div className="option-grid">
-              {QUANTITY_OPTIONS.map((n) => {
-                const price = displayPrice(pouchVariant, n);
+              {TIER_ORDER.map((id) => {
+                const option = TIERS[id];
+                const price = displayPrice(tierVariants.get(id)!, 1);
                 const perMealPence = Math.round(
-                  moneyToPence(price.current) / (n * SERVINGS_PER_POUCH)
+                  moneyToPence(price.current) / (option.pouches * SERVINGS_PER_POUCH)
                 );
-                const savePence = price.compareAt
-                  ? moneyToPence(price.compareAt) - moneyToPence(price.current)
-                  : 0;
                 return (
-                  <label key={n} className={`option-card${quantity === n ? " is-selected" : ""}`}>
-                    {savePence > 0 ? (
-                      <span className="option-card__flag">SAVE {formatMoney(penceToMoney(savePence))}</span>
+                  <label key={id} className={`option-card${tierId === id ? " is-selected" : ""}`}>
+                    {id === FEATURED_TIER ? (
+                      <span className="option-card__flag option-card__flag--gold">
+                        MOST POPULAR
+                      </span>
                     ) : null}
                     <input
                       type="radio"
-                      name="quantity"
-                      value={n}
-                      checked={quantity === n}
-                      onChange={() => selectQuantity(n)}
+                      name="bundle"
+                      value={id}
+                      checked={tierId === id}
+                      onChange={() => selectTier(id)}
                     />
-                    <img className="option-card__img" src={product.images[n - 1].url} alt="" />
-                    <span className="option-card__name">{n} pouch{n > 1 ? "es" : ""}</span>
-                    <span className="option-card__meta">{formatPence(perMealPence)} per meal</span>
+                    <img
+                      className="option-card__img"
+                      src={product.images[TIER_ORDER.indexOf(id)].url}
+                      alt=""
+                    />
+                    <span className="option-card__name">{option.name}</span>
+                    <span className="option-card__meta">
+                      {formatPence(perMealPence)} per meal
+                    </span>
                     <span className="option-card__price">
                       {price.compareAt ? <s>{formatMoney(price.compareAt)}</s> : null}
                       {formatMoney(price.current)}
+                    </span>
+                    <span className="option-card__save">
+                      Save {formatPence(tierSavingsPence(id))}
                     </span>
                   </label>
                 );
@@ -233,21 +258,13 @@ export function BuyBox({ product }: { product: Product }) {
               <p className="pdp__includes-title">Includes:</p>
               <div className="pdp__includes-row">
                 <img className="pdp__includes-img" src={POUCH_THUMB} alt="" />
-                <span>{quantity} × 300g pouch{quantity > 1 ? "es" : ""}</span>
+                <span>{tier.pouches} × 300g pouch{tier.pouches > 1 ? "es" : ""}</span>
               </div>
-              {gifts.map((gift) => (
-                <div className="pdp__includes-row" key={gift.title}>
-                  <img className="pdp__includes-img" src={gift.image} alt="" />
-                  <span>
-                    {gift.title}
-                    {gift.note ? (
-                      <>
-                        {" "}
-                        <span className="pdp__includes-note">({gift.note})</span>
-                      </>
-                    ) : null}
-                  </span>
-                  <s>{formatPence(gift.valuePence)}</s>
+              {included.map((item) => (
+                <div className="pdp__includes-row" key={item.title}>
+                  <img className="pdp__includes-img" src={item.image} alt="" />
+                  <span>{item.title}</span>
+                  <s>{formatPence(item.valuePence)}</s>
                   <strong>Free</strong>
                 </div>
               ))}
@@ -260,20 +277,12 @@ export function BuyBox({ product }: { product: Product }) {
             {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket — ${formatMoney(selected.current)}`}
           </button>
         ) : (
-          <a className="pdp__cta" href="/#join">
+          <Link className="pdp__cta" href="/#join">
             Join waitlist
-          </a>
+          </Link>
         )}
 
-        {SALE.active ? (
-          <p className="pdp__sale-note">
-            {SALE.label}: {SALE.percent}% off everything
-          </p>
-        ) : null}
-
-        <p className="pdp__promise">
-          <strong>Free UK shipping</strong> over £40 · Royal Mail Tracked 48 · Free jar with your first order
-        </p>
+        <p className="pdp__promise">{shippingNote}</p>
 
         <div className="pdp__desc">
           <p>

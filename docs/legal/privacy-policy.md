@@ -19,7 +19,7 @@ heldi.co.uk. Contact us about privacy at info@heldi.co.uk.
 
 | What | When | Why (lawful basis) |
 |---|---|---|
-| Email address | You join the waitlist | To email you when we launch, and your free-jar offer (consent — you can unsubscribe any time) |
+| Email address | You join the waitlist | To email you when we launch (consent, you can unsubscribe any time) |
 | Name, email, delivery address, phone | You place an order | To fulfil and deliver your order and send order updates (performance of a contract) |
 | Payment details | You pay at checkout | Processed entirely by Shopify Payments / your payment provider — **we never see or store your card details** (performance of a contract) |
 | Order history | You shop with us | Customer support, refunds, fraud prevention, and our legal record-keeping duties (legal obligation, legitimate interests) |

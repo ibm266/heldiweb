@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BuyBox } from "@/components/shop/buy-box";
+import { GiftingBand } from "@/components/shop/gifting-band";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { getProduct } from "@/lib/commerce/catalog";
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { SITE_URL } from "@/lib/site";
+import { SAMPLE_PRICE_PENCE, TIERS } from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Heldi Khana · Heldi",
@@ -28,8 +30,8 @@ export default async function ShopPage() {
       ? {
           offers: {
             "@type": "AggregateOffer",
-            lowPrice: "5.00",
-            highPrice: "35.00",
+            lowPrice: (SAMPLE_PRICE_PENCE / 100).toFixed(2),
+            highPrice: (TIERS.triple.launchPence / 100).toFixed(2),
             priceCurrency: "GBP",
             availability: "https://schema.org/InStock",
             url: `${SITE_URL}/shop`
@@ -45,6 +47,8 @@ export default async function ShopPage() {
       <section className="section section--cream" data-nav-hero>
         <BuyBox product={product} />
       </section>
+
+      <GiftingBand />
 
       <SubpageFooter />
 

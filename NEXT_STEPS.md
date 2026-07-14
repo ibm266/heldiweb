@@ -7,10 +7,10 @@ Ordered by priority. Tick things off as they land.
 
 The whole storefront UI is built and runs on a mock cart. To take money:
 
-- [ ] Create the Shopify store; add the Khana product with two variants (300g pouch / Sample sachet) at £35 / £5
-- [ ] Configure quantity-break automatic discounts in Shopify admin: 2 pouches → £65, 3 pouches → £95 (the site only *displays* these; Shopify is the source of truth for what's charged)
-- [ ] Configure the free-gift tiers (gold jar / silver jar / masala dabba) — as free-gift automatic discounts or zero-priced line items added by discount
-- [ ] Shipping profile: free over £40, £2.75 Large Letter (sample), £3.55 Small Parcel (pouches), Royal Mail Tracked 48
+- [ ] Create the Shopify store; add the Khana product with four variants mirroring `lib/pricing.ts` — One pouch (£30, compare-at £35), The pair (£55, compare-at £70), The full table (£80, compare-at £105), Sample Trio (£5). Each bundle is its own variant/SKU so baskets hold e.g. 2 × The pair as one line
+- [ ] Create the ACHABETA discount code: 10% off, applies to the One pouch and The pair variants only (never The full table or the Sample Trio), one discount per order, no stacking
+- [ ] Configure the included items (a refillable table jar with every pouch, masala dabba with the 3-pack) as zero-priced line items added automatically
+- [ ] Shipping profile: free over £40, £3.55 Small Parcel (pouches), Royal Mail Tracked 48; Sample Trio ships free (we absorb the £2.75 Large Letter rate)
 - [ ] VAT: food supplements are standard-rated 20% in the UK — check tax settings
 - [ ] Create a custom app → Storefront API access token
 - [ ] Point a subdomain (e.g. `shop.heldi.co.uk`) at Shopify so checkout shows the Heldi domain
@@ -30,7 +30,7 @@ lost. This is the most valuable fix while the site is pre-launch.
 
 - [ ] Pick the platform (Klaviyo recommended — it also powers the post-launch email flows)
 - [ ] Wire the form to it (API route or client SDK), with success/error states
-- [ ] Send the "free jar with your first order" promise in the confirmation
+- [ ] Confirmation email: launch prices and the jar-with-every-order promise
 
 ## 3. Legal pages (required before selling)
 
@@ -67,8 +67,6 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 ## Placeholders to revisit before launch
 
 - Product photography is AI-generated (Higgsfield) — replace with real shots when the physical product exists
-- Gift values (£8 jars / £15 dabba) are placeholders in `GIFT_TIERS` in `lib/commerce/catalog.ts`
 - Servings per pouch is 25 (300g ÷ 12g serving, per the nutrition declaration) — constant `SERVINGS_PER_POUCH` in `catalog.ts`
 - "Khana" is a placeholder product name — one constant + copy strings to change
-- Launch sale is configured in `lib/commerce/config.ts` (`SALE`) — flip `active` and mirror it in Shopify admin
-- Mock discount code `HELDI10` exists only for testing the cart UI
+- All pricing (RRP, launch prices, gifting discount, shipping) lives in `lib/pricing.ts` — after the launch period, set each tier's launch price equal to its RRP there and mirror the change in Shopify admin

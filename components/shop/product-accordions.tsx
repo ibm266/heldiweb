@@ -1,6 +1,8 @@
 "use client";
 
 import { type ReactNode, useState } from "react";
+import { formatPence } from "@/lib/commerce/money";
+import { SHIPPING } from "@/lib/pricing";
 import {
   FORMULA,
   NUTRITION_ROWS,
@@ -84,9 +86,11 @@ const ACCORDION_ITEMS: { question: string; answer: ReactNode }[] = [
     question: "Shipping & returns",
     answer: (
       <p>
-        <strong>Free UK shipping</strong> on orders over £40. Otherwise{" "}
-        <strong>Royal Mail Tracked 48</strong> from £2.75 (sample) or £3.55
-        (pouches). Sent by us, packed with care.
+        <strong>Free UK shipping</strong> on orders over{" "}
+        {formatPence(SHIPPING.freeOverPence)}. Otherwise{" "}
+        <strong>Royal Mail Tracked 48</strong> at{" "}
+        {formatPence(SHIPPING.standardPence)}. The Sample Trio ships free.
+        Sent by us, packed with care.
       </p>
     )
   }

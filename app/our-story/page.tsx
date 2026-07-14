@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
+import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 
 export const metadata: Metadata = {
   title: "Our story · Heldi",
@@ -69,9 +70,7 @@ export default function OurStoryPage() {
           <p className="story__signoff">Strength in tradition.</p>
 
           <div className="story__cta">
-            <a className="button button--pill" href="/#join">
-              Join waitlist
-            </a>
+            <WaitlistOrShopCta />
           </div>
 
           <Image

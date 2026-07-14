@@ -7,15 +7,6 @@ export type Money = {
   currencyCode: "GBP";
 };
 
-// Quantity pricing tier for a product: buying `minQty` units costs
-// `totalPence` for that block. Charged prices come from Shopify's automatic
-// discounts at checkout; this table only mirrors them for on-site display
-// and mock-cart math.
-export type QuantityTier = {
-  minQty: number;
-  totalPence: number;
-};
-
 export type ProductImage = {
   url: string;
   altText: string;
@@ -28,10 +19,9 @@ export type ProductVariant = {
   price: Money;
   compareAtPrice: Money | null;
   availableForSale: boolean;
-  // Main image for this variant (e.g. the 300g pouch shot vs. the sample
-  // sachet shot). Falls back to the product's first image when absent.
+  // Main image for this variant (e.g. the bundle shot for The pair vs. the
+  // sample sachet shot). Falls back to the product's first image when absent.
   image?: ProductImage;
-  quantityTiers?: QuantityTier[];
 };
 
 export type ProductHandle = "khana";
@@ -47,14 +37,13 @@ export type Product = {
   variants: ProductVariant[];
 };
 
-// A free item bundled with a purchase (not sold separately). `valuePence` is
-// the struck-through "worth" shown next to "Free"; `note` is an optional
-// caveat like "with your first order".
-export type GiftItem = {
+// An item included in a bundle (not sold separately): the refillable table
+// jars and the masala dabba that ship with pouch tiers. `valuePence` is the
+// total worth of the row, shown struck out next to "Free".
+export type IncludedItem = {
   title: string;
   image: string;
   valuePence: number;
-  note?: string;
 };
 
 export type CartLineMerchandise = ProductVariant & {

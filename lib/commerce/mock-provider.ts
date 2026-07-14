@@ -1,5 +1,5 @@
-import { findVariantById, priceForQuantityPence } from "./catalog";
-import { salePricePence } from "./config";
+import { GIFTING, giftingDiscountPence } from "@/lib/pricing";
+import { findVariantById, giftingEligiblePenceForLines } from "./catalog";
 import { moneyToPence, penceToMoney } from "./money";
 import type { CommerceProvider } from "./provider";
 import type {
@@ -11,16 +11,10 @@ import type {
 
 // Browser-only cart that mimics the Shopify Storefront Cart API: persists
 // merchandise ids + quantities in localStorage and recomputes all pricing
-// (quantity tiers, launch sale, discount codes) from the catalog on every
+// (launch quantity tiers, gifting discount) from the config on every
 // mutation. Discarded wholesale once the real Shopify provider takes over.
 
 const STORAGE_KEY = "heldi_cart_v1";
-
-// Test codes for exercising the discount UI; real codes are validated by
-// Shopify at checkout.
-const MOCK_DISCOUNT_CODES: Record<string, number> = {
-  HELDI10: 10
-};
 
 type StoredCart = {
   provider: "mock";
@@ -53,8 +47,10 @@ function buildLine(merchandiseId: string, quantity: number): CartLine | null {
   if (!found) return null;
   const { product, variant } = found;
 
-  const fullPence = moneyToPence(variant.price) * quantity;
-  const pricedPence = salePricePence(priceForQuantityPence(variant, quantity));
+  const pricedPence = moneyToPence(variant.price) * quantity;
+  const fullPence = variant.compareAtPrice
+    ? moneyToPence(variant.compareAtPrice) * quantity
+    : pricedPence;
 
   return {
     id: `line_${merchandiseId}`,
@@ -85,16 +81,19 @@ function materialize(stored: StoredCart): Cart {
     0
   );
 
+  // ACHABETA is the only code the mock recognises. It only counts as
+  // applicable when the basket has an eligible portion (single or double
+  // blocks), mirroring how Shopify will reject it on excluded-only baskets.
+  const eligiblePence = giftingEligiblePenceForLines(lines);
   const discountCodes: CartDiscountCode[] = stored.discountCodes.map((code) => ({
     code,
-    applicable: code.toUpperCase() in MOCK_DISCOUNT_CODES
+    applicable: code.toUpperCase() === GIFTING.code && eligiblePence > 0
   }));
 
-  const codePercent = discountCodes
-    .filter((entry) => entry.applicable)
-    .reduce((sum, entry) => sum + MOCK_DISCOUNT_CODES[entry.code.toUpperCase()], 0);
-
-  const totalPence = Math.round((subtotalPence * (100 - Math.min(codePercent, 100))) / 100);
+  // One discount per order, never stacked, and only on the eligible portion.
+  const giftingApplied = discountCodes.some((entry) => entry.applicable);
+  const totalPence =
+    subtotalPence - (giftingApplied ? giftingDiscountPence(eligiblePence) : 0);
 
   return {
     id: stored.id,

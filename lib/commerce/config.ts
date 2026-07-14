@@ -8,18 +8,5 @@ export const COMMERCE_MODE: CommerceMode =
 export const COMMERCE_PROVIDER: CommerceProviderName =
   process.env.NEXT_PUBLIC_COMMERCE_PROVIDER === "shopify" ? "shopify" : "mock";
 
-// Pounds. Mirrors the Shopify shipping profile; shown in the cart meter.
-export const FREE_SHIPPING_THRESHOLD = 40;
-
-// Sitewide launch sale. Display-only mirror of the Shopify automatic
-// discount — flip `active` and keep the percent in sync with admin.
-export const SALE = {
-  active: false,
-  percent: 15,
-  label: "Launch sale"
-};
-
-export function salePricePence(basePence: number): number {
-  if (!SALE.active) return basePence;
-  return Math.round((basePence * (100 - SALE.percent)) / 100);
-}
+// Shipping rates and the free-shipping threshold live in lib/pricing.ts,
+// the single source of truth for everything customers are charged.

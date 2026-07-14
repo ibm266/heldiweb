@@ -1,11 +1,12 @@
 "use client";
 
-import { FREE_SHIPPING_THRESHOLD } from "@/lib/commerce/config";
 import { formatPence, moneyToPence } from "@/lib/commerce/money";
 import type { Cart } from "@/lib/commerce/types";
+import { SHIPPING } from "@/lib/pricing";
 
 export function FreeShippingMeter({ cart }: { cart: Cart }) {
-  const thresholdPence = FREE_SHIPPING_THRESHOLD * 100;
+  const thresholdPence = SHIPPING.freeOverPence;
+  // Post-discount total, so the meter recalculates after the gifting code.
   const totalPence = moneyToPence(cart.cost.totalAmount);
   const unlocked = totalPence >= thresholdPence;
   const progress = Math.min(totalPence / thresholdPence, 1) * 100;

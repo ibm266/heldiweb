@@ -1,7 +1,7 @@
 import type { Money } from "./types";
 
 // All arithmetic happens in integer pence; Money.amount is only a
-// serialization format ("35.00") matching Shopify's decimal strings.
+// serialization format ("12.34") matching Shopify's decimal strings.
 
 export function penceToMoney(pence: number): Money {
   return { amount: (pence / 100).toFixed(2), currencyCode: "GBP" };
