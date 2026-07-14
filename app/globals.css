@@ -900,13 +900,16 @@ h2 {
     line-height: 1.2;
   }
 
-  .hero-reveal-actions .waitlist-form .button {
+  /* Waitlist wraps the CTA in a form (display:contents); live mode
+     renders Shop now as a direct .button sibling of How it works. */
+  .hero-reveal-actions .waitlist-form .button,
+  .hero-reveal-actions > .button:not(.button--outline) {
     grid-column: 1;
     grid-row: 2;
     width: 100%;
   }
 
-  .hero-reveal-actions > .button {
+  .hero-reveal-actions > .button--outline {
     grid-column: 2;
     grid-row: 2;
     width: 100%;
