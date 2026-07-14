@@ -18,6 +18,7 @@ import { FooterLegal } from "@/components/subpage-nav";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { HOME_FAQS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
+import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
@@ -1298,6 +1299,14 @@ export function HeldiHomepage({
       </section>
 
       <ComparisonSection />
+
+      <ReviewsSection
+        id="reviews"
+        tone="cream"
+        eyebrow="THEY STIRRED. THEY TOLD US."
+        heading="Proof, straight from the pot."
+        showLeaderboard
+      />
 
       <section className="section section--gold section--bordered founder-band founder-band--gold">
         <div className="founder-band__inner">

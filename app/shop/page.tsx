@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { BuyBox } from "@/components/shop/buy-box";
 import { GiftingBand } from "@/components/shop/gifting-band";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
@@ -47,6 +48,13 @@ export default async function ShopPage() {
       <section className="section section--cream" data-nav-hero>
         <BuyBox product={product} />
       </section>
+
+      <ReviewsSection
+        id="reviews"
+        tone="gold"
+        heading="Stirred, tasted, reviewed."
+        lede="Bowls from kitchens like yours. Some clips are ours, the rest arrive with the reviews, spoon count and all."
+      />
 
       <GiftingBand />
 

@@ -6746,3 +6746,424 @@ a.living-card__tag:hover {
   background: var(--gold);
   color: var(--ink);
 }
+
+/* Reviews: media gallery + spoonful leaderboard */
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  max-width: 1152px;
+  margin: 0 auto;
+  gap: clamp(1.5rem, 4vw, 2.25rem);
+}
+
+.reviews__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  text-align: center;
+}
+
+.reviews__header h2 {
+  max-width: 22ch;
+}
+
+.reviews__lede {
+  max-width: 40rem;
+  margin: 0;
+  color: var(--brown);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.review-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 1.125rem;
+}
+
+.review-gallery__filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.625rem;
+}
+
+.review-filter {
+  padding: 0.45rem 1.15rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.review-filter.is-active {
+  background: var(--ink);
+  box-shadow: 3px 3px 0 var(--gold);
+  color: var(--cream);
+}
+
+.review-gallery__rail {
+  display: flex;
+  margin: 0 calc(-1 * clamp(1.25rem, 5vw, 4rem));
+  padding: 0.5rem clamp(1.25rem, 5vw, 4rem) 1rem;
+  overflow-x: auto;
+  gap: 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.review-gallery__rail::-webkit-scrollbar {
+  display: none;
+}
+
+@supports not (scroll-snap-type: x mandatory) {
+  .review-gallery__rail {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+    padding-inline: 0;
+    scroll-snap-type: none;
+  }
+}
+
+.review-card {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: min(78vw, 320px);
+  padding: 12px 12px 16px;
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 6px 6px 0 var(--ink);
+  color: var(--ink);
+  scroll-snap-align: center;
+}
+
+.section--gold .review-card {
+  background: var(--cream);
+}
+
+/* The rounded viewport the photo or video sits in */
+.review-card__media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--ink);
+}
+
+.review-card__media img,
+.review-card__media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.review-card__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: rgb(var(--ink-rgb) / 18%);
+  cursor: pointer;
+}
+
+.review-card__play span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  padding-left: 3px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 3px 3px 0 var(--ink);
+  color: var(--ink);
+  transition: transform 150ms ease;
+}
+
+.review-card__play:hover span {
+  transform: scale(1.08);
+}
+
+.review-card__protein {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 0.3rem 0.7rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 2px 2px 0 var(--ink);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.review-card__stock-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 0.25rem 0.6rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  pointer-events: none;
+}
+
+.review-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 0.875rem;
+}
+
+.review-card__stars {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+}
+
+.review-card__stars span {
+  color: rgb(var(--ink-rgb) / 18%);
+}
+
+.review-card__stars .is-filled {
+  color: var(--gold);
+}
+
+.review-card__spoons {
+  margin: 0;
+  color: var(--terracotta);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.review-card__text {
+  flex: 1;
+  margin: 0;
+  color: var(--brown);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.review-card__byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+}
+
+.review-card__byline > span {
+  color: var(--muted);
+}
+
+.review-card__verified {
+  padding: 0.15rem 0.5rem;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink) !important;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.review-gallery__dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.review-gallery__dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.review-gallery__dot::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgb(var(--ink-rgb) / 22%);
+  transition: width 250ms ease, height 250ms ease, border-radius 250ms ease,
+    background 250ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .review-gallery__dot::before {
+    transition: none;
+  }
+}
+
+.review-gallery__dot.is-active::before {
+  width: 24px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--ink);
+}
+
+.review-gallery__sample-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Leaderboard */
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  gap: 1.25rem;
+}
+
+.leaderboard__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.leaderboard__header h3 {
+  margin: 0;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.625rem, 4vw, 2.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.leaderboard__header p:not(.eyebrow) {
+  max-width: 36rem;
+  margin: 0;
+  color: var(--brown);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.leaderboard__list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  gap: 0.75rem;
+  list-style: none;
+}
+
+.leaderboard__row {
+  display: grid;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--ink);
+  column-gap: 1rem;
+  row-gap: 0.125rem;
+  grid-template-areas:
+    "rank who grams"
+    "rank dish grams";
+  grid-template-columns: auto 1fr auto;
+}
+
+.leaderboard__rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 2.5px solid var(--ink);
+  border-radius: 999px;
+  background: #fff;
+  font-family: var(--font-display), serif;
+  font-size: 1.25rem;
+  grid-area: rank;
+}
+
+.leaderboard__row:nth-child(1) .leaderboard__rank {
+  background: var(--gold);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.leaderboard__row:nth-child(2) .leaderboard__rank,
+.leaderboard__row:nth-child(3) .leaderboard__rank {
+  background: var(--cream);
+}
+
+.leaderboard__who {
+  font-size: 0.9375rem;
+  grid-area: who;
+}
+
+.leaderboard__who span {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.leaderboard__dish {
+  color: var(--brown);
+  font-size: 0.875rem;
+  grid-area: dish;
+}
+
+.leaderboard__grams {
+  color: var(--terracotta);
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.5rem, 4vw, 1.875rem);
+  line-height: 1;
+  grid-area: grams;
+}
+
+.leaderboard__note {
+  max-width: 34rem;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-style: italic;
+  text-align: center;
+}
+
+@media (min-width: 720px) {
+  .leaderboard__row {
+    grid-template-areas: "rank who dish grams";
+    grid-template-columns: auto 1.1fr 1.5fr auto;
+  }
+}
