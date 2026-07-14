@@ -63,7 +63,7 @@ const TEXT_ROWS: TextRow[] = [
 
 const ALL_ROWS: ComparisonRow[] = [...TICK_ROWS, ...TEXT_ROWS];
 
-const ELEPHANT_ICON = "/images/comparison/elephant-icon.png";
+const ELEPHANT_LARGE = "/images/elephant-large-transparent.png";
 const SHAKER_ICON = "/images/comparison/shaker-icon.png";
 const POUCH_SHOT = "/images/comparison/heldi-pouch.png";
 
@@ -106,9 +106,9 @@ function SideIcon({
   className?: string;
 }) {
   const isHeldi = side === "heldi";
-  const src = isHeldi ? ELEPHANT_ICON : SHAKER_ICON;
+  const src = isHeldi ? ELEPHANT_LARGE : SHAKER_ICON;
   const dims = isHeldi
-    ? { width: 270, height: 280 }
+    ? { width: 2048, height: 2048 }
     : { width: 256, height: 256 };
 
   return (
@@ -122,6 +122,7 @@ function SideIcon({
         alt=""
         width={dims.width}
         height={dims.height}
+        sizes="40px"
         aria-hidden="true"
       />
     </span>
