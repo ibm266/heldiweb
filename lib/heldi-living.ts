@@ -2,6 +2,21 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import postsJson from "@/content/heldi-living/posts.json";
 
+export type HeldiLivingRecipeMeta = {
+  name: string;
+  prepTime: string;
+  cookTime?: string;
+  totalTime: string;
+  recipeYield: string;
+  recipeCategory: string;
+  recipeCuisine: string;
+  keywords: string;
+  calories: string;
+  proteinContent: string;
+  recipeIngredient: string[];
+  recipeInstructions: string[];
+};
+
 export type HeldiLivingPostMeta = {
   slug: string;
   title: string;
@@ -12,6 +27,8 @@ export type HeldiLivingPostMeta = {
   publishedAt: string | null;
   htmlFile: string;
   order: number;
+  /** Present on recipe posts; drives the Recipe JSON-LD on the post page. */
+  recipe?: HeldiLivingRecipeMeta;
 };
 
 export type HeldiLivingPost = HeldiLivingPostMeta & {

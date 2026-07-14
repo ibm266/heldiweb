@@ -116,6 +116,8 @@ export function FooterLegal() {
   return (
     <>
       <nav className="footer-legal" aria-label="Legal">
+        <a href="/faq">FAQ</a>
+        <a href="/inside-the-pouch">Inside the pouch</a>
         <a href="/legal/terms">Terms</a>
         <a href="/legal/privacy">Privacy</a>
         <a href="/legal/returns">Returns</a>

@@ -87,7 +87,7 @@
       "A typical desi lunch delivers 18 to 22g of protein. Your body needs 25 to 30g per meal to actually stay satisfied.",
       "The fix isn't a different cuisine. It's a bigger portion of dal, more dahi, an egg, or a protein blend stirred in."
     ],
-    "description": "Why a full desi lunch leaves you hungry by 4pm \u2014 satiety, protein, and blood sugar.",
+    "description": "Why a full desi lunch leaves you hungry by 4pm — satiety, protein, and blood sugar.",
     "image": "/images/heldi-living/will-i-get-bulky-if-i-have-too-much-protein.png",
     "publishedAt": "2026-05-07T13:12:57Z",
     "htmlFile": "will-i-get-bulky-if-i-have-too-much-protein.html",
@@ -128,5 +128,102 @@
     "publishedAt": "2026-05-07T12:35:53Z",
     "htmlFile": "why-protein-matters-more-than-you-think-a-guide-for-desi-uk-households-20-to-60.html",
     "order": 6
+  },
+  {
+    "slug": "high-protein-tadka-dal",
+    "title": "High-protein tadka dal (nothing else about the pot changes)",
+    "tags": [
+      "Recipes",
+      "Dal"
+    ],
+    "summary": [
+      "A proper main-course bowl of masoor dal carries about 12g of protein. One heaped tablespoon of Heldi stirred in at the table takes it past 22g.",
+      "The recipe is the classic: masoor, haldi, and a ghee tadka with jeera, garlic and tomato. Nothing about the pot changes.",
+      "Stir Heldi in once the bowl has stopped bubbling, or leave the jar on the table and let everyone dose their own."
+    ],
+    "description": "The classic masoor dal with a ghee tadka, plus the one quiet edit that takes each bowl past 20g of protein.",
+    "image": "/images/stir-gallery/dal-tadka.png",
+    "publishedAt": "2026-07-14T09:00:00Z",
+    "htmlFile": "high-protein-tadka-dal.html",
+    "order": 7,
+    "recipe": {
+      "name": "High-protein tadka dal",
+      "prepTime": "PT10M",
+      "cookTime": "PT35M",
+      "totalTime": "PT45M",
+      "recipeYield": "4 bowls",
+      "recipeCategory": "Main course",
+      "recipeCuisine": "Indian",
+      "keywords": "tadka dal, high protein dal, masoor dal recipe, dal protein",
+      "calories": "290 kcal",
+      "proteinContent": "22 g",
+      "recipeIngredient": [
+        "200g red lentils (masoor dal)",
+        "900ml water",
+        "1/2 tsp haldi (turmeric)",
+        "1 tsp fine salt",
+        "2 tbsp ghee",
+        "1 tsp jeera (cumin seeds)",
+        "3 cloves garlic, sliced",
+        "1 small onion, finely chopped",
+        "1 tomato, chopped",
+        "1/2 tsp Kashmiri chilli powder",
+        "4 heaped tbsp Heldi Khana",
+        "Fresh coriander, chopped"
+      ],
+      "recipeInstructions": [
+        "Simmer the rinsed masoor with water, haldi and salt for 20 to 25 minutes until completely soft, skimming any foam.",
+        "Whisk the dal briefly to your preferred texture.",
+        "Heat the ghee, crackle the jeera, then cook the garlic until golden, the onion until soft, and the tomato with chilli powder until the ghee separates.",
+        "Pour the tadka over the dal, stir through and taste for salt.",
+        "Take the pot off the heat and let it settle until it has stopped bubbling.",
+        "Ladle into bowls and stir one heaped tablespoon of Heldi Khana into each until it disappears. Top with coriander."
+      ]
+    }
+  },
+  {
+    "slug": "high-protein-cucumber-raita",
+    "title": "High-protein cucumber raita (the quiet one on the table)",
+    "tags": [
+      "Recipes",
+      "Dahi"
+    ],
+    "summary": [
+      "A serving of cucumber raita has about 4g of protein. Whisk in a heaped tablespoon of Heldi and it climbs to about 15g.",
+      "No heat and no technique: whisk Heldi into the dahi first, then fold in the squeezed cucumber and roasted jeera.",
+      "It keeps in the fridge for a day, which makes it the easiest make-ahead protein move on the table."
+    ],
+    "description": "Kheera raita with roasted jeera and kala namak, carrying 15g of protein per serving without changing how it tastes.",
+    "image": "/images/stir-gallery/cucumber-raita.png",
+    "publishedAt": "2026-07-14T09:30:00Z",
+    "htmlFile": "high-protein-cucumber-raita.html",
+    "order": 8,
+    "recipe": {
+      "name": "High-protein cucumber raita",
+      "prepTime": "PT10M",
+      "totalTime": "PT10M",
+      "recipeYield": "4 servings",
+      "recipeCategory": "Side dish",
+      "recipeCuisine": "Indian",
+      "keywords": "cucumber raita, kheera raita, high protein raita, raita recipe",
+      "calories": "120 kcal",
+      "proteinContent": "15 g",
+      "recipeIngredient": [
+        "500g plain whole-milk dahi",
+        "1 cucumber, coarsely grated and squeezed",
+        "4 heaped tbsp Heldi Khana",
+        "1/2 tsp roasted jeera powder",
+        "1/4 tsp black salt (kala namak)",
+        "A pinch of Kashmiri chilli powder",
+        "Fresh coriander or mint, chopped"
+      ],
+      "recipeInstructions": [
+        "Squeeze the grated cucumber until most of the water is out.",
+        "Whisk the dahi until smooth.",
+        "Whisk in the Heldi Khana one spoonful at a time, letting each disappear before the next.",
+        "Fold in the cucumber, roasted jeera powder and salt.",
+        "Top with chilli powder and herbs, then chill until dinner."
+      ]
+    }
   }
 ]

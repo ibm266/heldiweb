@@ -2735,6 +2735,10 @@ h2 {
   margin: 0 auto;
 }
 
+.faq--grouped + .faq--grouped {
+  margin-top: 4.5rem;
+}
+
 .faq-list {
   margin-top: 2.25rem;
   border-top: 2px solid var(--ink);

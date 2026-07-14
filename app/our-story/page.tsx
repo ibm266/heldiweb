@@ -7,7 +7,7 @@ import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 export const metadata: Metadata = {
   title: "Our story · Heldi",
   description:
-    "Heldi began with a word my nani made up. The story of protein made for the family table.",
+    "Heldi is healthy, the way my nani says it. The story of the name, the kitchen trials, and protein made for the family table.",
   alternates: { canonical: "/our-story" }
 };
 
@@ -43,6 +43,8 @@ export default function OurStoryPage() {
             <CopyHighlight>heldi</CopyHighlight>. Not healthy in the clinical
             sense. Heldi the way home-cooked food is:{" "}
             <CopyHighlight>warm, familiar, made with care, made for you</CopyHighlight>.
+            That is where the name comes from.{" "}
+            <CopyHighlight>Healthy, the way my nani says it.</CopyHighlight>
           </p>
         </div>
       </section>
@@ -124,6 +126,72 @@ export default function OurStoryPage() {
         </div>
       </section>
 
+      <section className="section section--cream section--bordered story-copy">
+        <div className="story-copy__inner">
+          <p className="eyebrow">THE KITCHEN TRIALS</p>
+          <h2>Six powders. One kitchen. A few ruined dinners.</h2>
+          <p>
+            I did not start with whey. I started with{" "}
+            <CopyHighlight>
+              every protein powder you can think of
+            </CopyHighlight>{" "}
+            and brought each one home to the only lab that mattered: my
+            mother&apos;s kitchen. She cooked, I stirred, and we ate the
+            results. Some of them we would rather forget.
+          </p>
+          <div className="story-menu-card">
+            <h3 className="story-menu-card__title">The trial menu</h3>
+            <p className="story-menu-card__subtitle">
+              every powder, judged at the table
+            </p>
+            <ul className="story-menu-card__list">
+              <li className="story-menu-card__item">
+                <span>Brown rice protein</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>gritty</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Pea protein</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>tasted like the bag</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Soy protein</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>split the kadhi</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Casein</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>turned dal to cement</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Whey protein</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>close, but heavy</span>
+              </li>
+              <li className="story-menu-card__item">
+                <span>Whey protein isolate</span>
+                <span className="story-menu-card__dots" aria-hidden="true" />
+                <span>disappeared</span>
+              </li>
+            </ul>
+          </div>
+          <p>
+            Whey protein isolate was the only one that vanished into the pot.
+            No grit, no aftertaste, no argument from the cook. The dishes
+            stayed nani&apos;s dishes. That was the whole test:{" "}
+            <CopyHighlight>
+              if Mama could taste the difference, it failed
+            </CopyHighlight>
+            .
+          </p>
+          <p className="story-note">
+            One pot of kadhi gave its life for this. We remember it fondly.
+          </p>
+        </div>
+      </section>
+
       <section className="section section--ink section--bordered story-family">
         <div className="story-family__grid">
           <figure className="story-photo-card story-photo-card--on-ink story-family__figure">
@@ -198,6 +266,20 @@ export default function OurStoryPage() {
             it carry more of what we need, for{" "}
             <CopyHighlight>every generation at the table</CopyHighlight>.
           </p>
+        </div>
+      </section>
+
+      <section className="section section--cream section--bordered story-copy">
+        <div className="story-copy__inner">
+          <p className="eyebrow">WHAT&apos;S NEXT</p>
+          <h2>Khana is on the table. Chai is on the stove.</h2>
+          <p>
+            Khana, our savoury blend, is the first Heldi to reach the table.{" "}
+            <CopyHighlight>Chai is in development now</CopyHighlight>, going
+            through the same kitchen trials, in front of the same taste panel,
+            who have not lowered their standards for anyone.
+          </p>
+          <p className="story-note">Watch this space.</p>
         </div>
       </section>
 

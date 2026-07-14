@@ -78,6 +78,40 @@ export default async function HeldiLivingPostPage({ params }: PageProps) {
         }
       : null;
 
+  const recipeSchema = post.recipe
+    ? {
+        "@context": "https://schema.org",
+        "@type": "Recipe",
+        name: post.recipe.name,
+        description: post.description,
+        image: [`${SITE_URL}${post.image}`],
+        url: postUrl,
+        author: {
+          "@type": "Person",
+          name: "Mihir",
+          url: `${SITE_URL}/our-story`
+        },
+        ...(post.publishedAt ? { datePublished: post.publishedAt } : {}),
+        prepTime: post.recipe.prepTime,
+        ...(post.recipe.cookTime ? { cookTime: post.recipe.cookTime } : {}),
+        totalTime: post.recipe.totalTime,
+        recipeYield: post.recipe.recipeYield,
+        recipeCategory: post.recipe.recipeCategory,
+        recipeCuisine: post.recipe.recipeCuisine,
+        keywords: post.recipe.keywords,
+        nutrition: {
+          "@type": "NutritionInformation",
+          calories: post.recipe.calories,
+          proteinContent: post.recipe.proteinContent
+        },
+        recipeIngredient: post.recipe.recipeIngredient,
+        recipeInstructions: post.recipe.recipeInstructions.map((text) => ({
+          "@type": "HowToStep",
+          text
+        }))
+      }
+    : null;
+
   return (
     <main>
       <script
@@ -88,6 +122,12 @@ export default async function HeldiLivingPostPage({ params }: PageProps) {
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      ) : null}
+      {recipeSchema ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(recipeSchema) }}
         />
       ) : null}
       <SubpageNav tone="gold" />
