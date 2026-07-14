@@ -11,7 +11,12 @@ import {
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { getCommerceProvider } from "@/lib/commerce/provider";
 import type { Cart, CommerceMode } from "@/lib/commerce/types";
-import { GIFTING, type GiftingMethod } from "@/lib/pricing";
+import {
+  GIFTING,
+  isGiftingCode,
+  type GiftingAudience,
+  type GiftingMethod
+} from "@/lib/pricing";
 
 const CART_ID_KEY = "heldi_cart_id";
 const MODE_OVERRIDE_KEY = "heldi_mode_override";
@@ -27,7 +32,7 @@ type CartContextValue = {
   // How the gifting discount was applied — the code field and the checkout
   // checkbox never stack, so whichever applied first locks the other out.
   giftingMethod: GiftingMethod | null;
-  applyGifting: (method: GiftingMethod) => Promise<void>;
+  applyGifting: (method: GiftingMethod, audience?: GiftingAudience) => Promise<void>;
   removeGifting: () => Promise<void>;
   openCart: () => void;
   closeCart: () => void;
@@ -154,12 +159,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   );
 
   const applyGifting = useCallback(
-    async (method: GiftingMethod) => {
+    async (method: GiftingMethod, audience: GiftingAudience = "beta") => {
       await runMutation((cartId) => {
         const existing = cart?.discountCodes.map((entry) => entry.code) ?? [];
         return getCommerceProvider().updateDiscountCodes(cartId, [
-          ...existing.filter((entry) => entry.toUpperCase() !== GIFTING.code),
-          GIFTING.code
+          ...existing.filter((entry) => !isGiftingCode(entry)),
+          GIFTING.codes[audience]
         ]);
       });
       setGiftingMethod(method);
@@ -170,7 +175,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const removeGifting = useCallback(async () => {
     await runMutation((cartId) => {
       const remaining = (cart?.discountCodes.map((entry) => entry.code) ?? []).filter(
-        (entry) => entry.toUpperCase() !== GIFTING.code
+        (entry) => !isGiftingCode(entry)
       );
       return getCommerceProvider().updateDiscountCodes(cartId, remaining);
     });

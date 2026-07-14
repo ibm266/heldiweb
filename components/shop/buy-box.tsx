@@ -21,11 +21,17 @@ import {
   SHIPPING,
   TIERS,
   TIER_ORDER,
+  isGiftingCode,
   tierSavingsPence,
   type TierId
 } from "@/lib/pricing";
+import { GiftingPopup } from "./gifting-popup";
 import { NutritionModal } from "./nutrition-modal";
 import { ProductAccordions } from "./product-accordions";
+
+// The family-discount popup shows after the first add-to-basket of a
+// session, and never once a gifting code is already on the cart.
+const GIFTING_POPUP_SEEN_KEY = "heldi_gifting_popup_seen";
 
 const PDP_PILLS: { icon: string; label: string; width: number; height: number }[] = [
   { icon: "/images/pouch-badges/high-protein.png", label: "High protein", width: 256, height: 256 },
@@ -42,7 +48,8 @@ export function BuyBox({ product }: { product: Product }) {
   const [imageOverride, setImageOverride] = useState<number | null>(null);
   const [justAdded, setJustAdded] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
-  const { mode, addItem, isPending } = useCart();
+  const [giftingPopupOpen, setGiftingPopupOpen] = useState(false);
+  const { cart, mode, addItem, isPending } = useCart();
 
   const tierVariants = new Map<TierId, ProductVariant>();
   for (const id of TIER_ORDER) {
@@ -95,9 +102,16 @@ export function BuyBox({ product }: { product: Product }) {
       : "Ships free.";
 
   async function handleAdd() {
+    const giftingApplied = (cart?.discountCodes ?? []).some(
+      (entry) => entry.applicable && isGiftingCode(entry.code)
+    );
     await addItem(selectedVariant.id, 1);
     setJustAdded(true);
     window.setTimeout(() => setJustAdded(false), 2000);
+    if (!giftingApplied && !window.sessionStorage.getItem(GIFTING_POPUP_SEEN_KEY)) {
+      window.sessionStorage.setItem(GIFTING_POPUP_SEEN_KEY, "1");
+      setGiftingPopupOpen(true);
+    }
   }
 
   return (
@@ -148,6 +162,9 @@ export function BuyBox({ product }: { product: Product }) {
         </button>
         {nutritionOpen ? (
           <NutritionModal onClose={() => setNutritionOpen(false)} />
+        ) : null}
+        {giftingPopupOpen ? (
+          <GiftingPopup onClose={() => setGiftingPopupOpen(false)} />
         ) : null}
 
         <ul className="pdp__pills" aria-label="Product attributes">

@@ -11,7 +11,13 @@ import {
 import { COMMERCE_PROVIDER } from "@/lib/commerce/config";
 import { formatMoney, formatPence, moneyToPence } from "@/lib/commerce/money";
 import type { CartLine } from "@/lib/commerce/types";
-import { GIFTING, SAMPLE_PRICE_PENCE, SHIPPING } from "@/lib/pricing";
+import {
+  GIFTING,
+  SAMPLE_PRICE_PENCE,
+  SHIPPING,
+  giftingAudienceForCode,
+  isGiftingCode
+} from "@/lib/pricing";
 import { useCart } from "./cart-context";
 import { FreeShippingMeter } from "./free-shipping-meter";
 
@@ -82,7 +88,7 @@ export function CartDrawer() {
   // actually on the cart.
   const eligiblePence = giftingEligiblePenceForLines(lines);
   const giftingApplied = appliedCodes.some(
-    (entry) => entry.applicable && entry.code.toUpperCase() === GIFTING.code
+    (entry) => entry.applicable && isGiftingCode(entry.code)
   );
   const activeMethod = giftingApplied ? (giftingMethod ?? "code") : null;
   const noEligibleItems = lines.length > 0 && eligiblePence === 0;
@@ -154,11 +160,12 @@ export function CartDrawer() {
     event.preventDefault();
     const trimmed = code.trim();
     if (!trimmed || codeFieldLocked) return;
-    if (trimmed.toUpperCase() === GIFTING.code) {
+    const audience = giftingAudienceForCode(trimmed);
+    if (audience) {
       if (eligiblePence > 0) {
-        track("gifting_discount_applied", { method: "code" });
+        track("gifting_discount_applied", { method: "code", audience });
       }
-      await applyGifting("code");
+      await applyGifting("code", audience);
     } else {
       await applyDiscount(trimmed);
     }
@@ -177,7 +184,7 @@ export function CartDrawer() {
   const lastCode = appliedCodes[appliedCodes.length - 1];
   const showCodeRejected = lastCode && !lastCode.applicable;
   const rejectionMessage =
-    lastCode && lastCode.code.toUpperCase() === GIFTING.code
+    lastCode && isGiftingCode(lastCode.code)
       ? BEST_PRICE_HINT
       : lastCode
         ? `“${lastCode.code}” isn’t a valid code`
@@ -291,7 +298,8 @@ export function CartDrawer() {
                 onChange={(event) => toggleGiftingCheckbox(event.target.checked)}
               />
               <label htmlFor="gifting-checkbox">
-                This one&apos;s for the parents. Aunties and uncles count too.{" "}
+                This one&apos;s for the parents. Aunties and uncles count
+                too, even when you&apos;re buying for yourself.{" "}
                 {GIFTING.percent}% off, from our family to yours.
               </label>
               {checkboxHint ? (
@@ -372,7 +380,7 @@ export function CartDrawer() {
                     Checkout
                   </button>
                   <p className="cart-drawer__mock-note">
-                    Checkout opens at launch — the store isn’t connected yet.
+                    Checkout opens at launch. The store isn’t connected yet.
                   </p>
                 </>
               ) : (

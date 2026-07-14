@@ -1,4 +1,4 @@
-import { GIFTING, giftingDiscountPence } from "@/lib/pricing";
+import { giftingDiscountPence, isGiftingCode } from "@/lib/pricing";
 import { findVariantById, giftingEligiblePenceForLines } from "./catalog";
 import { moneyToPence, penceToMoney } from "./money";
 import type { CommerceProvider } from "./provider";
@@ -81,13 +81,14 @@ function materialize(stored: StoredCart): Cart {
     0
   );
 
-  // ACHABETA is the only code the mock recognises. It only counts as
-  // applicable when the basket has an eligible portion (single or double
-  // blocks), mirroring how Shopify will reject it on excluded-only baskets.
+  // The gifting codes (ACHABETA / SHABASH) are the only codes the mock
+  // recognises. They only count as applicable when the basket has an
+  // eligible portion (single or double blocks), mirroring how Shopify will
+  // reject them on excluded-only baskets.
   const eligiblePence = giftingEligiblePenceForLines(lines);
   const discountCodes: CartDiscountCode[] = stored.discountCodes.map((code) => ({
     code,
-    applicable: code.toUpperCase() === GIFTING.code && eligiblePence > 0
+    applicable: isGiftingCode(code) && eligiblePence > 0
   }));
 
   // One discount per order, never stacked, and only on the eligible portion.

@@ -80,15 +80,36 @@ export const SHIPPING = {
   sampleLetterPence: 275
 } as const;
 
-// Gifting discount: code ACHABETA or the checkout checkbox, 10% off the
-// launch price of single and double blocks only — never triple blocks or
-// the Sample Trio. One discount per order, no stacking.
+// Gifting discount: 10% off the launch price of single and double blocks
+// only — never triple blocks or the Sample Trio. One discount per order, no
+// stacking. The same discount sits behind two codes so we can see who's
+// buying: ACHABETA for the kids sorting out their parents, SHABASH for the
+// aunties and uncles sorting themselves out.
 export const GIFTING = {
-  code: "ACHABETA",
-  percent: 10
+  percent: 10,
+  codes: {
+    beta: "ACHABETA",
+    elder: "SHABASH"
+  }
 } as const;
 
+/** Who the buyer says they are — the keys of GIFTING.codes. */
+export type GiftingAudience = keyof typeof GIFTING.codes;
+
 export type GiftingMethod = "code" | "checkbox";
+
+export function isGiftingCode(code: string): boolean {
+  const upper = code.toUpperCase();
+  return Object.values(GIFTING.codes).some((entry) => entry === upper);
+}
+
+export function giftingAudienceForCode(code: string): GiftingAudience | null {
+  const upper = code.toUpperCase();
+  const match = (Object.keys(GIFTING.codes) as GiftingAudience[]).find(
+    (audience) => GIFTING.codes[audience] === upper
+  );
+  return match ?? null;
+}
 
 export function giftingDiscountPence(eligiblePence: number): number {
   return Math.round((eligiblePence * GIFTING.percent) / 100);
