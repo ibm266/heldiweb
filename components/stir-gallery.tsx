@@ -59,6 +59,7 @@ const CAPTIONS = [
   "A very strong bowl indeed.",
   "Even mama approves of this one.",
   "The dal did not even notice.",
+  "Bends into the dal like Beckham.",
   "At this point, keep the jar on the table."
 ];
 

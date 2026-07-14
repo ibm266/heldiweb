@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { HeldiLivingPostMeta } from "@/lib/heldi-living";
 
 const VISIBLE_TAG_COUNT = 4;
@@ -10,10 +10,9 @@ const VISIBLE_TAG_COUNT = 4;
 type HeldiLivingFeedProps = {
   posts: HeldiLivingPostMeta[];
   tags: string[];
-  header?: ReactNode;
 };
 
-export function HeldiLivingFeed({ posts, tags, header }: HeldiLivingFeedProps) {
+export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const requestedTag = searchParams.get("tag");
@@ -52,7 +51,14 @@ export function HeldiLivingFeed({ posts, tags, header }: HeldiLivingFeedProps) {
   return (
     <div className="living-feed">
       <div className="living-index__panel">
-        {header}
+        <div className="living-index__hero">
+          <p className="eyebrow">HELDI LIVING</p>
+          <h1 className="living-index__title">Heldi Living</h1>
+          <p className="living-index__lede">
+            Honest writing on protein and desi cooking. What we wish more people
+            knew about the food we already love.
+          </p>
+        </div>
         <div className="living-tags" role="toolbar" aria-label="Filter by topic">
           <button
             type="button"

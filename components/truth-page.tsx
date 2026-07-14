@@ -159,6 +159,10 @@ export function TruthPage() {
               <span className="truth-bowl__note">the bowl you actually eat</span>
             </div>
           </div>
+
+          <p className="truth-bowls__caption">
+            Bade bade bowls mein, chhoti chhoti proteins.
+          </p>
         </div>
       </section>
 

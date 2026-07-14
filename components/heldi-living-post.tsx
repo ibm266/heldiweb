@@ -1,4 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ScrollToTopButton } from "@/components/scroll-to-top-button";
+import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 import type { HeldiLivingPost } from "@/lib/heldi-living";
 
 type HeldiLivingPostViewProps = {
@@ -45,7 +48,16 @@ export function HeldiLivingPostView({ post }: HeldiLivingPostViewProps) {
           className="living-post-panel heldi-post"
           dangerouslySetInnerHTML={{ __html: post.html }}
         />
+
+        <nav className="living-post-cta" aria-label="What next">
+          <Link className="pill-link living-post-cta__back" href="/heldi-living">
+            ← All Heldi Living
+          </Link>
+          <WaitlistOrShopCta className="button button--pill" />
+        </nav>
       </div>
+
+      <ScrollToTopButton />
     </section>
   );
 }

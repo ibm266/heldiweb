@@ -95,9 +95,18 @@ export function ReviewGallery({
           isProgrammaticScroll.current = false;
         }, PROGRAMMATIC_SCROLL_MS);
 
-        const target =
-          card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2;
-        rail.scrollTo({ left: Math.max(0, target), behavior: "smooth" });
+        const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+        let target: number;
+        if (clamped === 0) {
+          // First/last cards cannot be centered — scroll to the rail edge.
+          target = 0;
+        } else if (clamped === shown.length - 1) {
+          target = maxScroll;
+        } else {
+          target = card.offsetLeft - (rail.clientWidth - card.offsetWidth) / 2;
+          target = Math.max(0, Math.min(maxScroll, target));
+        }
+        rail.scrollTo({ left: target, behavior: "smooth" });
       }
     }
 
@@ -109,18 +118,29 @@ export function ReviewGallery({
     const rail = railRef.current;
     if (!rail) return;
 
-    const center = rail.scrollLeft + rail.clientWidth / 2;
+    const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    const edgeSlop = 8;
     let best = 0;
-    let bestDist = Infinity;
 
-    Array.from(rail.children).forEach((child, index) => {
-      const card = child as HTMLElement;
-      const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
-      if (dist < bestDist) {
-        bestDist = dist;
-        best = index;
-      }
-    });
+    // At the extremes the first/last card never reaches the viewport center,
+    // so a pure center-distance pick wrongly sticks on the neighbour.
+    if (maxScroll > edgeSlop && rail.scrollLeft <= edgeSlop) {
+      best = 0;
+    } else if (maxScroll > edgeSlop && rail.scrollLeft >= maxScroll - edgeSlop) {
+      best = rail.children.length - 1;
+    } else {
+      const center = rail.scrollLeft + rail.clientWidth / 2;
+      let bestDist = Infinity;
+
+      Array.from(rail.children).forEach((child, index) => {
+        const card = child as HTMLElement;
+        const dist = Math.abs(card.offsetLeft + card.offsetWidth / 2 - center);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = index;
+        }
+      });
+    }
 
     setActive((current) => (current === best ? current : best));
   }

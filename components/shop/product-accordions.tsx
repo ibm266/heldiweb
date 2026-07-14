@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { formatPence } from "@/lib/commerce/money";
 import { SHIPPING } from "@/lib/pricing";
 import {
@@ -30,7 +30,7 @@ const ACCORDION_ITEMS: { question: string; answer: ReactNode }[] = [
         Cook like always. Stir a spoonful into the pot{" "}
         <strong>while it&apos;s cooling</strong>, or into your bowl at the
         table. Same dal, same curry, same raita, with a{" "}
-        <strong>protein boost</strong>. <a href="/#how">See how it works</a>.
+        <strong>protein boost</strong>.
       </p>
     )
   },
@@ -98,6 +98,18 @@ const ACCORDION_ITEMS: { question: string; answer: ReactNode }[] = [
 
 export function ProductAccordions() {
   const [openIndex, setOpenIndex] = useState(-1);
+  const lockScrollY = useRef<number | null>(null);
+
+  useLayoutEffect(() => {
+    if (lockScrollY.current == null) return;
+    window.scrollTo({ top: lockScrollY.current });
+    lockScrollY.current = null;
+  }, [openIndex]);
+
+  function toggle(index: number) {
+    lockScrollY.current = window.scrollY;
+    setOpenIndex((current) => (current === index ? -1 : index));
+  }
 
   return (
     <div className="pdp-accordion">
@@ -110,7 +122,7 @@ export function ProductAccordions() {
                 type="button"
                 aria-expanded={open}
                 aria-controls={`pdp-accordion-answer-${index}`}
-                onClick={() => setOpenIndex(open ? -1 : index)}
+                onClick={() => toggle(index)}
               >
                 <span>{item.question}</span>
                 <b aria-hidden="true">{open ? "–" : "+"}</b>

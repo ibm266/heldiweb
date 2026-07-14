@@ -355,6 +355,35 @@ h2 {
   transform: translateY(-2px);
 }
 
+.scroll-top {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 4px 4px 0 var(--ink);
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  animation: floating-cta-in 280ms ease-out;
+  transition:
+    transform 150ms ease,
+    background-color 150ms ease;
+}
+
+.scroll-top:hover {
+  background: var(--cream);
+  transform: translateY(-2px);
+}
+
 .heldi-logo {
   display: block;
   width: auto;
@@ -5467,6 +5496,23 @@ a.living-card__tag:hover {
   color: var(--ink);
 }
 
+.living-post-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem 1rem;
+  margin-top: 2rem;
+}
+
+.living-post-cta .pill-link {
+  margin-top: 0;
+}
+
+.living-post-cta .button {
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
 .heldi-post > p,
 .heldi-post li,
 .heldi-post td,
@@ -6530,6 +6576,227 @@ a.living-card__tag:hover {
   color: var(--ink);
 }
 
+/* Three video-review teasers under the basket CTA */
+.pdp-review-teasers {
+  margin-top: 1.5rem;
+}
+
+.pdp-review-teasers__summary {
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.pdp-review-teasers__count {
+  margin: 0;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.pdp-review-teasers__stars {
+  margin: 0.25rem 0 0;
+  color: var(--terracotta);
+  font-size: 1.125rem;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.pdp-review-teasers__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pdp-review-teaser {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--ink);
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 150ms ease;
+}
+
+.pdp-review-teaser:hover {
+  transform: translateY(-2px);
+}
+
+.pdp-review-teaser img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.pdp-review-teaser__play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(var(--ink-rgb) / 22%);
+  color: var(--cream);
+  pointer-events: none;
+}
+
+.pdp-review-teaser__play svg {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  padding: 0.4rem 0.4rem 0.4rem 0.5rem;
+  border: 2px solid var(--cream);
+  border-radius: 999px;
+  background: rgb(var(--ink-rgb) / 45%);
+}
+
+.pdp-review-teasers__more {
+  display: block;
+  width: 100%;
+  margin-top: 0.875rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.pdp-review-teasers__more:hover {
+  color: var(--terracotta);
+}
+
+.pdp-review-pop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(var(--ink-rgb) / 55%);
+  animation: cart-overlay-in 200ms ease-out;
+}
+
+.pdp-review-pop {
+  position: relative;
+  width: min(24rem, 100%);
+  max-height: min(90vh, 44rem);
+  padding: 1rem 1rem 1.25rem;
+  overflow-y: auto;
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 6px 6px 0 rgb(var(--ink-rgb) / 35%);
+}
+
+.pdp-review-pop__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.pdp-review-pop__header .eyebrow {
+  margin: 0;
+}
+
+.pdp-review-pop__close {
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.pdp-review-pop__close:hover {
+  background: var(--gold);
+}
+
+.pdp-review-pop__video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  background: var(--ink);
+  object-fit: cover;
+}
+
+.pdp-review-pop__body {
+  margin-top: 0.875rem;
+  padding: 0 0.15rem;
+}
+
+.pdp-review-pop__stars {
+  margin: 0 0 0.35rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.pdp-review-pop__stars .is-filled {
+  color: var(--terracotta);
+}
+
+.pdp-review-pop__spoons {
+  margin: 0 0 0.5rem;
+  color: var(--brown);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.pdp-review-pop__spoons span {
+  font-weight: 500;
+}
+
+.pdp-review-pop__text {
+  margin: 0 0 0.75rem;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.pdp-review-pop__byline {
+  margin: 0;
+  color: var(--brown);
+  font-size: 0.8125rem;
+}
+
+.pdp-review-pop__byline strong {
+  color: var(--ink);
+}
+
+.pdp-review-pop__verified {
+  margin-left: 0.5rem;
+  color: var(--terracotta);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
 .pdp__sale-note {
   margin-top: 0.75rem;
   color: var(--terracotta);
@@ -6546,6 +6813,7 @@ a.living-card__tag:hover {
 .pdp-accordion {
   margin-top: 2rem;
   border-top: 2px solid var(--ink);
+  overflow-anchor: none;
 }
 
 .pdp-accordion article {
@@ -7239,7 +7507,10 @@ a.living-card__tag:hover {
 .review-gallery__rail {
   display: flex;
   margin: 0 calc(-1 * clamp(1.25rem, 5vw, 4rem));
-  padding: 0.5rem clamp(1.25rem, 5vw, 4rem) 1rem;
+  /* Side padding sized so first/last cards can snap to the viewport center;
+     without it the active-dot heuristic can never land on the ends. */
+  padding: 0.5rem
+    max(clamp(1.25rem, 5vw, 4rem), calc((100% - min(78vw, 320px)) / 2)) 1rem;
   overflow-x: auto;
   gap: 16px;
   scroll-snap-type: x mandatory;

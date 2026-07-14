@@ -27,6 +27,7 @@ import {
 } from "@/lib/pricing";
 import { GiftingPopup } from "./gifting-popup";
 import { NutritionModal } from "./nutrition-modal";
+import { PdpReviewTeasers } from "./pdp-review-teasers";
 import { ProductAccordions } from "./product-accordions";
 
 // The family-discount popup shows after the first add-to-basket of a
@@ -300,6 +301,8 @@ export function BuyBox({ product }: { product: Product }) {
         )}
 
         <p className="pdp__promise">{shippingNote}</p>
+
+        <PdpReviewTeasers />
 
         <div className="pdp__desc">
           <p>
