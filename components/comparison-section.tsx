@@ -64,7 +64,6 @@ const TEXT_ROWS: TextRow[] = [
 const ALL_ROWS: ComparisonRow[] = [...TICK_ROWS, ...TEXT_ROWS];
 
 const ELEPHANT_ICON = "/images/comparison/elephant-icon.png";
-const ELEPHANT_LARGE = "/images/elephant-large-transparent.png";
 const SHAKER_ICON = "/images/comparison/shaker-icon.png";
 const POUCH_SHOT = "/images/comparison/heldi-pouch.png";
 
@@ -101,29 +100,20 @@ function TickMark({ yes }: { yes: boolean }) {
 
 function SideIcon({
   side,
-  className,
-  size = "sm"
+  className
 }: {
   side: "heldi" | "shakes";
   className?: string;
-  size?: "sm" | "lg";
 }) {
   const isHeldi = side === "heldi";
-  const src = isHeldi
-    ? size === "lg"
-      ? ELEPHANT_LARGE
-      : ELEPHANT_ICON
-    : SHAKER_ICON;
-  const dims =
-    isHeldi && size === "lg"
-      ? { width: 2048, height: 2048 }
-      : isHeldi
-        ? { width: 270, height: 280 }
-        : { width: 256, height: 256 };
+  const src = isHeldi ? ELEPHANT_ICON : SHAKER_ICON;
+  const dims = isHeldi
+    ? { width: 270, height: 280 }
+    : { width: 256, height: 256 };
 
   return (
     <span
-      className={`vs-side-icon ${size === "lg" ? "vs-side-icon--lg" : ""} ${className ?? ""}`}
+      className={`vs-side-icon ${className ?? ""}`}
       role="img"
       aria-label={isHeldi ? "Heldi" : "Protein shakes"}
     >
@@ -256,7 +246,7 @@ function MobileCards() {
             {row.label}
           </p>
           <div className="vs-card__heldi" role="cell">
-            <SideIcon side="heldi" size="lg" />
+            <SideIcon side="heldi" />
             <p>{row.heldi}</p>
           </div>
           <div className="vs-card__shakes" role="cell">
