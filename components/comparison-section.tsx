@@ -63,7 +63,8 @@ const TEXT_ROWS: TextRow[] = [
 
 const ALL_ROWS: ComparisonRow[] = [...TICK_ROWS, ...TEXT_ROWS];
 
-const ELEPHANT_LARGE = "/images/elephant-large-transparent.png";
+/* Scaled-down large elephant (not elephant-small) for crisp mobile icons */
+const ELEPHANT_ICON = "/images/comparison/elephant-icon.png";
 const SHAKER_ICON = "/images/comparison/shaker-icon.png";
 const POUCH_SHOT = "/images/comparison/heldi-pouch.png";
 
@@ -106,9 +107,9 @@ function SideIcon({
   className?: string;
 }) {
   const isHeldi = side === "heldi";
-  const src = isHeldi ? ELEPHANT_LARGE : SHAKER_ICON;
+  const src = isHeldi ? ELEPHANT_ICON : SHAKER_ICON;
   const dims = isHeldi
-    ? { width: 2048, height: 2048 }
+    ? { width: 128, height: 128 }
     : { width: 256, height: 256 };
 
   return (
