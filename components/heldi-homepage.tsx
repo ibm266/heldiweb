@@ -1265,11 +1265,11 @@ export function HeldiHomepage({
       >
         <div className="truth-block">
           <p className="eyebrow">THE HONEST TRUTH</p>
-          <h2>The internet says 18g. Your dal says 6.</h2>
+          <h2>That 18g figure? It&apos;s for dry dal.</h2>
           <p>
-            Protein contributes to the maintenance of muscle mass, and that
-            matters more every year past 30. Yet most protein numbers online
-            are measured dry, not in the bowl you actually eat. Here is the{" "}
+            So the bowl you actually eat lands closer to 6g. Protein
+            contributes to the maintenance of muscle mass, and that matters
+            more every year past 30. Here is the{" "}
             <CopyHighlight>honest fix</CopyHighlight>.
           </p>
           <PouchEquation />
