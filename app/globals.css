@@ -907,6 +907,7 @@ h2 {
     grid-column: 1;
     grid-row: 2;
     width: 100%;
+    text-align: center;
   }
 
   .hero-reveal-actions > .button--outline {
@@ -2265,8 +2266,8 @@ h2 {
 }
 
 .vs-card .vs-side-icon {
-  width: 1.125rem;
-  height: 1.125rem;
+  width: 1.5rem;
+  height: 1.5rem;
   flex-shrink: 0;
 }
 
