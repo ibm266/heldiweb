@@ -52,9 +52,9 @@ export function GiftingPopup({ onClose }: { onClose: () => void }) {
         <p className="eyebrow eyebrow--gold">IN THE FAMILY?</p>
         <h2>We can&apos;t charge family full price.</h2>
         <p>
-          Buying for your parents, or are you the auntie or uncle here for
-          your own dal? Tell us who&apos;s buying and take {GIFTING.percent}%
-          off single pouches and 2-packs.
+          Buying for your parents, for uncle and aunty, or are you the auntie
+          or uncle here for your own dal? Tell us who&apos;s buying and take{" "}
+          {GIFTING.percent}% off single pouches and 2-packs.
         </p>
         <GiftingCodePicker surface="popup" onApply={applyToBasket} />
         <p className="gifting__small">

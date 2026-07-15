@@ -81,7 +81,7 @@ function materialize(stored: StoredCart): Cart {
     0
   );
 
-  // The gifting codes (ACHABETA / SHABASH) are the only codes the mock
+  // The gifting codes (ACHABETA / RISHTA / SHABASH) are the only codes the mock
   // recognises. They only count as applicable when the basket has an
   // eligible portion (single or double blocks), mirroring how Shopify will
   // reject them on excluded-only baskets.

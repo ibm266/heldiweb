@@ -101,13 +101,15 @@ export const SHIPPING = {
 
 // Gifting discount: 10% off the launch price of single and double blocks
 // only — never triple blocks or the Sample. One discount per order, no
-// stacking. The same discount sits behind two codes so we can see who's
-// buying: ACHABETA for the kids sorting out their parents, SHABASH for the
-// aunties and uncles sorting themselves out.
+// stacking. The same discount sits behind three codes so we can see who's
+// buying: ACHABETA for the kids sorting out their parents, RISHTA for
+// buying for uncle and aunty, SHABASH for the aunties and uncles sorting
+// themselves out.
 export const GIFTING = {
   percent: 10,
   codes: {
     beta: "ACHABETA",
+    rishta: "RISHTA",
     elder: "SHABASH"
   }
 } as const;

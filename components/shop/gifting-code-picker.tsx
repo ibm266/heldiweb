@@ -6,11 +6,13 @@ import { GIFTING, type GiftingAudience } from "@/lib/pricing";
 
 const OPTIONS: { audience: GiftingAudience; label: string }[] = [
   { audience: "beta", label: "I'm buying for my parents" },
+  { audience: "rishta", label: "I'm buying for uncle and aunty" },
   { audience: "elder", label: "I'm the auntie or uncle" }
 ];
 
 const COPIED_LABELS: Record<GiftingAudience, string> = {
   beta: "Copied. Good beta.",
+  rishta: "Copied. Rishta sorted.",
   elder: "Copied. Shabash."
 };
 

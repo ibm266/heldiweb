@@ -10,7 +10,7 @@ work through [docs/launch-runbook.md](docs/launch-runbook.md), which turns
 this list into exact admin clicks, API scopes and verification steps:
 
 - [ ] Create the Shopify store; add the Khana product with four variants mirroring `lib/pricing.ts` — One pouch (£30, compare-at £35), The pair (£55, compare-at £70), The full table (£80, compare-at £105), Sample (£5). Each bundle is its own variant/SKU; the cart UI thinks in pouches and repacks the lines to the cheapest tier mix (`packPouches` in `lib/pricing.ts`), so a basket holds at most one line per tier — e.g. 4 pouches is 1 × The full table + 1 × One pouch
-- [ ] Create the ACHABETA and SHABASH discount codes (same rules, two codes so we can see who's buying — kids gifting vs. aunties/uncles buying for themselves): 10% off, applies to the One pouch and The pair variants only (never The full table or the Sample), one discount per order, no stacking
+- [ ] Create the ACHABETA, RISHTA and SHABASH discount codes (same rules, three codes so we can see who's buying — kids for parents, kids for uncle/aunty, aunties/uncles buying for themselves): 10% off, applies to the One pouch and The pair variants only (never The full table or the Sample), one discount per order, no stacking
 - [ ] Configure the included items (a refillable table jar with every pouch, masala dabba with the 3-pack) as zero-priced line items added automatically
 - [ ] Shipping profile: free over £40, £3.55 Small Parcel (pouches), Royal Mail Tracked 48; Sample ships free (we absorb the £2.75 Large Letter rate)
 - [ ] VAT: food supplements are standard-rated 20% in the UK — check tax settings

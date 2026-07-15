@@ -67,9 +67,9 @@ verification. The Storefront API version is pinned in `client.ts`
     rate. Shopify sums rates across profiles, so a sample alone ships free
     while a sample plus an under-£40 pouch order still charges £3.55. This is
     the behaviour the cart drawer already displays.
-- [ ] **Discount codes** (mirroring `GIFTING` in `lib/pricing.ts`): two codes,
-  `ACHABETA` and `SHABASH`, identical rules, two codes so we can see who is
-  buying:
+- [ ] **Discount codes** (mirroring `GIFTING` in `lib/pricing.ts`): three codes,
+  `ACHABETA`, `RISHTA` and `SHABASH`, identical rules, three codes so we can
+  see who is buying:
   - Type: amount off products, 10%.
   - Applies to: specific variants → One pouch and The pair only (never The
     full table, never the Sample).

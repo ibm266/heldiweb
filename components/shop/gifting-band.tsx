@@ -6,10 +6,10 @@ import { GIFTING } from "@/lib/pricing";
 import { GiftingCodePicker } from "./gifting-code-picker";
 
 // Full-width ink band giving the gifting discount its own spotlight. The
-// who's-buying picker swaps between the two codes (ACHABETA for the kids,
-// SHABASH for the aunties and uncles) and copies the chosen one.
-// `showShopCta` adds a "Shop now" button for placements away from the shop
-// page.
+// who's-buying picker swaps between the three codes (ACHABETA for the kids,
+// RISHTA for uncle and aunty, SHABASH for the aunties and uncles) and copies
+// the chosen one. `showShopCta` adds a "Shop now" button for placements
+// away from the shop page.
 export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) {
   return (
     <section className="section section--ink gifting" id="gifting">
@@ -22,12 +22,12 @@ export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) 
           <CopyHighlight>never hear the end of it.</CopyHighlight>
         </h2>
         <p>
-          Buying Heldi for your mum, dad, or the auntie who fed you every
-          Sunday? Or are you the auntie or uncle, here for your own dal?
-          Either way it&apos;s {GIFTING.percent}% off. Tell us who&apos;s
-          buying, copy your code, and use it at checkout. It&apos;s our way
-          of saying thank you, whether you&apos;re the one who sorts things
-          out for the family or the one who&apos;s been doing it for decades.
+          Buying Heldi for your mum and dad, for uncle and aunty, or are you
+          the auntie or uncle here for your own dal? Either way it&apos;s{" "}
+          {GIFTING.percent}% off. Tell us who&apos;s buying, copy your code,
+          and use it at checkout. It&apos;s our way of saying thank you,
+          whether you&apos;re the one who sorts things out for the family or
+          the one who&apos;s been doing it for decades.
         </p>
         <p>
           We can&apos;t check, and we&apos;re not brave enough to ask the
