@@ -17,7 +17,7 @@ const ACCORDION_ITEMS: { question: string; answer: ReactNode }[] = [
       <p>
         Whey protein, the part of milk that&apos;s always been on your table,
         blended to disappear into home cooking. <strong>All natural</strong>,{" "}
-        <strong>no added sugar</strong>, gluten free, vegetarian and 99%
+        <strong>no added sugar</strong>, gluten free, vegetarian and 98%
         lactose-free. <strong>Contains milk (whey).</strong> Blended and
         packed in England.{" "}
         <a href="/inside-the-pouch">See where every ingredient comes from</a>,

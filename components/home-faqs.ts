@@ -37,7 +37,7 @@ export const HOME_FAQS = [
   {
     question: "Is it safe for parents and grandparents?",
     answer:
-      "Heldi is designed for the whole table. Protein contributes to the maintenance of muscle mass, and the isolate is 99% lactose-free, 100% vegetarian and free from added sugar, preservatives and gluten."
+      "Heldi is designed for the whole table. Protein contributes to the maintenance of muscle mass, and the isolate is 98% lactose-free, 100% vegetarian and free from added sugar, preservatives and gluten."
   },
   {
     question: "I have diabetes. Is it OK for me?",

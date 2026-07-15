@@ -483,8 +483,11 @@ left stale copy behind; do not repeat that. Touch list:
 - Reviews: everything in `lib/reviews.ts` is placeholder and must be replaced with
   real, verifiable submissions before launch (CMA / DMCC Act 2024). Do not seed fake
   reviews into any new surface, including screenshots for ads.
-- "99% lactose-free", "no added sugar", "gluten free", "vegetarian", "all natural"
+- "98% lactose-free", "no added sugar", "gluten free", "vegetarian", "all natural"
   are the approved badge claims; do not invent new badges without substantiation.
+  Substantiation: Arla Ultrawhey COA lactose ~2.2 to 2.4% (batch FF25466001
+  2.28%); finished pouch slightly lower after blend. Per ~12g spoon ~0.3g
+  lactose, well below traditional whey concentrate.
 - Do not imply Heldi replaces meals or that anyone *needs* a supplement; the honest
   framing is closing a gap in an otherwise good diet.
 

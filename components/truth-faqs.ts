@@ -22,7 +22,7 @@ export const TRUTH_FAQS = [
   {
     question: "Is whey protein vegetarian?",
     answer:
-      "Yes. Whey comes from cow's milk, the same family as paneer and dahi, and contains no meat. It suits lacto-vegetarians, and whey isolate is virtually lactose free, so it sits well with sensitive stomachs. It is not vegan."
+      "Yes. Whey comes from cow's milk, the same family as paneer and dahi, and contains no meat. It suits lacto-vegetarians, and Heldi's isolate is 98% lactose-free, so a spoonful sits lightly with sensitive stomachs. It is not vegan."
   },
   {
     question: "How do I use Heldi?",

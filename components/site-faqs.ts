@@ -92,7 +92,7 @@ export const SITE_FAQ_GROUPS: SiteFaqGroup[] = [
       {
         question: "I am lactose intolerant. Can I have Heldi?",
         answer:
-          "Usually, yes. Heldi is made with whey protein isolate, which is filtered to be 99% lactose-free, well below the level most lactose-intolerant people react to. A confirmed dairy allergy is different: Heldi contains milk, so it is not for you."
+          "Usually, yes. Heldi uses whey protein isolate, filtered to 98% lactose-free. A spoonful carries barely any lactose, roughly 0.3g, far less than traditional whey concentrate and a fraction of what is in a glass of milk. Most lactose-intolerant people handle that amount without trouble. A confirmed dairy allergy is different: Heldi contains milk, so it is not for you."
       },
       pick(HOME_FAQS, "Is it safe for kids?"),
       pick(HOME_FAQS, "Is it safe for parents and grandparents?"),

@@ -146,7 +146,7 @@ const HERO_SHOWCASE_PILLS: {
   },
   {
     icon: POUCH_BADGE_ICONS.lactoseFree,
-    label: "99% lactose-free",
+    label: "98% lactose-free",
     width: 280,
     height: 377
   },
@@ -313,7 +313,7 @@ function PouchBadgesList({ className }: { className: string }) {
           height={377}
           aria-hidden="true"
         />
-        99% lactose-free
+        98% lactose-free
       </li>
       <li className="pouch-badge">
         <Image

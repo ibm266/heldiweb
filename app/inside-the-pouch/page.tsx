@@ -56,7 +56,7 @@ export default function InsideThePouchPage() {
           <div className="story-menu-card">
             <h3 className="story-menu-card__title">The batch report</h3>
             <p className="story-menu-card__subtitle">
-              batch FF25465001, tested before it gets near a kitchen
+              batch FF25466001, tested before it gets near a kitchen
             </p>
             <ul className="story-menu-card__list">
               <li className="story-menu-card__item">
@@ -70,19 +70,19 @@ export default function InsideThePouchPage() {
                 <span>0.3%</span>
               </li>
               <li className="story-menu-card__item">
-                <span>Salmonella</span>
+                <span>Lactose</span>
                 <span className="story-menu-card__dots" aria-hidden="true" />
-                <span>Absent</span>
+                <span>2.3%</span>
               </li>
               <li className="story-menu-card__item">
-                <span>Listeria</span>
+                <span>Moisture</span>
                 <span className="story-menu-card__dots" aria-hidden="true" />
-                <span>Not detected</span>
+                <span>4.1%</span>
               </li>
               <li className="story-menu-card__item">
-                <span>E. coli</span>
+                <span>Safety screen</span>
                 <span className="story-menu-card__dots" aria-hidden="true" />
-                <span>Not detected</span>
+                <span>Passed</span>
               </li>
             </ul>
           </div>

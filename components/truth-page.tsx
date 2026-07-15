@@ -346,8 +346,8 @@ export function TruthPage() {
               <span className="powder__grams">90g</span>
               <span className="powder__per">protein per 100g</span>
               <span className="powder__note">
-                All nine aminos, full strength. Virtually no lactose.
-                Disappears into the dish.
+                All nine aminos, full strength. 98% lactose-free, far
+                less lactose than concentrate. Disappears into the dish.
               </span>
             </div>
 

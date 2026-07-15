@@ -37,7 +37,7 @@ const GIFTING_POPUP_SEEN_KEY = "heldi_gifting_popup_seen";
 const PDP_PILLS: { icon: string; label: string; width: number; height: number }[] = [
   { icon: "/images/pouch-badges/high-protein.png", label: "High protein", width: 256, height: 256 },
   { icon: "/images/pouch-badges/all-natural.png", label: "All natural", width: 256, height: 256 },
-  { icon: "/images/pouch-badges/lactose-free.png", label: "99% lactose-free", width: 280, height: 377 },
+  { icon: "/images/pouch-badges/lactose-free.png", label: "98% lactose-free", width: 280, height: 377 },
   { icon: "/images/pouch-badges/no-sugar.png", label: "No added sugar", width: 386, height: 390 },
   { icon: "/images/pouch-badges/gluten-free.png", label: "Gluten free", width: 328, height: 225 },
   { icon: "/images/pouch-badges/vegetarian.png", label: "Vegetarian", width: 286, height: 367 }
