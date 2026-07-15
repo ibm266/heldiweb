@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Heldi brand board</title>
+<!--
+  Visual specimen for the Heldi design system. Companion to BRAND.md.
+  This page links the PRODUCTION stylesheet (app/globals.css), so every
+  component below renders with the exact CSS that ships. If a demo here
+  looks wrong, the site is wrong too.
+  Open directly (file://) or via any static server at the repo root.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;1,400&family=Rozha+One&display=swap"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="../../app/globals.css" />
+<style>
+  /* Board scaffolding only. Everything demoed uses production classes. */
+  :root {
+    --font-display: "Rozha One";
+    --font-body: "Gelasio";
+  }
+
+  body {
+    background: var(--cream);
+  }
+
+  .spec-masthead {
+    padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 5vw, 4rem) 2rem;
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+  }
+
+  .spec-masthead h1 {
+    margin: 0.5rem 0 0.75rem;
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    line-height: 1.08;
+    color: var(--cream);
+    text-wrap: balance;
+  }
+
+  .spec-masthead .pronunciation {
+    color: var(--dark-muted);
+  }
+
+  .spec-masthead-note {
+    max-width: 46rem;
+    margin: 1rem auto 0;
+    color: var(--dark-muted);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .spec-masthead-note code,
+  .spec-code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.8125em;
+    letter-spacing: 0;
+  }
+
+  .spec-section {
+    max-width: 1152px;
+    margin: 0 auto;
+    padding: clamp(2.25rem, 5vw, 3.5rem) clamp(1.25rem, 5vw, 2.5rem);
+  }
+
+  .spec-section > h2 {
+    margin: 0.25rem 0 0.5rem;
+  }
+
+  .spec-section > .spec-lede {
+    max-width: 620px;
+    margin: 0 0 1.75rem;
+    color: var(--brown);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+
+  .spec-caption {
+    display: block;
+    margin-top: 0.625rem;
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.75rem;
+  }
+
+  .spec-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .spec-row--center {
+    align-items: center;
+  }
+
+  .spec-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .spec-cell {
+    min-width: 0;
+  }
+
+  /* Ink strip: demos of on-dark variants sit on the ground they ship on */
+  .spec-ink-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 18px;
+    border: 3px solid var(--ink);
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .spec-gold-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 18px;
+    border: 3px solid var(--ink);
+    background: var(--gold);
+  }
+
+  /* Palette */
+  .spec-swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .spec-swatch {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    border: 3px solid var(--ink);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 5px 5px 0 var(--ink);
+    cursor: copy;
+    text-align: left;
+    transition: transform 150ms ease;
+  }
+
+  .spec-swatch:hover {
+    transform: translateY(-2px);
+  }
+
+  .spec-swatch-chip {
+    height: 4.25rem;
+  }
+
+  .spec-swatch-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    padding: 0.625rem 0.75rem;
+    border-top: 3px solid var(--ink);
+    font-size: 0.875rem;
+  }
+
+  .spec-swatch-meta strong {
+    font-weight: 600;
+  }
+
+  .spec-swatch-meta .spec-code {
+    color: var(--brown);
+  }
+
+  /* Type specimens */
+  .spec-type-sample {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 11rem) 1fr;
+    gap: 1rem 1.5rem;
+    align-items: baseline;
+    padding: 1rem 0;
+    border-top: 1px solid rgb(var(--ink-rgb) / 18%);
+  }
+
+  .spec-type-label {
+    color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .spec-display-xl {
+    font-family: var(--font-display), serif;
+    font-weight: 400;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    line-height: 1.05;
+  }
+
+  .spec-display-h2 {
+    font-family: var(--font-display), serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .spec-stat-num {
+    font-family: var(--font-display), serif;
+    font-weight: 400;
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--terracotta);
+  }
+
+  .spec-body-sample {
+    max-width: 34rem;
+    color: var(--brown);
+    font-size: 1.125rem;
+    line-height: 1.65;
+  }
+
+  /* Rhythm bands */
+  .spec-bands {
+    overflow: hidden;
+    border: 3px solid var(--ink);
+    border-radius: 18px;
+  }
+
+  .spec-band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.375rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .spec-band .eyebrow {
+    font-size: 0.75rem;
+  }
+
+  .spec-band--cream { background: var(--cream); }
+  .spec-band--ink { background: var(--ink); color: var(--cream); }
+  .spec-band--gold { background: var(--gold); border-top: 3px solid var(--ink); }
+
+  .spec-band + .spec-band--ink { border-top: 3px solid var(--ink); }
+
+  /* Menu-card demo needs a width like the real gallery; the production
+     min-width:900px rule sets .menu-card to width:100% for its grid, so pin
+     the gallery width back here. */
+  .spec-menu-cards {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .spec-menu-cards .menu-card {
+    flex: none;
+    width: 292px;
+    max-width: 292px;
+    min-height: 0;
+  }
+
+  /* Voice board */
+  .spec-voice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .spec-quote-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .spec-quote-list li {
+    padding: 0.625rem 0.875rem;
+    border: 2px solid rgb(var(--ink-rgb) / 25%);
+    border-radius: 12px;
+    background: #fff;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .spec-quote-list li i {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-style: normal;
+  }
+
+  .spec-footer {
+    display: block;
+    padding: 2rem clamp(1.25rem, 5vw, 4rem);
+    background: var(--ink);
+    color: var(--dark-muted);
+    font-size: 0.875rem;
+    line-height: 1.8;
+    text-align: center;
+  }
+
+  .spec-footer a {
+    color: var(--gold);
+  }
+
+  .spec-copy-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 1.25rem;
+    z-index: 99;
+    padding: 0.625rem 1.25rem;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--gold);
+    box-shadow: 3px 3px 0 var(--ink);
+    color: var(--ink);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    opacity: 0;
+    transform: translate(-50%, 8px);
+    transition: opacity 180ms ease, transform 180ms ease;
+    pointer-events: none;
+  }
+
+  .spec-copy-toast.is-on {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track { animation: none; }
+    .spec-swatch, .spec-copy-toast { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="spec-masthead">
+  <p class="eyebrow eyebrow--gold">HELDI · BRAND BOARD</p>
+  <h1>The system, on one table.</h1>
+  <p class="pronunciation">/hel-dee/ <em>adj.</em> how my nani says “healthy.”</p>
+  <p class="spec-masthead-note">
+    Every component below renders from the production stylesheet
+    (<code>app/globals.css</code>), so this board cannot drift from the site.
+    The rules behind it live in <code>BRAND.md</code>: voice §4–6, visual system §8,
+    change-impact map §11. Class names are captioned under each demo.
+  </p>
+</header>
+
+<div class="ticker" aria-label="Ticker demo">
+  <div class="ticker-track" aria-hidden="true">
+    <span>THEY SHAKE, WE STIR&nbsp;&nbsp;•&nbsp;&nbsp;MADE IN THE UK&nbsp;&nbsp;•&nbsp;&nbsp;FOR INDIAN KITCHENS&nbsp;&nbsp;•&nbsp;&nbsp;100% VEGETARIAN&nbsp;&nbsp;•&nbsp;&nbsp;SAME RECIPES, SAME TASTE&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+    <span>THEY SHAKE, WE STIR&nbsp;&nbsp;•&nbsp;&nbsp;MADE IN THE UK&nbsp;&nbsp;•&nbsp;&nbsp;FOR INDIAN KITCHENS&nbsp;&nbsp;•&nbsp;&nbsp;100% VEGETARIAN&nbsp;&nbsp;•&nbsp;&nbsp;SAME RECIPES, SAME TASTE&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+  </div>
+</div>
+<div class="double-rule" aria-hidden="true"></div>
+
+<!-- ============================ 01 PALETTE ============================ -->
+<section class="spec-section">
+  <p class="eyebrow">01 · PALETTE</p>
+  <h2>Nine colours. Ink does the talking.</h2>
+  <p class="spec-lede">
+    Click a swatch to copy its hex. Every border and hard shadow is ink; black
+    <span class="spec-code">#000</span> is banned. Body copy is brown on light
+    grounds and dark-muted on ink.
+  </p>
+  <div class="spec-swatches">
+    <button class="spec-swatch" type="button" data-hex="#eda31d">
+      <span class="spec-swatch-chip" style="background:#eda31d"></span>
+      <span class="spec-swatch-meta"><strong>Marigold</strong>
+        <span class="spec-code">--gold · #eda31d</span>
+        <span>Hero ground, accents on ink</span></span>
+    </button>
+    <button class="spec-swatch" type="button" data-hex="#011246">
+      <span class="spec-swatch-chip" style="background:#011246"></span>
+      <span class="spec-swatch-meta"><strong>Ink</strong>
+        <span class="spec-code">--ink · #011246</span>
+        <span>Text, borders, shadows, dark bands</span></span>
+    </button>
+    <button class="spec-swatch" type="button" data-hex="#f8f0de">
+      <span class="spec-swatch-chip" style="background:#f8f0de"></span>
+      <span class="spec-swatch-meta"><strong>Cream</strong>
+        <span class="spec-code">--cream · #f8f0de</span>
+        <span>Light sections, card grounds</span></span>
+    </button>
+    <button class="spec-swatch" type="button" data-hex="#a8432b">
+      <span class="spec-swatch-chip" style="background:#a8432b"></span>
+      <span class="spec-swatch-meta"><strong>Terracotta</strong>
+        <span class="spec-code">--terracotta · #a8432b</span>
+        <span>Eyebrows, stats, hovers</span></span>
+    </button>
+    <button class="spec-swatch" type="button" data-hex="#4a4238">
+      <span class="spec-swatch-chip" style="background:#4a4238"></span>
+      <span class="spec-swatch-meta"><strong>Brown</strong>
+        <span class="spec-code">--brown · #4a4238</span>
+        <span>Body copy on cream and gold</span></span>
+    </button>
+    <button class="spec-swatch" type="button" data-hex="#8a8378">
+      <span class="spec-swatch-chip" style="background:#8a8378"></span>
+      <span class="spec-swatch-meta"><strong>Muted</strong>
+        <span class="spec-code">--muted · #8a8378</span>
+        <span>Footnotes, story notes</span></span>
+    </button>
+    <button class="spec-swatch" type="button" data-hex="#b5ad9f">
+      <span class="spec-swatch-chip" style="background:#b5ad9f"></span>
+      <span class="spec-swatch-meta"><strong>Dark muted</strong>
+        <span class="spec-code">--dark-muted · #b5ad9f</span>
+        <span>Body copy on ink</span></span>
+    </button>
+    <button class="spec-swatch" type="button" data-hex="#2c2418">
+      <span class="spec-swatch-chip" style="background:#2c2418"></span>
+      <span class="spec-swatch-meta"><strong>Warm dark</strong>
+        <span class="spec-code">#2c2418</span>
+        <span>Hero sublines on marigold</span></span>
+    </button>
+    <button class="spec-swatch" type="button" data-hex="#ffffff">
+      <span class="spec-swatch-chip" style="background:#fff"></span>
+      <span class="spec-swatch-meta"><strong>White</strong>
+        <span class="spec-code">#ffffff</span>
+        <span>Nav card, sticker cards, pills</span></span>
+    </button>
+  </div>
+</section>
+
+<!-- ============================ 02 TYPE ============================ -->
+<section class="spec-section" style="border-top:3px solid var(--ink)">
+  <p class="eyebrow">02 · TYPE</p>
+  <h2>Rozha One speaks. Gelasio explains.</h2>
+  <p class="spec-lede">
+    Two families, no sans-serif anywhere. Rozha One at weight 400 only; Gelasio
+    at 400/500/600 with italics reserved for the pronunciation line, captions
+    and the founder quote.
+  </p>
+
+  <div class="spec-type-sample">
+    <span class="spec-type-label">display / hero<br />Rozha One 400</span>
+    <span class="spec-display-xl">Protein powder for dal.</span>
+  </div>
+  <div class="spec-type-sample">
+    <span class="spec-type-label">h2 · clamp(2rem, 4.5vw, 3rem)</span>
+    <span class="spec-display-h2">That 18g figure? It’s for dry dal.</span>
+  </div>
+  <div class="spec-type-sample">
+    <span class="spec-type-label">stat numeral + label</span>
+    <span><span class="spec-stat-num">10g</span>&nbsp;
+      <span style="color:var(--brown)">protein per bowl</span></span>
+  </div>
+  <div class="spec-type-sample">
+    <span class="spec-type-label">body · Gelasio 400<br />1.125rem / 1.65</span>
+    <p class="spec-body-sample">
+      Heldi is a protein made to disappear straight into your dal, curry, raita
+      and every other home-cooked favourite.
+      <strong class="copy-emphasis">Vanishes clean</strong> into every gravy,
+      dal and yoghurt base. No chalk, no aftertaste.
+      <span class="spec-caption">inline emphasis = &lt;CopyHighlight&gt; → strong.copy-emphasis (never italics)</span>
+    </p>
+  </div>
+  <div class="spec-type-sample">
+    <span class="spec-type-label">eyebrow · 0.875rem<br />tracking 0.22em</span>
+    <span class="eyebrow">THE HONEST TRUTH</span>
+  </div>
+  <div class="spec-type-sample">
+    <span class="spec-type-label">pronunciation · italic</span>
+    <span class="pronunciation">/hel-dee/ <em>adj.</em> how my nani says “healthy.”</span>
+  </div>
+</section>
+
+<!-- ============================ 03 RHYTHM ============================ -->
+<section class="spec-section">
+  <p class="eyebrow">03 · SECTION RHYTHM</p>
+  <h2>Cream, ink, gold. Repeat.</h2>
+  <p class="spec-lede">
+    Pages alternate the three grounds; a 3px ink top border
+    (<span class="spec-code">.section--bordered</span>) or the double rule
+    marks the seams. Eyebrows go terracotta on light, gold on ink.
+  </p>
+  <div class="spec-bands">
+    <div class="spec-band spec-band--cream">
+      <span class="eyebrow">THE POUCH</span>
+      <span class="spec-code">.section--cream</span>
+    </div>
+    <div class="spec-band spec-band--ink">
+      <span class="eyebrow eyebrow--gold">TONIGHT'S TABLE</span>
+      <span class="spec-code">.section--ink</span>
+    </div>
+    <div class="spec-band spec-band--gold">
+      <span class="eyebrow">WHO IT'S FOR</span>
+      <span class="spec-code">.section--gold + .section--bordered</span>
+    </div>
+  </div>
+  <div style="margin-top:1.25rem">
+    <div class="double-rule" aria-hidden="true"></div>
+    <span class="spec-caption">.double-rule · the signature sign-off, 7px tall, two 3px ink lines</span>
+  </div>
+</section>
+
+<!-- ============================ 04 BUTTONS ============================ -->
+<section class="spec-section" style="border-top:3px solid var(--ink)">
+  <p class="eyebrow">04 · BUTTONS &amp; LINKS</p>
+  <h2>Ink fill, gold text, terracotta on hover.</h2>
+  <p class="spec-lede">
+    Solid buttons lift 2px on hover and turn terracotta with cream text. Focus
+    is a 3px white ring (terracotta on inputs). Pill-links carry the arrow.
+  </p>
+  <div class="spec-stack">
+    <div class="spec-row spec-row--center">
+      <button class="button button--pill" type="button">Join waitlist</button>
+      <button class="button button--pill button--outline" type="button">How it works</button>
+      <button class="button button--square" type="button">Apply</button>
+      <button class="button button--ghost" type="button">Remove</button>
+      <a class="pill-link" href="#">Read the full truth &#8594;</a>
+    </div>
+    <span class="spec-caption">.button--pill · .button--outline · .button--square · .button--ghost · .pill-link</span>
+    <div class="spec-ink-strip">
+      <span class="eyebrow eyebrow--gold" style="flex:1 1 100%">ON INK</span>
+      <a class="pill-link pill-link--dark" href="#">See what&rsquo;s inside &#8594;</a>
+      <form class="waitlist-form" onsubmit="return false" style="flex:1 1 260px">
+        <label class="sr-only" for="spec-email">Email address</label>
+        <input id="spec-email" type="email" placeholder="you@example.com" />
+        <button class="button button--square" type="submit">Join waitlist</button>
+      </form>
+    </div>
+    <span class="spec-caption">.pill-link--dark · .waitlist-form (cream input, 2px ink border, 8px radius)</span>
+  </div>
+</section>
+
+<!-- ============================ 05 PILLS & CHIPS ============================ -->
+<section class="spec-section">
+  <p class="eyebrow">05 · PILLS &amp; CHIPS</p>
+  <h2>Fully round, ink-bordered, hard-shadowed.</h2>
+  <p class="spec-lede">
+    Active states invert to ink (or gold on dark). The gifting code chip is a
+    tear-off ticket: dotted left edge, asymmetric radius, Rozha One code.
+  </p>
+  <div class="spec-stack">
+    <div class="spec-row spec-row--center">
+      <span class="pouch-badge">99% lactose-free</span>
+      <span class="pouch-badge">No added sugar</span>
+      <button class="truth-chip" type="button">Dal</button>
+      <button class="truth-chip is-active" type="button">Whey</button>
+      <button class="menu-card__variant-chip" type="button" style="border-color:var(--ink)">VEG</button>
+      <button class="menu-card__variant-chip is-active" type="button">NON-VEG</button>
+    </div>
+    <span class="spec-caption">.pouch-badge · .truth-chip (+ .is-active) · .menu-card__variant-chip</span>
+
+    <div class="spec-row spec-row--center">
+      <span class="truth-amino">His</span>
+      <span class="truth-amino truth-amino--small">Ile</span>
+      <span class="truth-amino truth-amino--low">Met</span>
+      <span class="truth-amino truth-amino--gold">Leu</span>
+      <span class="spec-caption" style="margin:0">.truth-amino · full / --small / --low / --gold</span>
+    </div>
+
+    <div class="spec-gold-strip">
+      <button class="gifting__chip" type="button">ACHABETA</button>
+      <button class="gifting__chip" type="button">SHABASH</button>
+      <span style="max-width:22rem;font-size:0.875rem;color:var(--ink)">
+        Copy confirmations: <strong>“Copied. Good beta.”</strong> /
+        <strong>“Copied. Shabash.”</strong> One discount per order.
+      </span>
+    </div>
+    <span class="spec-caption">.gifting__chip · the tear-off ticket (border-left dotted, radius 4px 16px 16px 4px)</span>
+  </div>
+</section>
+
+<!-- ============================ 06 CARDS ============================ -->
+<section class="spec-section" style="border-top:3px solid var(--ink)">
+  <p class="eyebrow">06 · CARDS</p>
+  <h2>Sticker cards: 3px ink, hard offset, zero blur.</h2>
+  <p class="spec-lede">
+    The offset shadow is the brand. Cream cards throw gold shadows on ink
+    sections; marigold cards throw cream. Soft Material shadows are banned.
+  </p>
+
+  <div class="spec-row">
+    <article class="sticker-card" style="flex:1 1 280px;max-width:340px">
+      <p class="eyebrow">FOR THE FAMILY</p>
+      <h3>One pouch feeds every appetite at the table.</h3>
+      <ul>
+        <li><span><strong class="copy-emphasis">Disappears into</strong> the dal, the curry, the raita everyone already eats.</span></li>
+        <li><span>No separate “healthy” cooking. Ever.</span></li>
+      </ul>
+    </article>
+
+    <div style="flex:1 1 280px;max-width:340px;display:flex;flex-direction:column;gap:1rem">
+      <div class="pouch-stat pouch-stat--gold">
+        <strong>10g</strong>
+        <span>protein per bowl</span>
+      </div>
+      <div class="pouch-stat pouch-stat--white">
+        <strong>All natural</strong>
+        <span>ingredients</span>
+      </div>
+    </div>
+  </div>
+  <span class="spec-caption">.sticker-card (terracotta “+” bullets) · .pouch-stat--gold (ink shadow) · .pouch-stat--white (gold shadow)</span>
+
+  <div class="spec-ink-strip" style="margin-top:2rem">
+    <div class="spec-menu-cards">
+      <article class="menu-card menu-card--cream">
+        <span class="menu-card__tag">DINNER</span>
+        <h3 class="menu-card__title">The Weeknight Dinner</h3>
+        <div class="menu-card__rule" aria-hidden="true"></div>
+        <div class="menu-card__courses">
+          <div class="menu-card__course">
+            <h4>THE MAIN</h4>
+            <ul>
+              <li class="menu-card__dish menu-card__dish--heldi">
+                <span class="menu-card__dish-name">Dal tadka</span>
+                <span class="menu-card__dish-leader" aria-hidden="true"></span>
+                <span class="menu-card__dish-grams">18g</span>
+              </li>
+            </ul>
+          </div>
+          <div class="menu-card__course">
+            <h4>ON THE SIDE</h4>
+            <ul>
+              <li class="menu-card__dish">
+                <span class="menu-card__dish-name">Jeera rice</span>
+                <span class="menu-card__dish-leader" aria-hidden="true"></span>
+                <span class="menu-card__dish-grams">8g</span>
+              </li>
+              <li class="menu-card__dish menu-card__dish--heldi">
+                <span class="menu-card__dish-name">Cucumber raita</span>
+                <span class="menu-card__dish-leader" aria-hidden="true"></span>
+                <span class="menu-card__dish-grams">6g</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="menu-card__summary">
+          <div class="menu-card__heldi-band">
+            <span class="menu-card__heldi-label">4 tbsp Heldi across the table</span>
+            <span class="menu-card__heldi-value">+40g</span>
+          </div>
+          <p class="menu-card__table-total">
+            <span>TABLE TOTAL</span>
+            <span class="menu-card__grams-stat menu-card__grams-stat--table"><strong>76g</strong></span>
+          </p>
+        </div>
+      </article>
+
+      <article class="menu-card menu-card--marigold">
+        <span class="menu-card__tag">LUNCH</span>
+        <h3 class="menu-card__title">The Saturday Lunch</h3>
+        <div class="menu-card__rule" aria-hidden="true"></div>
+        <div class="menu-card__courses">
+          <div class="menu-card__course">
+            <h4>THE MAIN</h4>
+            <ul>
+              <li class="menu-card__dish menu-card__dish--heldi">
+                <span class="menu-card__dish-name">Chana masala</span>
+                <span class="menu-card__dish-leader" aria-hidden="true"></span>
+                <span class="menu-card__dish-grams">16g</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="menu-card__summary">
+          <div class="menu-card__heldi-band">
+            <span class="menu-card__heldi-label">6 tbsp Heldi across the table</span>
+            <span class="menu-card__heldi-value">+60g</span>
+          </div>
+          <p class="menu-card__table-total">
+            <span>TABLE TOTAL</span>
+            <span class="menu-card__grams-stat menu-card__grams-stat--table"><strong>100g</strong></span>
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+  <span class="spec-caption">.menu-card--cream (gold shadow) · .menu-card--marigold (cream shadow) · dotted leaders · gram pills fill when the dish is Heldi-boosted</span>
+
+  <div class="spec-row" style="margin-top:2rem">
+    <div class="story-menu-card spec-cell" style="margin:0">
+      <h3 class="story-menu-card__title">Nani&rsquo;s menu</h3>
+      <p class="story-menu-card__subtitle">same dishes, since forever</p>
+      <ul class="story-menu-card__list">
+        <li class="story-menu-card__item">
+          <span>Dal tadka</span><span class="story-menu-card__dots" aria-hidden="true"></span><span>6g</span>
+        </li>
+        <li class="story-menu-card__item">
+          <span>Two rotis</span><span class="story-menu-card__dots" aria-hidden="true"></span><span>6g</span>
+        </li>
+        <li class="story-menu-card__item">
+          <span>Masala chai</span><span class="story-menu-card__dots" aria-hidden="true"></span><span>1g</span>
+        </li>
+      </ul>
+      <p class="story-menu-card__gap"><span>The gap</span><strong>10g</strong></p>
+    </div>
+
+    <div class="spec-cell" style="flex:1 1 300px;max-width:380px;display:flex;flex-direction:column;gap:0.875rem">
+      <label class="option-card is-selected">
+        <input type="radio" name="spec-bundle" checked />
+        <span class="option-card__name">The pair</span>
+        <span class="option-card__meta">£0.55 per meal</span>
+      </label>
+      <label class="option-card">
+        <input type="radio" name="spec-bundle" />
+        <span class="option-card__name">One pouch</span>
+        <span class="option-card__meta">£0.60 per meal</span>
+      </label>
+      <span class="spec-caption" style="margin:0">.option-card (+ .is-selected fills gold) · .story-menu-card (dashed separators, gap band)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 07 MOTION ============================ -->
+<section class="spec-section">
+  <p class="eyebrow">07 · MOTION</p>
+  <h2>Translate and fade. Nothing bounces.</h2>
+  <p class="spec-lede">
+    House easing <span class="spec-code">cubic-bezier(0.23, 1, 0.32, 1)</span>,
+    340 to 640ms. The ticker above is live; buttons lift 2px on hover. Canon
+    effects: the elephant-run hero curtain (replayable via “Press to call the
+    elephants”), dissolve-in lettering, stir-gallery bursts. Every effect has a
+    <span class="spec-code">prefers-reduced-motion</span> fallback, no exceptions.
+  </p>
+</section>
+
+<!-- ============================ 08 VOICE ============================ -->
+<section class="spec-section" style="border-top:3px solid var(--ink)">
+  <p class="eyebrow">08 · VOICE</p>
+  <h2>Two voices. Never mixed.</h2>
+  <p class="spec-lede">
+    The honest expert explains numbers and never jokes near medical or
+    compliance copy. The desi underdog is warm, proud and slightly scared of
+    aunties. One easter egg per surface, allusion not quotation, no em dashes.
+  </p>
+  <div class="spec-voice-grid">
+    <div>
+      <p class="eyebrow" style="margin-bottom:0.75rem">VOICE A · HONEST EXPERT</p>
+      <ul class="spec-quote-list">
+        <li>“A cooked bowl of dal has 5 to 7g of protein, not the 18g the internet claims.”<i>truth hero</i></li>
+        <li>“Dal chawal pairs them, which is genuinely clever, but pairing fixes quality, not quantity.”<i>concede, then correct</i></li>
+        <li>“Protein contributes to the maintenance of muscle mass.”<i>the only permitted health claim, verbatim</i></li>
+        <li>“They know your situation; we do not.”<i>medical hand-off pattern</i></li>
+      </ul>
+    </div>
+    <div>
+      <p class="eyebrow" style="margin-bottom:0.75rem">VOICE B · DESI UNDERDOG</p>
+      <ul class="spec-quote-list">
+        <li>“Bade bade bowls mein, chhoti chhoti proteins.”<i>allusion, bent to food</i></li>
+        <li>“We can’t charge aunties and uncles full price. We’d never hear the end of it.”<i>family-authority comedy</i></li>
+        <li>“The dal did not even notice.”<i>deadpan understatement</i></li>
+        <li>“One pot of kadhi gave its life for this. We remember it fondly.”<i>mock-memorial</i></li>
+        <li>“You’re on the list. Tell your mum we said hi.”<i>waitlist success</i></li>
+      </ul>
+    </div>
+    <article class="sticker-card">
+      <p class="eyebrow">NEVER</p>
+      <ul>
+        <li><span>Scoop, shake (as our verb), gym, gains, macros, superfood.</span></li>
+        <li><span>Em dashes in copy. Restructure the sentence.</span></li>
+        <li><span>Black <span class="spec-code">#000</span>, sans-serif type, soft blurred shadows.</span></li>
+        <li><span>“Healthy alternative” framing. The food was never the problem.</span></li>
+        <li><span>Jokes in nutrition, medical, allergen or legal copy.</span></li>
+      </ul>
+    </article>
+  </div>
+</section>
+
+<div class="double-rule" aria-hidden="true"></div>
+<footer class="spec-footer">
+  © 2026 Heldi · Made in the UK · They shake, we stir<br />
+  Full rules: <span class="spec-code">BRAND.md</span> · mechanical checks:
+  <span class="spec-code">npm run brand-lint</span>
+</footer>
+
+<div class="spec-copy-toast" id="copy-toast" role="status">Copied. Shabash.</div>
+
+<script>
+  (function () {
+    var toast = document.getElementById("copy-toast");
+    var timer;
+    document.querySelectorAll(".spec-swatch").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var hex = button.getAttribute("data-hex");
+        function show() {
+          toast.textContent = "Copied " + hex + ". Shabash.";
+          toast.classList.add("is-on");
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            toast.classList.remove("is-on");
+          }, 1600);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(hex).then(show, show);
+        } else {
+          show();
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

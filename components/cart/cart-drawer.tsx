@@ -5,16 +5,21 @@ import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import {
   SAMPLE_SKU,
+  SERVINGS_PER_POUCH,
   giftingEligiblePenceForLines,
-  includedItemsForQuantity
+  includedItemsForPouches,
+  khanaImageForPouches,
+  khanaPouchCount,
+  tierForSku
 } from "@/lib/commerce/catalog";
 import { COMMERCE_PROVIDER } from "@/lib/commerce/config";
 import { formatMoney, formatPence, moneyToPence } from "@/lib/commerce/money";
-import type { CartLine } from "@/lib/commerce/types";
+import type { CartLine, IncludedItem } from "@/lib/commerce/types";
 import {
   GIFTING,
   SAMPLE_PRICE_PENCE,
   SHIPPING,
+  TIERS,
   giftingAudienceForCode,
   isGiftingCode
 } from "@/lib/pricing";
@@ -36,10 +41,9 @@ function lineSavingsPence(line: CartLine): number {
   );
 }
 
-// Items that ship with this line (jars, masala dabba), their total worth
+// Items that ship free with the pouches (jars, masala dabba), their worth
 // struck out. Mirrors the Includes panel on the product page.
-function LineIncluded({ line }: { line: CartLine }) {
-  const items = includedItemsForQuantity(line.merchandise, line.quantity);
+function IncludedList({ items }: { items: IncludedItem[] }) {
   if (items.length === 0) return null;
   return (
     <ul className="cart-line__included">
@@ -65,6 +69,7 @@ export function CartDrawer() {
     applyGifting,
     removeGifting,
     closeCart,
+    setPouchCount,
     updateQuantity,
     removeItem,
     applyDiscount
@@ -75,6 +80,34 @@ export function CartDrawer() {
 
   const lines = cart?.lines ?? [];
   const appliedCodes = cart?.discountCodes ?? [];
+
+  // The pouch tiers render as one row the shopper steps a pouch at a time;
+  // the underlying bundle lines repack behind it. Everything else (the
+  // Sample Trio) keeps its own line.
+  const khanaLines = lines.filter((line) => tierForSku(line.merchandise.sku) !== null);
+  const otherLines = lines.filter((line) => tierForSku(line.merchandise.sku) === null);
+  const pouchCount = khanaPouchCount(lines);
+  const khanaTotalPence = khanaLines.reduce(
+    (sum, line) => sum + moneyToPence(line.cost.totalAmount),
+    0
+  );
+  const khanaComparePence = khanaLines.reduce(
+    (sum, line) =>
+      sum + moneyToPence(line.cost.compareAtAmount ?? line.cost.totalAmount),
+    0
+  );
+  const khanaName =
+    pouchCount === 1
+      ? TIERS.single.name
+      : pouchCount === 2
+        ? TIERS.double.name
+        : pouchCount === 3
+          ? TIERS.triple.name
+          : `${pouchCount} pouches`;
+  const perMealPence =
+    pouchCount > 0
+      ? Math.round(khanaTotalPence / (pouchCount * SERVINGS_PER_POUCH))
+      : 0;
 
   const subtotalPence = cart ? moneyToPence(cart.cost.subtotalAmount) : 0;
   const totalPence = cart ? moneyToPence(cart.cost.totalAmount) : 0;
@@ -223,7 +256,69 @@ export function CartDrawer() {
         ) : (
           <>
             <ul className="cart-lines">
-              {lines.map((line) => {
+              {pouchCount > 0 ? (
+                <li className="cart-line" key="khana-pouches">
+                  <Image
+                    className="cart-line__image"
+                    src={khanaImageForPouches(pouchCount).url}
+                    alt={khanaImageForPouches(pouchCount).altText}
+                    width={72}
+                    height={72}
+                  />
+                  <div className="cart-line__details">
+                    <p className="cart-line__title">
+                      {khanaLines[0].merchandise.product.title}
+                    </p>
+                    <p className="cart-line__variant">
+                      {khanaName} · {formatPence(perMealPence)} per meal
+                    </p>
+                    <div className="qty-stepper">
+                      <button
+                        type="button"
+                        onClick={() => setPouchCount(pouchCount - 1)}
+                        disabled={isPending}
+                        aria-label="One pouch fewer"
+                      >
+                        −
+                      </button>
+                      <span aria-live="polite">{pouchCount}</span>
+                      <button
+                        type="button"
+                        onClick={() => setPouchCount(pouchCount + 1)}
+                        disabled={isPending}
+                        aria-label="One pouch more"
+                      >
+                        +
+                      </button>
+                    </div>
+                    {pouchCount % 3 === 2 ? (
+                      <p className="cart-line__nudge">
+                        One more pouch adds a free masala dabba.
+                      </p>
+                    ) : null}
+                  </div>
+                  <div className="cart-line__pricing">
+                    {khanaComparePence > khanaTotalPence ? (
+                      <s className="cart-line__compare">
+                        {formatPence(khanaComparePence)}
+                      </s>
+                    ) : null}
+                    <span className="cart-line__price">
+                      {formatPence(khanaTotalPence)}
+                    </span>
+                    <button
+                      className="cart-line__remove"
+                      type="button"
+                      onClick={() => setPouchCount(0)}
+                      disabled={isPending}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <IncludedList items={includedItemsForPouches(pouchCount)} />
+                </li>
+              ) : null}
+              {otherLines.map((line) => {
                 const lineImage =
                   line.merchandise.image ?? line.merchandise.product.images[0];
                 return (
@@ -278,7 +373,6 @@ export function CartDrawer() {
                       Remove
                     </button>
                   </div>
-                  <LineIncluded line={line} />
                 </li>
                 );
               })}

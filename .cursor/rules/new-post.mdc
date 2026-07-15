@@ -1,0 +1,13 @@
+---
+description: Publishing or wiring up a Heldi Living blog post, article, or recipe on the Heldi site (e.g. "add the ghee post", "publish this recipe on the blog"). Loads the house recipe for blog posts.
+globs:
+alwaysApply: false
+---
+
+Open `.claude/skills/new-post/SKILL.md` and follow it exactly. It is plain
+markdown written for any agent. In short: the words follow the Heldi blog voice
+rules (BRAND.md §4 to §6, no em dashes, British English); the wiring is
+PLAYBOOK.md R4: an `<article>` HTML body in content/heldi-living/ (optional
+heldi-faq div becomes FAQ schema automatically), a posts.json entry matching
+HeldiLivingPostMeta in lib/heldi-living.ts, a WebP hero within the BRAND.md §15
+budget, then the finishing gate. The sitemap updates itself.

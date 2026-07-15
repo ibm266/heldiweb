@@ -60,6 +60,25 @@ export function tierSavingsPence(id: TierId): number {
   return TIERS[id].rrpPence - TIERS[id].launchPence;
 }
 
+/** How many of each tier block a pouch count packs into. */
+export type PouchPacking = Record<TierId, number>;
+
+// The cart thinks in pouches; this is how a pouch count becomes tier
+// blocks: as many full tables as possible, then the remainder as a pair or
+// a single. Because the per-pouch price only falls as blocks get bigger,
+// this packing is always the cheapest one (the only tie is 4 pouches,
+// where full table + one pouch equals two pairs, and the full table side
+// carries the free dabba).
+export function packPouches(pouches: number): PouchPacking {
+  const whole = Math.max(0, Math.floor(pouches));
+  const remainder = whole % 3;
+  return {
+    triple: Math.floor(whole / 3),
+    double: remainder === 2 ? 1 : 0,
+    single: remainder === 1 ? 1 : 0
+  };
+}
+
 // Sample Trio: £5, unchanged at launch, ships free.
 export const SAMPLE_PRICE_PENCE = 500;
 

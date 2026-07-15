@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "brand-lint": "bash scripts/brand-lint.sh",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

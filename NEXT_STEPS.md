@@ -5,9 +5,11 @@ Ordered by priority. Tick things off as they land.
 
 ## 1. Connect Shopify (makes "buy" real)
 
-The whole storefront UI is built and runs on a mock cart. To take money:
+The whole storefront UI is built and runs on a mock cart. To take money,
+work through [docs/launch-runbook.md](docs/launch-runbook.md), which turns
+this list into exact admin clicks, API scopes and verification steps:
 
-- [ ] Create the Shopify store; add the Khana product with four variants mirroring `lib/pricing.ts` — One pouch (£30, compare-at £35), The pair (£55, compare-at £70), The full table (£80, compare-at £105), Sample Trio (£5). Each bundle is its own variant/SKU so baskets hold e.g. 2 × The pair as one line
+- [ ] Create the Shopify store; add the Khana product with four variants mirroring `lib/pricing.ts` — One pouch (£30, compare-at £35), The pair (£55, compare-at £70), The full table (£80, compare-at £105), Sample Trio (£5). Each bundle is its own variant/SKU; the cart UI thinks in pouches and repacks the lines to the cheapest tier mix (`packPouches` in `lib/pricing.ts`), so a basket holds at most one line per tier — e.g. 4 pouches is 1 × The full table + 1 × One pouch
 - [ ] Create the ACHABETA and SHABASH discount codes (same rules, two codes so we can see who's buying — kids gifting vs. aunties/uncles buying for themselves): 10% off, applies to the One pouch and The pair variants only (never The full table or the Sample Trio), one discount per order, no stacking
 - [ ] Configure the included items (a refillable table jar with every pouch, masala dabba with the 3-pack) as zero-priced line items added automatically
 - [ ] Shipping profile: free over £40, £3.55 Small Parcel (pouches), Royal Mail Tracked 48; Sample Trio ships free (we absorb the £2.75 Large Letter rate)
@@ -15,7 +17,7 @@ The whole storefront UI is built and runs on a mock cart. To take money:
 - [ ] Create a custom app → Storefront API access token
 - [ ] Point a subdomain (e.g. `shop.heldi.co.uk`) at Shopify so checkout shows the Heldi domain
 - [ ] Set env vars on Vercel + `.env.local`: `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_ACCESS_TOKEN`, `NEXT_PUBLIC_COMMERCE_PROVIDER=shopify`
-- [ ] Implement the `/api/cart/*` route handlers and flesh out `lib/commerce/shopify-provider.ts` (the GraphQL documents are ready in `lib/commerce/shopify/queries.ts`)
+- [x] Implement the `/api/cart/*` route handlers and flesh out `lib/commerce/shopify-provider.ts` — done: handlers live in `app/api/cart/`, the server-side client and Cart mapping in `lib/commerce/shopify/client.ts`; they answer 503 until the env vars exist
 - [ ] Replace the placeholder GIDs in `lib/commerce/catalog.ts` with real Product/Variant IDs
 - [ ] Place a real test order end-to-end (card, shipping rate, confirmation email)
 - [ ] Launch day: flip `NEXT_PUBLIC_COMMERCE_MODE=live`
@@ -51,9 +53,9 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 ## 4. Launch-window polish
 
 - [ ] Analytics: Plausible/Fathom (cookieless, no banner) or GA4 (needs consent banner) + Shopify conversion tracking
-- [ ] `og:image` social cards — links shared on WhatsApp/Instagram currently render bare
+- [x] `og:image` social cards — done: every route (and every blog post) ships a branded card rendered at build from `components/og/card.tsx`
 - [ ] Contact email in the footer (support has to go somewhere)
-- [ ] Styled 404 page (Next default currently serves)
+- [x] Styled 404 page — done: `app/not-found.tsx` in brand voice with pill-links home
 - [ ] Convert the ~2MB product PNGs in `public/images/shop/` to WebP (~halves page weight)
 - [ ] Favicon / app icons check
 

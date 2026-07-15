@@ -8,9 +8,10 @@ import {
   useMemo,
   useState
 } from "react";
+import { khanaPouchCount, linesForPouchCount, tierForSku } from "@/lib/commerce/catalog";
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { getCommerceProvider } from "@/lib/commerce/provider";
-import type { Cart, CommerceMode } from "@/lib/commerce/types";
+import type { Cart, CartLineInput, CommerceMode } from "@/lib/commerce/types";
 import {
   GIFTING,
   isGiftingCode,
@@ -37,6 +38,11 @@ type CartContextValue = {
   openCart: () => void;
   closeCart: () => void;
   addItem: (merchandiseId: string, quantity: number) => Promise<void>;
+  // Pouch-level cart ops: the drawer steps pouches one at a time and the
+  // buy box adds a tier's worth; both repack the underlying bundle lines
+  // to the cheapest packing for the new total (see packPouches).
+  addPouches: (count: number) => Promise<void>;
+  setPouchCount: (pouches: number) => Promise<void>;
   updateQuantity: (lineId: string, quantity: number) => Promise<void>;
   removeItem: (lineId: string) => Promise<void>;
   applyDiscount: (code: string) => Promise<void>;
@@ -130,6 +136,53 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [runMutation]
   );
 
+  const setPouchCount = useCallback(
+    async (pouches: number) => {
+      const tierLines = (cart?.lines ?? []).filter(
+        (line) => tierForSku(line.merchandise.sku) !== null
+      );
+      const currentByVariant = new Map(
+        tierLines.map((line) => [line.merchandise.id, line])
+      );
+      const target = linesForPouchCount(pouches);
+      const targetIds = new Set(target.map((input) => input.merchandiseId));
+
+      const additions: CartLineInput[] = [];
+      const updates: { id: string; quantity: number }[] = [];
+      for (const input of target) {
+        const line = currentByVariant.get(input.merchandiseId);
+        if (!line) additions.push(input);
+        else if (line.quantity !== input.quantity) {
+          updates.push({ id: line.id, quantity: input.quantity });
+        }
+      }
+      const removals = tierLines
+        .filter((line) => !targetIds.has(line.merchandise.id))
+        .map((line) => line.id);
+      if (additions.length === 0 && updates.length === 0 && removals.length === 0) {
+        return;
+      }
+
+      await runMutation(async (cartId) => {
+        const provider = getCommerceProvider();
+        let next: Cart | null = null;
+        if (updates.length > 0) next = await provider.updateLines(cartId, updates);
+        if (additions.length > 0) next = await provider.addLines(cartId, additions);
+        if (removals.length > 0) next = await provider.removeLines(cartId, removals);
+        return next!;
+      });
+    },
+    [runMutation, cart?.lines]
+  );
+
+  const addPouches = useCallback(
+    async (count: number) => {
+      await setPouchCount(khanaPouchCount(cart?.lines ?? []) + count);
+      setIsOpen(true);
+    },
+    [setPouchCount, cart?.lines]
+  );
+
   const updateQuantity = useCallback(
     (lineId: string, quantity: number) =>
       runMutation((cartId) =>
@@ -202,6 +255,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       openCart: () => setIsOpen(true),
       closeCart: () => setIsOpen(false),
       addItem,
+      addPouches,
+      setPouchCount,
       updateQuantity,
       removeItem,
       applyDiscount,
@@ -217,6 +272,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       applyGifting,
       removeGifting,
       addItem,
+      addPouches,
+      setPouchCount,
       updateQuantity,
       removeItem,
       applyDiscount,

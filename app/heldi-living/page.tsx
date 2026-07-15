@@ -7,7 +7,7 @@ import { getAllTags, HELDI_LIVING_POSTS } from "@/lib/heldi-living";
 export const metadata: Metadata = {
   title: "Heldi Living · Honest writing on protein and desi cooking",
   description:
-    "What we wish more people knew about the food we already love. Protein, strength, ageing, and desi kitchens — without the gym-bro noise.",
+    "What we wish more people knew about the food we already love. Protein, strength, ageing, and desi kitchens, without the gym-bro noise.",
   alternates: { canonical: "/heldi-living" }
 };
 

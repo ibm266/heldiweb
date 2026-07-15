@@ -1,0 +1,12 @@
+---
+description: Adding, building, redesigning, or restructuring any section, band, card row, page, or route on the Heldi site (e.g. "add a press section", "new wholesale page", "testimonial band"). Loads the house recipe for sections and pages.
+globs:
+alwaysApply: false
+---
+
+Open `.claude/skills/add-section/SKILL.md` and follow it exactly. It is plain
+markdown written for any agent. In short: load PLAYBOOK.md §1 to §3 plus the
+matching recipe (R1 homepage section, R2 subpage, R5 nav, R6 new style), write
+the five-line spec first (job, voice, mobile layout, desktop layout, ground
+colour), build from the blessed components with CSS appended to app/globals.css,
+then run the finishing gate and verify at 375 and 1280 widths.

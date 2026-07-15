@@ -16,7 +16,7 @@
 *.log
 *.tsbuildinfo
 .DS_Store
-.claude/
+.claude/settings.local.json
 
 # deployment
 .vercel
@@ -41,7 +41,7 @@ design_handoff_stir_gallery/
 fable/
 fable_copy/
 fableplan/
-scripts/
+scripts/capture-fable-screenshots.mjs
 
 # --- Image assets not served at runtime ---
 # Live images are under public/images/variants/ink-blue/ (see imageSrc in heldi-homepage.tsx)

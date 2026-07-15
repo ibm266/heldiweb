@@ -1,11 +1,12 @@
 import type { CommerceProvider } from "./provider";
 import type { Cart, CartLineInput } from "./types";
 
-// Stub until the Shopify store exists. At connect time the methods POST to
-// Next.js route handlers under /api/cart which run the GraphQL documents in
-// ./shopify/queries.ts against the Storefront API server-side (the access
-// token never reaches the client bundle). See the plan's "Connect Shopify
-// later" section.
+// Client half of the Shopify integration: POSTs to the route handlers under
+// app/api/cart/, which run the GraphQL documents in ./shopify/queries.ts
+// against the Storefront API server-side (the access token never reaches the
+// client bundle). Selected when NEXT_PUBLIC_COMMERCE_PROVIDER=shopify; until
+// the real store credentials exist the handlers answer 503 and the mock
+// provider stays the default. Connect steps: docs/launch-runbook.md.
 
 async function callCartApi(action: string, payload: unknown): Promise<Cart> {
   const response = await fetch(`/api/cart/${action}`, {

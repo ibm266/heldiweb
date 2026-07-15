@@ -50,7 +50,7 @@ export function BuyBox({ product }: { product: Product }) {
   const [justAdded, setJustAdded] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [giftingPopupOpen, setGiftingPopupOpen] = useState(false);
-  const { cart, mode, addItem, isPending } = useCart();
+  const { cart, mode, addItem, addPouches, isPending } = useCart();
 
   const tierVariants = new Map<TierId, ProductVariant>();
   for (const id of TIER_ORDER) {
@@ -106,7 +106,11 @@ export function BuyBox({ product }: { product: Product }) {
     const giftingApplied = (cart?.discountCodes ?? []).some(
       (entry) => entry.applicable && isGiftingCode(entry.code)
     );
-    await addItem(selectedVariant.id, 1);
+    // Pouch tiers add pouches, not lines: the cart repacks the running
+    // total into the cheapest bundle mix, so a pouch on top of a pair
+    // becomes the full table rather than two awkward lines.
+    if (isPouch) await addPouches(tier.pouches);
+    else await addItem(selectedVariant.id, 1);
     setJustAdded(true);
     window.setTimeout(() => setJustAdded(false), 2000);
     if (!giftingApplied && !window.sessionStorage.getItem(GIFTING_POPUP_SEEN_KEY)) {

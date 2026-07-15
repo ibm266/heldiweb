@@ -1,0 +1,24 @@
+---
+description: Heldi website build system, always in force, brand rules, responsive contract, finishing gate
+globs:
+alwaysApply: true
+---
+
+This repo has a locked design and copy system. Do not build from generic web
+conventions.
+
+- Rules and identity: read BRAND.md before copy or styling work (§11 is the
+  change-impact map for product facts; §14 is the pre-flight checklist).
+- Build procedure: read PLAYBOOK.md before adding or restructuring anything.
+  §1 is the responsive contract: every surface ships two deliberate layouts,
+  mobile (max-width 899px) and wide (min-width 900px), sized with fluid clamp(),
+  structure changing only at that one breakpoint, verified at 375 and 1280
+  minimum.
+- Never: em dashes in copy, the word "scoop", literal #000, sans-serif type,
+  soft blurred shadows, raw <img> tags, hard-coded prices (lib/pricing.ts is the
+  source), health claims beyond the verbatim "Protein contributes to the
+  maintenance of muscle mass."
+- Finishing gate for every change:
+  npm run brand-lint && npm run typecheck && npm run build
+  then view the change at a phone width and a wide width.
+- Visual reference for every component: docs/brand/specimen.html.

@@ -3,10 +3,19 @@ import {
   SAMPLE_PRICE_PENCE,
   TIERS,
   TIER_ORDER,
+  packPouches,
   type TierId
 } from "@/lib/pricing";
 import { penceToMoney } from "./money";
-import type { CartLine, IncludedItem, Money, Product, ProductVariant } from "./types";
+import type {
+  CartLine,
+  CartLineInput,
+  IncludedItem,
+  Money,
+  Product,
+  ProductImage,
+  ProductVariant
+} from "./types";
 
 // Static catalog until the Shopify store exists. At connect time the
 // placeholder GIDs get replaced with real Product/ProductVariant ids (or the
@@ -14,9 +23,12 @@ import type { CartLine, IncludedItem, Money, Product, ProductVariant } from "./t
 // getProducts/getProduct don't change either way.
 //
 // Each pricing tier is its own variant (a fixed bundle SKU, as it will be in
-// Shopify), so a basket can hold e.g. 2 × The pair and 2 × The full table as
-// separate lines. All prices come from lib/pricing.ts: the variant price is
-// the launch price, compareAtPrice is the RRP that gets struck through.
+// Shopify). The cart UI thinks in pouches and repacks the tier lines to the
+// cheapest mix for the running total (see packPouches in lib/pricing.ts), so
+// a basket holds at most one line per tier — e.g. 4 pouches is 1 × The full
+// table + 1 × One pouch. All prices come from lib/pricing.ts: the variant
+// price is the launch price, compareAtPrice is the RRP that gets struck
+// through.
 
 export const KHANA_VARIANT_ID = "gid://shopify/ProductVariant/PLACEHOLDER_KHANA_300";
 export const KHANA_DOUBLE_VARIANT_ID = "gid://shopify/ProductVariant/PLACEHOLDER_KHANA_300_X2";
@@ -69,7 +81,7 @@ const PRODUCTS: Product[] = [
     title: "Heldi Khana",
     shortDescription: "Protein that disappears into dal, curry and raita.",
     description:
-      "One pouch for the whole table. Heldi Khana is a high-protein blend made to disappear into the food you already cook — stir it into dal, curry, sabzi or raita and the taste stays exactly where your family left it. High in protein. Protein contributes to the maintenance of muscle mass. Contains milk (whey).",
+      "One pouch for the whole table. Heldi Khana is a high-protein blend made to disappear into the food you already cook. Stir it into dal, curry, sabzi or raita and the taste stays exactly where your family left it. High in protein. Protein contributes to the maintenance of muscle mass. Contains milk (whey).",
     images: [
       TIER_IMAGES.single,
       TIER_IMAGES.double,
@@ -147,17 +159,8 @@ export function displayPrice(variant: ProductVariant, quantity: number): Display
   };
 }
 
-// Items included with `quantity` bundles of a tier variant: a refillable
-// table jar with every pouch, plus the masala dabba with the full table.
-// The Sample Trio never carries included items.
-export function includedItemsForQuantity(
-  variant: Pick<ProductVariant, "sku">,
-  quantity: number
-): IncludedItem[] {
-  const tier = tierForSku(variant.sku);
-  if (!tier || quantity < 1) return [];
-  const jars = TIERS[tier].jars * quantity;
-  const dabbas = TIERS[tier].dabbas * quantity;
+function buildIncludedItems(jars: number, dabbas: number): IncludedItem[] {
+  if (jars < 1) return [];
   const items: IncludedItem[] = [
     {
       title: jars === 1 ? "1 refillable table jar" : `${jars} refillable table jars`,
@@ -173,6 +176,62 @@ export function includedItemsForQuantity(
     });
   }
   return items;
+}
+
+// Items included with `quantity` bundles of a tier variant: a refillable
+// table jar with every pouch, plus the masala dabba with the full table.
+// The Sample Trio never carries included items.
+export function includedItemsForQuantity(
+  variant: Pick<ProductVariant, "sku">,
+  quantity: number
+): IncludedItem[] {
+  const tier = tierForSku(variant.sku);
+  if (!tier || quantity < 1) return [];
+  return buildIncludedItems(TIERS[tier].jars * quantity, TIERS[tier].dabbas * quantity);
+}
+
+// Items included with a basket of `pouches` pouches: a jar per pouch, a
+// dabba per full-table block of the greedy packing.
+export function includedItemsForPouches(pouches: number): IncludedItem[] {
+  return buildIncludedItems(pouches, packPouches(pouches).triple);
+}
+
+// Total pouches across the tier lines of a basket (samples don't count).
+export function khanaPouchCount(
+  lines: Pick<CartLine, "quantity" | "merchandise">[]
+): number {
+  return lines.reduce((sum, line) => {
+    const tier = tierForSku(line.merchandise.sku);
+    return tier ? sum + TIERS[tier].pouches * line.quantity : sum;
+  }, 0);
+}
+
+// The tier lines a basket should hold for a pouch count: the greedy
+// packing from lib/pricing.ts mapped onto the fixed bundle SKUs, so the
+// same repack works against the mock cart and the real Shopify one.
+export function linesForPouchCount(pouches: number): CartLineInput[] {
+  const packing = packPouches(pouches);
+  return TIER_ORDER.filter((id) => packing[id] > 0).map((id) => ({
+    merchandiseId: TIER_VARIANT_IDS[id],
+    quantity: packing[id]
+  }));
+}
+
+// Basket badge count: pouches count one by one, anything else (the Sample
+// Trio) by its line quantity.
+export function cartItemCount(
+  lines: Pick<CartLine, "quantity" | "merchandise">[]
+): number {
+  return lines.reduce((sum, line) => {
+    const tier = tierForSku(line.merchandise.sku);
+    return sum + (tier ? TIERS[tier].pouches : 1) * line.quantity;
+  }, 0);
+}
+
+// Bundle gallery shot matching a pouch count; three or more pouches use
+// the full-table shot.
+export function khanaImageForPouches(pouches: number): ProductImage {
+  return TIER_IMAGES[pouches >= 3 ? "triple" : pouches === 2 ? "double" : "single"];
 }
 
 // The portion of a basket the gifting discount applies to: One pouch and

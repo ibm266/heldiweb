@@ -24,7 +24,15 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Heldi, desi protein for Indian food",
   description:
-    "Protein that disappears into dal, curry and raita. They shake, we stir."
+    "Protein that disappears into dal, curry and raita. They shake, we stir.",
+  openGraph: {
+    siteName: "Heldi",
+    type: "website",
+    locale: "en_GB"
+  },
+  twitter: {
+    card: "summary_large_image"
+  }
 };
 
 export default function RootLayout({
