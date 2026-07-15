@@ -501,6 +501,11 @@ export function TruthPage() {
               );
             })}
           </div>
+          <p className="faq-more">
+            <a className="pill-link" href="/faq">
+              See the full FAQ &#8594;
+            </a>
+          </p>
           <p className="truth-sources">
             Figures from NHS guidance, the British Nutrition Foundation and
             McCance and Widdowson&apos;s Composition of Foods. Heldi is a food

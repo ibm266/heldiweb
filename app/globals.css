@@ -3121,6 +3121,8 @@ footer {
   .nav-links--mobile.is-open a:nth-child(3) { transition-delay: 190ms; }
   .nav-links--mobile.is-open a:nth-child(4) { transition-delay: 250ms; }
   .nav-links--mobile.is-open a:nth-child(5) { transition-delay: 310ms; }
+  .nav-links--mobile.is-open a:nth-child(6) { transition-delay: 370ms; }
+  .nav-links--mobile.is-open a:nth-child(7) { transition-delay: 430ms; }
 }
 
 @media (max-width: 719px) {
@@ -4088,6 +4090,23 @@ footer {
 .pill-link:hover {
   transform: translateY(-2px);
   background: var(--gold);
+}
+
+.pill-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.pill-links .pill-link {
+  margin-top: 0;
+}
+
+.faq-more {
+  margin-top: 2.5rem;
+  text-align: center;
 }
 
 .pill-link--dark {

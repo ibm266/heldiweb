@@ -90,6 +90,8 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
           <a href="/truth">The truth</a>
           <a href="/our-story">Our story</a>
           <a href="/heldi-living">Heldi Living</a>
+          <a href="/inside-the-pouch">Inside the pouch</a>
+          <a href="/faq">FAQ</a>
           <a href="/shop">Shop</a>
           <DevModeToggle variant="menu" />
         </div>
@@ -101,6 +103,8 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
           <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
           <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
           <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
+          <a href="/inside-the-pouch" onClick={() => setMenuOpen(false)}>Inside the pouch</a>
+          <a href="/faq" onClick={() => setMenuOpen(false)}>FAQ</a>
           <a href="/shop" onClick={() => setMenuOpen(false)}>Shop</a>
           <DevModeToggle variant="menu" />
         </div>

@@ -1052,6 +1052,8 @@ export function HeldiHomepage({
             <a href="/truth">The truth</a>
             <a href="/our-story">Our story</a>
             <a href="/heldi-living">Heldi Living</a>
+            <a href="/inside-the-pouch">Inside the pouch</a>
+            <a href="/faq">FAQ</a>
             <a href="/shop">Shop</a>
             <DevModeToggle variant="menu" />
           </div>
@@ -1065,6 +1067,8 @@ export function HeldiHomepage({
             <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
             <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
             <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
+            <a href="/inside-the-pouch" onClick={() => setMenuOpen(false)}>Inside the pouch</a>
+            <a href="/faq" onClick={() => setMenuOpen(false)}>FAQ</a>
             <a href="/shop" onClick={() => setMenuOpen(false)}>Shop</a>
             <DevModeToggle variant="menu" />
           </div>
@@ -1276,9 +1280,14 @@ export function HeldiHomepage({
           <p className="pouch-section__ingredient">
             90% whey protein isolate. The rest, spices you already know.
           </p>
-          <a className="pill-link" href="/truth">
-            Read the full truth &#8594;
-          </a>
+          <div className="pill-links">
+            <a className="pill-link" href="/truth">
+              Read the full truth &#8594;
+            </a>
+            <a className="pill-link" href="/inside-the-pouch">
+              See what&apos;s inside &#8594;
+            </a>
+          </div>
         </div>
       </section>
 
@@ -1348,6 +1357,11 @@ export function HeldiHomepage({
               );
             })}
           </div>
+          <p className="faq-more">
+            <a className="pill-link" href="/faq">
+              See the full FAQ &#8594;
+            </a>
+          </p>
         </div>
       </section>
 

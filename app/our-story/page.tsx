@@ -189,6 +189,9 @@ export default function OurStoryPage() {
           <p className="story-note">
             One pot of kadhi gave its life for this. We remember it fondly.
           </p>
+          <a className="pill-link" href="/inside-the-pouch">
+            See what&apos;s in the pouch now &#8594;
+          </a>
         </div>
       </section>
 
