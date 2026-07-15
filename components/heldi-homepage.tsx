@@ -1329,10 +1329,22 @@ export function HeldiHomepage({
 
       <section className="section section--gold section--bordered founder-band founder-band--gold">
         <div className="founder-band__inner">
+          <figure className="story-photo-card founder-band__figure">
+            <Image
+              className="story-photo-card__image"
+              src="/images/our-story/nani.jpg"
+              alt="Mihir with his nani"
+              width={1024}
+              height={682}
+              sizes="(max-width: 899px) min(100vw - 4.5rem, 360px), 440px"
+            />
+            <figcaption className="story-photo-card__caption">
+              My nani, the woman who coined it.
+            </figcaption>
+          </figure>
           <p className="founder-band__quote">
-            I made Heldi for my parents. They were never going to drink a
-            shake, and they were never going to give up dal. So the protein
-            came to the table instead.
+            My nani never said healthy. She said heldi. Warm food, made with
+            care, made for you. That is where the name comes from.
           </p>
           <p className="founder-band__signature">&mdash; Mihir, founder</p>
           <a className="pill-link" href="/our-story">

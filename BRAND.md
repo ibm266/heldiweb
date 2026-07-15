@@ -30,9 +30,9 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
   the meta description, and the Organization schema. Treat it as locked.)
 - **Tagline family**: "The same food, just a little Heldier." · "Bringing something new
   to the table." · "Same recipes. Same taste. More protein." (pack front)
-- **Founder story, one line**: "I made Heldi for my parents. They were never going to
-  drink a shake, and they were never going to give up dal. So the protein came to the
-  table instead." (founder band, homepage; signed "— Mihir, founder")
+- **Founder story, one line**: "My nani never said healthy. She said heldi. Warm food,
+  made with care, made for you. That is where the name comes from." (founder band,
+  homepage; photo of Mihir with nani; signed "— Mihir, founder")
 - **Product today**: one product, **Heldi Khana** (savoury blend, 300g pouch, 25
   servings), sold as three bundle tiers plus a £5 Sample (3 servings). Chai is
   publicly teased as "in development" on /our-story. There are no flavour SKUs.
@@ -106,7 +106,7 @@ kadhi, spoonful, pot), and zero wellness jargon.
 | Our story | B narrating, A on numbers | "Six powders. One kitchen. A few ruined dinners." |
 | Inside the pouch | A | "Short label. Long paper trail." |
 | Shop PDP | A structure, B accents | "Launch prices. Not forever prices." |
-| Cart + gifting | B | "Copied. Good beta." / "Copied. Shabash." |
+| Cart + gifting | B | "Copied. Good beta." / "Copied. Rishta sorted." / "Copied. Shabash." |
 | FAQ | A (B only in delivery/contact answers) | "replies come with opinions about dal" |
 | Legal, nutrition table | A only, no garnish | statutory wording |
 
@@ -161,8 +161,9 @@ The six named patterns, with canon examples:
    joke; the brand is slightly scared of aunties and that is correct.
    - "We can't charge aunties and uncles full price. We'd never hear the end of it."
    - "We're not brave enough to ask the aunty WhatsApp group."
-   - Discount codes ACHABETA ("acha beta", good kid) and SHABASH ("well done"),
-     confirmed on copy as "Copied. Good beta." / "Copied. Shabash."
+   - Discount codes ACHABETA ("acha beta", good kid), RISHTA (buying for uncle
+     and aunty), and SHABASH ("well done"), confirmed on copy as "Copied. Good
+     beta." / "Copied. Rishta sorted." / "Copied. Shabash."
 3. **Deadpan understatement.** The product works so well nothing happens.
    - "The dal did not even notice."
    - "Papa had seconds and still has no idea."
@@ -361,7 +362,7 @@ Change these files, and only these files, for their facts:
 |---|---|---|
 | All prices, RRP vs launch, tier names/contents | `lib/pricing.ts` | Integer pence. Strikethrough RRP becomes the real price after launch. Mirror changes in Shopify admin once connected |
 | Shipping thresholds and rates | `SHIPPING` in `lib/pricing.ts` | £40 free threshold, £3.55 Tracked 48, sample letter absorbed |
-| Gifting discount + codes | `GIFTING` in `lib/pricing.ts` | ACHABETA / SHABASH, 10%, single+double tiers only |
+| Gifting discount + codes | `GIFTING` in `lib/pricing.ts` | ACHABETA / RISHTA / SHABASH, 10%, single+double tiers only |
 | Servings per pouch / sample | `SERVINGS_PER_POUCH`, `SERVINGS_PER_SAMPLE` in `lib/commerce/catalog.ts` | 25 and 3; feeds every per-meal price |
 | Formulation, nutrition table, amino profile | `components/shop/nutrition-data.ts` | `FORMULA`: whey isolate 94.15%, sunflower lecithin 4%, cumin 1.25%, sea salt 0.6%. Protein 10.4g per 12g serving |
 | Precise protein per tbsp for maths | `PROTEIN_GRAMS_PER_TBSP` in `lib/reviews.ts` (10.4) | Keep in sync with nutrition-data |
