@@ -34,7 +34,7 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
   drink a shake, and they were never going to give up dal. So the protein came to the
   table instead." (founder band, homepage; signed "— Mihir, founder")
 - **Product today**: one product, **Heldi Khana** (savoury blend, 300g pouch, 25
-  servings), sold as three bundle tiers plus a £5 Sample Trio (3 servings). Chai is
+  servings), sold as three bundle tiers plus a £5 Sample (3 servings). Chai is
   publicly teased as "in development" on /our-story. There are no flavour SKUs.
 - **Stage**: pre-launch waitlist ("Launching autumn 2026" in the ticker), full storefront
   UI built behind a mock cart. CTAs switch on `COMMERCE_MODE` ("waitlist" | "live").

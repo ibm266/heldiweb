@@ -79,7 +79,7 @@ export function packPouches(pouches: number): PouchPacking {
   };
 }
 
-// Sample Trio: £5, unchanged at launch, ships free.
+// Sample: £5, unchanged at launch, ships free.
 export const SAMPLE_PRICE_PENCE = 500;
 
 // Display-only "worth" of the items included with pouch tiers, shown struck
@@ -94,13 +94,13 @@ export const SHIPPING = {
   freeOverPence: 4000,
   /** Royal Mail Tracked 48, charged under the free threshold. */
   standardPence: 355,
-  /** Royal Mail Large Letter for a Sample Trio on its own — Heldi absorbs
+  /** Royal Mail Large Letter for a Sample on its own — Heldi absorbs
       this, so sample-only orders ship free. */
   sampleLetterPence: 275
 } as const;
 
 // Gifting discount: 10% off the launch price of single and double blocks
-// only — never triple blocks or the Sample Trio. One discount per order, no
+// only — never triple blocks or the Sample. One discount per order, no
 // stacking. The same discount sits behind two codes so we can see who's
 // buying: ACHABETA for the kids sorting out their parents, SHABASH for the
 // aunties and uncles sorting themselves out.

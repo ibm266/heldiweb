@@ -83,7 +83,7 @@ export function CartDrawer() {
 
   // The pouch tiers render as one row the shopper steps a pouch at a time;
   // the underlying bundle lines repack behind it. Everything else (the
-  // Sample Trio) keeps its own line.
+  // Sample) keeps its own line.
   const khanaLines = lines.filter((line) => tierForSku(line.merchandise.sku) !== null);
   const otherLines = lines.filter((line) => tierForSku(line.merchandise.sku) === null);
   const pouchCount = khanaPouchCount(lines);
@@ -134,7 +134,7 @@ export function CartDrawer() {
       : null;
   const codeFieldLocked = activeMethod === "checkbox";
 
-  // Shipping, recalculated after discounts. A Sample Trio on its own ships
+  // Shipping, recalculated after discounts. A Sample on its own ships
   // free (Heldi absorbs the Large Letter rate).
   const sampleOnly =
     lines.length > 0 && lines.every((line) => line.merchandise.sku === SAMPLE_SKU);
@@ -458,7 +458,7 @@ export function CartDrawer() {
               </p>
               {showSampleNudge ? (
                 <p className="cart-drawer__nudge">
-                  Add a Sample Trio and shipping&apos;s on us
+                  Add a Sample and shipping&apos;s on us
                 </p>
               ) : null}
               <p className="cart-drawer__total-row">

@@ -75,7 +75,7 @@ export function BuyBox({ product }: { product: Product }) {
   }
 
   // Gallery indexes 0-2 are the single/pair/full-table bundles, index 3 is
-  // the Sample Trio; the image follows the selection unless a thumb was
+  // the Sample; the image follows the selection unless a thumb was
   // clicked.
   const autoImageIndex = isPouch ? TIER_ORDER.indexOf(tierId) : product.images.length - 1;
   const shownIndex = imageOverride ?? autoImageIndex;
@@ -194,7 +194,7 @@ export function BuyBox({ product }: { product: Product }) {
         </div>
 
         <p className="pdp__group-label">
-          SIZE: <strong>{isPouch ? "300G POUCH" : "SAMPLE TRIO"}</strong>
+          SIZE: <strong>{isPouch ? "300G POUCH" : "SAMPLE"}</strong>
         </p>
         <div className="option-grid option-grid--size">
           <label className={`option-card option-card--slim${isPouch ? " is-selected" : ""}`}>
@@ -220,7 +220,7 @@ export function BuyBox({ product }: { product: Product }) {
               checked={!isPouch}
               onChange={() => selectSize(false)}
             />
-            <span className="option-card__name">Sample Trio</span>
+            <span className="option-card__name">Sample</span>
             <span className="option-card__meta">{SERVINGS_PER_SAMPLE} servings</span>
             <span className="option-card__price">
               {sampleSingle.compareAt ? <s>{formatMoney(sampleSingle.compareAt)}</s> : null}

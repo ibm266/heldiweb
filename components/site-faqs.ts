@@ -172,7 +172,7 @@ export const SITE_FAQ_GROUPS: SiteFaqGroup[] = [
       {
         question: "How much is delivery?",
         answer:
-          "UK orders over £40 ship free. Under that, Royal Mail Tracked 48 is £3.55. The Sample Trio on its own always ships free, we cover the stamp."
+          "UK orders over £40 ship free. Under that, Royal Mail Tracked 48 is £3.55. The Sample on its own always ships free, we cover the stamp."
       },
       {
         question: "How long does delivery take?",

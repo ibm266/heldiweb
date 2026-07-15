@@ -59,7 +59,7 @@ const TIER_IMAGES: Record<TierId, { url: string; altText: string }> = {
   double: { url: "/images/shop/khana-bundle-2.png?v=2", altText: "Two Heldi Khana pouches with their refillable gold and silver table jars" },
   triple: { url: "/images/shop/khana-bundle-3.png?v=2", altText: "Three Heldi Khana pouches with their refillable table jars and masala dabba" }
 };
-const SAMPLE_IMAGE = { url: "/images/shop/sample.png", altText: "Heldi Sample Trio sachet" };
+const SAMPLE_IMAGE = { url: "/images/shop/sample.png", altText: "Heldi Sample sachet" };
 
 // Clean pouch-only shot for contents breakdowns (the gallery images show
 // the pouches with their jars and dabba).
@@ -70,7 +70,7 @@ export const DABBA_THUMB = "/images/shop/gift-masala-dabba.png";
 export const SAMPLE_THUMB = "/images/shop/sample.png";
 
 // A 300g pouch at a 12g heaped-tbsp serving (see nutrition declaration)
-// gives 25 servings; the Sample Trio holds 3.
+// gives 25 servings; the Sample holds 3.
 export const SERVINGS_PER_POUCH = 25;
 export const SERVINGS_PER_SAMPLE = 3;
 
@@ -101,7 +101,7 @@ const PRODUCTS: Product[] = [
       })),
       {
         id: SAMPLE_VARIANT_ID,
-        title: "Sample Trio",
+        title: "Sample",
         sku: SAMPLE_SKU,
         price: penceToMoney(SAMPLE_PRICE_PENCE),
         compareAtPrice: null,
@@ -180,7 +180,7 @@ function buildIncludedItems(jars: number, dabbas: number): IncludedItem[] {
 
 // Items included with `quantity` bundles of a tier variant: a refillable
 // table jar with every pouch, plus the masala dabba with the full table.
-// The Sample Trio never carries included items.
+// The Sample never carries included items.
 export function includedItemsForQuantity(
   variant: Pick<ProductVariant, "sku">,
   quantity: number
@@ -217,8 +217,8 @@ export function linesForPouchCount(pouches: number): CartLineInput[] {
   }));
 }
 
-// Basket badge count: pouches count one by one, anything else (the Sample
-// Trio) by its line quantity.
+// Basket badge count: pouches count one by one, anything else (the Sample)
+// by its line quantity.
 export function cartItemCount(
   lines: Pick<CartLine, "quantity" | "merchandise">[]
 ): number {
@@ -235,7 +235,7 @@ export function khanaImageForPouches(pouches: number): ProductImage {
 }
 
 // The portion of a basket the gifting discount applies to: One pouch and
-// The pair lines at the launch price. The full table and Sample Trio lines
+// The pair lines at the launch price. The full table and Sample lines
 // are excluded.
 export function giftingEligiblePenceForLines(
   lines: Pick<CartLine, "quantity" | "merchandise">[]

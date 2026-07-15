@@ -92,7 +92,7 @@ const ACCORDION_ITEMS: { question: string; answer: ReactNode }[] = [
         <strong>Free UK shipping</strong> on orders over{" "}
         {formatPence(SHIPPING.freeOverPence)}. Otherwise{" "}
         <strong>Royal Mail Tracked 48</strong> at{" "}
-        {formatPence(SHIPPING.standardPence)}. The Sample Trio ships free.
+        {formatPence(SHIPPING.standardPence)}. The Sample ships free.
         Sent by us, packed with care.
       </p>
     )

@@ -41,13 +41,13 @@ verification. The Storefront API version is pinned in `client.ts`
   | One pouch | `HELDI-KHANA-300` | £30.00 | £35.00 | 0.40 kg |
   | The pair | `HELDI-KHANA-300-X2` | £55.00 | £70.00 | 0.80 kg |
   | The full table | `HELDI-KHANA-300-X3` | £80.00 | £105.00 | 1.30 kg |
-  | Sample Trio | `HELDI-SAMPLE` | £5.00 | (none) | 0.10 kg |
+  | Sample | `HELDI-SAMPLE` | £5.00 | (none) | 0.10 kg |
 
   Each bundle is its own variant/SKU on purpose: the cart UI thinks in pouches
   and repacks a basket to the cheapest tier mix (`packPouches` in
   `lib/pricing.ts`), so a basket holds at most one line per tier. Weights are
   estimates for shipping brackets; adjust to real packed weights when known,
-  keeping the Sample Trio under the Large Letter threshold.
+  keeping the Sample under the Large Letter threshold.
 - [ ] **The included items** (a refillable table jar with every pouch, the
   masala dabba with the full table): treat them as part of the bundle variant,
   not separate line items. The site UI already presents them ("Includes ...
@@ -63,7 +63,7 @@ verification. The Storefront API version is pinned in `client.ts`
   - General profile (the three pouch variants): rate "Royal Mail Tracked 48"
     £3.55 with a price condition "orders under £40", plus rate "Free shipping"
     £0.00 with condition "orders £40 and up".
-  - Second profile containing only the Sample Trio variant, with a single Free
+  - Second profile containing only the Sample variant, with a single Free
     rate. Shopify sums rates across profiles, so a sample alone ships free
     while a sample plus an under-£40 pouch order still charges £3.55. This is
     the behaviour the cart drawer already displays.
@@ -72,7 +72,7 @@ verification. The Storefront API version is pinned in `client.ts`
   buying:
   - Type: amount off products, 10%.
   - Applies to: specific variants → One pouch and The pair only (never The
-    full table, never the Sample Trio).
+    full table, never the Sample).
   - Combinations: none. Usage: no per-customer limit, no end date (review
     after the launch period).
 - [ ] Settings → Policies: paste the reviewed texts from `docs/legal/` (fill
@@ -126,7 +126,7 @@ Run `npm run dev` with the Phase 2 `.env.local` and work through:
 - [ ] Step the pouch count 1 → 2 → 3 → 4 with the +/− stepper and confirm the
   repack: 2 shows The pair £55, 3 shows The full table £80, 4 shows two lines
   (full table + one pouch, £110).
-- [ ] Sample Trio adds as its own line; a sample-only basket shows Free
+- [ ] Sample adds as its own line; a sample-only basket shows Free
   shipping; adding a pouch under £40 shows £3.55.
 - [ ] Apply `ACHABETA` on a single-pouch basket: 10% off £30; the free-shipping
   meter recalculates on the discounted total (£27 basket shows £13 away).

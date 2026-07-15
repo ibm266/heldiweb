@@ -17,7 +17,7 @@ United Kingdom only (for now).
 | Order | Service | Cost |
 |---|---|---|
 | Orders over £40 | Royal Mail Tracked 48 | **Free** |
-| Sample Trio only | Royal Mail Large Letter (Tracked) | **Free** (we cover it) |
+| Sample only | Royal Mail Large Letter (Tracked) | **Free** (we cover it) |
 | Pouches and bundles (up to 2kg) | Royal Mail Tracked 48 Small Parcel | £3.55 |
 
 The exact charge is always shown at checkout before you pay.
