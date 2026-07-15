@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 
 export const metadata: Metadata = {
@@ -21,18 +22,18 @@ export default function NotFound() {
             where it always was.
           </p>
           <div className="pill-links">
-            <a className="pill-link" href="/">
+            <Link className="pill-link" href="/">
               Back to the start &#8594;
-            </a>
-            <a className="pill-link" href="/shop">
+            </Link>
+            <Link className="pill-link" href="/shop">
               See the pouch &#8594;
-            </a>
-            <a className="pill-link" href="/truth">
+            </Link>
+            <Link className="pill-link" href="/truth">
               Read the honest truth &#8594;
-            </a>
-            <a className="pill-link" href="/faq">
+            </Link>
+            <Link className="pill-link" href="/faq">
               Ask us anything &#8594;
-            </a>
+            </Link>
           </div>
         </div>
       </section>

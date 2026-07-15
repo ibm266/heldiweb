@@ -12,9 +12,9 @@ export function HeldiLivingPostView({ post }: HeldiLivingPostViewProps) {
   return (
     <section className="section section--gold living-post-section" data-nav-hero>
       <div className="living-post-shell">
-        <a className="living-back" href="/heldi-living">
+        <Link className="living-back" href="/heldi-living">
           ← Heldi Living
-        </a>
+        </Link>
 
         <header className="living-post-header">
           <h1 className="living-post-header__title">{post.title}</h1>
@@ -22,12 +22,12 @@ export function HeldiLivingPostView({ post }: HeldiLivingPostViewProps) {
           <ul className="living-post-header__tags">
             {post.tags.map((tag) => (
               <li key={tag}>
-                <a
+                <Link
                   className="living-card__tag"
                   href={`/heldi-living?tag=${encodeURIComponent(tag)}`}
                 >
                   {tag}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

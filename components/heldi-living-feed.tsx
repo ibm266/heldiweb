@@ -1,8 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { HeldiLivingPostMeta } from "@/lib/heldi-living";
 
 const VISIBLE_TAG_COUNT = 4;
@@ -18,20 +19,17 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
   const requestedTag = searchParams.get("tag");
   const activeTag =
     requestedTag && tags.includes(requestedTag) ? requestedTag : null;
-  const [tagsExpanded, setTagsExpanded] = useState(false);
+  const [userExpanded, setUserExpanded] = useState(false);
   const hasMoreTags = tags.length > VISIBLE_TAG_COUNT;
+  // Auto-expand when the deep-linked tag would otherwise be hidden behind
+  // "See more", so the active filter is always visible. Derived rather than an
+  // effect, so there's no extra render on mount.
+  const activeTagHidden =
+    activeTag !== null && !tags.slice(0, VISIBLE_TAG_COUNT).includes(activeTag);
+  const tagsExpanded = userExpanded || activeTagHidden;
   const visibleTags = tagsExpanded
     ? tags
     : tags.slice(0, VISIBLE_TAG_COUNT);
-
-  useEffect(() => {
-    if (
-      activeTag &&
-      !tags.slice(0, VISIBLE_TAG_COUNT).includes(activeTag)
-    ) {
-      setTagsExpanded(true);
-    }
-  }, [activeTag, tags]);
 
   function setActiveTag(tag: string | null) {
     const next = new URLSearchParams(searchParams.toString());
@@ -83,7 +81,7 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
             <button
               type="button"
               className="living-tag living-tag--toggle"
-              onClick={() => setTagsExpanded((open) => !open)}
+              onClick={() => setUserExpanded((open) => !open)}
               aria-expanded={tagsExpanded}
             >
               {tagsExpanded ? "Hide" : "See more"}
@@ -100,7 +98,7 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
       <div className="living-grid">
         {visiblePosts.map((post) => (
           <article key={post.slug} className="living-card">
-            <a
+            <Link
               href={`/heldi-living/${post.slug}`}
               className="living-card__media"
             >
@@ -111,7 +109,7 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
                 height={1200}
                 sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 360px"
               />
-            </a>
+            </Link>
 
             <div className="living-card__body">
               <ul className="living-card__tags">
@@ -129,7 +127,7 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
               </ul>
 
               <h2 className="living-card__title">
-                <a href={`/heldi-living/${post.slug}`}>{post.title}</a>
+                <Link href={`/heldi-living/${post.slug}`}>{post.title}</Link>
               </h2>
 
               <p className="living-card__lede">In short</p>
@@ -139,9 +137,9 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
                 ))}
               </ul>
 
-              <a className="pill-link" href={`/heldi-living/${post.slug}`}>
+              <Link className="pill-link" href={`/heldi-living/${post.slug}`}>
                 Read more
-              </a>
+              </Link>
             </div>
           </article>
         ))}

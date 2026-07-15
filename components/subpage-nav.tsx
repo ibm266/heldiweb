@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
@@ -59,7 +60,7 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
         </button>
       </div>
       <nav className="nav nav--subpage" aria-label="Main navigation">
-        <a href="/" aria-label="Heldi home" className="nav-home">
+        <Link href="/" aria-label="Heldi home" className="nav-home">
           <span className="nav-brand">
             <Image
               className="nav-elephant-logo nav-elephant-logo--face-in"
@@ -84,28 +85,28 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
               height={2048}
             />
           </span>
-        </a>
+        </Link>
         <div className="nav-links nav-links--desktop">
-          <a href="/#how">How it works</a>
-          <a href="/truth">The truth</a>
-          <a href="/our-story">Our story</a>
-          <a href="/heldi-living">Heldi Living</a>
-          <a href="/inside-the-pouch">Inside the pouch</a>
-          <a href="/faq">FAQ</a>
-          <a href="/shop">Shop</a>
+          <Link href="/#how">How it works</Link>
+          <Link href="/truth">The truth</Link>
+          <Link href="/our-story">Our story</Link>
+          <Link href="/heldi-living">Heldi Living</Link>
+          <Link href="/inside-the-pouch">Inside the pouch</Link>
+          <Link href="/faq">FAQ</Link>
+          <Link href="/shop">Shop</Link>
           <DevModeToggle variant="menu" />
         </div>
         <div
           className={`nav-links nav-links--mobile${menuOpen ? " is-open" : ""}`}
           id="nav-menu"
         >
-          <a href="/#how" onClick={() => setMenuOpen(false)}>How it works</a>
-          <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
-          <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
-          <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
-          <a href="/inside-the-pouch" onClick={() => setMenuOpen(false)}>Inside the pouch</a>
-          <a href="/faq" onClick={() => setMenuOpen(false)}>FAQ</a>
-          <a href="/shop" onClick={() => setMenuOpen(false)}>Shop</a>
+          <Link href="/#how" onClick={() => setMenuOpen(false)}>How it works</Link>
+          <Link href="/truth" onClick={() => setMenuOpen(false)}>The truth</Link>
+          <Link href="/our-story" onClick={() => setMenuOpen(false)}>Our story</Link>
+          <Link href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</Link>
+          <Link href="/inside-the-pouch" onClick={() => setMenuOpen(false)}>Inside the pouch</Link>
+          <Link href="/faq" onClick={() => setMenuOpen(false)}>FAQ</Link>
+          <Link href="/shop" onClick={() => setMenuOpen(false)}>Shop</Link>
           <DevModeToggle variant="menu" />
         </div>
       </nav>
@@ -120,13 +121,13 @@ export function FooterLegal() {
   return (
     <>
       <nav className="footer-legal" aria-label="Legal">
-        <a href="/faq">FAQ</a>
-        <a href="/inside-the-pouch">Inside the pouch</a>
-        <a href="/legal/terms">Terms</a>
-        <a href="/legal/privacy">Privacy</a>
-        <a href="/legal/returns">Returns</a>
-        <a href="/legal/shipping">Shipping</a>
-        <a href="/legal/cookies">Cookies</a>
+        <Link href="/faq">FAQ</Link>
+        <Link href="/inside-the-pouch">Inside the pouch</Link>
+        <Link href="/legal/terms">Terms</Link>
+        <Link href="/legal/privacy">Privacy</Link>
+        <Link href="/legal/returns">Returns</Link>
+        <Link href="/legal/shipping">Shipping</Link>
+        <Link href="/legal/cookies">Cookies</Link>
         <a href="mailto:info@heldi.co.uk">info@heldi.co.uk</a>
       </nav>
       <span className="footer-company">

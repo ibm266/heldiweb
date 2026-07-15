@@ -460,6 +460,9 @@ function SplitFlapBoard({ dwellMs }: { dwellMs: number }) {
 function DissolveBoard({ active = true }: { active?: boolean }) {
   const [wordIndex, setWordIndex] = useState(0);
 
+  // Timer-driven word rotation: the effect resets the index when `active`
+  // toggles and advances it on a schedule, so setting state here is the point.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (!active) {
       setWordIndex(0);
@@ -483,6 +486,7 @@ function DissolveBoard({ active = true }: { active?: boolean }) {
 
     return () => window.clearTimeout(timer);
   }, [active]);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   return (
     <div className="dissolve-board" aria-live="polite">
@@ -675,6 +679,9 @@ function HeroReveal({
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     if (motionQuery.matches) {
+      // Reduced motion: skip the elephant intro and land on the revealed state
+      // immediately. matchMedia is client-only, so this settles in an effect.
+      /* eslint-disable-next-line react-hooks/set-state-in-effect */
       setRevealed(true);
       setCurtainDismissed(true);
       setCanCallElephants(true);
@@ -967,6 +974,9 @@ export function HeldiHomepage({
 
   useEffect(() => {
     if (!isMobileNav) {
+      // On desktop there's no floating CTA to show; the observer below only
+      // runs on mobile, so keep it suppressed here.
+      /* eslint-disable-next-line react-hooks/set-state-in-effect */
       setFloatingCtaSuppressed(true);
       return;
     }
@@ -1049,12 +1059,12 @@ export function HeldiHomepage({
           </a>
           <div className="nav-links nav-links--desktop">
             <a href="#how">How it works</a>
-            <a href="/truth">The truth</a>
-            <a href="/our-story">Our story</a>
-            <a href="/heldi-living">Heldi Living</a>
-            <a href="/inside-the-pouch">Inside the pouch</a>
-            <a href="/faq">FAQ</a>
-            <a href="/shop">Shop</a>
+            <Link href="/truth">The truth</Link>
+            <Link href="/our-story">Our story</Link>
+            <Link href="/heldi-living">Heldi Living</Link>
+            <Link href="/inside-the-pouch">Inside the pouch</Link>
+            <Link href="/faq">FAQ</Link>
+            <Link href="/shop">Shop</Link>
             <DevModeToggle variant="menu" />
           </div>
           <div
@@ -1064,12 +1074,12 @@ export function HeldiHomepage({
             id="nav-menu"
           >
             <a href="#how" onClick={() => setMenuOpen(false)}>How it works</a>
-            <a href="/truth" onClick={() => setMenuOpen(false)}>The truth</a>
-            <a href="/our-story" onClick={() => setMenuOpen(false)}>Our story</a>
-            <a href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</a>
-            <a href="/inside-the-pouch" onClick={() => setMenuOpen(false)}>Inside the pouch</a>
-            <a href="/faq" onClick={() => setMenuOpen(false)}>FAQ</a>
-            <a href="/shop" onClick={() => setMenuOpen(false)}>Shop</a>
+            <Link href="/truth" onClick={() => setMenuOpen(false)}>The truth</Link>
+            <Link href="/our-story" onClick={() => setMenuOpen(false)}>Our story</Link>
+            <Link href="/heldi-living" onClick={() => setMenuOpen(false)}>Heldi Living</Link>
+            <Link href="/inside-the-pouch" onClick={() => setMenuOpen(false)}>Inside the pouch</Link>
+            <Link href="/faq" onClick={() => setMenuOpen(false)}>FAQ</Link>
+            <Link href="/shop" onClick={() => setMenuOpen(false)}>Shop</Link>
             <DevModeToggle variant="menu" />
           </div>
         </nav>

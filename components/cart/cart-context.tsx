@@ -67,6 +67,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const mode = modeOverride ?? COMMERCE_MODE;
 
   // Hydrate cart + dev mode override + gifting method from storage after mount.
+  // localStorage is client-only, so this must run in an effect and set state;
+  // the one extra render on mount is the cost of avoiding a hydration mismatch.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
       const stored = window.localStorage.getItem(MODE_OVERRIDE_KEY);
@@ -92,6 +95,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         window.localStorage.removeItem(CART_ID_KEY);
       });
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const setModeOverride = useCallback((next: CommerceMode | null) => {
     setModeOverrideState(next);
