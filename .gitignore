@@ -12,6 +12,9 @@
 .env*
 !.env.example
 
+# customer review submissions written by /api/reviews (personal data; never commit)
+/data/review-submissions/
+
 # logs and tooling
 *.log
 *.tsbuildinfo

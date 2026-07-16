@@ -54,6 +54,7 @@ export default async function ShopPage() {
         tone="gold"
         heading="Stirred, tasted, reviewed."
         lede="Bowls from kitchens like yours. Some clips are ours, the rest arrive with the reviews, spoon count and all."
+        submitCta
       />
 
       <GiftingBand />

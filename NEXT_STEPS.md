@@ -62,7 +62,13 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 ## 5. Post-launch (don't build yet)
 
 - [ ] Klaviyo flows: abandoned checkout (3 emails) + post-purchase (4 emails) — full programme is specified in the heldi-email-writer skill
-- [ ] Review collection — start ~50 orders in, not at launch
+- [ ] Review collection — start ~50 orders in, not at launch. The capture side is built:
+  `/review` (link-only, noindex) posts to `/api/reviews`, submissions land in
+  `data/review-submissions/` (gitignored) as JSON + media, status pending. Still to do
+  when it starts: Klaviyo review-request email linking `/review?stars=…&order=…`, a
+  moderation pass (check order in Shopify, move content into `lib/reviews.ts`), and —
+  if hosting is serverless — swap the file writes for a database + object storage,
+  since Vercel's filesystem is ephemeral
 - [ ] Subscriptions — deliberately out of scope for launch
 - [ ] Reorder nudges, richer PDP content (video, press) as they become real
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { ReviewGallery } from "./review-gallery";
 import { ReviewLeaderboard } from "./review-leaderboard";
@@ -10,6 +11,8 @@ type ReviewsSectionProps = {
   heading?: string;
   lede?: ReactNode;
   showLeaderboard?: boolean;
+  /** Link to the /review capture form; on for the PDP, off elsewhere. */
+  submitCta?: boolean;
 };
 
 // Full-width reviews band: media-only review gallery plus, optionally, the
@@ -25,7 +28,8 @@ export function ReviewsSection({
       see exactly how much protein made it into the bowl.
     </>
   ),
-  showLeaderboard = false
+  showLeaderboard = false,
+  submitCta = false
 }: ReviewsSectionProps) {
   return (
     <section className={`section section--${tone} section--bordered`} id={id}>
@@ -39,6 +43,14 @@ export function ReviewsSection({
         <ReviewGallery />
 
         {showLeaderboard ? <ReviewLeaderboard /> : null}
+
+        {submitCta ? (
+          <p className="reviews__submit-cta">
+            <Link className="pill-link" href="/review">
+              Stirred one in already? Leave a review &#8594;
+            </Link>
+          </p>
+        ) : null}
       </div>
     </section>
   );

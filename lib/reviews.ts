@@ -1,16 +1,17 @@
 // Review display data and helpers.
 //
-// Storage is not wired yet: everything in here is PLACEHOLDER content so the
-// homepage and PDP review sections can be designed against realistic data.
-// None of it may ship as-is: the CMA (DMCC Act 2024) bans publishing fake
-// consumer reviews, so swap these for real submissions before launch.
+// Collection is wired: the /review page (link-only, reached from the PDP and
+// review-request emails) posts to /api/reviews, and each submission lands in
+// data/review-submissions/ as JSON plus media, status pending. See
+// lib/review-submissions.ts for the stored shape and the moderation flow.
+// Everything displayed below is still PLACEHOLDER content so the homepage and
+// PDP review sections can be designed against realistic data. None of it may
+// ship as-is: the CMA (DMCC Act 2024) bans publishing fake consumer reviews,
+// so swap these for moderated real submissions before launch.
 //
-// The Review shape is the contract for whatever backend lands later. Working
-// plan: a review form posts to /api/reviews, rows land in a small database
-// (pending → published after moderation), media goes to object storage. The
-// tablespoon count is a first-class field because the leaderboard aggregates
-// it; hosted review platforms (Judge.me etc.) can collect it as a custom
-// question but won't do that maths, so display stays custom either way.
+// The tablespoon count is a first-class field because the leaderboard
+// aggregates it; hosted review platforms (Judge.me etc.) can collect it as a
+// custom question but won't do that maths, so display stays custom either way.
 
 /** Keep in sync with the PDP "The protein numbers" accordion copy. */
 export const PROTEIN_GRAMS_PER_TBSP = 10.4;

@@ -9,6 +9,12 @@
       "autoPort": true
     },
     {
+      "name": "heldi-prod",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start", "--", "-p", "3999"],
+      "port": 3999
+    },
+    {
       "name": "repo-static",
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8123"],
