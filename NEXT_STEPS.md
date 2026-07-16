@@ -9,16 +9,16 @@ The whole storefront UI is built and runs on a mock cart. To take money,
 work through [docs/launch-runbook.md](docs/launch-runbook.md), which turns
 this list into exact admin clicks, API scopes and verification steps:
 
-- [ ] Create the Shopify store; add the Khana product with four variants mirroring `lib/pricing.ts` — One pouch (£30, compare-at £35), The pair (£55, compare-at £70), The full table (£80, compare-at £105), Sample (£5). Each bundle is its own variant/SKU; the cart UI thinks in pouches and repacks the lines to the cheapest tier mix (`packPouches` in `lib/pricing.ts`), so a basket holds at most one line per tier — e.g. 4 pouches is 1 × The full table + 1 × One pouch
-- [ ] Create the ACHABETA, RISHTA and SHABASH discount codes (same rules, three codes so we can see who's buying — kids for parents, kids for uncle/aunty, aunties/uncles buying for themselves): 10% off, applies to the One pouch and The pair variants only (never The full table or the Sample), one discount per order, no stacking
-- [ ] Configure the included items (a refillable table jar with every pouch, masala dabba with the 3-pack) as zero-priced line items added automatically
+- [x] Create the Shopify store; add the Khana product with four variants mirroring `lib/pricing.ts` — One pouch (£30, compare-at £35), The pair (£55, compare-at £70), The full table (£80, compare-at £105), Sample (£5). Each bundle is its own variant/SKU; the cart UI thinks in pouches and repacks the lines to the cheapest tier mix (`packPouches` in `lib/pricing.ts`), so a basket holds at most one line per tier — e.g. 4 pouches is 1 × The full table + 1 × One pouch. Done 16 Jul 2026; stock and variant weights still to set in admin
+- [x] Create the ACHABETA, RISHTA and SHABASH discount codes (same rules, three codes so we can see who's buying — kids for parents, kids for uncle/aunty, aunties/uncles buying for themselves): 10% off, applies to the One pouch and The pair variants only (never The full table or the Sample), one discount per order, no stacking
+- [x] Included items (a refillable table jar with every pouch, masala dabba with the 3-pack): decided per the runbook, they are part of the bundle variant and Shopify does not model them; the pick-pack sheet says what goes in each SKU's box
 - [ ] Shipping profile: free over £40, £3.55 Small Parcel (pouches), Royal Mail Tracked 48; Sample ships free (we absorb the £2.75 Large Letter rate)
 - [ ] VAT: food supplements are standard-rated 20% in the UK — check tax settings
-- [ ] Create a custom app → Storefront API access token
-- [ ] Point a subdomain (e.g. `shop.heldi.co.uk`) at Shopify so checkout shows the Heldi domain
-- [ ] Set env vars on Vercel + `.env.local`: `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_ACCESS_TOKEN`, `NEXT_PUBLIC_COMMERCE_PROVIDER=shopify`
+- [x] Storefront API access token (custom apps are gone since Jan 2026; see runbook Phase 2 for the Headless-channel route)
+- [ ] Sort the domain split: `heldi.co.uk` currently serves an old Shopify theme store and checkout; move the apex to Vercel and point `shop.heldi.co.uk` at Shopify (runbook Phase 5)
+- [ ] Set env vars on Vercel (`.env.local` done): `SHOPIFY_STORE_DOMAIN`, `SHOPIFY_STOREFRONT_ACCESS_TOKEN`, `NEXT_PUBLIC_COMMERCE_PROVIDER=shopify`
 - [x] Implement the `/api/cart/*` route handlers and flesh out `lib/commerce/shopify-provider.ts` — done: handlers live in `app/api/cart/`, the server-side client and Cart mapping in `lib/commerce/shopify/client.ts`; they answer 503 until the env vars exist
-- [ ] Replace the placeholder GIDs in `lib/commerce/catalog.ts` with real Product/Variant IDs
+- [x] Replace the placeholder GIDs in `lib/commerce/catalog.ts` with real Product/Variant IDs — done 16 Jul 2026, cart verified end to end against the live store (runbook Phase 4)
 - [ ] Place a real test order end-to-end (card, shipping rate, confirmation email)
 - [ ] Launch day: flip `NEXT_PUBLIC_COMMERCE_MODE=live`
 

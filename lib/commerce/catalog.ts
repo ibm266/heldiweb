@@ -30,10 +30,10 @@ import type {
 // price is the launch price, compareAtPrice is the RRP that gets struck
 // through.
 
-export const KHANA_VARIANT_ID = "gid://shopify/ProductVariant/PLACEHOLDER_KHANA_300";
-export const KHANA_DOUBLE_VARIANT_ID = "gid://shopify/ProductVariant/PLACEHOLDER_KHANA_300_X2";
-export const KHANA_TRIPLE_VARIANT_ID = "gid://shopify/ProductVariant/PLACEHOLDER_KHANA_300_X3";
-export const SAMPLE_VARIANT_ID = "gid://shopify/ProductVariant/PLACEHOLDER_SAMPLE";
+export const KHANA_VARIANT_ID = "gid://shopify/ProductVariant/57986783052159";
+export const KHANA_DOUBLE_VARIANT_ID = "gid://shopify/ProductVariant/57986783084927";
+export const KHANA_TRIPLE_VARIANT_ID = "gid://shopify/ProductVariant/57986783117695";
+export const SAMPLE_VARIANT_ID = "gid://shopify/ProductVariant/57986783150463";
 
 export const TIER_VARIANT_IDS: Record<TierId, string> = {
   single: KHANA_VARIANT_ID,
@@ -76,7 +76,7 @@ export const SERVINGS_PER_SAMPLE = 3;
 
 const PRODUCTS: Product[] = [
   {
-    id: "gid://shopify/Product/PLACEHOLDER_KHANA",
+    id: "gid://shopify/Product/15790466957695",
     handle: "khana",
     title: "Heldi Khana",
     shortDescription: "Protein that disappears into dal, curry and raita.",

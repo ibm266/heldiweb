@@ -138,7 +138,7 @@ export const CART_LINES_REMOVE_MUTATION = /* GraphQL */ `
 `;
 
 export const CART_DISCOUNT_CODES_UPDATE_MUTATION = /* GraphQL */ `
-  mutation CartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]) {
+  mutation CartDiscountCodesUpdate($cartId: ID!, $discountCodes: [String!]!) {
     cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {
       cart {
         ...CartFields

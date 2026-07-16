@@ -33,8 +33,12 @@ verification. The Storefront API version is pinned in `client.ts`
   first sale.
 - [ ] Settings → General: business name Heldi Ltd, address (must match the
   footer in `components/subpage-nav.tsx` and the legal docs).
-- [ ] **Product**: one product, "Heldi Khana", with four variants. The numbers
-  come from `lib/pricing.ts` and must match it exactly (BRAND.md §10):
+- [x] **Product**: one product, "Heldi Khana", with four variants. The numbers
+  come from `lib/pricing.ts` and must match it exactly (BRAND.md §10). Done
+  16 Jul 2026 via the heldi-shopify MCP tools: product
+  `gid://shopify/Product/15790466957695`, handle `heldi-khana`, option
+  "Bundle", ACTIVE; the 8 old products are archived. Weights and stock still
+  need setting in admin (the API tools do not cover them):
 
   | Variant | SKU | Price | Compare-at | Weight |
   |---|---|---|---|---|
@@ -48,7 +52,7 @@ verification. The Storefront API version is pinned in `client.ts`
   `lib/pricing.ts`), so a basket holds at most one line per tier. Weights are
   estimates for shipping brackets; adjust to real packed weights when known,
   keeping the Sample under the Large Letter threshold.
-- [ ] **The included items** (a refillable table jar with every pouch, the
+- [x] **The included items** (a refillable table jar with every pouch, the
   masala dabba with the full table): treat them as part of the bundle variant,
   not separate line items. The site UI already presents them ("Includes ...
   Free"), Shopify does not need to know they exist, and the pick-pack sheet
@@ -67,9 +71,10 @@ verification. The Storefront API version is pinned in `client.ts`
     rate. Shopify sums rates across profiles, so a sample alone ships free
     while a sample plus an under-£40 pouch order still charges £3.55. This is
     the behaviour the cart drawer already displays.
-- [ ] **Discount codes** (mirroring `GIFTING` in `lib/pricing.ts`): three codes,
+- [x] **Discount codes** (mirroring `GIFTING` in `lib/pricing.ts`): three codes,
   `ACHABETA`, `RISHTA` and `SHABASH`, identical rules, three codes so we can
-  see who is buying:
+  see who is buying. Done 16 Jul 2026, scoped to the One pouch and The pair
+  variant GIDs:
   - Type: amount off products, 10%.
   - Applies to: specific variants → One pouch and The pair only (never The
     full table, never the Sample).
@@ -87,14 +92,17 @@ discounts and ships free.
 
 ## Phase 2: Storefront API access
 
-- [ ] Admin → Settings → Apps and sales channels → Develop apps → Create app
-  ("Heldi storefront").
-- [ ] Configuration → Storefront API: enable scopes
-  `unauthenticated_read_product_listings`, `unauthenticated_read_checkouts`,
-  `unauthenticated_write_checkouts`.
-- [ ] Install the app, reveal the **Storefront API access token** (public
-  token, but treat it as config, not code).
-- [ ] Local: copy `.env.example` to `.env.local`, set `SHOPIFY_STORE_DOMAIN`
+- [x] Get a **Storefront API access token** (public token, but treat it as
+  config, not code). Shopify retired admin-created custom apps in Jan 2026,
+  so the old Develop-apps path no longer exists. Two current routes:
+  - Recommended: install Shopify's free **Headless** sales channel from the
+    App Store, create a storefront in it and copy its public access token.
+    Remember to publish the product to that channel, or the Storefront API
+    cannot see it.
+  - Alternative: a Dev Dashboard app with the `unauthenticated_*` scopes on
+    a released version (install re-approval needed), then mint a token via
+    the Admin API `storefrontAccessTokenCreate` mutation.
+- [x] Local: copy `.env.example` to `.env.local`, set `SHOPIFY_STORE_DOMAIN`
   (the `*.myshopify.com` domain), `SHOPIFY_STOREFRONT_ACCESS_TOKEN`, and
   `NEXT_PUBLIC_COMMERCE_PROVIDER=shopify`. Leave mode as `waitlist`.
 - [ ] Vercel: add the same three env vars (Production + Preview).
@@ -110,41 +118,57 @@ discounts and ships free.
     -d '{"query":"{ products(first: 5) { edges { node { id handle variants(first: 5) { edges { node { id sku } } } } } } }"}' | python3 -m json.tool
   ```
 
-- [ ] In `lib/commerce/catalog.ts`, replace the four `PLACEHOLDER` GIDs
+- [x] In `lib/commerce/catalog.ts`, replace the four `PLACEHOLDER` GIDs
   (`KHANA_VARIANT_ID`, `KHANA_DOUBLE_VARIANT_ID`, `KHANA_TRIPLE_VARIANT_ID`,
   `SAMPLE_VARIANT_ID`) and the product `id`, matching by SKU, not by title.
   Nothing else in the file changes; per NEXT_STEPS, components and pages are
-  untouched at connect time.
-- [ ] `npm run brand-lint && npm run typecheck && npm run build`.
+  untouched at connect time. Done 16 Jul 2026.
+- [x] `npm run brand-lint && npm run typecheck && npm run build`.
 
 ## Phase 4: Verify the cart end to end (still test mode)
 
-Run `npm run dev` with the Phase 2 `.env.local` and work through:
+Run `npm run dev` with the Phase 2 `.env.local` and work through the list. The
+PDP only renders its add-to-basket button in live mode, so flip the dev-only
+mode toggle in the nav first (dev builds only; the env stays `waitlist`).
+Verified 16 Jul 2026 against the live store:
 
-- [ ] `/shop`: add One pouch → drawer opens with the real variant, launch price
+- [x] `/shop`: add One pouch → drawer opens with the real variant, launch price
   £30 with £35 struck through.
-- [ ] Step the pouch count 1 → 2 → 3 → 4 with the +/− stepper and confirm the
-  repack: 2 shows The pair £55, 3 shows The full table £80, 4 shows two lines
-  (full table + one pouch, £110).
-- [ ] Sample adds as its own line; a sample-only basket shows Free
+- [x] Step the pouch count 1 → 2 → 3 → 4 with the +/− stepper and confirm the
+  repack: 2 shows The pair £55, 3 shows The full table £80, 4 shows one
+  aggregated pouch row at £110 (£140 struck), 4 jars and 1 dabba; the
+  underlying cart holds two lines (full table + one pouch), which is what
+  checkout shows.
+- [x] Sample adds as its own line; a sample-only basket shows Free
   shipping; adding a pouch under £40 shows £3.55.
-- [ ] Apply `ACHABETA` on a single-pouch basket: 10% off £30; the free-shipping
+- [x] Apply `ACHABETA` on a single-pouch basket: 10% off £30; the free-shipping
   meter recalculates on the discounted total (£27 basket shows £13 away).
-- [ ] Apply a gifting code on a full-table-only basket: rejected, and the
-  drawer shows "This one's already our best price."
-- [ ] Checkbox and code lock each other out ("Already sorted. One discount per
+- [x] Apply a gifting code on a full-table-only basket: rejected, and the
+  drawer shows "This one's already our best price." (Shopify keeps the code
+  attached to the cart, so it starts discounting if an eligible line is
+  added later; the drawer then shows it as applied, which is correct.)
+- [x] Checkbox and code lock each other out ("Already sorted. One discount per
   order.").
-- [ ] Checkout button opens Shopify checkout with the same lines and totals.
+- [x] Checkout button opens Shopify checkout with the same lines and totals.
 - [ ] Kill the env vars and confirm the site falls back cleanly: provider
   `mock` still works, provider `shopify` without a token answers 503 from
   `/api/cart/*` (expected, that is the guard).
 
 ## Phase 5: Domain
 
-- [ ] Point `shop.heldi.co.uk` at Shopify (Settings → Domains → connect
-  existing domain; add the CNAME at the DNS host) so checkout shows a Heldi
-  domain instead of `*.myshopify.com`.
-- [ ] Confirm the checkout URL returned by the cart (drawer button) uses it.
+Current state (16 Jul 2026): the apex `heldi.co.uk` already points at Shopify
+and serves both checkout and an old Online Store theme storefront; `www`
+redirects to it. Checkout URLs from the cart already read `heldi.co.uk`. That
+leaves no home for the Next.js site on the apex, so before launch:
+
+- [ ] Decide the split: apex `heldi.co.uk` → Vercel (the site),
+  `shop.heldi.co.uk` → Shopify (checkout), per the original plan. Move the
+  DNS records and set the Shopify primary domain to the subdomain.
+- [ ] Until then, hide the old theme storefront (Online Store → Preferences →
+  password protection, or remove the theme content) so visitors to the apex
+  do not see stale products or prices.
+- [ ] Confirm the checkout URL returned by the cart (drawer button) uses the
+  intended domain after the move.
 
 ## Phase 6: The real test order
 
