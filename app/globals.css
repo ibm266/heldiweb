@@ -8337,7 +8337,7 @@ a.living-card__tag:hover {
   background: var(--gold);
 }
 
-.ways-steps-card__dose {
+.ways-steps-card__serving {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -8349,7 +8349,103 @@ a.living-card__tag:hover {
   font-size: 0.9375rem;
 }
 
-.ways-steps-card__dose strong {
+.ways-steps-card__serving strong {
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-align: right;
+}
+
+/* Comic-strip methods: the animated pouch-style strip replaces the steps
+   card. The generated art is completely clean (no text, no boxes); the
+   header bar, step chips and captions are HTML in here, all sitting in a
+   white ink-bordered card like the classic steps card. One horizontal asset
+   serves every viewport; the media window crops the 16:9 render to a
+   shorter band (bottom-weighted so the pots and ground stay whole and only
+   steam tips run out of frame). */
+.ways-strip {
+  display: grid;
+  gap: clamp(0.75rem, 1.8vw, 1rem);
+  width: 100%;
+  margin: 0;
+  padding: clamp(1rem, 2.5vw, 1.5rem);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.ways-method--on-ink .ways-strip {
+  box-shadow: 8px 8px 0 var(--gold);
+}
+
+.ways-strip__bar {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-display), serif;
+  font-size: clamp(0.8rem, 1.6vw, 0.95rem);
+  letter-spacing: 0.22em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.ways-strip__media {
+  position: relative;
+  aspect-ratio: 2.1 / 1;
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+}
+
+.ways-strip__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 85%;
+}
+
+.ways-strip__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 85%;
+}
+
+.ways-strip__steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem clamp(0.5rem, 2vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+}
+
+.ways-strip__step {
+  color: var(--brown);
+  font-size: clamp(0.8125rem, 1.8vw, 1.0625rem);
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.ways-strip__serving {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0;
+  padding-top: 0.85rem;
+  border-top: 2px dashed rgb(var(--ink-rgb) / 0.3);
+  color: var(--brown);
+  font-size: 0.9375rem;
+}
+
+.ways-strip__serving strong {
   color: var(--ink);
   font-family: var(--font-display), serif;
   font-size: 1.125rem;
@@ -8386,5 +8482,24 @@ a.living-card__tag:hover {
 
   .ways-method__copy h2 {
     margin-left: 0;
+  }
+
+  /* Strip methods stay one column: copy centered above the wide strip. */
+  .ways-method__grid--strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ways-method__grid--strip .ways-method__copy {
+    text-align: center;
+  }
+
+  .ways-method__grid--strip .ways-method__copy h2 {
+    margin-left: auto;
+  }
+
+  .ways-method__grid--strip .ways-method__intro {
+    max-width: 62ch;
+    margin: 0 auto;
+    text-align: center;
   }
 }

@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
+import { WaysComicStrip, type ComicStrip } from "@/components/ways-comic-strip";
 
 export const metadata: Metadata = {
   title: "Ways to use · Heldi",
@@ -21,8 +22,9 @@ type Method = {
   ground: "ink" | "cream" | "gold";
   intro: ReactNode;
   steps: [ReactNode, ReactNode, ReactNode];
-  dose: string;
+  serving: string;
   note?: string;
+  strip?: ComicStrip;
 };
 
 const METHODS: Method[] = [
@@ -34,20 +36,26 @@ const METHODS: Method[] = [
     ground: "ink",
     intro: (
       <>
-        However much you want, honestly. A heaped tablespoon adds 10g of
-        protein, and two tablespoons at a time is the most we&apos;d stir into
-        one pot. The real trick is the spread:{" "}
-        <CopyHighlight>sprinkle it all around the surface</CopyHighlight>,
-        not one heap in the middle, then stir, and it vanishes clean.
+        A heaped tablespoon adds 10g of protein. The only trick is the
+        spread: <CopyHighlight>sprinkle it all around the surface</CopyHighlight>,
+        not one heap in the middle, then stir. The pot will deny everything.
       </>
     ),
     steps: [
       <>Cook your dal, curry or sabzi like always, then take the pot off the boil.</>,
-      <>Sprinkle one or two tablespoons all around the surface.</>,
+      <>Sprinkle a heaped tablespoon per person all around the surface.</>,
       <>Stir until it disappears, about ten seconds, and serve.</>
     ],
-    dose: "1 to 2 tbsp per pot",
-    note: "The dal carries on like nothing happened."
+    serving: "1 heaped tbsp per person",
+    strip: {
+      video: "/videos/ways-to-use/pot-strip.mp4",
+      poster: "/images/ways-to-use/pot-strip.webp",
+      width: 1920,
+      height: 1080,
+      label: "In the pot",
+      captions: ["Cook like always.", "Heat off.", "Stir one in. Gone."],
+      alt: "Engraved brass pot in the Heldi pouch style, shown three times: cooking over a flame, off the heat with its lid set aside, and with a bangled hand stirring in a spoonful."
+    }
   },
   {
     id: "dahi",
@@ -68,7 +76,7 @@ const METHODS: Method[] = [
       <>Sprinkle a teaspoon to a tablespoon across the bowl.</>,
       <>Stir until smooth. Cold bowls take it the fastest.</>
     ],
-    dose: "1 tsp to 1 tbsp per bowl",
+    serving: "1 tsp to 1 tbsp per bowl",
     note: "Yes, those are the same steps as the pot. That is rather the point."
   },
   {
@@ -80,7 +88,7 @@ const METHODS: Method[] = [
     intro: (
       <>
         Because that is where the food is. Set it in the middle, next to the
-        achaar, and <CopyHighlight>everyone doses their own plate</CopyHighlight>:
+        achaar, and <CopyHighlight>everyone sorts their own plate</CopyHighlight>:
         a tablespoon in papa&apos;s dal, a teaspoon in nani&apos;s raita, and
         nobody&apos;s dinner is anybody else&apos;s business.
       </>
@@ -90,7 +98,7 @@ const METHODS: Method[] = [
       <>Everyone adds their own. Start with a teaspoon, work up to a heaped tablespoon.</>,
       <>Stir it into your bowl and pass the jar along.</>
     ],
-    dose: "1 tsp each, to start",
+    serving: "1 tsp each, to start",
     note: "This is the job the jar was made for."
   },
   {
@@ -114,7 +122,7 @@ const METHODS: Method[] = [
       <>Plate up your portion and sprinkle a tablespoon over it whilst it&apos;s hot.</>,
       <>Stir, serve, enjoy.</>
     ],
-    dose: "1 tbsp per portion"
+    serving: "1 tbsp per portion"
   },
   {
     id: "freezer",
@@ -136,7 +144,7 @@ const METHODS: Method[] = [
       <>Off the heat. Give it a minute to stop steaming.</>,
       <>Stir in a spoonful just before serving. Aunty never needs to know.</>
     ],
-    dose: "1 tbsp per portion"
+    serving: "1 tbsp per portion"
   },
   {
     id: "roti",
@@ -159,7 +167,7 @@ const METHODS: Method[] = [
       <>Knead with cold water, a splash more than usual, and rest the dough for 15 minutes.</>,
       <>Roll and cook like always on a medium tawa. Protein browns a touch faster, so watch the first one.</>
     ],
-    dose: "1 to 2 tbsp per cup of atta",
+    serving: "1 to 2 tbsp per cup of atta",
     note: "Same soft rotis. Just carrying more."
   }
 ];
@@ -177,8 +185,9 @@ export default function WaysToUsePage() {
           </h1>
           <p className="story-hero__lede">
             Nobody tells a desi cook what to do at their own stove, and we are
-            not about to start. But once the jar is open, these are the ways
-            Heldi works best, and every single one is three steps.{" "}
+            not about to start. But once the jar is open, you can stop shaking
+            and start stirring. These are the ways Heldi works best, and every
+            single one is three steps.{" "}
             <CopyHighlight>Ek. Do. Protein.</CopyHighlight>
           </p>
           <nav className="ways-jump" aria-label="Jump to a way to use Heldi">
@@ -214,7 +223,11 @@ export default function WaysToUsePage() {
           id={method.id}
           className={`section section--${method.ground} section--bordered ways-method ways-method--on-${method.ground}`}
         >
-          <div className="ways-method__grid">
+          <div
+            className={`ways-method__grid${
+              method.strip ? " ways-method__grid--strip" : ""
+            }`}
+          >
             <div className="ways-method__copy">
               <p
                 className={`eyebrow${
@@ -226,27 +239,31 @@ export default function WaysToUsePage() {
               <h2>{method.title}</h2>
               <p className="ways-method__intro">{method.intro}</p>
             </div>
-            <div className="ways-steps-card">
-              <ol className="ways-steps">
-                {method.steps.map((step, index) => (
-                  <li key={index} className="ways-step">
-                    <span
-                      className={`ways-step__num${
-                        index === 2 ? " ways-step__num--protein" : ""
-                      }`}
-                      aria-hidden="true"
-                    >
-                      {STEP_LABELS[index]}
-                    </span>
-                    <p>{step}</p>
-                  </li>
-                ))}
-              </ol>
-              <p className="ways-steps-card__dose">
-                <span>The dose</span>
-                <strong>{method.dose}</strong>
-              </p>
-            </div>
+            {method.strip ? (
+              <WaysComicStrip strip={method.strip} serving={method.serving} />
+            ) : (
+              <div className="ways-steps-card">
+                <ol className="ways-steps">
+                  {method.steps.map((step, index) => (
+                    <li key={index} className="ways-step">
+                      <span
+                        className={`ways-step__num${
+                          index === 2 ? " ways-step__num--protein" : ""
+                        }`}
+                        aria-hidden="true"
+                      >
+                        {STEP_LABELS[index]}
+                      </span>
+                      <p>{step}</p>
+                    </li>
+                  ))}
+                </ol>
+                <p className="ways-steps-card__serving">
+                  <span>How much</span>
+                  <strong>{method.serving}</strong>
+                </p>
+              </div>
+            )}
           </div>
           {method.note ? (
             <p className="ways-method__note">{method.note}</p>

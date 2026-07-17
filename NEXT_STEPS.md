@@ -58,6 +58,7 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 - [x] Styled 404 page — done: `app/not-found.tsx` in brand voice with pill-links home
 - [x] Convert the ~2MB product PNGs in `public/images/shop/` to WebP. Done July 2026 as part of the wider asset pass (BRAND §15 state of play): shop/blog/variant PNGs are WebP, the intro film is 1.0MB, `/shop` thumbnails go through `next/image`, and the dormant video-hero film is local-only
 - [ ] Favicon / app icons check
+- [ ] /ways-to-use comic strips: "The pot" ships as the animated pouch-style test strip (clean art, HTML captions, one horizontal video for all viewports). Five methods remain (dahi, table jar, takeaway, freezer stash, rotis) — locked art direction and prompts in `fable/ways-to-use-strips/STYLE.md`
 
 ## 5. Post-launch (don't build yet)
 
