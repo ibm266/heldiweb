@@ -533,13 +533,17 @@ Live inconsistencies a copy pass should resolve:
 
 ## §15 Assets and performance rules
 
-State of play from the July 2026 audit, so the rules below have context: `public/`
-carries 90MB of images and 74MB of video; the homepage eagerly loads an 8.8MB intro
-video; `/shop` serves its 1200×1200 product PNGs (1.8 to 2.4MB each) raw through
-`<img>` thumbnails; and the dormant "video" hero layout keeps a 29.5MB film plus a
-5.7MB PNG poster deployed. Galleries are already disciplined (videos mount on demand
-with `preload="none"` and posters). Run `npm run brand-lint` for the live list of
-over-budget assets.
+State of play after the July 2026 optimisation pass: tracked `public/` is ~6MB
+(was ~90MB). The intro film is 1.0MB (3s, 1280×720, no audio); product, blog and
+variant photos are WebP; `/shop` thumbnails go through `next/image` with accurate
+`sizes`; and the dormant "video" hero film plus its poster live behind the
+gitignore, so they never deploy. Replaced PNG masters were moved to the gitignored
+`public/images/originals/pre-webp/`; pre-compress video masters sit in
+`hero-video/archive-pre-compress/` and `stir-gallery-video/archive-pre-compress/`.
+First-load transfer measured 17 July 2026 on a production build: `/` ~1.4MB (1.0MB
+of that is the intro film), `/shop` ~0.4MB. Galleries stay disciplined (videos
+mount on demand with `preload="none"` and posters). Run `npm run brand-lint` for
+the live list of over-budget assets.
 
 ### 15.1 Budgets (ceilings for anything new or regenerated)
 
@@ -556,23 +560,25 @@ over-budget assets.
 ### 15.2 Image rules
 
 - **Always `next/image` with an accurate `sizes` attribute.** Raw `<img>` bypasses
-  the optimizer and ships the full source file; the current violations (buy-box
-  thumbnails, option cards, includes rows, cart included-items list) make `/shop`
-  pull the multi-megabyte originals for 56 to 80px thumbnails. Fix by converting to
-  `next/image` or by generating dedicated small thumbs.
+  the optimizer and ships the full source file. The July 2026 pass converted the
+  last violations (buy-box thumbnails, option cards, includes rows, cart
+  included-items list); a fixed-size icon without `sizes` is just as bad, because
+  2x-DPR phones then pull transforms at twice the `width` prop (the nav elephants
+  shipped ~2000px wide for a 32px slot until they got `sizes="32px"`).
 - Product and lifestyle PNGs convert to WebP around q80 (`cwebp -q 80 in.png -o
-  out.webp`, `brew install webp`); expect roughly 2.4MB → 250KB at 1200×1200.
-  Blog heroes under `public/images/heldi-living/` (~2MB each) get the same treatment;
-  they are served through the optimizer, so this saves deploy weight and transform
-  time rather than wire size.
-- `public/images/hero-video-poster.png` (5.7MB, 2688×1520) is a photo and must be a
-  JPEG/WebP at ≤ 300KB if the video hero layout ever ships.
+  out.webp`, or sharp from `node_modules`); expect roughly 2.4MB → 150KB at
+  1200×1200. Done July 2026 for the shop shots, blog heroes and ink-blue variants;
+  alpha line art (elephant, wordmark) used near-lossless WebP, which beat PNG by
+  ~20x. Any new photo asset starts life as WebP.
+- `public/images/hero-video-poster.png` (5.7MB, 2688×1520) is gitignored with its
+  film and must become a JPEG/WebP at ≤ 300KB if the video hero layout ever ships.
 - Keep source PSD/PNG masters out of `public/` (that is what the gitignored
   `public/images/originals/` and the workspace dirs are for); everything in `public/`
   deploys to the CDN.
 - After regenerating any image in place, bump its `?v=` (see §11.6) or it will be
   served stale by the image cache.
-- `next.config.ts` currently uses default formats (WebP). Enabling AVIF
+- `next.config.ts` uses default formats (WebP) with `minimumCacheTTL` at 31 days;
+  the `?v=` discipline is what makes the long TTL safe. Enabling AVIF
   (`images.formats = ["image/avif", "image/webp"]`) is an optional further ~20%
   saving at the cost of slower first-hit transforms; decide once real traffic exists.
 
@@ -583,17 +589,15 @@ over-budget assets.
   mounted only while animating) and the review gallery are the reference
   implementations. Never mount five `<video preload="auto">` in a list.
 - The **hero curtain** (`elephant-run-gold.mp4`) is the one sanctioned eager video
-  and must earn it. Today it is 8.8MB at 2560×1440 for 4.06s, of which only 3s play
-  (`ELEPHANT_RUN_END_AT_S`), painted onto a canvas that is at most ~1280px wide.
-  Required shape: trimmed to 3s, 1280×720, H.264 CRF ~26, `-movflags +faststart`,
-  audio stripped, target ≤ 2MB:
+  and must earn it. Since July 2026 it is 1.0MB: 3s, 1280×720, H.264 CRF 26,
+  `+faststart`, audio stripped. Any regenerated version must match that shape
+  (target ≤ 2MB):
   `ffmpeg -i in.mp4 -t 3 -vf scale=1280:-2 -an -c:v libx264 -crf 26 -preset slow -movflags +faststart out.mp4`
 - `heldi-hero-v3.mp4` (29.5MB) and its poster belong to the dormant `heroLayout="video"`
-  variant: either compress to the budget or move them behind the same
-  experimental-renders gitignore block as v4. Do not leave 35MB deployed for a
-  layout nothing renders.
-- Stir-gallery clips are 1440×1440 for a ~380px circle (760px at 2× DPR): re-encode
-  to 720×720, which roughly halves them.
+  variant and sit behind the experimental-renders gitignore block with v4. If that
+  layout ever ships, compress both to budget first.
+- Stir-gallery clips are 720×720 (re-encoded July 2026, 0.35 to 0.6MB each) for a
+  ~380px circle. Any new clip gets the same treatment before landing in `public/`.
 - Poster frames: `ffmpeg -i clip.mp4 -frames:v 1 -q:v 3 poster.jpg` then compress.
 
 ### 15.4 Loading discipline

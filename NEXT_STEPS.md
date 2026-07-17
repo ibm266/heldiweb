@@ -56,7 +56,7 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 - [x] `og:image` social cards — done: every route (and every blog post) ships a branded card rendered at build from `components/og/card.tsx`
 - [ ] Contact email in the footer (support has to go somewhere)
 - [x] Styled 404 page — done: `app/not-found.tsx` in brand voice with pill-links home
-- [ ] Convert the ~2MB product PNGs in `public/images/shop/` to WebP (~halves page weight)
+- [x] Convert the ~2MB product PNGs in `public/images/shop/` to WebP. Done July 2026 as part of the wider asset pass (BRAND §15 state of play): shop/blog/variant PNGs are WebP, the intro film is 1.0MB, `/shop` thumbnails go through `next/image`, and the dormant video-hero film is local-only
 - [ ] Favicon / app icons check
 
 ## 5. Post-launch (don't build yet)

@@ -206,7 +206,7 @@ const HOW_IT_WORKS_STEPS: {
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-8";
+const IMAGE_VERSION = "ink-blue-9";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -225,6 +225,7 @@ function HeroShowcasePills() {
             alt=""
             width={pill.width}
             height={pill.height}
+            sizes="34px"
             aria-hidden="true"
           />
           {pill.label}
@@ -311,6 +312,7 @@ function PouchBadgesList({ className }: { className: string }) {
           alt=""
           width={280}
           height={377}
+          sizes="34px"
           aria-hidden="true"
         />
         98% lactose-free
@@ -322,6 +324,7 @@ function PouchBadgesList({ className }: { className: string }) {
           alt=""
           width={386}
           height={390}
+          sizes="34px"
           aria-hidden="true"
         />
         No added sugar
@@ -333,6 +336,7 @@ function PouchBadgesList({ className }: { className: string }) {
           alt=""
           width={328}
           height={225}
+          sizes="34px"
           aria-hidden="true"
         />
         Gluten free
@@ -344,6 +348,7 @@ function PouchBadgesList({ className }: { className: string }) {
           alt=""
           width={286}
           height={367}
+          sizes="34px"
           aria-hidden="true"
         />
         Vegetarian
@@ -373,7 +378,7 @@ function Wordmark({
   return (
     <Image
       className={className}
-      src={imageSrc("/images/heldi-wordmark.png")}
+      src={imageSrc("/images/heldi-wordmark.webp")}
       alt="Heldi"
       width={1934}
       height={609}
@@ -832,10 +837,11 @@ function HeroReveal({
               >
                 <Image
                   className="hero-reveal-call-elephants__icon"
-                  src={imageSrc("/images/elephant-large-transparent.png")}
+                  src={imageSrc("/images/elephant-large-transparent.webp")}
                   alt=""
                   width={2048}
                   height={2048}
+                  sizes="34px"
                 />
               </button>
             ) : null}
@@ -861,7 +867,7 @@ function HeroReveal({
               <div className="hero-reveal-pouch">
                 <Image
                   className="hero-reveal-pouch__image"
-                  src={imageSrc("/images/pouch.png")}
+                  src={imageSrc("/images/pouch.webp")}
                   alt="Heldi pouch, same recipes, same taste, more protein"
                   width={1360}
                   height={2048}
@@ -1040,19 +1046,21 @@ export function HeldiHomepage({
             <span className="nav-brand">
               <Image
                 className="nav-elephant-logo nav-elephant-logo--face-in"
-                src={imageSrc("/images/elephant-large-transparent.png")}
+                src={imageSrc("/images/elephant-large-transparent.webp")}
                 alt=""
                 width={2048}
                 height={2048}
+                sizes="32px"
                 priority
               />
               <Wordmark />
               <Image
                 className="nav-elephant-logo"
-                src={imageSrc("/images/elephant-large-transparent.png")}
+                src={imageSrc("/images/elephant-large-transparent.webp")}
                 alt=""
                 width={2048}
                 height={2048}
+                sizes="32px"
                 priority
               />
             </span>
@@ -1153,10 +1161,11 @@ export function HeldiHomepage({
           <div className="hero-inner">
             <Image
               className="hero-elephant hero-elephant--left"
-              src={imageSrc("/images/elephant-large-transparent.png")}
+              src={imageSrc("/images/elephant-large-transparent.webp")}
               alt="Decorated Indian elephant illustration"
               width={2048}
               height={2048}
+              sizes="(max-width: 899px) 13vw, 168px"
               priority
             />
             <div className="hero-copy">
@@ -1184,10 +1193,11 @@ export function HeldiHomepage({
             </div>
             <Image
               className="hero-elephant"
-              src={imageSrc("/images/elephant-large-transparent.png")}
+              src={imageSrc("/images/elephant-large-transparent.webp")}
               alt="Decorated Indian elephant illustration"
               width={2048}
               height={2048}
+              sizes="(max-width: 899px) 13vw, 168px"
               priority
             />
           </div>
@@ -1254,6 +1264,7 @@ export function HeldiHomepage({
                     alt=""
                     width={256}
                     height={256}
+                    sizes="54px"
                   />
                 </div>
                 <div className="how-it-works__copy">
@@ -1267,6 +1278,15 @@ export function HeldiHomepage({
               </li>
             ))}
           </ol>
+          <p className="how-it-works__note">
+            Start with a teaspoon if you like. Every spoonful counts; the
+            heaped tablespoon is just the full serving.
+          </p>
+          <div className="how-it-works__foot">
+            <a className="pill-link" href="/ways-to-use">
+              See every way to use it &#8594;
+            </a>
+          </div>
         </div>
       </section>
 
@@ -1405,7 +1425,7 @@ export function HeldiHomepage({
             <div className="jar-preview-card">
               <Image
                 className="jar-preview-image"
-                src={imageSrc("/images/jar-pouch.png")}
+                src={imageSrc("/images/jar-pouch.webp")}
                 alt="Heldi pouch with silver and gold table jars"
                 width={768}
                 height={768}
@@ -1419,7 +1439,7 @@ export function HeldiHomepage({
 
       {mode !== "live" ? (
         <section className="final-cta section--bordered" id="join">
-          <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-large-transparent.png")} alt="" width={2048} height={2048} />
+          <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
           <div className="final-cta-copy">
             <h2>Be first to stir it in.</h2>
             <p>
@@ -1429,7 +1449,7 @@ export function HeldiHomepage({
               <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
             </div>
           </div>
-          <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-large-transparent.png")} alt="" width={2048} height={2048} />
+          <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
         </section>
       ) : null}
 

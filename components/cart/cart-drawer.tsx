@@ -49,7 +49,7 @@ function IncludedList({ items }: { items: IncludedItem[] }) {
     <ul className="cart-line__included">
       {items.map((item) => (
         <li key={item.title}>
-          <img src={item.image} alt="" />
+          <Image src={item.image} alt="" width={24} height={24} sizes="24px" />
           <span>{item.title}</span>
           <s>{formatPence(item.valuePence)}</s>
           <strong>Free</strong>

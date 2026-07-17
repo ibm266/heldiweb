@@ -32,11 +32,14 @@
 hero-video/
 stir-gallery-video/
 
-# Experimental / alternate video renders (site uses heldi-hero-v3 + elephant-run-gold)
+# Experimental / alternate video renders (site uses elephant-run-gold; the
+# dormant heroLayout="video" film + poster stay local-only until that layout ships)
 public/videos/elephant-run-alpha.webm
 public/videos/elephant-run-cream.mp4
 public/videos/elephant-run-gold-alpha.mp4
+public/videos/heldi-hero-v3.mp4
 public/videos/heldi-hero-v4.mp4
+public/images/hero-video-poster.png
 
 # --- Design / copy / planning archives (not served by the site) ---
 design_handoff_heldi_homepage/
@@ -66,7 +69,9 @@ public/images/pouch-2k.png
 public/images/variants/ink-blue/elephant-large.png
 public/images/variants/ink-blue/jar-gold.png
 public/images/variants/ink-blue/jar-silver.png
+public/images/variants/ink-blue/jars-both.png
 public/images/pouch-badges/sheet.png
+public/images/shop/gift-jar-silver.png
 
 # Stir gallery PNG sources superseded by WebP (kept locally for reference)
 public/images/stir-gallery/dal-tadka.png

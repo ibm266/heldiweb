@@ -7,7 +7,7 @@ import { CartIcon } from "@/components/cart/cart-icon";
 import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 
-const IMAGE_VERSION = "ink-blue-3";
+const IMAGE_VERSION = "ink-blue-4";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -64,14 +64,15 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
           <span className="nav-brand">
             <Image
               className="nav-elephant-logo nav-elephant-logo--face-in"
-              src={imageSrc("/images/elephant-large-transparent.png")}
+              src={imageSrc("/images/elephant-large-transparent.webp")}
               alt=""
               width={2048}
               height={2048}
+              sizes="32px"
             />
             <Image
               className="heldi-logo"
-              src={imageSrc("/images/heldi-wordmark.png")}
+              src={imageSrc("/images/heldi-wordmark.webp")}
               alt="Heldi"
               width={1934}
               height={609}
@@ -79,10 +80,11 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
             />
             <Image
               className="nav-elephant-logo"
-              src={imageSrc("/images/elephant-large-transparent.png")}
+              src={imageSrc("/images/elephant-large-transparent.webp")}
               alt=""
               width={2048}
               height={2048}
+              sizes="32px"
             />
           </span>
         </Link>
@@ -122,6 +124,7 @@ export function FooterLegal() {
     <>
       <nav className="footer-legal" aria-label="Legal">
         <Link href="/faq">FAQ</Link>
+        <Link href="/ways-to-use">Ways to use</Link>
         <Link href="/inside-the-pouch">Inside the pouch</Link>
         <Link href="/legal/terms">Terms</Link>
         <Link href="/legal/privacy">Privacy</Link>
@@ -142,7 +145,7 @@ export function SubpageFooter() {
     <footer>
       <Image
         className="heldi-logo heldi-logo--footer heldi-logo--on-dark"
-        src={imageSrc("/images/heldi-wordmark.png")}
+        src={imageSrc("/images/heldi-wordmark.webp")}
         alt="Heldi"
         width={1934}
         height={609}

@@ -289,7 +289,7 @@ export default function OurStoryPage() {
       <section className="final-cta section--bordered story-final">
         <Image
           className="cta-elephant cta-elephant--left"
-          src="/images/variants/ink-blue/elephant-large-transparent.png?v=ink-blue-3"
+          src="/images/variants/ink-blue/elephant-large-transparent.webp?v=ink-blue-4"
           alt=""
           width={2048}
           height={2048}
@@ -303,7 +303,7 @@ export default function OurStoryPage() {
         </div>
         <Image
           className="cta-elephant cta-elephant--right"
-          src="/images/variants/ink-blue/elephant-large-transparent.png?v=ink-blue-3"
+          src="/images/variants/ink-blue/elephant-large-transparent.webp?v=ink-blue-4"
           alt=""
           width={2048}
           height={2048}

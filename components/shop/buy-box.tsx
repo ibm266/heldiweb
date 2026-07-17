@@ -147,7 +147,7 @@ export function BuyBox({ product }: { product: Product }) {
               aria-label={`View image ${index + 1}`}
               onClick={() => setImageOverride(index)}
             >
-              <img src={image.url} alt="" />
+              <Image src={image.url} alt="" width={68} height={68} sizes="68px" />
             </button>
           ))}
         </div>
@@ -181,6 +181,7 @@ export function BuyBox({ product }: { product: Product }) {
                 alt=""
                 width={pill.width}
                 height={pill.height}
+                sizes="34px"
                 aria-hidden="true"
               />
               {pill.label}
@@ -255,10 +256,13 @@ export function BuyBox({ product }: { product: Product }) {
                       checked={tierId === id}
                       onChange={() => selectTier(id)}
                     />
-                    <img
+                    <Image
                       className="option-card__img"
                       src={product.images[TIER_ORDER.indexOf(id)].url}
                       alt=""
+                      width={56}
+                      height={56}
+                      sizes="56px"
                     />
                     <span className="option-card__name">{option.name}</span>
                     <span className="option-card__meta">
@@ -279,12 +283,12 @@ export function BuyBox({ product }: { product: Product }) {
             <div className="pdp__includes">
               <p className="pdp__includes-title">Includes:</p>
               <div className="pdp__includes-row">
-                <img className="pdp__includes-img" src={POUCH_THUMB} alt="" />
+                <Image className="pdp__includes-img" src={POUCH_THUMB} alt="" width={28} height={28} sizes="28px" />
                 <span>{tier.pouches} × 300g pouch{tier.pouches > 1 ? "es" : ""}</span>
               </div>
               {included.map((item) => (
                 <div className="pdp__includes-row" key={item.title}>
-                  <img className="pdp__includes-img" src={item.image} alt="" />
+                  <Image className="pdp__includes-img" src={item.image} alt="" width={28} height={28} sizes="28px" />
                   <span>{item.title}</span>
                   <s>{formatPence(item.valuePence)}</s>
                   <strong>Free</strong>
