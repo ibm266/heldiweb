@@ -2605,6 +2605,18 @@ h2 {
   line-height: 1.55;
 }
 
+.how-it-works__note {
+  margin: clamp(1.75rem, 4vw, 2.25rem) 0 0;
+  color: var(--brown);
+  font-size: 0.9375rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.how-it-works__foot {
+  text-align: center;
+}
+
 .audience-gallery {
   margin-top: clamp(2rem, 5vw, 3rem);
 }
@@ -8203,5 +8215,176 @@ a.living-card__tag:hover {
     align-items: flex-start;
     gap: 0.75rem;
     padding: 1.5rem;
+  }
+}
+
+/* ---------- Ways to use (/ways-to-use) ---------- */
+
+/* Jump chips under the hero: anchor links wearing the truth-chip suit. */
+.ways-jump {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.625rem;
+  margin-top: 1.75rem;
+}
+
+.ways-jump .truth-chip {
+  text-decoration: none;
+  transition: transform 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ways-jump .truth-chip:hover {
+    transform: translateY(-2px);
+    background: var(--gold);
+  }
+}
+
+/* Method sections: copy beside a white steps card on desktop, stacked on
+   mobile. Both DOM orders are the same; only the grid changes. */
+.ways-method__grid {
+  display: grid;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  max-width: 1020px;
+  margin: 0 auto;
+}
+
+.ways-method__copy {
+  text-align: center;
+}
+
+.ways-method__copy h2 {
+  margin: 0.75rem auto 1.25rem;
+  max-width: 22ch;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.ways-method__intro {
+  margin: 0;
+  color: var(--brown);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  text-align: left;
+}
+
+.ways-method--on-ink .ways-method__copy h2 {
+  color: var(--cream);
+}
+
+.ways-method--on-ink .ways-method__intro {
+  color: var(--dark-muted);
+}
+
+/* The three-step card. Third chip always reads "Protein": ek, do, protein. */
+.ways-steps-card {
+  align-self: center;
+  padding: clamp(1.25rem, 3vw, 1.75rem);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+.ways-method--on-ink .ways-steps-card {
+  box-shadow: 8px 8px 0 rgb(0 0 0 / 0.45);
+}
+
+.ways-steps {
+  display: grid;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ways-step {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.875rem;
+}
+
+.ways-step p {
+  margin: 0;
+  color: var(--brown);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.ways-step__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5.5rem;
+  min-height: 2rem;
+  padding: 0.2rem 0.5rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: 0.9375rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ways-step__num--protein {
+  background: var(--gold);
+}
+
+.ways-steps-card__dose {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 1.25rem 0 0;
+  padding-top: 1rem;
+  border-top: 2px dashed rgb(var(--ink-rgb) / 0.3);
+  color: var(--brown);
+  font-size: 0.9375rem;
+}
+
+.ways-steps-card__dose strong {
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: 1.125rem;
+  font-weight: 400;
+  text-align: right;
+}
+
+.ways-method__note {
+  margin: clamp(1.5rem, 3vw, 2rem) auto 0;
+  max-width: 1020px;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.ways-method--on-gold .ways-method__note {
+  color: var(--brown);
+}
+
+.ways-method--on-ink .ways-method__note {
+  color: var(--dark-muted);
+}
+
+@media (min-width: 900px) {
+  .ways-method__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    align-items: center;
+  }
+
+  .ways-method__copy {
+    text-align: left;
+  }
+
+  .ways-method__copy h2 {
+    margin-left: 0;
   }
 }

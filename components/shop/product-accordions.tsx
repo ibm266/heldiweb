@@ -33,7 +33,9 @@ const ACCORDION_ITEMS: { question: string; answer: ReactNode }[] = [
         Cook like always. Stir a spoonful into the pot{" "}
         <strong>while it&apos;s cooling</strong>, or into your bowl at the
         table. Same dal, same curry, same raita, with a{" "}
-        <strong>protein boost</strong>.
+        <strong>protein boost</strong>.{" "}
+        <a href="/ways-to-use">See every way to use it</a>, from dahi to
+        rotis to Friday&apos;s takeaway.
       </p>
     )
   },

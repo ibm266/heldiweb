@@ -14,6 +14,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/shop`, priority: 0.9 },
     { url: `${SITE_URL}/truth`, priority: 0.9 },
     { url: `${SITE_URL}/heldi-living`, priority: 0.8 },
+    { url: `${SITE_URL}/ways-to-use`, priority: 0.8 },
     { url: `${SITE_URL}/our-story`, priority: 0.6 },
     { url: `${SITE_URL}/inside-the-pouch`, priority: 0.6 },
     { url: `${SITE_URL}/faq`, priority: 0.6 },
