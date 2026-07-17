@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   FormEvent,
-  ReactNode,
   useEffect,
   useRef,
   useState
@@ -22,6 +21,7 @@ import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
+import { WaysGallery } from "@/components/ways-gallery";
 
 type HeroAnimation = "split-flap" | "dissolve";
 type HeroLayout = "video" | "classic" | "reveal";
@@ -167,42 +167,6 @@ const HERO_SHOWCASE_PILLS: {
     label: "Vegetarian",
     width: 286,
     height: 367
-  }
-];
-
-const HOW_IT_WORKS_STEPS: {
-  icon: string;
-  title: string;
-  description: ReactNode | ((grams: number) => ReactNode);
-}[] = [
-  {
-    icon: "/images/how-it-works/step-1-cook.png",
-    title: "Cook like always",
-    description: (
-      <>
-        Your dal, curry or raita, <CopyHighlight>same as ever</CopyHighlight>.
-      </>
-    )
-  },
-  {
-    icon: "/images/how-it-works/step-2-stir.png",
-    title: "Stir in a spoonful",
-    description: (
-      <>
-        Stir straight into the pot <CopyHighlight>whilst it&apos;s cooling</CopyHighlight>
-        , or at the table.
-      </>
-    )
-  },
-  {
-    icon: "/images/how-it-works/step-3-eat.png",
-    title: "Eat what you love",
-    description: (
-      <>
-        The meal you grew up with, with a{" "}
-        <CopyHighlight>protein</CopyHighlight> boost.
-      </>
-    )
   }
 ];
 
@@ -1235,59 +1199,7 @@ export function HeldiHomepage({
       </section>
 
       <section className="section section--cream" id="how">
-        <div className="how-it-works">
-          <header className="how-it-works__header">
-            <p className="eyebrow">HOW IT WORKS</p>
-            <div className="how-it-works__header-mobile">
-              <h2>
-                No shaking.
-                <br />
-                No blending.
-                <br />
-                More protein.
-              </h2>
-            </div>
-            <div className="how-it-works__header-laptop">
-              <h2>Food you love. Nutrients you need.</h2>
-              <p>
-                <CopyHighlight>Vanishes clean</CopyHighlight> into every
-                gravy, dal and yoghurt base. No chalk, no aftertaste.
-              </p>
-            </div>
-          </header>
-          <ol className="how-it-works__steps">
-            {HOW_IT_WORKS_STEPS.map((step) => (
-              <li key={step.title} className="how-it-works__step">
-                <div className="how-it-works__icon" aria-hidden="true">
-                  <Image
-                    src={imageSrc(step.icon)}
-                    alt=""
-                    width={256}
-                    height={256}
-                    sizes="54px"
-                  />
-                </div>
-                <div className="how-it-works__copy">
-                  <h3>{step.title}</h3>
-                  <p>
-                    {typeof step.description === "function"
-                      ? step.description(grams)
-                      : step.description}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <p className="how-it-works__note">
-            Start with a teaspoon if you like. Every spoonful counts; the
-            heaped tablespoon is just the full serving.
-          </p>
-          <div className="how-it-works__foot">
-            <a className="pill-link" href="/ways-to-use">
-              See every way to use it &#8594;
-            </a>
-          </div>
-        </div>
+        <WaysGallery />
       </section>
 
       <GiftingBand showShopCta />

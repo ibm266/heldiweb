@@ -11,11 +11,27 @@ export type ComicStrip = {
   alt: string;
   label: string;
   captions: [string, string, string];
+  /**
+   * Horizontal center of each of the three subjects, as a percentage of the
+   * strip width. Captions sit under these anchors so they line up with the
+   * art on any screen width (the art fills the width at every size, so the
+   * percentages hold). Tuned per strip because the generated subjects are
+   * not evenly spaced.
+   */
+  anchors: [number, number, number];
 };
+
+/* Either a single amount, or the first-time to old-hand ladder. */
+export type Serving = string | { start: string; upto: string };
+
+export const SERVING_LADDER_LABELS = {
+  start: "Light hand",
+  upto: "Heavy hand"
+} as const;
 
 type WaysComicStripProps = {
   strip: ComicStrip;
-  serving: string;
+  serving: Serving;
 };
 
 /**
@@ -85,15 +101,32 @@ export function WaysComicStrip({ strip, serving }: WaysComicStripProps) {
       </div>
       <figcaption className="ways-strip__steps">
         {strip.captions.map((caption, index) => (
-          <span key={index} className="ways-strip__step">
+          <span
+            key={index}
+            className="ways-strip__step"
+            style={{ left: `${strip.anchors[index]}%` }}
+          >
             {caption}
           </span>
         ))}
       </figcaption>
-      <p className="ways-strip__serving">
-        <span>How much</span>
-        <strong>{serving}</strong>
-      </p>
+      {typeof serving === "string" ? (
+        <p className="ways-strip__serving">
+          <span>How much</span>
+          <strong>{serving}</strong>
+        </p>
+      ) : (
+        <div className="ways-strip__serving ways-strip__serving--ladder">
+          <p>
+            <span>{SERVING_LADDER_LABELS.start}</span>
+            <strong>{serving.start}</strong>
+          </p>
+          <p>
+            <span>{SERVING_LADDER_LABELS.upto}</span>
+            <strong>{serving.upto}</strong>
+          </p>
+        </div>
+      )}
     </figure>
   );
 }

@@ -4326,6 +4326,14 @@ footer {
   line-height: 1.7;
 }
 
+.story-hero__easy {
+  margin: 1rem auto 0;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.375rem, 3.5vw, 1.875rem);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
 .story-pull {
   padding-block: clamp(2.5rem, 5vw, 3.5rem);
   text-align: center;
@@ -8234,6 +8242,20 @@ a.living-card__tag:hover {
   transition: transform 160ms ease;
 }
 
+/* On phones the long labels only fit two per row and read as bulky; shrink
+   the chips so three sit comfortably across. */
+@media (max-width: 560px) {
+  .ways-jump {
+    gap: 0.5rem;
+  }
+
+  .ways-jump .truth-chip {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8125rem;
+    box-shadow: 2px 2px 0 var(--ink);
+  }
+}
+
 @media (hover: hover) and (pointer: fine) {
   .ways-jump .truth-chip:hover {
     transform: translateY(-2px);
@@ -8417,32 +8439,41 @@ a.living-card__tag:hover {
   object-position: 50% 85%;
 }
 
+/* Captions are positioned by percentage anchors so each sits under its
+   subject in the art. The art fills the strip width at every screen size,
+   so the same percentages line up on wide and mobile alike. */
 .ways-strip__steps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.5rem clamp(0.5rem, 2vw, 1.5rem);
+  position: relative;
+  min-height: 3rem;
   margin: 0;
   padding: 0;
 }
 
 .ways-strip__step {
+  position: absolute;
+  top: 0;
+  width: 32%;
+  transform: translateX(-50%);
   color: var(--brown);
   font-size: clamp(0.8125rem, 1.8vw, 1.0625rem);
   font-weight: 600;
   line-height: 1.3;
   text-align: center;
+  text-wrap: balance;
+  white-space: pre-line;
 }
 
 .ways-strip__serving {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
+  justify-content: center;
+  gap: 0.6rem;
   margin: 0;
   padding-top: 0.85rem;
   border-top: 2px dashed rgb(var(--ink-rgb) / 0.3);
   color: var(--brown);
   font-size: 0.9375rem;
+  text-align: center;
 }
 
 .ways-strip__serving strong {
@@ -8451,6 +8482,23 @@ a.living-card__tag:hover {
   font-size: 1.125rem;
   font-weight: 400;
   text-align: right;
+}
+
+/* First-time to old-hand ladder: two stacked amount rows. */
+.ways-strip__serving--ladder,
+.ways-steps-card__serving--ladder {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.45rem;
+}
+
+.ways-strip__serving--ladder p,
+.ways-steps-card__serving--ladder p {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.6rem;
+  margin: 0;
 }
 
 .ways-method__note {
@@ -8501,5 +8549,114 @@ a.living-card__tag:hover {
     max-width: 62ch;
     margin: 0 auto;
     text-align: center;
+  }
+}
+
+/* ---------- Homepage "how it works" ways gallery ----------
+   Three of the /ways-to-use methods (pot, dahi, table) as animated strip
+   cards in a horizontal rail that scrolls on every width, deliberately (the
+   user wants a swipeable gallery on wide screens too, not the usual desktop
+   grid). Reuses .ways-strip for each card; this block only owns the header,
+   the rail, and the dots. Cream ground only. */
+.ways-gallery {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+.ways-gallery__header {
+  text-align: center;
+}
+
+.ways-gallery__header h2 {
+  margin: 10px auto 0;
+  max-width: 18ch;
+  color: var(--ink);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  line-height: 1.12;
+}
+
+.ways-gallery__lede {
+  max-width: 40rem;
+  margin: 12px auto 0;
+  color: var(--brown);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.ways-gallery__hint {
+  margin: clamp(1.25rem, 3vw, 1.75rem) 0 6px;
+  color: var(--terracotta);
+  font-size: 0.75rem;
+  font-style: italic;
+  font-weight: 600;
+  text-align: right;
+}
+
+.ways-gallery__rail {
+  display: flex;
+  margin: 0 calc(-1 * clamp(1.25rem, 5vw, 4rem));
+  padding: 6px clamp(1.25rem, 5vw, 4rem) 24px;
+  overflow-x: auto;
+  gap: clamp(16px, 3vw, 28px);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.ways-gallery__rail::-webkit-scrollbar {
+  display: none;
+}
+
+.ways-gallery__card {
+  flex: 0 0 clamp(300px, 82vw, 460px);
+  scroll-snap-align: center;
+}
+
+@supports not (scroll-snap-type: x mandatory) {
+  .ways-gallery__rail {
+    flex-wrap: wrap;
+    justify-content: center;
+    scroll-snap-type: none;
+  }
+
+  .ways-gallery__card {
+    scroll-snap-align: none;
+  }
+}
+
+.ways-gallery__dots {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  padding-bottom: 8px;
+}
+
+.ways-gallery__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.ways-gallery__dot.is-active {
+  background: var(--ink);
+}
+
+.ways-gallery__dot:focus-visible {
+  outline-color: var(--gold);
+}
+
+.ways-gallery__foot {
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  text-align: center;
+}
+
+@media (min-width: 900px) {
+  .ways-gallery__card {
+    flex-basis: 460px;
   }
 }
