@@ -1,0 +1,15 @@
+---
+description: Adding, replacing, or regenerating any image, video, poster, or animated flourish on the Heldi site (e.g. "add this product shot", "new clip for the gallery", "swap the blog hero"). Loads the house recipe for optimised assets.
+globs:
+alwaysApply: false
+---
+
+Open `.claude/skills/add-asset/SKILL.md` and follow it exactly. It is plain
+markdown written for any agent. In short: compress before the file touches
+`public/` (WebP q80 via the repo's sharp for photos, near-lossless for line
+art; H.264 CRF 26, no audio, `+faststart` via a scratch ffmpeg-static for
+video); budgets are BRAND.md §15.1 (images ≤ 400KB and ≤ 2× rendered width,
+videos ≤ 8MB and ≤ 1MB/s); wire images through next/image with an accurate
+`sizes` attribute and videos with `preload="none"` plus a poster and a
+`prefers-reduced-motion` fallback; masters go to the gitignored originals or
+workspace dirs; finish with `npm run brand-lint` and a check at 375/1280px.

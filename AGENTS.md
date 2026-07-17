@@ -22,6 +22,9 @@ Task recipes (plain markdown, written for any agent, not only Claude):
 - Adding or restructuring a section, band, or page: follow
   `.claude/skills/add-section/SKILL.md`.
 - Publishing a Heldi Living blog post: follow `.claude/skills/new-post/SKILL.md`.
+- Adding or regenerating any image, video, or animation: follow
+  `.claude/skills/add-asset/SKILL.md` (budgets, compression commands, wiring
+  rules). Nothing lands in `public/` uncompressed.
 
 Hard rules that are cheap to break by accident:
 

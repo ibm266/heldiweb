@@ -15,8 +15,11 @@ listing every surface that repeats each product fact.
 **Before building or restructuring anything, read [PLAYBOOK.md](PLAYBOOK.md).**
 It holds the responsive contract, code conventions, the blessed-components table,
 step-by-step recipes (add a section, add a page, add a FAQ, add a blog post, change
-nav), and the accessibility bar. Project skills `add-section` and `new-post` load
-the right recipe automatically for those jobs.
+nav), and the accessibility bar. Project skills `add-section`, `new-post` and
+`add-asset` load the right recipe automatically for those jobs. **Any new or
+regenerated image, video, or animation goes through the `add-asset` skill**: it
+carries the §15 budgets, the exact compression commands for this machine, and the
+wiring rules (next/image + sizes, preload="none" + poster, reduced-motion).
 
 Hard rules that are cheap to break by accident:
 

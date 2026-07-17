@@ -142,6 +142,7 @@ function DesktopTable() {
               alt=""
               width={420}
               height={546}
+              sizes="92px"
             />
           </div>
         </div>
@@ -201,7 +202,7 @@ function MobileScorecard() {
         <div className="vs-scorecard__panel" aria-hidden="true" />
         <div className="vs-scorecard__pouch" aria-hidden="true">
           <div className="vs-scorecard__pouch-frame">
-            <Image src={POUCH_SHOT} alt="" width={420} height={546} />
+            <Image src={POUCH_SHOT} alt="" width={420} height={546} sizes="72px" />
           </div>
         </div>
 
