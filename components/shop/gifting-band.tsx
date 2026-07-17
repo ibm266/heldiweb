@@ -22,16 +22,13 @@ export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) 
           <CopyHighlight>never hear the end of it.</CopyHighlight>
         </h2>
         <p>
-          Buying Heldi for your mum and dad, for uncle and aunty, or are you
-          the auntie or uncle here for your own dal? Either way it&apos;s{" "}
-          {GIFTING.percent}% off. Tell us who&apos;s buying, copy your code,
-          and use it at checkout. It&apos;s our way of saying thank you,
-          whether you&apos;re the one who sorts things out for the family or
-          the one who&apos;s been doing it for decades.
+          It&apos;s the friends-and-family rate, for the mums, dads, aunties
+          and uncles. Buying it for them, or are you one of them yourself?
+          Pick who you&apos;re buying for and take {GIFTING.percent}% off.
         </p>
         <p>
-          We can&apos;t check, and we&apos;re not brave enough to ask the
-          aunty WhatsApp group. We trust you :)
+          We can&apos;t check, and we&apos;re not asking the aunty WhatsApp
+          group. We trust you :)
         </p>
         <GiftingCodePicker defaultAudience="beta" surface="band" />
         <p className="gifting__small">
