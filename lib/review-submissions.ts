@@ -2,13 +2,13 @@
 // form (client) and the /api/reviews route (server). No server-only imports
 // in here.
 //
-// Storage today is deliberately simple: each submission lands in
-// data/review-submissions/<id>/ as submission.json plus the uploaded media
-// file. That directory is gitignored (customer data never enters the repo).
-// Moderation is manual: read the JSON, check the order number against
-// Shopify, then move the content into lib/reviews.ts as a published Review.
-// When volume outgrows the founder's inbox, swap the file writes for a
-// database and object storage; this type is the contract either way.
+// Storage lives in the heldi-dev Supabase project: each submission is a row in
+// public.reviews plus its photo/video in the private review-media bucket
+// (schema: supabase/migrations/0001_create_reviews.sql). Writes go through the
+// server-only service_role key, so customer data never enters the repo or the
+// client bundle. Moderation is manual: check the order number against Shopify,
+// then flip the row's status to 'published' and the storefront picks it up via
+// lib/reviews-store.ts. This type stays the client/server contract for the form.
 
 export type ReviewSubmissionMedia = {
   /** Filename inside the submission folder, e.g. "media.jpg". */

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { TruthPage } from "@/components/truth-page";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
+import { serializeJsonLd } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
   title: "How much protein is in dal? The honest truth · Heldi",
@@ -28,7 +29,7 @@ export default function TruthRoute() {
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
       />
       <SubpageNav tone="cream" />
       <TruthPage />

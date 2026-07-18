@@ -8,6 +8,7 @@ import {
   getPostFaqs,
   HELDI_LIVING_POSTS
 } from "@/lib/heldi-living";
+import { serializeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
 
 type PageProps = {
@@ -116,18 +117,18 @@ export default async function HeldiLivingPostPage({ params }: PageProps) {
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(blogPostingSchema) }}
       />
       {faqSchema ? (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
         />
       ) : null}
       {recipeSchema ? (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(recipeSchema) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(recipeSchema) }}
         />
       ) : null}
       <SubpageNav tone="gold" />

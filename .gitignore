@@ -15,6 +15,10 @@
 # customer review submissions written by /api/reviews (personal data; never commit)
 /data/review-submissions/
 
+# Supabase CLI workspace state (project ref cache, not source)
+supabase/.temp/
+supabase/.branches/
+
 # logs and tooling
 *.log
 *.tsbuildinfo

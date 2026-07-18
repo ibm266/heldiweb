@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { HeldiHomepage } from "@/components/heldi-homepage";
 import { HOME_FAQS } from "@/components/home-faqs";
+import { serializeJsonLd } from "@/lib/json-ld";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -33,11 +34,11 @@ export default function Home() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(organizationSchema) }}
       />
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
       />
       <HeldiHomepage
         grams={10}

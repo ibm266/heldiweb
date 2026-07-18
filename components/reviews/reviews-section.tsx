@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import type { Review } from "@/lib/reviews";
 import { ReviewGallery } from "./review-gallery";
 import { ReviewLeaderboard } from "./review-leaderboard";
 
@@ -13,6 +14,8 @@ type ReviewsSectionProps = {
   showLeaderboard?: boolean;
   /** Link to the /review capture form; on for the PDP, off elsewhere. */
   submitCta?: boolean;
+  /** Published reviews; omit to fall back to the placeholder gallery. */
+  reviews?: Review[];
 };
 
 // Full-width reviews band: media-only review gallery plus, optionally, the
@@ -29,7 +32,8 @@ export function ReviewsSection({
     </>
   ),
   showLeaderboard = false,
-  submitCta = false
+  submitCta = false,
+  reviews
 }: ReviewsSectionProps) {
   return (
     <section className={`section section--${tone} section--bordered`} id={id}>
@@ -40,7 +44,7 @@ export function ReviewsSection({
           <p className="reviews__lede">{lede}</p>
         </header>
 
-        <ReviewGallery />
+        <ReviewGallery reviews={reviews} />
 
         {showLeaderboard ? <ReviewLeaderboard /> : null}
 

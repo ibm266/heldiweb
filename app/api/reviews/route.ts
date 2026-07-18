@@ -1,6 +1,4 @@
 import { randomUUID } from "node:crypto";
-import { mkdir, writeFile } from "node:fs/promises";
-import path from "node:path";
 import { NextResponse } from "next/server";
 import {
   WENT_WELL_CHIPS,
@@ -11,15 +9,17 @@ import {
   REVIEW_MEDIA_TYPES,
   type ReviewSubmission
 } from "@/lib/review-submissions";
+import { getSupabaseAdmin, REVIEW_MEDIA_BUCKET } from "@/lib/supabase/admin";
 
-// Review submissions land on disk, one folder per submission: the JSON plus
-// the uploaded media file. data/review-submissions/ is gitignored, so
-// customer data never enters the repo. This is the pre-launch collector; the
-// moderation flow and the eventual database swap are described in
-// lib/review-submissions.ts. Publishing stays manual either way (CMA / DMCC
-// Act 2024: reviews must be genuine and checked before display).
-
-const SUBMISSIONS_DIR = path.join(process.cwd(), "data", "review-submissions");
+// Review submissions land in the heldi-dev Supabase project: the row goes to
+// the public.reviews table, the uploaded photo/video goes to the private
+// review-media bucket. Both are reached with the service_role key, server-side
+// only, so customer data never touches the repo or the client bundle. Every
+// row starts status 'pending'; publishing is a manual, checked step (flip
+// status to 'published'), which the storefront reads via getPublishedReviews.
+// Manual review stays mandatory either way (CMA / DMCC Act 2024: reviews must
+// be genuine and checked before display).
+// Schema: supabase/migrations/0001_create_reviews.sql.
 
 const WELL_VALUES = WENT_WELL_CHIPS.map((chip) => chip.value);
 const WRONG_VALUES = WENT_WRONG_CHIPS.map((chip) => chip.value);
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
   }
 
   // Honeypot: the hidden "website" field is invisible to humans. A filled
-  // value means a bot, which gets a polite success and nothing on disk.
+  // value means a bot, which gets a polite success and nothing stored.
   if (fieldString(data, "website", 200)) {
     return NextResponse.json({ ok: true }, { status: 201 });
   }
@@ -103,35 +103,55 @@ export async function POST(request: Request) {
     };
   }
 
+  const supabase = getSupabaseAdmin();
+  if (!supabase) {
+    return NextResponse.json(
+      { error: "Review storage is not configured." },
+      { status: 503 }
+    );
+  }
+
   const id = `${new Date().toISOString().slice(0, 10)}-${randomUUID().slice(0, 8)}`;
-  const submission: ReviewSubmission = {
-    id,
-    submittedAt: new Date().toISOString(),
-    status: "pending",
-    rating,
-    wentWell,
-    wentWrong,
-    dish,
-    tablespoons,
-    text,
-    author,
-    location: location || undefined,
-    email,
-    orderNumber: orderNumber || undefined,
-    media,
-    publishConsent: true
-  };
+  // Store media under the review's id so the object and the row stay linked.
+  const mediaPath = media ? `${id}/${media.file}` : null;
 
   try {
-    const dir = path.join(SUBMISSIONS_DIR, id);
-    await mkdir(dir, { recursive: true });
-    if (media && mediaBytes) {
-      await writeFile(path.join(dir, media.file), mediaBytes);
+    if (media && mediaBytes && mediaPath) {
+      const { error: uploadError } = await supabase.storage
+        .from(REVIEW_MEDIA_BUCKET)
+        .upload(mediaPath, mediaBytes, {
+          contentType: media.contentType,
+          upsert: false
+        });
+      if (uploadError) throw uploadError;
     }
-    await writeFile(
-      path.join(dir, "submission.json"),
-      JSON.stringify(submission, null, 2)
-    );
+
+    const { error: insertError } = await supabase.from("reviews").insert({
+      id,
+      submitted_at: new Date().toISOString(),
+      status: "pending",
+      rating,
+      tablespoons,
+      went_well: wentWell,
+      went_wrong: wentWrong,
+      dish,
+      body: text,
+      author,
+      location: location || null,
+      email,
+      order_number: orderNumber || null,
+      media_path: mediaPath,
+      media_content_type: media?.contentType ?? null,
+      media_bytes: media?.bytes ?? null,
+      publish_consent: true
+    });
+    if (insertError) {
+      // Don't orphan the just-uploaded media if the row failed to write.
+      if (mediaPath) {
+        await supabase.storage.from(REVIEW_MEDIA_BUCKET).remove([mediaPath]);
+      }
+      throw insertError;
+    }
   } catch {
     return NextResponse.json(
       { error: "Could not store the review. Try again shortly." },

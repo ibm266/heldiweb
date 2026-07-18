@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { FaqPageList } from "@/components/faq-page-list";
 import { SITE_FAQ_GROUPS } from "@/components/site-faqs";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
+import { serializeJsonLd } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
   title: "FAQ · Heldi",
@@ -27,7 +28,7 @@ export default function FaqPage() {
     <main>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(faqSchema) }}
       />
       <SubpageNav tone="cream" />
 
