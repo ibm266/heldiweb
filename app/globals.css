@@ -8554,10 +8554,12 @@ a.living-card__tag:hover {
 
 /* ---------- Homepage "how it works" ways gallery ----------
    Three of the /ways-to-use methods (pot, dahi, table) as animated strip
-   cards in a horizontal rail that scrolls on every width, deliberately (the
-   user wants a swipeable gallery on wide screens too, not the usual desktop
-   grid). Reuses .ways-strip for each card; this block only owns the header,
-   the rail, and the dots. Cream ground only. */
+   cards. Two deliberate layouts: on mobile a swipeable horizontal rail with a
+   scroll hint and dots; from 900px up a static three-up grid so all three
+   animations sit on one screen with no scroll (the hint and dots are hidden,
+   being scroll affordances the grid doesn't need). Reuses .ways-strip for each
+   card; this block only owns the header, the rail/grid, and the dots. Cream
+   ground only. */
 .ways-gallery {
   max-width: 1152px;
   margin: 0 auto;
@@ -8656,7 +8658,26 @@ a.living-card__tag:hover {
 }
 
 @media (min-width: 900px) {
+  /* Scroll affordances belong to the mobile rail only. */
+  .ways-gallery__hint,
+  .ways-gallery__dots {
+    display: none;
+  }
+
+  /* All three at once: a static three-up grid, no scroll. */
+  .ways-gallery__rail {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: clamp(1.75rem, 3vw, 2.5rem) 0 0;
+    padding: 6px 0 8px;
+    overflow: visible;
+    gap: clamp(20px, 2.4vw, 32px);
+    scroll-snap-type: none;
+  }
+
   .ways-gallery__card {
-    flex-basis: 460px;
+    flex: initial;
+    min-width: 0;
+    scroll-snap-align: none;
   }
 }

@@ -7,11 +7,13 @@ import { METHODS } from "@/components/ways-to-use-methods";
 
 /**
  * The homepage "how it works" gallery: three of the /ways-to-use methods (the
- * pot, the cold bowls, the whole table) shown as animated pouch-style strips in
- * a horizontal rail that scrolls on every width. The section makes the "as easy
- * as 1, 2, 3" point once, then lets the strips prove every method is three
- * steps. Strip data and copy come straight from the shared METHODS source so
- * the two surfaces never drift.
+ * pot, the cold bowls, the whole table) shown as animated pouch-style strips.
+ * On mobile they sit in a swipeable horizontal rail (hint + dots); from 900px
+ * up they become a static three-up grid so all three fit on one screen with no
+ * scroll (CSS hides the hint and dots there). The section makes the "as easy as
+ * 1, 2, 3" point once, then lets the strips prove every method is three steps.
+ * Strip data and copy come straight from the shared METHODS source so the two
+ * surfaces never drift.
  */
 const RAIL_IDS = ["pot", "dahi", "table"] as const;
 
