@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useCart } from "@/components/cart/cart-context";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { GIFTING } from "@/lib/pricing";
 import { GiftingCodePicker } from "./gifting-code-picker";
@@ -9,8 +10,11 @@ import { GiftingCodePicker } from "./gifting-code-picker";
 // who's-buying picker swaps between the three codes (ACHABETA for the kids,
 // RISHTA for uncle and aunty, SHABASH for the aunties and uncles) and copies
 // the chosen one. `showShopCta` adds a "Shop now" button for placements
-// away from the shop page.
+// away from the shop page. Discount codes stay out of sight until the shop
+// is live, so the whole band sits behind the mode flag.
 export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) {
+  const { mode } = useCart();
+  if (mode !== "live") return null;
   return (
     <section className="section section--ink gifting" id="gifting">
       <div className="gifting__copy section-copy section-copy--dark">

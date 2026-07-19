@@ -69,6 +69,9 @@ export function BuyBox({ product }: { product: Product }) {
 
   const tier = TIERS[tierId];
   const selectedVariant = isPouch ? tierVariants.get(tierId)! : sampleVariant;
+  // Waitlist mode keeps the whole PDP browsable but shows no money at all:
+  // no prices, no strikethroughs, no savings, no shipping rates.
+  const showPrices = mode === "live";
 
   function selectSize(pouch: boolean) {
     setIsPouch(pouch);
@@ -103,9 +106,11 @@ export function BuyBox({ product }: { product: Product }) {
     : sampleSingle;
 
   // "Orders under £40 ship for £3.55." only applies to One pouch; every
-  // other selection clears the threshold or ships free anyway.
-  const shippingNote =
-    isPouch && tierId === "single"
+  // other selection clears the threshold or ships free anyway. Waitlist
+  // mode says why there is no price on the page instead.
+  const shippingNote = !showPrices
+    ? "Prices arrive when the shop opens. The waitlist hears first."
+    : isPouch && tierId === "single"
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
       : "Ships free.";
 
@@ -145,12 +150,14 @@ export function BuyBox({ product }: { product: Product }) {
             priority
             sizes="(max-width: 899px) 100vw, 480px"
           />
-          <div className="pdp__annos" aria-hidden="true">
-            <span className="pdp__anno pdp__anno--price">
-              {annoPrice.compareAt ? <s>{formatMoney(annoPrice.compareAt)}</s> : null}
-              {formatMoney(annoPrice.current)}
-            </span>
-          </div>
+          {showPrices ? (
+            <div className="pdp__annos" aria-hidden="true">
+              <span className="pdp__anno pdp__anno--price">
+                {annoPrice.compareAt ? <s>{formatMoney(annoPrice.compareAt)}</s> : null}
+                {formatMoney(annoPrice.current)}
+              </span>
+            </div>
+          ) : null}
         </div>
         <div className="pdp__thumbs">
           {product.images.map((image, index) => (
@@ -203,10 +210,12 @@ export function BuyBox({ product }: { product: Product }) {
           ))}
         </ul>
 
-        <div className="pdp__launch">
-          <p className="eyebrow">LAUNCH PRICES</p>
-          <p className="pdp__launch-title">Launch prices. Not forever prices.</p>
-        </div>
+        {showPrices ? (
+          <div className="pdp__launch">
+            <p className="eyebrow">LAUNCH PRICES</p>
+            <p className="pdp__launch-title">Launch prices. Not forever prices.</p>
+          </div>
+        ) : null}
 
         <p className="pdp__group-label">
           SIZE: <strong>{isPouch ? "300G POUCH" : "SAMPLE"}</strong>
@@ -222,10 +231,12 @@ export function BuyBox({ product }: { product: Product }) {
             />
             <span className="option-card__name">300g pouch</span>
             <span className="option-card__meta">{SERVINGS_PER_POUCH} meals</span>
-            <span className="option-card__price">
-              {pouchSingle.compareAt ? <s>{formatMoney(pouchSingle.compareAt)}</s> : null}
-              {formatMoney(pouchSingle.current)}
-            </span>
+            {showPrices ? (
+              <span className="option-card__price">
+                {pouchSingle.compareAt ? <s>{formatMoney(pouchSingle.compareAt)}</s> : null}
+                {formatMoney(pouchSingle.current)}
+              </span>
+            ) : null}
           </label>
           <label className={`option-card option-card--slim${!isPouch ? " is-selected" : ""}`}>
             <input
@@ -237,10 +248,12 @@ export function BuyBox({ product }: { product: Product }) {
             />
             <span className="option-card__name">Sample</span>
             <span className="option-card__meta">{SERVINGS_PER_SAMPLE} servings</span>
-            <span className="option-card__price">
-              {sampleSingle.compareAt ? <s>{formatMoney(sampleSingle.compareAt)}</s> : null}
-              {formatMoney(sampleSingle.current)}
-            </span>
+            {showPrices ? (
+              <span className="option-card__price">
+                {sampleSingle.compareAt ? <s>{formatMoney(sampleSingle.compareAt)}</s> : null}
+                {formatMoney(sampleSingle.current)}
+              </span>
+            ) : null}
           </label>
         </div>
 
@@ -279,16 +292,24 @@ export function BuyBox({ product }: { product: Product }) {
                       sizes="56px"
                     />
                     <span className="option-card__name">{option.name}</span>
-                    <span className="option-card__meta">
-                      {formatPence(perMealPence)} per meal
-                    </span>
-                    <span className="option-card__price">
-                      {price.compareAt ? <s>{formatMoney(price.compareAt)}</s> : null}
-                      {formatMoney(price.current)}
-                    </span>
-                    <span className="option-card__save">
-                      Save {formatPence(tierSavingsPence(id))}
-                    </span>
+                    {showPrices ? (
+                      <>
+                        <span className="option-card__meta">
+                          {formatPence(perMealPence)} per meal
+                        </span>
+                        <span className="option-card__price">
+                          {price.compareAt ? <s>{formatMoney(price.compareAt)}</s> : null}
+                          {formatMoney(price.current)}
+                        </span>
+                        <span className="option-card__save">
+                          Save {formatPence(tierSavingsPence(id))}
+                        </span>
+                      </>
+                    ) : (
+                      <span className="option-card__meta">
+                        {option.pouches * SERVINGS_PER_POUCH} meals
+                      </span>
+                    )}
                   </label>
                 );
               })}
@@ -304,8 +325,12 @@ export function BuyBox({ product }: { product: Product }) {
                 <div className="pdp__includes-row" key={item.title}>
                   <Image className="pdp__includes-img" src={item.image} alt="" width={28} height={28} sizes="28px" />
                   <span>{item.title}</span>
-                  <s>{formatPence(item.valuePence)}</s>
-                  <strong>Free</strong>
+                  {showPrices ? (
+                    <>
+                      <s>{formatPence(item.valuePence)}</s>
+                      <strong>Free</strong>
+                    </>
+                  ) : null}
                 </div>
               ))}
             </div>

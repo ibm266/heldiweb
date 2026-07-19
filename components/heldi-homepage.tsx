@@ -115,8 +115,13 @@ const COLS = 11;
 
 const FAQS = HOME_FAQS;
 
-const TICKER_COPY =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
+// One ticker per commerce mode: waitlist carries the launch date and no
+// price or discount lines; live carries the price lines and drops the
+// date. The launch date lives here (BRAND.md §11.5).
+const TICKER_COPY_WAITLIST =
+  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
+const TICKER_COPY_LIVE =
+  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -904,6 +909,7 @@ export function HeldiHomepage({
   );
   const { hidden: scrollHidden } = useNavScrollState();
   const { mode } = useCart();
+  const tickerCopy = mode === "live" ? TICKER_COPY_LIVE : TICKER_COPY_WAITLIST;
   const navHidden = scrollHidden && !menuOpen;
   const heroSectionRef = useRef<HTMLElement>(null);
   const footerWaitlistRef = useRef<HTMLDivElement>(null);
@@ -1169,10 +1175,10 @@ export function HeldiHomepage({
           </div>
         )}
         {ticker ? (
-          <div className="ticker" aria-label={TICKER_COPY}>
+          <div className="ticker" aria-label={tickerCopy}>
             <div className="ticker-track" aria-hidden="true">
-              <span>{TICKER_COPY}</span>
-              <span>{TICKER_COPY}</span>
+              <span>{tickerCopy}</span>
+              <span>{tickerCopy}</span>
             </div>
           </div>
         ) : null}

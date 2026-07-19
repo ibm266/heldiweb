@@ -12,6 +12,7 @@ import { khanaPouchCount, linesForPouchCount, tierForSku } from "@/lib/commerce/
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { getCommerceProvider } from "@/lib/commerce/provider";
 import type { Cart, CartLineInput, CommerceMode } from "@/lib/commerce/types";
+import { PREVIEW_UNLOCK_KEY } from "@/lib/preview";
 import {
   GIFTING,
   isGiftingCode,
@@ -28,8 +29,13 @@ type CartContextValue = {
   isOpen: boolean;
   isPending: boolean;
   mode: CommerceMode;
-  // Dev-only runtime override of the env flag; null follows the env.
+  // Runtime override of the env flag; null follows the env. Honoured in
+  // development and in preview-unlocked browsers (see /preview).
   setModeOverride: (mode: CommerceMode | null) => void;
+  // True once the /preview password has been entered in this browser; the
+  // mode override and the nav mode pill work outside development only then.
+  previewUnlocked: boolean;
+  setPreviewUnlocked: (unlocked: boolean) => void;
   // How the gifting discount was applied — the code field and the checkout
   // checkbox never stack, so whichever applied first locks the other out.
   giftingMethod: GiftingMethod | null;
@@ -62,16 +68,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [modeOverride, setModeOverrideState] = useState<CommerceMode | null>(null);
+  const [previewUnlocked, setPreviewUnlockedState] = useState(false);
   const [giftingMethod, setGiftingMethodState] = useState<GiftingMethod | null>(null);
 
   const mode = modeOverride ?? COMMERCE_MODE;
 
-  // Hydrate cart + dev mode override + gifting method from storage after mount.
+  // Hydrate cart + mode override + gifting method from storage after mount.
   // localStorage is client-only, so this must run in an effect and set state;
   // the one extra render on mount is the cost of avoiding a hydration mismatch.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
+    const unlocked = window.localStorage.getItem(PREVIEW_UNLOCK_KEY) === "1";
+    if (unlocked) setPreviewUnlockedState(true);
+
+    // The override is dev tooling plus the consultant preview: outside
+    // development it only counts once this browser is unlocked.
+    if (process.env.NODE_ENV === "development" || unlocked) {
       const stored = window.localStorage.getItem(MODE_OVERRIDE_KEY);
       if (stored === "waitlist" || stored === "live") {
         setModeOverrideState(stored);
@@ -103,6 +115,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     else window.localStorage.removeItem(MODE_OVERRIDE_KEY);
     setIsOpen(false);
   }, []);
+
+  // Unlocking is done by the /preview page after the server has checked the
+  // password. Locking also drops any mode override so the browser falls back
+  // to what real visitors see.
+  const setPreviewUnlocked = useCallback(
+    (unlocked: boolean) => {
+      setPreviewUnlockedState(unlocked);
+      if (unlocked) window.localStorage.setItem(PREVIEW_UNLOCK_KEY, "1");
+      else {
+        window.localStorage.removeItem(PREVIEW_UNLOCK_KEY);
+        setModeOverride(null);
+      }
+    },
+    [setModeOverride]
+  );
 
   const setGiftingMethod = useCallback((next: GiftingMethod | null) => {
     setGiftingMethodState(next);
@@ -253,6 +280,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       isPending,
       mode,
       setModeOverride,
+      previewUnlocked,
+      setPreviewUnlocked,
       giftingMethod,
       applyGifting,
       removeGifting,
@@ -272,6 +301,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       isPending,
       mode,
       setModeOverride,
+      previewUnlocked,
+      setPreviewUnlocked,
       giftingMethod,
       applyGifting,
       removeGifting,

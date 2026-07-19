@@ -10,6 +10,16 @@ export const HOME_FAQS = [
       "Yes, and it is made without animal rennet. Whey is the pale liquid left when milk curdles, the same one you see when paneer is made at home. We simply filter it to concentrate the protein and gently dry it into a fine powder. Nothing added, just the part of milk that has always been there."
   },
   {
+    question: "Is Heldi halal?",
+    answer:
+      "Heldi contains no meat, no alcohol and no animal rennet. The whey is a dairy ingredient, the same family as milk and paneer. We do not yet hold a formal halal certificate. If certification matters to your table, email info@heldi.co.uk and we will tell you exactly where things stand."
+  },
+  {
+    question: "I am lactose intolerant. Can I have Heldi?",
+    answer:
+      "Usually, yes. Heldi uses whey protein isolate, filtered to 98% lactose-free. A spoonful carries barely any lactose, roughly 0.3g, far less than traditional whey concentrate and a fraction of what is in a glass of milk. Most lactose-intolerant people handle that amount without trouble. A confirmed dairy allergy is different: Heldi contains milk, so it is not for you."
+  },
+  {
     question: "Why not just drink a protein shake?",
     answer:
       "You can, if you like them. Most of our parents don't. Heldi hits the same protein number through the meals you were going to eat anyway. Same dal, same raita, ten more grams per bowl. Nothing new to swallow, nothing to give up."

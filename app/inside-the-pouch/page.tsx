@@ -50,8 +50,10 @@ export default function InsideThePouchPage() {
           </p>
           <p>
             It is made <CopyHighlight>without animal rennet</CopyHighlight>,
-            which keeps it fully vegetarian. No meat, no gelatine, nothing
-            hiding behind a technical name.
+            which keeps it fully vegetarian. No meat, no gelatine, no alcohol,
+            nothing hiding behind a technical name. We do not yet hold a formal
+            halal certificate; if that matters to your table, email{" "}
+            info@heldi.co.uk and we will tell you exactly where things stand.
           </p>
           <div className="story-menu-card">
             <h3 className="story-menu-card__title">The batch report</h3>

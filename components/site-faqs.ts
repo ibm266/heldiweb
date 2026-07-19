@@ -1,9 +1,15 @@
 // The single source for the /faq page. Questions that already live on the
 // homepage or the truth page are pulled in from there so the copy never
 // drifts apart; questions unique to the FAQ page are defined here.
+//
+// The groups are built per commerce mode: waitlist hides every question
+// that names a price (delivery costs) and the shipping-policy link, live
+// hides the what-does-the-waitlist-do question. Both the page list and the
+// FAQ JSON-LD go through siteFaqGroupsForMode so they never disagree.
 
 import { HOME_FAQS } from "@/components/home-faqs";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
+import type { CommerceMode } from "@/lib/commerce/types";
 
 export type SiteFaq = {
   question: string;
@@ -26,7 +32,8 @@ function pick(
   return faq;
 }
 
-export const SITE_FAQ_GROUPS: SiteFaqGroup[] = [
+export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
+  return [
   {
     title: "Using Heldi",
     faqs: [
@@ -84,16 +91,8 @@ export const SITE_FAQ_GROUPS: SiteFaqGroup[] = [
         answer:
           "No. Whey comes from milk, so Heldi is vegetarian but not vegan. It sits in the same dietary family as paneer, dahi and chai, which is exactly why it belongs in the pot."
       },
-      {
-        question: "Is Heldi halal?",
-        answer:
-          "Heldi contains no meat, no alcohol and no animal rennet. The whey is a dairy ingredient, the same family as milk and paneer. We do not yet hold a formal halal certificate. If certification matters to your table, email info@heldi.co.uk and we will tell you exactly where things stand."
-      },
-      {
-        question: "I am lactose intolerant. Can I have Heldi?",
-        answer:
-          "Usually, yes. Heldi uses whey protein isolate, filtered to 98% lactose-free. A spoonful carries barely any lactose, roughly 0.3g, far less than traditional whey concentrate and a fraction of what is in a glass of milk. Most lactose-intolerant people handle that amount without trouble. A confirmed dairy allergy is different: Heldi contains milk, so it is not for you."
-      },
+      pick(HOME_FAQS, "Is Heldi halal?"),
+      pick(HOME_FAQS, "I am lactose intolerant. Can I have Heldi?"),
       pick(HOME_FAQS, "Is it safe for kids?"),
       pick(HOME_FAQS, "Is it safe for parents and grandparents?"),
       pick(HOME_FAQS, "I have diabetes. Is it OK for me?"),
@@ -169,16 +168,24 @@ export const SITE_FAQ_GROUPS: SiteFaqGroup[] = [
   {
     title: "Orders and delivery",
     faqs: [
-      {
-        question: "How much is delivery?",
-        answer:
-          "UK orders over £40 ship free. Under that, Royal Mail Tracked 48 is £3.55. The Sample on its own always ships free, we cover the stamp."
-      },
+      // Delivery rates are prices, so the question only exists in live mode.
+      ...(mode === "live"
+        ? [
+            {
+              question: "How much is delivery?",
+              answer:
+                "UK orders over £40 ship free. Under that, Royal Mail Tracked 48 is £3.55. The Sample on its own always ships free, we cover the stamp."
+            }
+          ]
+        : []),
       {
         question: "How long does delivery take?",
         answer:
           "We pack every order ourselves and send it by Royal Mail Tracked 48, which usually delivers 2 to 3 working days after dispatch. You get a tracking link either way.",
-        more: { href: "/legal/shipping", label: "Read the shipping policy" }
+        // The shipping policy page is unpublished until launch (it lists rates).
+        ...(mode === "live"
+          ? { more: { href: "/legal/shipping", label: "Read the shipping policy" } }
+          : {})
       },
       {
         question: "Can I return it?",
@@ -192,10 +199,26 @@ export const SITE_FAQ_GROUPS: SiteFaqGroup[] = [
           "Not yet. We are UK-only for now, sent by Royal Mail from our own packing table. If you want Heldi somewhere else, email info@heldi.co.uk and tell us where. The list of requests genuinely shapes where we ship next."
       },
       {
+        question: "How long does a pouch keep?",
+        answer:
+          "Every pouch has an 18-month best-before date, printed on the base. Once it is open, reseal it after each use, keep it somewhere cool and dry, and use it within 3 months for the best taste and texture. Never dip a wet spoon in. A 300g pouch is about 25 meals, so most kitchens finish it long before any of that matters."
+      },
+      // Only makes sense before launch; live mode drops it.
+      ...(mode === "waitlist"
+        ? [
+            {
+              question: "When does Heldi launch, and what does the waitlist do?",
+              answer:
+                "Heldi launches in autumn 2026. You can browse the shop now, but checkout switches on at launch. Join the waitlist and we send one email the day it does, with nothing in between. That is the whole list: first to know, first to stir it in."
+            }
+          ]
+        : []),
+      {
         question: "How do I reach a human?",
         answer:
           "Email info@heldi.co.uk and the founder answers. It really is that small an operation right now, which is also why replies come with opinions about dal."
       }
     ]
   }
-];
+  ];
+}

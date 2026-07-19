@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CartIcon } from "@/components/cart/cart-icon";
+import { useCart } from "@/components/cart/cart-context";
 import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 
@@ -120,6 +121,9 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
 }
 
 export function FooterLegal() {
+  // The shipping policy lists delivery rates, so its page and this link sit
+  // behind the live flag with every other price on the site.
+  const { mode } = useCart();
   return (
     <>
       <nav className="footer-legal" aria-label="Legal">
@@ -129,9 +133,10 @@ export function FooterLegal() {
         <Link href="/legal/terms">Terms</Link>
         <Link href="/legal/privacy">Privacy</Link>
         <Link href="/legal/returns">Returns</Link>
-        <Link href="/legal/shipping">Shipping</Link>
+        {mode === "live" ? <Link href="/legal/shipping">Shipping</Link> : null}
         <Link href="/legal/cookies">Cookies</Link>
         <Link href="/legal/cookies#analytics-choices">Analytics choices</Link>
+        <Link href="/preview">Preview</Link>
         <a href="mailto:info@heldi.co.uk">info@heldi.co.uk</a>
       </nav>
       <span className="footer-company">

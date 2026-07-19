@@ -15,6 +15,14 @@ runs against a mock cart. Two env switches control everything
 | Testing the store | `shopify` | `waitlist` (cart works, checkout reachable, CTAs still waitlist on public pages) |
 | Launch | `shopify` | `live` (Shop now CTAs, checkout on) |
 
+**Reviewing both modes before launch.** The env `NEXT_PUBLIC_COMMERCE_MODE` sets
+what every visitor sees, but a reviewer needs to see both. The footer `Preview`
+link opens `/preview`: enter the `PREVIEW_PASSWORD` (server-only env var, set it in
+Vercel) and that one browser can flip waitlist and selling mode from the nav pill,
+leaving everyone else on the deployed setting. The unlock also sets a cookie that
+opens the shipping-policy page, which is otherwise hidden in waitlist mode (it lists
+rates). "Lock preview" clears it.
+
 The client/server plumbing is already implemented: `lib/commerce/shopify-provider.ts`
 (client) posts to the route handlers in `app/api/cart/` (server), which run the
 GraphQL documents in `lib/commerce/shopify/queries.ts` via
@@ -277,8 +285,13 @@ function send(name, event) {
   Product schema now includes the AggregateOffer (view source); PostHog →
   Activity shows `$pageview` → `add_to_cart` → `begin_checkout` →
   `checkout_started` → `purchase` under one person.
-- [ ] Ticker: remove "LAUNCHING AUTUMN 2026", keep "LAUNCH PRICES ON NOW"
-  (`TICKER_COPY` in `components/heldi-homepage.tsx`).
+- [ ] Waitlist mode hides every price and discount surface; confirm the flip
+  brought them all back (no code changes involved): PDP prices, launch-price
+  block and shipping note; the gifting band with the three codes on /shop and
+  the homepage; "How much is delivery?" on /faq; /legal/shipping resolves and
+  the footer shows the Shipping link; the ticker now reads "LAUNCH PRICES ON
+  NOW  •  AUNTIES & UNCLES PAY LESS" and has dropped "LAUNCHING AUTUMN 2026"
+  (both automatic, `TICKER_COPY_LIVE` in `components/heldi-homepage.tsx`).
 - [ ] Watch the first orders in Shopify admin; email replies come from
   info@heldi.co.uk.
 - [ ] **Rollback**: flip `NEXT_PUBLIC_COMMERCE_MODE` back to `waitlist` and
@@ -290,8 +303,9 @@ function send(name, event) {
 When launch pricing ends (BRAND.md §11.5): set each tier's `launchPence` equal
 to its `rrpPence` in `lib/pricing.ts` (kills every strikethrough at once),
 mirror the same prices in Shopify admin **on the same day**, remove "LAUNCH
-PRICES ON NOW" from the ticker and the "Launch prices. Not forever prices."
-block in `components/shop/buy-box.tsx`, and re-run the finishing gate.
+PRICES ON NOW" from `TICKER_COPY_LIVE` in `components/heldi-homepage.tsx` and
+the "Launch prices. Not forever prices." block in
+`components/shop/buy-box.tsx`, and re-run the finishing gate.
 
 ## Standing rule from here on
 

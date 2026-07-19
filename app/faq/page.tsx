@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { FaqPageList } from "@/components/faq-page-list";
-import { SITE_FAQ_GROUPS } from "@/components/site-faqs";
+import { siteFaqGroupsForMode } from "@/components/site-faqs";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
+import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { serializeJsonLd } from "@/lib/json-ld";
 
 export const metadata: Metadata = {
@@ -11,10 +12,12 @@ export const metadata: Metadata = {
   alternates: { canonical: "/faq" }
 };
 
+// Built from the same mode-aware groups as the visible list, so waitlist
+// builds keep delivery prices out of the structured data too.
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  mainEntity: SITE_FAQ_GROUPS.flatMap((group) =>
+  mainEntity: siteFaqGroupsForMode(COMMERCE_MODE).flatMap((group) =>
     group.faqs.map((faq) => ({
       "@type": "Question",
       name: faq.question,
@@ -48,7 +51,7 @@ export default function FaqPage() {
       <div className="double-rule" aria-hidden="true" />
 
       <section className="section section--cream section--bordered">
-        <FaqPageList groups={SITE_FAQ_GROUPS} />
+        <FaqPageList />
         <div className="faq">
           <p className="heldi-disclaimer">
             Heldi is a food supplement. Do not exceed the recommended daily

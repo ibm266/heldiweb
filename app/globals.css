@@ -8800,3 +8800,58 @@ a.living-card__tag:hover {
   margin: 0.75rem 0 0;
   font-weight: 600;
 }
+
+/* ---------- Preview unlock page (/preview) ---------- */
+
+.preview-panel {
+  display: grid;
+  width: min(34rem, 100%);
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.preview-panel__form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.preview-panel__form input {
+  flex: 1 1 200px;
+  min-width: 0;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+}
+
+.preview-panel__form input:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 1px;
+}
+
+.preview-panel__status {
+  font-weight: 700;
+}
+
+.preview-panel__error,
+.preview-panel__note {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.preview-panel__error {
+  color: var(--terracotta);
+  font-weight: 600;
+}
+
+.preview-panel__note {
+  color: var(--muted);
+}
+
+.preview-panel__lock {
+  justify-self: start;
+}

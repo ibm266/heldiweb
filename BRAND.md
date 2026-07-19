@@ -422,6 +422,8 @@ left stale copy behind; do not repeat that. Touch list:
 2. Known hard-coded exception to keep in sync: the delivery FAQ answer in
    `site-faqs.ts` says "over £40 ship free… £3.55", and `docs/legal/shipping-policy.md`
    repeats the rates. Update both or rewrite them to render from `SHIPPING`.
+   (Both are live-mode surfaces: the FAQ question and the shipping-policy page
+   are hidden while `COMMERCE_MODE` is `waitlist`, see §11.5.)
 3. Tier names ("One pouch", "The pair", "The full table") flow from pricing.ts, but
    prose references exist in gifting copy ("single pouches and 2-packs") and
    NEXT_STEPS.md.
@@ -439,14 +441,27 @@ left stale copy behind; do not repeat that. Touch list:
 
 ### 11.5 Launch date / launch state
 
-- Date lives in the ticker string in `heldi-homepage.tsx` ("LAUNCHING AUTUMN 2026")
-  and in `fable/brand-voice.md`.
+- Date lives in the waitlist ticker string in `heldi-homepage.tsx` ("LAUNCHING
+  AUTUMN 2026") and in `fable/brand-voice.md`. The ticker is one string per mode:
+  `TICKER_COPY_WAITLIST` carries the date and no price lines, `TICKER_COPY_LIVE`
+  carries "LAUNCH PRICES ON NOW" / "AUNTIES & UNCLES PAY LESS" and drops the date.
 - Waitlist → live is **not** a copy edit: flip `NEXT_PUBLIC_COMMERCE_MODE`. Every CTA,
   the floating mobile CTA, the final-CTA section, PDP button and cart already switch
   on `mode`; never hand-edit a CTA to force it.
+- Waitlist mode shows **no prices and no discount codes anywhere**; everything
+  returns on the flip to live. Gated on the mode: PDP prices, the launch-price
+  block and the shipping note (`buy-box.tsx`), the accordion shipping rates
+  (`product-accordions.tsx`), the gifting band/popup/codes, the "How much is
+  delivery?" FAQ and the shipping-policy `more` link (`site-faqs.ts`, which also
+  swaps the waitlist-only launch question), the shipping-policy page + footer
+  link + sitemap entry (`lib/legal.ts`, `subpage-nav.tsx`), the ticker price
+  lines, and the /shop AggregateOffer schema. Never hand-delete a price to hide
+  it; gate it on `mode` so live restores it. The consultant preview (`/preview`,
+  unlocked with `PREVIEW_PASSWORD`) can flip a single browser into selling mode and
+  reveal all of these before launch; that is intentional and affects no one else.
 - After the launch period ends: set each tier's `launchPence` equal to `rrpPence` in
   pricing.ts (kills the strikethroughs everywhere at once), retire "LAUNCH PRICES ON
-  NOW" from the ticker and the "Launch prices. Not forever prices." line in
+  NOW" from `TICKER_COPY_LIVE` and the "Launch prices. Not forever prices." line in
   `buy-box.tsx`.
 
 ### 11.6 Other cross-cutting facts

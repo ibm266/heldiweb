@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { HELDI_LIVING_POSTS } from "@/lib/heldi-living";
-import { LEGAL_DOCS } from "@/lib/legal";
+import { PUBLISHED_LEGAL_DOCS } from "@/lib/legal";
 import { SITE_URL } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -19,7 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/inside-the-pouch`, priority: 0.6 },
     { url: `${SITE_URL}/faq`, priority: 0.6 },
     ...posts,
-    ...LEGAL_DOCS.map((doc) => ({
+    ...PUBLISHED_LEGAL_DOCS.map((doc) => ({
       url: `${SITE_URL}/legal/${doc.slug}`,
       priority: 0.2
     }))

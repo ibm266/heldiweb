@@ -1,13 +1,18 @@
 "use client";
 
 import { useState } from "react";
-import type { SiteFaqGroup } from "@/components/site-faqs";
+import { useCart } from "@/components/cart/cart-context";
+import { siteFaqGroupsForMode } from "@/components/site-faqs";
 
 // Grouped accordion for the /faq page. Same markup and classes as the
 // homepage FAQ so the styling stays identical; one question open at a time
-// across all groups.
-export function FaqPageList({ groups }: { groups: SiteFaqGroup[] }) {
+// across all groups. Builds its own groups from the commerce mode so the
+// price questions stay hidden in waitlist mode (and the dev toggle can
+// preview both states).
+export function FaqPageList() {
+  const { mode } = useCart();
   const [openKey, setOpenKey] = useState<string | null>(null);
+  const groups = siteFaqGroupsForMode(mode);
 
   return (
     <>
