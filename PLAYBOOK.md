@@ -369,3 +369,60 @@ BRAND.md §10. What to update when a fact changes: BRAND.md §11. Assets: §15.
 Visual reference: `docs/brand/specimen.html` (served by the `repo-static` launch
 config, or any static server at the repo root). Dev server: the `heldi-dev`
 launch config (`npm run dev`).
+
+## §7 Analytics: keep the journey wired
+
+The site tracks the customer journey with PostHog EU behind `lib/analytics.ts`.
+A pinned PostHog dashboard ("Heldi: the customer journey") and the Shopify
+checkout stitching depend on exact names in this codebase, so casual edits can
+silently blind the analytics. Rules, in order of how likely you are to hit them:
+
+1. **Adding a section or page needs no analytics work.** Pageviews and clicks
+   are captured automatically. Only add a `track()` call for a genuinely new
+   conversion moment (a new form, a new buy path), named in `snake_case` with
+   flat string/number/boolean props.
+2. **Never import `posthog-js` in a component.** Components call `track()` from
+   `lib/analytics.ts` and nothing else. Consent handling, initialisation and
+   the PostHog instance live in that one file.
+3. **These event names and props are load-bearing** (the PostHog funnels and
+   dashboard reference them exactly): `view_item`, `add_to_cart`,
+   `begin_checkout`, `waitlist_signup` (+ `placement`), `tier_selected`
+   (+ `tier`), `purchase`, `checkout_started`, `consent_updated`,
+   `gifting_discount_applied`, and the `first_touch_*` and `gifting_audience`
+   props. Renaming one breaks a dashboard tile with no build error. If a
+   rename is truly needed, update the insight in PostHog in the same sitting.
+3b. **If you move or rewrite a component that carries a `track()` call**
+   (buy-box, cart-drawer, WaitlistForm, gifting components, review form),
+   carry the call over unchanged. Grep the old file for `track(` before
+   deleting it.
+4. **The checkout button in `cart-drawer.tsx` is special.** Its click handler
+   fires `begin_checkout` and writes the `_heldi_ph_id` / `_heldi_ph_session`
+   / `_heldi_utm` cart attributes that stitch the storefront journey to
+   Shopify checkout (via `lib/checkout-handoff.ts`). If you restyle or move
+   it, keep the handler, keep `window.location.assign` outside the try, and
+   keep the 1200ms timeout race. The Shopify custom pixel and the orders
+   webhook (`app/api/webhooks/shopify-orders/`) read those exact attribute
+   keys.
+5. **Consent gates everything.** The banner (`components/consent-banner.tsx`)
+   and the panel on /legal/cookies write `heldi_consent_v1`; `lib/consent.ts`
+   is the only reader/writer. Never rename that key (it re-prompts every
+   visitor), never track around a refusal, and any future ad pixel must check
+   `hasConsent("marketing")` before loading anything.
+6. **Never let PostHog load or inject external scripts.**
+   `disable_external_dependency_loading: true` in `lib/analytics.ts` is
+   load-bearing: script injection lands beside the JSON-LD tags and corrupts
+   hydration. The replay recorder stays a lazy import of
+   `posthog-js/dist/posthog-recorder` (not `dist/recorder`, which the SDK
+   ignores). No `<Script src="...analytics...">` anywhere, ever.
+7. **Do not touch the plumbing in `next.config.ts`**: the `/ingest` rewrites,
+   `skipTrailingSlashRedirect: true`, and `worker-src 'self' blob:` in the
+   CSP all exist for analytics. Removing any of them breaks capture or replay
+   in production only, where you will not see it fail.
+8. **Env**: `NEXT_PUBLIC_POSTHOG_KEY` missing means analytics silently
+   degrades to `window.dataLayer` only (fine in CI). `SHOPIFY_WEBHOOK_SECRET`
+   guards the orders webhook. Launch wiring steps: docs/launch-runbook.md
+   Phase 6.5.
+9. **Verify after touching any of the above**: in dev, every `track()` logs
+   `[analytics] <event>` to the console; trigger your surface and watch for
+   it. Then confirm a `POST /ingest/e/` request succeeds, and run the §3
+   finishing gate as usual.

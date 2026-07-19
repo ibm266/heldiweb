@@ -17,6 +17,10 @@ const contentSecurityPolicy = [
   "media-src 'self' blob: https:",
   "font-src 'self' data:",
   `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
+  // PostHog's session-replay recorder compresses in a blob-URL worker;
+  // without an explicit worker-src, browsers fall back to script-src, which
+  // blocks blob:.
+  "worker-src 'self' blob:",
   "frame-src 'self'",
   "frame-ancestors 'none'",
   "base-uri 'self'",
@@ -43,6 +47,24 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // PostHog API paths end in a slash; Next's default 308 to the non-slash
+  // form would break them. Internal links never use trailing slashes.
+  skipTrailingSlashRedirect: true,
+  // Same-origin proxy for PostHog EU: beacons stay within connect-src 'self'
+  // and off ad-blocker lists. The static host serves the lazy-loaded
+  // replay recorder.
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://eu-assets.i.posthog.com/static/:path*"
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://eu.i.posthog.com/:path*"
+      }
+    ];
+  },
   images: {
     // Image URLs are versioned (?v= or renamed on regeneration), so transforms
     // can stay cached for a month without ever serving a stale asset.

@@ -190,4 +190,13 @@ export class MockProvider implements CommerceProvider {
     stored.discountCodes = codes;
     return this.save(stored);
   }
+
+  async updateAttributes(
+    cartId: string,
+    _attributes: { key: string; value: string }[]
+  ): Promise<Cart> {
+    // Attributes only matter for the Shopify checkout handoff; the mock has
+    // no checkout, so this is a no-op that returns the cart unchanged.
+    return materialize(this.load(cartId));
+  }
 }

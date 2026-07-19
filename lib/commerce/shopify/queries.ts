@@ -152,6 +152,21 @@ export const CART_DISCOUNT_CODES_UPDATE_MUTATION = /* GraphQL */ `
   ${CART_FRAGMENT}
 `;
 
+export const CART_ATTRIBUTES_UPDATE_MUTATION = /* GraphQL */ `
+  mutation CartAttributesUpdate($cartId: ID!, $attributes: [AttributeInput!]!) {
+    cartAttributesUpdate(cartId: $cartId, attributes: $attributes) {
+      cart {
+        ...CartFields
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+  ${CART_FRAGMENT}
+`;
+
 export const PRODUCTS_QUERY = /* GraphQL */ `
   query GetProducts {
     products(first: 20) {

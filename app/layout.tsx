@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Gelasio, Rozha_One } from "next/font/google";
+import { AnalyticsBoot } from "@/components/analytics-boot";
 import { CartProvider } from "@/components/cart/cart-context";
 import { CartDrawer } from "@/components/cart/cart-drawer";
+import { ConsentBanner } from "@/components/consent-banner";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -42,8 +44,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${gelasio.variable} ${rozhaOne.variable}`}>
         <CartProvider>
+          <AnalyticsBoot />
           {children}
           <CartDrawer />
+          <ConsentBanner />
         </CartProvider>
       </body>
     </html>

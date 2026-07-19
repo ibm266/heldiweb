@@ -20,6 +20,8 @@ this list into exact admin clicks, API scopes and verification steps:
 - [x] Implement the `/api/cart/*` route handlers and flesh out `lib/commerce/shopify-provider.ts` — done: handlers live in `app/api/cart/`, the server-side client and Cart mapping in `lib/commerce/shopify/client.ts`; they answer 503 until the env vars exist
 - [x] Replace the placeholder GIDs in `lib/commerce/catalog.ts` with real Product/Variant IDs — done 16 Jul 2026, cart verified end to end against the live store (runbook Phase 4)
 - [ ] Place a real test order end-to-end (card, shipping rate, confirmation email)
+- [ ] Add the "Heldi PostHog" custom pixel in Shopify admin (Settings → Customer events) so checkout steps join the analytics funnel (runbook Phase 6.5)
+- [ ] Register the orders/create webhook pointing at `/api/webhooks/shopify-orders` and set `SHOPIFY_WEBHOOK_SECRET` on Vercel (runbook Phase 6.5)
 - [ ] Launch day: flip `NEXT_PUBLIC_COMMERCE_MODE=live`
 
 Only `catalog.ts`, `shopify-provider.ts`, new `app/api/cart/` routes and env change at connect
@@ -44,15 +46,15 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 - [x] Returns / refund policy — drafted (`docs/legal/returns-refunds-policy.md`)
 - [x] Shipping policy — drafted (`docs/legal/shipping-policy.md`)
 - [x] Cookie policy — drafted (`docs/legal/cookie-policy.md`)
-- [ ] Fill in `[TBC]`s and get solicitor review
-- [ ] Build the site pages (e.g. `/legal/*`) and link them in the footer
+- [ ] Fill in `[TBC]`s and get solicitor review (now also covers the PostHog processor entry and the consent model)
+- [x] Build the site pages (e.g. `/legal/*`) and link them in the footer — done: `app/legal/[slug]/page.tsx` renders the drafts, `FooterLegal` links them
 - [ ] Add the policies in Shopify admin (Settings → Policies)
 - [ ] Business address in the site footer
-- [ ] Cookie banner — only needed once analytics with cookies is added (see below)
+- [x] Cookie banner — shipped as the consent banner: anonymous counting by default (DUAA statistical purposes, opt-out on /legal/cookies), "Count me in" opts into full measurement + session replay
 
 ## 4. Launch-window polish
 
-- [ ] Analytics: Plausible/Fathom (cookieless, no banner) or GA4 (needs consent banner) + Shopify conversion tracking
+- [x] Analytics: PostHog EU behind `lib/analytics.ts` (same-origin `/ingest` proxy, hybrid consent: anonymous by default, replay on opt-in). Storefront events + checkout stitching are code-complete; the two launch-day Shopify admin steps (custom pixel, orders webhook) live in §1 and runbook Phase 6.5. Still needed once: create the PostHog EU project and set `NEXT_PUBLIC_POSTHOG_KEY` in `.env.local` + Vercel
 - [x] `og:image` social cards — done: every route (and every blog post) ships a branded card rendered at build from `components/og/card.tsx`
 - [ ] Contact email in the footer (support has to go somewhere)
 - [x] Styled 404 page — done: `app/not-found.tsx` in brand voice with pill-links home
@@ -64,12 +66,11 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 
 - [ ] Klaviyo flows: abandoned checkout (3 emails) + post-purchase (4 emails) — full programme is specified in the heldi-email-writer skill
 - [ ] Review collection — start ~50 orders in, not at launch. The capture side is built:
-  `/review` (link-only, noindex) posts to `/api/reviews`, submissions land in
-  `data/review-submissions/` (gitignored) as JSON + media, status pending. Still to do
-  when it starts: Klaviyo review-request email linking `/review?stars=…&order=…`, a
-  moderation pass (check order in Shopify, move content into `lib/reviews.ts`), and —
-  if hosting is serverless — swap the file writes for a database + object storage,
-  since Vercel's filesystem is ephemeral
+  `/review` (link-only, noindex) posts to `/api/reviews`, submissions land in the
+  `heldi-dev` Supabase project (`public.reviews` + private `review-media` bucket,
+  status pending; schema in `supabase/migrations/`). Still to do when it starts:
+  Klaviyo review-request email linking `/review?stars=…&order=…` and a moderation
+  pass (check order in Shopify, set rows to published)
 - [ ] Subscriptions — deliberately out of scope for launch
 - [ ] Reorder nudges, richer PDP content (video, press) as they become real
 

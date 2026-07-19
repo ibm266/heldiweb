@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
+import { prepareCheckoutHandoff } from "@/lib/checkout-handoff";
 import {
   SAMPLE_SKU,
   SERVINGS_PER_POUCH,
@@ -481,6 +482,41 @@ export function CartDrawer() {
                 <a
                   className="button button--pill cart-drawer__checkout"
                   href={cart?.checkoutUrl ?? "#"}
+                  onClick={async (event) => {
+                    if (!cart) return;
+                    // Modified clicks (new tab etc.) keep native behaviour.
+                    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+                      return;
+                    }
+                    event.preventDefault();
+                    const applied = appliedCodes
+                      .filter((entry) => entry.applicable)
+                      .map((entry) => entry.code);
+                    const audience =
+                      applied
+                        .map((entry) => giftingAudienceForCode(entry))
+                        .find((match) => match !== null) ?? null;
+                    track("begin_checkout", {
+                      value: totalPence / 100,
+                      currency: "GBP",
+                      item_count: cart.totalQuantity,
+                      pouches: pouchCount,
+                      discount_codes: applied.join(","),
+                      ...(audience ? { gifting_audience: audience } : {})
+                    });
+                    // The attribute write stitches the journey but must never
+                    // cost the sale: capped at 1200ms, and navigation runs
+                    // regardless (the orders webhook still counts revenue).
+                    try {
+                      await Promise.race([
+                        prepareCheckoutHandoff(cart),
+                        new Promise((resolve) => setTimeout(resolve, 1200))
+                      ]);
+                    } catch {
+                      // Best-effort.
+                    }
+                    window.location.assign(cart.checkoutUrl);
+                  }}
                 >
                   Checkout
                 </a>

@@ -467,6 +467,14 @@ left stale copy behind; do not repeat that. Touch list:
   be mirrored there (satori cannot read CSS variables), and new routes get a card
   (PLAYBOOK.md R2). Blog cards pull title/tags from `posts.json` automatically.
 
+### 11.7 Analytics event names and checkout stitching
+
+The PostHog dashboard and the Shopify checkout stitching depend on exact event
+names, prop names, and cart-attribute keys in code. Renaming or moving any of
+them requires the touch list in PLAYBOOK.md §7 (the analytics rules), and a
+matching edit to the saved insights in PostHog. There is no build error when
+this breaks; the dashboard just goes quiet.
+
 ## §12 Compliance guardrails (UK food supplement)
 
 - Only the authorised protein claim (§5). No disease prevention, no weight-loss

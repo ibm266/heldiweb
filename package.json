@@ -14,6 +14,8 @@
     "@supabase/supabase-js": "^2.110.7",
     "marked": "^18.0.6",
     "next": "latest",
+    "posthog-js": "^1.404.1",
+    "posthog-node": "^5.21.2",
     "react": "latest",
     "react-dom": "latest"
   },

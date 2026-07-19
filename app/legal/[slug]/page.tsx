@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { AnalyticsChoices } from "@/components/analytics-choices";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { LEGAL_DOCS, getLegalDoc, renderLegalDoc } from "@/lib/legal";
 
@@ -35,6 +36,7 @@ export default async function LegalPage({ params }: PageProps) {
           className="legal"
           dangerouslySetInnerHTML={{ __html: html }}
         />
+        {doc.slug === "cookies" ? <AnalyticsChoices /> : null}
       </section>
 
       <SubpageFooter />

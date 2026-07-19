@@ -37,6 +37,10 @@ Hard rules that are cheap to break by accident:
 - One pop-culture easter egg per surface, allusion not quotation.
 - Visuals: ink `#011246` borders, hard offset shadows (no blur), Rozha One / Gelasio
   only, colours from the CSS variables in `app/globals.css`.
+- Analytics: components only ever call `track()` from `lib/analytics.ts`, never
+  posthog directly. Event names, the checkout button's handler, the consent
+  storage key, and the `/ingest` plumbing in `next.config.ts` are load-bearing;
+  PLAYBOOK.md §7 lists what to preserve whenever you touch a tracked surface.
 - Renaming a FAQ question in `home-faqs.ts`/`truth-faqs.ts` breaks the /faq build
   unless `site-faqs.ts` `pick()` calls are updated too.
 

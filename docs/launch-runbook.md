@@ -180,13 +180,103 @@ leaves no home for the Next.js site on the apex, so before launch:
 - [ ] Walk the returns path once on paper against `docs/legal/returns` so
   support answers match reality.
 
+## Phase 6.5: Analytics connect (PostHog pixel + orders webhook)
+
+The storefront side ships with the site (consent banner, events, checkout
+attribute stitching in `lib/checkout-handoff.ts`). These steps join the
+Shopify-hosted checkout to it. Order matters: key first, then pixel, then
+webhook.
+
+- [x] Create the PostHog project: done 19 Jul 2026 ("Heldi storefront" on EU
+  Cloud, project 227787, timezone Europe/London). Discard client IP **on**,
+  replay **on** with all inputs masked, authorized URLs set
+  (heldi.co.uk + localhost 3000/3999).
+- [x] Set `NEXT_PUBLIC_POSTHOG_KEY` (the project's `phc_...` key) in
+  `.env.local` and on Vercel (Production + Preview) → redeploy. Done 19 Jul
+  2026; the key is baked into the snippet below.
+- [ ] Shopify admin → Settings → Customer events → **Add custom pixel**, name
+  it `Heldi PostHog`, paste the snippet below as-is, **Connect**.
+- [ ] Shopify admin → Settings → Notifications → Webhooks → **Create
+  webhook**: event `Order creation`, format JSON, URL
+  `https://heldi.co.uk/api/webhooks/shopify-orders`, API version `2026-01`
+  (matches `lib/commerce/shopify/client.ts`). Copy the signing secret shown
+  at the bottom of the webhooks page into Vercel as `SHOPIFY_WEBHOOK_SECRET`
+  → redeploy.
+- [ ] Click **Send test notification** on the webhook: expect HTTP 200 and a
+  `purchase` event in PostHog → Activity with a `shopify-order-...`
+  distinct id (the test payload carries no `_heldi_ph_id`).
+- [ ] Stitching check (the Shopify Pixel Helper does not work for headless
+  storefronts; this manual check is the test): dev-toggle the site to live
+  against the store, add a pouch, click Checkout, and confirm in PostHog →
+  Activity that `checkout_started` arrives with the **same** distinct id as
+  the storefront `$pageview`s just before it.
+- [ ] During the Phase 6 test order: confirm the `purchase` event lands
+  stitched (`stitched: true`) with the right `value` and any discount code.
+- [x] Funnels and dashboard: done 19 Jul 2026. Pinned dashboard **"Heldi:
+  the customer journey"** (https://eu.posthog.com/project/227787/dashboard/832830)
+  holds visitors per day, first-touch sources, the waitlist funnel, signups
+  by form, bundle interest, the purchase funnel, and revenue by gifting
+  audience. The purchase tiles fill once the store is live.
+
+The custom pixel (paste as-is; the key is the live project's public
+write-only key). It posts straight to PostHog EU (the pixel runs on
+Shopify's origin, so our `/ingest` proxy does not apply); losses to
+checkout-side ad blockers are fine because the webhook is the revenue source
+of truth:
+
+```js
+const HOST = "https://eu.i.posthog.com";
+const KEY = "phc_D8J5eFkcRoWsJJVcDXf6fCA4EAdhU5dh9dhPeSBWmThK"; // same project key as the site
+
+function attr(checkout, key) {
+  const hit = (checkout.attributes || []).find((a) => a.key === key);
+  return hit ? hit.value : null;
+}
+
+function send(name, event) {
+  const checkout = event.data && event.data.checkout;
+  if (!checkout) return;
+  let firstTouch = {};
+  try { firstTouch = JSON.parse(attr(checkout, "_heldi_utm") || "{}"); } catch (e) {}
+  fetch(HOST + "/i/v0/e/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    keepalive: true,
+    body: JSON.stringify({
+      api_key: KEY,
+      event: name,
+      distinct_id: attr(checkout, "_heldi_ph_id") || ("anon-checkout-" + event.clientId),
+      properties: {
+        $session_id: attr(checkout, "_heldi_ph_session") || undefined,
+        value: checkout.totalPrice ? Number(checkout.totalPrice.amount) : undefined,
+        currency: checkout.currencyCode,
+        item_count: (checkout.lineItems || []).reduce(function (n, li) { return n + (li.quantity || 0); }, 0),
+        discount_codes: (checkout.discountApplications || []).map(function (d) { return d.title; }).join(","),
+        first_touch_source: firstTouch.source,
+        first_touch_medium: firstTouch.medium,
+        first_touch_campaign: firstTouch.campaign,
+        source: "shopify_pixel"
+      },
+      timestamp: new Date().toISOString()
+    })
+  }).catch(function () {});
+}
+
+["checkout_started", "checkout_contact_info_submitted", "checkout_shipping_info_submitted",
+ "payment_info_submitted", "checkout_completed"].forEach(function (name) {
+  analytics.subscribe(name, function (event) { send(name, event); });
+});
+```
+
 ## Phase 7: Launch day
 
 - [ ] Vercel → `NEXT_PUBLIC_COMMERCE_MODE=live` (Production) → redeploy.
 - [ ] Smoke checklist, phone and desktop (PLAYBOOK.md §1.6): hero CTA reads
   "Shop now"; floating mobile CTA links to /shop; the waitlist final-CTA
   section is gone; PDP button adds to basket; checkout completes; the /shop
-  Product schema now includes the AggregateOffer (view source).
+  Product schema now includes the AggregateOffer (view source); PostHog →
+  Activity shows `$pageview` → `add_to_cart` → `begin_checkout` →
+  `checkout_started` → `purchase` under one person.
 - [ ] Ticker: remove "LAUNCHING AUTUMN 2026", keep "LAUNCH PRICES ON NOW"
   (`TICKER_COPY` in `components/heldi-homepage.tsx`).
 - [ ] Watch the first orders in Shopify admin; email replies come from

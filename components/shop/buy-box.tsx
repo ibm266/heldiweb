@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
 import {
@@ -51,6 +51,13 @@ export function BuyBox({ product }: { product: Product }) {
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [giftingPopupOpen, setGiftingPopupOpen] = useState(false);
   const { cart, mode, addItem, addPouches, isPending } = useCart();
+  const viewTracked = useRef(false);
+
+  useEffect(() => {
+    if (viewTracked.current) return;
+    viewTracked.current = true;
+    track("view_item", { product: "khana", mode });
+  }, [mode]);
 
   const tierVariants = new Map<TierId, ProductVariant>();
   for (const id of TIER_ORDER) {
@@ -103,6 +110,13 @@ export function BuyBox({ product }: { product: Product }) {
       : "Ships free.";
 
   async function handleAdd() {
+    track("add_to_cart", {
+      product: "khana",
+      format: isPouch ? "pouch" : "sample",
+      ...(isPouch ? { tier: tierId, pouches_added: tier.pouches } : {}),
+      value: moneyToPence(selected.current) / 100,
+      currency: "GBP"
+    });
     const giftingApplied = (cart?.discountCodes ?? []).some(
       (entry) => entry.applicable && isGiftingCode(entry.code)
     );

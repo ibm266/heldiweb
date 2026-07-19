@@ -131,6 +131,7 @@ export function FooterLegal() {
         <Link href="/legal/returns">Returns</Link>
         <Link href="/legal/shipping">Shipping</Link>
         <Link href="/legal/cookies">Cookies</Link>
+        <Link href="/legal/cookies#analytics-choices">Analytics choices</Link>
         <a href="mailto:info@heldi.co.uk">info@heldi.co.uk</a>
       </nav>
       <span className="footer-company">

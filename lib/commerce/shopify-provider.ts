@@ -49,4 +49,11 @@ export class ShopifyProvider implements CommerceProvider {
   async updateDiscountCodes(cartId: string, codes: string[]): Promise<Cart> {
     return callCartApi("discount-codes", { cartId, codes });
   }
+
+  async updateAttributes(
+    cartId: string,
+    attributes: { key: string; value: string }[]
+  ): Promise<Cart> {
+    return callCartApi("attributes", { cartId, attributes });
+  }
 }

@@ -11,6 +11,7 @@ import {
   type ShopifyCart
 } from "./client";
 import {
+  CART_ATTRIBUTES_UPDATE_MUTATION,
   CART_CREATE_MUTATION,
   CART_DISCOUNT_CODES_UPDATE_MUTATION,
   CART_LINES_ADD_MUTATION,
@@ -81,4 +82,15 @@ export async function updateDiscountCodes(
     { cartId, discountCodes: codes }
   );
   return unwrapMutation(data.cartDiscountCodesUpdate);
+}
+
+export async function updateAttributes(
+  cartId: string,
+  attributes: { key: string; value: string }[]
+): Promise<Cart> {
+  const data = await shopifyFetch<{ cartAttributesUpdate: MutationPayload }>(
+    CART_ATTRIBUTES_UPDATE_MUTATION,
+    { cartId, attributes }
+  );
+  return unwrapMutation(data.cartAttributesUpdate);
 }

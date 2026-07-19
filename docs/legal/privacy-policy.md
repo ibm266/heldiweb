@@ -3,7 +3,7 @@
 > **DRAFT — not legal advice.** Have a solicitor review before publishing.
 > Items marked `[TBC]` need real values before launch.
 
-**Last updated:** 13 July 2026
+**Last updated:** 19 July 2026
 
 ## Who we are
 
@@ -24,7 +24,8 @@ heldi.co.uk. Contact us about privacy at info@heldi.co.uk.
 | Payment details | You pay at checkout | Processed entirely by Shopify Payments / your payment provider — **we never see or store your card details** (performance of a contract) |
 | Order history | You shop with us | Customer support, refunds, fraud prevention, and our legal record-keeping duties (legal obligation, legitimate interests) |
 | Emails you send us | You contact us | To reply and help (legitimate interests) |
-| Basic usage data | You browse the site | Site performance and security; see the Cookie Policy (legitimate interests) |
+| Anonymous usage statistics | You browse the site | Aggregate counts of visits and page use, with no cross-visit identifier and IP addresses discarded; see the Cookie Policy for the free opt-out (legitimate interests, statistical purposes) |
+| Analytics identifier, usage events and session replays (typed text hidden) | Only after you choose "Count me in" on the consent banner | Understanding how the site is used so we can improve it (consent, withdrawable any time on the Cookie Policy page) |
 
 We do not sell personal information. We do not send marketing emails without
 consent.
@@ -35,6 +36,7 @@ We use a small number of service providers who process data on our behalf:
 
 - **Shopify** — checkout, payments and order management
 - **Vercel** — website hosting
+- **PostHog** — website analytics, hosted in the EU (Frankfurt); receives usage events and, only with your consent, session replays with typed text hidden
 - **Royal Mail** — delivery (name and address on the parcel)
 - **Klaviyo** `[if/when adopted]` — waitlist and order emails
 
@@ -49,6 +51,7 @@ We may also disclose information where the law requires it.
 - Waitlist emails: until you unsubscribe or 2 years of inactivity
 - Order records: 6 years (tax and accounting law)
 - Support emails: 2 years after the query is closed
+- Analytics events and session replays: 12 months, then deleted
 
 ## Your rights
 

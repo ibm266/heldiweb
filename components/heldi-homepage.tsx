@@ -8,6 +8,7 @@ import {
   useRef,
   useState
 } from "react";
+import { track } from "@/lib/analytics";
 import { AudienceGallery } from "@/components/audience-gallery";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { useCart } from "@/components/cart/cart-context";
@@ -508,6 +509,7 @@ function WaitlistForm({
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    track("waitlist_signup", { placement: id });
     onJoin();
   }
 
