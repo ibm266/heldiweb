@@ -38,9 +38,8 @@ export function ConsentBanner() {
     <aside className="consent-banner" role="region" aria-label="Analytics choices">
       <p className="consent-banner__title">A quick word about counting.</p>
       <p className="consent-banner__body">
-        Right now we count visits without cookies and without knowing who you
-        are. Say yes and we can remember you next time, and watch replays of
-        what wobbles so we can fix it.
+        Right now we just count visits, no cookies. Say yes and we can remember
+        you between visits.
       </p>
       <div className="consent-banner__actions">
         <button
