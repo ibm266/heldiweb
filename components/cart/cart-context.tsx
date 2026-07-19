@@ -8,7 +8,13 @@ import {
   useMemo,
   useState
 } from "react";
-import { khanaPouchCount, linesForPouchCount, tierForSku } from "@/lib/commerce/catalog";
+import {
+  giftLinesForPouchCount,
+  isGiftLine,
+  khanaPouchCount,
+  linesForPouchCount,
+  tierForSku
+} from "@/lib/commerce/catalog";
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { getCommerceProvider } from "@/lib/commerce/provider";
 import type { Cart, CartLineInput, CommerceMode } from "@/lib/commerce/types";
@@ -57,6 +63,43 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
+// Bring a cart's gift lines to the capped target for its pouch count, once.
+// Heals carts persisted before gifts existed, or mutated outside the site
+// (leftover gifts, wrong quantities, gifts with no pouches). Returns the
+// corrected cart, or null when nothing needed changing. Callers run this at
+// most once and swallow errors: it must never block hydration.
+async function reconcileGiftLines(cart: Cart): Promise<Cart | null> {
+  const target = giftLinesForPouchCount(khanaPouchCount(cart.lines));
+  const targetIds = new Set(target.map((input) => input.merchandiseId));
+  const giftLines = cart.lines.filter(isGiftLine);
+  const currentByVariant = new Map(
+    giftLines.map((line) => [line.merchandise.id, line])
+  );
+
+  const additions: CartLineInput[] = [];
+  const updates: { id: string; quantity: number }[] = [];
+  for (const input of target) {
+    const line = currentByVariant.get(input.merchandiseId);
+    if (!line) additions.push(input);
+    else if (line.quantity !== input.quantity) {
+      updates.push({ id: line.id, quantity: input.quantity });
+    }
+  }
+  const removals = giftLines
+    .filter((line) => !targetIds.has(line.merchandise.id))
+    .map((line) => line.id);
+  if (additions.length === 0 && updates.length === 0 && removals.length === 0) {
+    return null;
+  }
+
+  const provider = getCommerceProvider();
+  let next: Cart | null = null;
+  if (updates.length > 0) next = await provider.updateLines(cart.id, updates);
+  if (additions.length > 0) next = await provider.addLines(cart.id, additions);
+  if (removals.length > 0) next = await provider.removeLines(cart.id, removals);
+  return next;
+}
+
 export function useCart(): CartContextValue {
   const context = useContext(CartContext);
   if (!context) throw new Error("useCart must be used inside <CartProvider>");
@@ -99,9 +142,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     if (!cartId) return;
     getCommerceProvider()
       .getCart(cartId)
-      .then((existing) => {
-        if (existing) setCart(existing);
-        else window.localStorage.removeItem(CART_ID_KEY);
+      .then(async (existing) => {
+        if (!existing) {
+          window.localStorage.removeItem(CART_ID_KEY);
+          return;
+        }
+        setCart(existing);
+        // Heal drifted gift lines once; never loop, never block hydration.
+        try {
+          const reconciled = await reconcileGiftLines(existing);
+          if (reconciled) setCart(reconciled);
+        } catch (error) {
+          console.warn("[cart] gift line reconcile skipped", error);
+        }
       })
       .catch(() => {
         window.localStorage.removeItem(CART_ID_KEY);
@@ -169,13 +222,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const setPouchCount = useCallback(
     async (pouches: number) => {
-      const tierLines = (cart?.lines ?? []).filter(
-        (line) => tierForSku(line.merchandise.sku) !== null
+      // The pouch bundle lines and the free gift lines both derive from the
+      // pouch count, so they repack together: tier lines to the cheapest mix,
+      // gift lines to the capped jar/dabba counts.
+      const managedLines = (cart?.lines ?? []).filter(
+        (line) => tierForSku(line.merchandise.sku) !== null || isGiftLine(line)
       );
       const currentByVariant = new Map(
-        tierLines.map((line) => [line.merchandise.id, line])
+        managedLines.map((line) => [line.merchandise.id, line])
       );
-      const target = linesForPouchCount(pouches);
+      const target = [
+        ...linesForPouchCount(pouches),
+        ...giftLinesForPouchCount(pouches)
+      ];
       const targetIds = new Set(target.map((input) => input.merchandiseId));
 
       const additions: CartLineInput[] = [];
@@ -187,7 +246,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           updates.push({ id: line.id, quantity: input.quantity });
         }
       }
-      const removals = tierLines
+      const removals = managedLines
         .filter((line) => !targetIds.has(line.merchandise.id))
         .map((line) => line.id);
       if (additions.length === 0 && updates.length === 0 && removals.length === 0) {

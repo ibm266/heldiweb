@@ -6235,6 +6235,21 @@ a.living-card__tag:hover {
 
 /* Savings + shipping rows in the drawer summary */
 
+/* Breakdown lines (launch saving, discount) that sum into the bold headline */
+.cart-drawer__saving-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.35rem;
+  color: var(--brown);
+  font-size: 0.875rem;
+}
+
+.cart-drawer__saving-line span:last-child {
+  color: var(--terracotta);
+  font-variant-numeric: tabular-nums;
+}
+
 .cart-drawer__savings-row {
   display: flex;
   align-items: baseline;

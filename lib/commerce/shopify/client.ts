@@ -11,6 +11,7 @@ import type {
   Cart,
   CartLine,
   Money,
+  ProductHandle,
   ProductImage
 } from "../types";
 
@@ -151,7 +152,7 @@ function mapLine(node: ShopifyCartLine): CartLine {
       image: images[0],
       product: {
         id: node.merchandise.product.id,
-        handle: node.merchandise.product.handle as "khana",
+        handle: node.merchandise.product.handle as ProductHandle,
         title: node.merchandise.product.title,
         images
       }

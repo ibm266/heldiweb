@@ -79,11 +79,34 @@ export function packPouches(pouches: number): PouchPacking {
   };
 }
 
+// Per-order caps on the free gift items. "For now" reflects limited jar and
+// dabba stock at launch; raise the caps here and the cart, the PDP Includes
+// panel and the pick-pack sheet all follow.
+export const GIFT_CAPS = { jars: 2, dabbas: 1 } as const;
+
+// How many free jars and masala dabbas a basket of `pouches` pouches earns,
+// after the per-order caps: a jar per pouch up to the cap, one dabba once the
+// basket holds a full-table block. The single source of truth for gift counts
+// everywhere (cart lines, the PDP Includes panel, the pick-pack sheet).
+export function giftCountsForPouches(pouches: number): {
+  jars: number;
+  dabbas: number;
+} {
+  const whole = Math.max(0, Math.floor(pouches));
+  if (whole <= 0) return { jars: 0, dabbas: 0 };
+  return {
+    jars: Math.min(whole, GIFT_CAPS.jars),
+    dabbas: packPouches(whole).triple > 0 ? GIFT_CAPS.dabbas : 0
+  };
+}
+
 // Sample: £5, unchanged at launch, ships free.
 export const SAMPLE_PRICE_PENCE = 500;
 
-// Display-only "worth" of the items included with pouch tiers, shown struck
-// out next to "Free" on the product page and in the cart.
+// Worth of the free gift items, shown struck out next to "Free" on the product
+// page and in the cart. The Shopify compare-at prices on the £0.00 HELDI-JAR
+// and HELDI-DABBA variants mirror these exact figures; change them together
+// (BRAND.md §11.3).
 export const EXTRA_VALUE_PENCE = {
   jar: 800,
   dabba: 1500

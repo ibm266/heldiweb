@@ -24,7 +24,7 @@ export type ProductVariant = {
   image?: ProductImage;
 };
 
-export type ProductHandle = "khana";
+export type ProductHandle = "khana" | "table-jar" | "masala-dabba";
 
 export type Product = {
   id: string;

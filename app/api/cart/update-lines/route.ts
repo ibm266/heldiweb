@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { updateLines } from "@/lib/commerce/shopify/cart-actions";
+import { enforceGiftPolicy } from "@/lib/commerce/shopify/gift-policy";
 import { cartResponse } from "@/lib/commerce/shopify/route-helpers";
 
 export async function POST(request: Request) {
@@ -13,5 +14,5 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  return cartResponse(() => updateLines(cartId, lines));
+  return cartResponse(async () => enforceGiftPolicy(await updateLines(cartId, lines)));
 }

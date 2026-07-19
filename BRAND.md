@@ -430,6 +430,12 @@ left stale copy behind; do not repeat that. Touch list:
 4. If the gifting rules change, update `gifting-band.tsx`, `gifting-popup.tsx`,
    the cart checkbox label in `cart-drawer.tsx`, and the ticker line
    "AUNTIES & UNCLES PAY LESS".
+5. Free gift items (the table jar and masala dabba) are real £0.00 Shopify
+   products the cart adds automatically. Their worth (`EXTRA_VALUE_PENCE`) and
+   per-order caps (`GIFT_CAPS`, currently 2 jars + 1 dabba) live in
+   `lib/pricing.ts`; the Shopify compare-at prices on `HELDI-JAR` / `HELDI-DABBA`
+   mirror the worth, and the pick-pack sheet repeats the caps. Change all three
+   together. Grep terms: `jar`, `dabba`, `GIFT_CAPS`, `EXTRA_VALUE_PENCE`.
 
 ### 11.4 Product name change ("Khana" is a placeholder)
 

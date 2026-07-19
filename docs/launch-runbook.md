@@ -60,13 +60,20 @@ verification. The Storefront API version is pinned in `client.ts`
   `lib/pricing.ts`), so a basket holds at most one line per tier. Weights are
   estimates for shipping brackets; adjust to real packed weights when known,
   keeping the Sample under the Large Letter threshold.
-- [x] **The included items** (a refillable table jar with every pouch, the
-  masala dabba with the full table): treat them as part of the bundle variant,
-  not separate line items. The site UI already presents them ("Includes ...
-  Free"), Shopify does not need to know they exist, and the pick-pack sheet
-  simply says what goes in each SKU's box. (Zero-priced auto-added line items
-  need a cart-transform app; revisit post-launch if warehouse picking demands
-  it.)
+- [x] **The included items** (refillable table jar, masala dabba) ship as
+  their own £0.00 Shopify products the storefront adds to the cart
+  automatically, so Shopify checkout lists them as FREE lines with a thumbnail
+  (superseding the earlier "part of the bundle variant" plan). Products
+  `HELDI-JAR` (compare-at £8) and `HELDI-DABBA` (compare-at £15), created
+  19 Jul 2026; compare-at prices mirror `EXTRA_VALUE_PENCE`. The cart caps them
+  at 2 jars + 1 dabba per order (`GIFT_CAPS` in `lib/pricing.ts`) and a
+  server-side clamp (`lib/commerce/shopify/gift-policy.ts`) re-enforces the cap
+  on every mutation. Admin steps that the Storefront API depends on: publish
+  both to the **Headless channel this token uses** (not Online Store), untrack
+  their inventory, set the SKUs and upload images. Until they are published the
+  Storefront API answers "merchandise does not exist" for their variants and no
+  gift line appears. The pick-pack sheet still says what physically goes in each
+  box.
 - [ ] **Tax**: Settings → Taxes and duties → UK: food supplements are
   standard-rated at 20% VAT. Prices above are VAT-inclusive; tick "All prices
   include tax".
@@ -144,13 +151,22 @@ Verified 16 Jul 2026 against the live store:
   £30 with £35 struck through.
 - [x] Step the pouch count 1 → 2 → 3 → 4 with the +/− stepper and confirm the
   repack: 2 shows The pair £55, 3 shows The full table £80, 4 shows one
-  aggregated pouch row at £110 (£140 struck), 4 jars and 1 dabba; the
-  underlying cart holds two lines (full table + one pouch), which is what
-  checkout shows.
+  aggregated pouch row at £110 (£140 struck); the underlying cart holds two
+  lines (full table + one pouch), which is what checkout shows.
+- [ ] Confirm the free gift lines follow the per-order caps as you step: 1
+  pouch → 1 jar, 2 → 2 jars, 3 → 2 jars + 1 dabba, and 4+ stays at 2 jars + 1
+  dabba (never 3+ jars or 2 dabbas). The drawer shows them as struck-out "Free"
+  rows with no stepper or remove control, and the nav badge counts pouches
+  only, not the gifts. (Needs the gift products published to this token's
+  channel first; see Phase 3.)
 - [x] Sample adds as its own line; a sample-only basket shows Free
   shipping; adding a pouch under £40 shows £3.55.
 - [x] Apply `ACHABETA` on a single-pouch basket: 10% off £30; the free-shipping
   meter recalculates on the discounted total (£27 basket shows £13 away).
+- [ ] With `ACHABETA` on a single pouch, the drawer summary shows three
+  separate lines, "Launch saving −£5.00", "Discount (ACHABETA) −£3.00" and
+  "Free gifts −£8.00", summing to a bold "You're saving £16.00" (the free jar's
+  worth counts toward the total). The Total is still £27.00.
 - [x] Apply a gifting code on a full-table-only basket: rejected, and the
   drawer shows "This one's already our best price." (Shopify keeps the code
   attached to the cart, so it starts discounting if an eligible line is
@@ -158,6 +174,8 @@ Verified 16 Jul 2026 against the live store:
 - [x] Checkbox and code lock each other out ("Already sorted. One discount per
   order.").
 - [x] Checkout button opens Shopify checkout with the same lines and totals.
+- [ ] The gift jar and dabba appear on the Shopify checkout as their own lines
+  priced FREE, with an image, and the totals still match the drawer.
 - [ ] Kill the env vars and confirm the site falls back cleanly: provider
   `mock` still works, provider `shopify` without a token answers 503 from
   `/api/cart/*` (expected, that is the guard).
