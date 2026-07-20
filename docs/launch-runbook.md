@@ -208,7 +208,7 @@ leaves no home for the Next.js site on the apex, so before launch:
 
 ## Phase 6.5: Analytics connect (PostHog pixel + orders webhook)
 
-The storefront side ships with the site (consent banner, events, checkout
+The storefront side ships with the site (consent modal, events, checkout
 attribute stitching in `lib/checkout-handoff.ts`). These steps join the
 Shopify-hosted checkout to it. Order matters: key first, then pixel, then
 webhook.

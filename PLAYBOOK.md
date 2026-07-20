@@ -403,7 +403,7 @@ silently blind the analytics. Rules, in order of how likely you are to hit them:
    keep the 1200ms timeout race. The Shopify custom pixel and the orders
    webhook (`app/api/webhooks/shopify-orders/`) read those exact attribute
    keys.
-5. **Consent gates everything.** The banner (`components/consent-banner.tsx`)
+5. **Consent gates everything.** The modal (`components/consent-modal.tsx`)
    and the panel on /legal/cookies write `heldi_consent_v1`; `lib/consent.ts`
    is the only reader/writer. Never rename that key (it re-prompts every
    visitor), never track around a refusal, and any future ad pixel must check

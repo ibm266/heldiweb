@@ -54,7 +54,7 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 - [x] Build the site pages (e.g. `/legal/*`) and link them in the footer — done: `app/legal/[slug]/page.tsx` renders the drafts, `FooterLegal` links them
 - [ ] Add the policies in Shopify admin (Settings → Policies)
 - [ ] Business address in the site footer
-- [x] Cookie banner — shipped as the consent banner: anonymous counting by default (DUAA statistical purposes, opt-out on /legal/cookies), "Count me in" opts into full measurement + session replay
+- [x] Cookie banner — shipped as the centred consent modal: anonymous counting by default (DUAA statistical purposes, opt-out on /legal/cookies), "Accept all" opts into full measurement + session replay, "Only necessary" keeps the anonymous counting
 
 ## 4. Launch-window polish
 

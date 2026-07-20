@@ -4,7 +4,7 @@
 //                the UK DUAA 2025 statistical-purposes exemption; the cookies
 //                page offers the required free opt-out.
 //   analytics  - persistent identity, session replay, heatmaps. Opt-in only,
-//                via the consent banner.
+//                via the consent modal.
 //   marketing  - future Meta/Google pixels. No consumer yet; any future pixel
 //                loader MUST check hasConsent("marketing") before injecting.
 // Storing the record itself is consent-preference storage (PECR strictly
@@ -27,9 +27,10 @@ export type ConsentChoices = Pick<
 
 export const CONSENT_KEY = "heldi_consent_v1";
 // Bump when the meaning of a choice changes (e.g. when marketing pixels gain
-// a consumer): stored records with an older version read as null, so the
-// banner re-prompts.
-export const CONSENT_VERSION = 1;
+// a consumer), or when the ask itself is redesigned and worth re-posing to
+// everyone (July 2026: the corner banner became a centred modal): stored
+// records with an older version read as null, so the modal re-prompts.
+export const CONSENT_VERSION = 2;
 export const CONSENT_CHANGE_EVENT = "heldi:consent-change";
 
 const DEFAULTS: ConsentChoices = {
@@ -38,7 +39,7 @@ const DEFAULTS: ConsentChoices = {
   marketing: false
 };
 
-// null means "never answered", which is the banner's show condition.
+// null means "never answered", which is the modal's show condition.
 export function readConsent(): ConsentRecord | null {
   if (typeof window === "undefined") return null;
   try {
@@ -69,7 +70,27 @@ export function writeConsent(choices: ConsentChoices): ConsentRecord {
   return record;
 }
 
+// Parses the stored record without the version gate. Used only so a previous
+// refusal of the exempt statistics category keeps holding across version
+// bumps until the visitor answers again; grants never survive a bump.
+function readStaleChoices(): ConsentChoices | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(CONSENT_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as ConsentRecord;
+  } catch {
+    return null;
+  }
+}
+
 export function hasConsent(category: ConsentCategory): boolean {
   const record = readConsent();
-  return record ? record[category] : DEFAULTS[category];
+  if (record) return record[category];
+  // statistics is the only category that defaults on, so it is the only one
+  // where a stale record can quietly overturn a refusal.
+  if (category === "statistics" && readStaleChoices()?.statistics === false) {
+    return false;
+  }
+  return DEFAULTS[category];
 }

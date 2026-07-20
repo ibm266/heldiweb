@@ -25,7 +25,7 @@ heldi.co.uk. Contact us about privacy at info@heldi.co.uk.
 | Order history | You shop with us | Customer support, refunds, fraud prevention, and our legal record-keeping duties (legal obligation, legitimate interests) |
 | Emails you send us | You contact us | To reply and help (legitimate interests) |
 | Anonymous usage statistics | You browse the site | Aggregate counts of visits and page use, with no cross-visit identifier and IP addresses discarded; see the Cookie Policy for the free opt-out (legitimate interests, statistical purposes) |
-| Analytics identifier, usage events and session replays (typed text hidden) | Only after you choose "Count me in" on the consent banner | Understanding how the site is used so we can improve it (consent, withdrawable any time on the Cookie Policy page) |
+| Analytics identifier, usage events and session replays (typed text hidden) | Only after you choose "Accept all" in the cookie window | Understanding how the site is used so we can improve it (consent, withdrawable any time on the Cookie Policy page) |
 
 We do not sell personal information. We do not send marketing emails without
 consent.
