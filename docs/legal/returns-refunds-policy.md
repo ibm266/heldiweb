@@ -1,8 +1,5 @@
 # Returns & Refunds Policy
 
-> **DRAFT — not legal advice.** Have a solicitor review before publishing.
-> Items marked `[TBC]` need real values before launch.
-
 **Last updated:** 13 July 2026
 
 Heldi LTD, 71-75 Shelton Street, Covent Garden, London, United Kingdom,

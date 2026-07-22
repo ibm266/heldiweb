@@ -11,12 +11,19 @@ have a solicitor review them before publishing.**
 | [shipping-policy.md](./shipping-policy.md) | Delivery rates and times |
 | [cookie-policy.md](./cookie-policy.md) | Cookies / local storage (currently none requiring consent) |
 
-## Before publishing — fill in every `[TBC]`
+## Before publishing — placeholder values
 
-- Company registration number (Companies House)
-- VAT registration number (if/when registered)
+- ~~Company registration number (Companies House)~~ — set to 17179772
+- ~~VAT registration number~~ — Heldi LTD is not VAT registered; the VAT clause
+  in the terms has been removed and should be reinstated when registration happens
 - ~~Contact email address~~ — set to info@heldi.co.uk
-- Dispatch time commitment in the shipping policy
+- ~~Dispatch time commitment in the shipping policy~~ — set to 1 working day,
+  2 at the latest
+
+**Still outstanding:** solicitor review of all five documents. The internal
+"DRAFT / not legal advice" banners have been removed from the files (they were
+rendering on the live `/legal/*` pages); this review reminder now lives here and
+in NEXT_STEPS.md §3, not on the customer-facing pages.
 
 ## Where they go
 

@@ -1,8 +1,5 @@
 # Cookie Policy
 
-> **DRAFT, not legal advice.** Reflects the site as built today. Solicitor
-> review still to come (see NEXT_STEPS.md §3).
-
 **Last updated:** 20 July 2026
 
 Heldi LTD, 71-75 Shelton Street, Covent Garden, London, United Kingdom,

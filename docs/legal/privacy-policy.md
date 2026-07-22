@@ -1,14 +1,11 @@
 # Privacy Policy
 
-> **DRAFT — not legal advice.** Have a solicitor review before publishing.
-> Items marked `[TBC]` need real values before launch.
-
 **Last updated:** 19 July 2026
 
 ## Who we are
 
 Heldi LTD ("Heldi", "we", "us") is a company registered in England and Wales
-(company number `[TBC]`), with its registered office at:
+(company number 17179772), with its registered office at:
 
 > 71-75 Shelton Street, Covent Garden, London, United Kingdom, WC2H 9JQ
 
@@ -19,7 +16,7 @@ heldi.co.uk. Contact us about privacy at info@heldi.co.uk.
 
 | What | When | Why (lawful basis) |
 |---|---|---|
-| Email address | You join the waitlist | To email you when we launch (consent, you can unsubscribe any time) |
+| Email address | You join the waitlist | To email you when we launch (consent, you can unsubscribe any time). If you also tick the box for our weekly email, we send you Heldi Living articles, recipes and occasional offers until you unsubscribe (consent) |
 | Name, email, delivery address, phone | You place an order | To fulfil and deliver your order and send order updates (performance of a contract) |
 | Payment details | You pay at checkout | Processed entirely by Shopify Payments / your payment provider — **we never see or store your card details** (performance of a contract) |
 | Order history | You shop with us | Customer support, refunds, fraud prevention, and our legal record-keeping duties (legal obligation, legitimate interests) |
@@ -38,7 +35,8 @@ We use a small number of service providers who process data on our behalf:
 - **Vercel** — website hosting
 - **PostHog** — website analytics, hosted in the EU (Frankfurt); receives usage events and, only with your consent, session replays with typed text hidden
 - **Royal Mail** — delivery (name and address on the parcel)
-- **Klaviyo** `[if/when adopted]` — waitlist and order emails
+- **Supabase** — secure database storage for waitlist signups and review submissions
+- **Klaviyo** — sending our emails: the launch announcement, the weekly Heldi Living email if you asked for it, and order emails once the shop is live
 
 Each provider only receives what it needs to do its job. Some providers store
 data outside the UK; where they do, transfers are protected by UK-approved

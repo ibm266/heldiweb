@@ -1,8 +1,5 @@
 # Shipping Policy
 
-> **DRAFT.** Rates mirror the launch plan — keep in sync with Shopify's
-> shipping profile, which is what customers are actually charged.
-
 **Last updated:** 13 July 2026
 
 Heldi LTD, 71-75 Shelton Street, Covent Garden, London, United Kingdom,
@@ -24,7 +21,7 @@ The exact charge is always shown at checkout before you pay.
 
 ## Dispatch and delivery times
 
-Orders are packed and dispatched by us within `[1-2 — TBC]` working days.
+We aim to pack and dispatch your order within 1 working day, and within 2 working days at the latest.
 Royal Mail Tracked 48 usually delivers **2-3 working days after dispatch**.
 You will get an email with tracking when your order ships. Delivery estimates
 are not guaranteed — see the [Terms & Conditions](./terms-and-conditions.md)

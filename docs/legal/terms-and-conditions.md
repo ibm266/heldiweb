@@ -1,14 +1,11 @@
 # Terms & Conditions of Sale
 
-> **DRAFT — not legal advice.** Have a solicitor review before publishing.
-> Items marked `[TBC]` need real values before launch.
-
 **Last updated:** 13 July 2026
 
 ## 1. Who we are
 
 Heldi LTD, a company registered in England and Wales (company number
-`[TBC]`, VAT number `[TBC]`), registered office:
+17179772), registered office:
 
 > 71-75 Shelton Street, Covent Garden, London, United Kingdom, WC2H 9JQ
 
