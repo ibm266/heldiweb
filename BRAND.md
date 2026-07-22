@@ -118,12 +118,21 @@ kadhi, spoonful, pot), and zero wellness jargon.
 - **Full stops as rhythm.** The brand loves short sentences landing hard: "No shaking.
   No blending. More protein." / "Gold when the table is set for guests." Prefer three
   short sentences to one long one in headlines and ledes.
-- **The authorised claim, verbatim, and nothing stronger**:
+- **The authorised claims, verbatim, and nothing stronger.** Protein has exactly three
+  entries on the UK register (retained Regulation 432/2012), and all three are open to
+  Heldi because the condition of use is only that the food is at least a *source of
+  protein*, which the pouch clears comfortably:
+  *"Protein contributes to a growth in muscle mass."*
   *"Protein contributes to the maintenance of muscle mass."*
-  This is the only permitted health claim (UK nutrition and health claims register).
+  *"Protein contributes to the maintenance of normal bones."*
+  Use whichever fits the surface, and more than one where it reads naturally ("protein
+  contributes to the maintenance of muscle mass and the maintenance of normal bones").
   Where context needs the fuller form, append: "as part of a varied and balanced diet
-  and a healthy lifestyle." Never write "builds muscle", "prevents muscle loss",
-  "helps you lose weight", or any medical benefit. See §12.
+  and a healthy lifestyle."
+  **Verbatim means verbatim**: the register says "a growth in muscle mass", not "the
+  growth of muscle mass" or "muscle growth". Paraphrasing an authorised claim is itself
+  a breach, so copy the wording rather than retyping it from memory. Never write "builds
+  muscle", "prevents muscle loss", "helps you lose weight", or any medical benefit. See §12.
 - **Numbers**: grams as figures with no space ("6g", "75g", "10.4g"). Money always in
   pence integers via `lib/pricing.ts`, rendered with `formatPence`/`formatMoney`; never
   type "£30" into copy (one legacy exception lives in `site-faqs.ts`, see §11.3).
@@ -498,7 +507,7 @@ this breaks; the dashboard just goes quiet.
 
 ## §12 Compliance guardrails (UK food supplement)
 
-- Only the authorised protein claim (§5). No disease prevention, no weight-loss
+- Only the three authorised protein claims (§5). No disease prevention, no weight-loss
   promises, no "boosts immunity", no medical advice. FAQ answers about medical
   situations always defer to GP / dietitian / midwife.
 - Allergen statement: **Contains milk (whey).** Keep it in the PDP description, the
@@ -543,7 +552,7 @@ Live inconsistencies a copy pass should resolve:
 2. Grep your diff for `—` and `&mdash;`; restructure any sentence that wanted one.
 3. Maximum one easter egg on the surface, allusion not quotation (§6).
 4. Numbers: 10g in prose, 10.4g in declarations; money from `pricing.ts` helpers.
-5. Health language: the authorised claim verbatim or nothing (§5, §12).
+5. Health language: one of the three authorised claims verbatim, or nothing (§5, §12).
 6. Colours from the tokens, borders in ink, shadows hard-offset with zero blur; no
    `#000`, no sans-serif, no soft Material shadows (§8).
 7. New animation honours `prefers-reduced-motion`.

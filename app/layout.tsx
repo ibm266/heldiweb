@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   title: "Heldi, desi protein for Indian food",
   description:
     "Protein that disappears into dal, curry and raita. They shake, we stir.",
+  alternates: {
+    types: { "application/rss+xml": "/feed.xml" }
+  },
   openGraph: {
     siteName: "Heldi",
     type: "website",

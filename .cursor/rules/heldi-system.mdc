@@ -16,8 +16,9 @@ conventions.
   minimum.
 - Never: em dashes in copy, the word "scoop", literal #000, sans-serif type,
   soft blurred shadows, raw <img> tags, hard-coded prices (lib/pricing.ts is the
-  source), health claims beyond the verbatim "Protein contributes to the
-  maintenance of muscle mass."
+  source), health claims beyond protein's three verbatim register entries
+  ("Protein contributes to a growth in muscle mass" / "to the maintenance of
+  muscle mass" / "to the maintenance of normal bones").
 - Finishing gate for every change:
   npm run brand-lint && npm run typecheck && npm run build
   then view the change at a phone width and a wide width.

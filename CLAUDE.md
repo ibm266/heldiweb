@@ -32,8 +32,10 @@ Hard rules that are cheap to break by accident:
   finishing. (Only exception: the attribution dash in the founder signature.)
 - All prices/shipping/discounts come from `lib/pricing.ts` (integer pence); the
   formulation and nutrition figures from `components/shop/nutrition-data.ts`.
-- The only permitted health claim, verbatim: "Protein contributes to the maintenance
-  of muscle mass."
+- The only permitted health claims are protein's three register entries, used verbatim:
+  "Protein contributes to a growth in muscle mass." / "...to the maintenance of muscle
+  mass." / "...to the maintenance of normal bones." (BRAND.md §5 has the exact wording
+  and why paraphrasing one is a breach.)
 - One pop-culture easter egg per surface, allusion not quotation.
 - Visuals: ink `#011246` borders, hard offset shadows (no blur), Rozha One / Gelasio
   only, colours from the CSS variables in `app/globals.css`.
