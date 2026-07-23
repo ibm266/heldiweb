@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
+import { useWaitlistPopup } from "@/components/waitlist-popup";
 import {
   POUCH_THUMB,
   SAMPLE_VARIANT_ID,
@@ -21,6 +21,7 @@ import {
   SHIPPING,
   TIERS,
   TIER_ORDER,
+  WAITLIST_OFFER,
   isGiftingCode,
   tierSavingsPence,
   type TierId
@@ -51,6 +52,7 @@ export function BuyBox({ product }: { product: Product }) {
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [giftingPopupOpen, setGiftingPopupOpen] = useState(false);
   const { cart, mode, addItem, addPouches, isPending } = useCart();
+  const { open: openWaitlist } = useWaitlistPopup();
   const viewTracked = useRef(false);
 
   useEffect(() => {
@@ -109,7 +111,7 @@ export function BuyBox({ product }: { product: Product }) {
   // other selection clears the threshold or ships free anyway. Waitlist
   // mode says why there is no price on the page instead.
   const shippingNote = !showPrices
-    ? "Prices arrive when the shop opens. The waitlist hears first."
+    ? `Prices arrive when the shop opens. The waitlist hears first, with ${WAITLIST_OFFER.percent}% off the first order.`
     : isPouch && tierId === "single"
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
       : "Ships free.";
@@ -342,9 +344,9 @@ export function BuyBox({ product }: { product: Product }) {
             {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket — ${formatMoney(selected.current)}`}
           </button>
         ) : (
-          <Link className="pdp__cta" href="/#join">
+          <button type="button" className="pdp__cta" data-floating-cta-suppress onClick={() => openWaitlist("popup-shop")}>
             Join waitlist
-          </Link>
+          </button>
         )}
 
         <p className="pdp__promise">{shippingNote}</p>

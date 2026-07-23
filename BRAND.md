@@ -206,8 +206,11 @@ The six named patterns, with canon examples:
   founder quote, story notes).
 - **CTA canon**: primary "Join waitlist" (waitlist mode) or "Shop now" (live), decided
   by `COMMERCE_MODE`, never hard-coded per surface; secondary "How it works" (outline);
-  closing "Be first to stir it in." with "One email the day we launch."; waitlist
-  success: "You're on the list. Tell your mum we said hi."
+  closing "Be first to stir it in." with "One email the day we launch, with 20% off
+  your first order inside."; waitlist success: "You're on the list, 20% off saved for
+  launch day. Tell your mum we said hi." The 20% is the waitlist launch offer
+  (`WAITLIST_OFFER`, §11.3); every surface interpolates the percent, never a hard-coded
+  number or the code string.
 - **Pill-links** end with a spaced arrow: "Read the full truth →".
 - **FAQ style**: question = what a person actually types; answer = 2 to 5 sentences,
   direct first sentence, no marketing pivot until the facts are done, optional
@@ -445,6 +448,20 @@ left stale copy behind; do not repeat that. Touch list:
    `lib/pricing.ts`; the Shopify compare-at prices on `HELDI-JAR` / `HELDI-DABBA`
    mirror the worth, and the pick-pack sheet repeats the caps. Change all three
    together. Grep terms: `jar`, `dabba`, `GIFT_CAPS`, `EXTRA_VALUE_PENCE`.
+   A tier is only pouches/RRP/launch price — it carries **no** jars/dabbas field;
+   gift counts always come from `giftCountsForPouches`, so the full table ships
+   2 jars, not 3. Don't reintroduce per-tier gift fields (they drift).
+6. Waitlist launch offer (`WAITLIST_OFFER` in `lib/pricing.ts`: 20% off, code
+   `PEHLEAAP`, all pouch tiers, never the Sample, one per order, one use per
+   customer, 14-day window). If it changes, the surfaces are: the mock
+   eligibility helper (`waitlistEligiblePenceForLines` in `catalog.ts`) and its
+   use in `mock-provider.ts`; the waitlist-mode copy that shows the **percentage**
+   (ticker `TICKER_COPY_WAITLIST`, hero `.hero-incentive`, final-CTA `<p>` and
+   waitlist success in the shared form, popup lede, `buy-box.tsx` waitlist
+   shipping note, the launch FAQ in `site-faqs.ts`); the Klaviyo welcome template
+   (`VnY8iQ`) and the launch email; and the real Shopify code created at launch.
+   The **code string** lives only in `WAITLIST_OFFER`, the launch email and
+   Shopify — never on the site. Grep terms: `WAITLIST_OFFER`, `PEHLEAAP`, `% off`.
 
 ### 11.4 Product name change ("Khana" is a placeholder)
 
@@ -463,8 +480,12 @@ left stale copy behind; do not repeat that. Touch list:
 - Waitlist → live is **not** a copy edit: flip `NEXT_PUBLIC_COMMERCE_MODE`. Every CTA,
   the floating mobile CTA, the final-CTA section, PDP button and cart already switch
   on `mode`; never hand-edit a CTA to force it.
-- Waitlist mode shows **no prices and no discount codes anywhere**; everything
-  returns on the flip to live. Gated on the mode: PDP prices, the launch-price
+- Waitlist mode shows **no prices (£) and no discount code strings anywhere**;
+  everything returns on the flip to live. The one deliberate exception is the
+  waitlist launch offer, advertised as a **percentage only** ("20% off your first
+  order") to give joining a reason — never a £ price, never the `PEHLEAAP` string.
+  It rides the ticker, the join forms/popup, the PDP waitlist shipping note and
+  the launch FAQ (all §11.3 item 6). Gated on the mode: PDP prices, the launch-price
   block and the shipping note (`buy-box.tsx`), the accordion shipping rates
   (`product-accordions.tsx`), the gifting band/popup/codes, the "How much is
   delivery?" FAQ and the shipping-policy `more` link (`site-faqs.ts`, which also

@@ -7,6 +7,7 @@ import { CartIcon } from "@/components/cart/cart-icon";
 import { useCart } from "@/components/cart/cart-context";
 import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
+import { useWaitlistPopup } from "@/components/waitlist-popup";
 
 const IMAGE_VERSION = "ink-blue-4";
 const IMAGE_BASE = "/images/variants/ink-blue";
@@ -22,6 +23,8 @@ export type NavTone = "gold" | "cream" | "ink";
 export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { hidden: scrollHidden } = useNavScrollState();
+  const { mode } = useCart();
+  const { open: openWaitlist } = useWaitlistPopup();
   const navHidden = scrollHidden && !menuOpen;
 
   useEffect(() => {
@@ -97,6 +100,15 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
           <Link href="/inside-the-pouch">Inside the pouch</Link>
           <Link href="/faq">FAQ</Link>
           <Link href="/shop">Shop</Link>
+          {mode !== "live" ? (
+            <button
+              className="nav-join"
+              type="button"
+              onClick={() => openWaitlist("popup-nav")}
+            >
+              Join waitlist
+            </button>
+          ) : null}
           <DevModeToggle variant="menu" />
         </div>
         <div
@@ -110,6 +122,18 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
           <Link href="/inside-the-pouch" onClick={() => setMenuOpen(false)}>Inside the pouch</Link>
           <Link href="/faq" onClick={() => setMenuOpen(false)}>FAQ</Link>
           <Link href="/shop" onClick={() => setMenuOpen(false)}>Shop</Link>
+          {mode !== "live" ? (
+            <button
+              className="nav-links__cta"
+              type="button"
+              onClick={() => {
+                setMenuOpen(false);
+                openWaitlist("popup-menu");
+              }}
+            >
+              Join waitlist
+            </button>
+          ) : null}
           <DevModeToggle variant="menu" />
         </div>
       </nav>

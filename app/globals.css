@@ -18,6 +18,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Anchor targets reached from the nav, other pages or launch emails land
+   clear of the fixed nav rather than tucked under it. */
+#how,
+#join,
+#thali {
+  scroll-margin-top: calc(var(--nav-clearance) + 1rem);
+}
+
 body {
   margin: 0;
   background: var(--gold);
@@ -224,6 +232,26 @@ h2 {
   display: none;
 }
 
+/* Compact join pill at the end of the desktop nav; lives inside
+   .nav-links--desktop, so it is hidden on mobile with the rest of that row.
+   The mobile drawer gets its own full-width .nav-links__cta instead. */
+.nav-join {
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.nav-join:hover {
+  background: var(--ink);
+  color: var(--gold);
+}
+
 .nav-burger {
   display: flex;
   flex-direction: column;
@@ -345,6 +373,7 @@ h2 {
   color: var(--ink);
   font-size: 0.9375rem;
   font-weight: 600;
+  cursor: pointer;
   animation: floating-cta-in 280ms ease-out;
   transition: transform 150ms ease, background-color 150ms ease;
 }
@@ -710,11 +739,6 @@ h2 {
   margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
 }
 
-.hero-reveal-actions .waitlist-form {
-  flex: 0 0 auto;
-  width: auto;
-}
-
 .hero-reveal-lede__prefix {
   display: block;
   flex-shrink: 0;
@@ -912,52 +936,13 @@ h2 {
     margin-bottom: clamp(2rem, 6vw, 3rem);
   }
 
-  .hero-reveal-actions .waitlist-form {
-    display: contents;
-  }
-
-  .hero-reveal-actions .waitlist-form input[type="email"] {
-    grid-column: 1 / -1;
-    padding: 0.625rem 0.875rem;
-    font-size: 0.9375rem;
-  }
-
-  .hero-reveal-actions .waitlist-form .waitlist-consent,
-  .hero-reveal-actions .waitlist-form .waitlist-smallprint,
-  .hero-reveal-actions .waitlist-form .waitlist-error {
-    grid-column: 1 / -1;
-  }
-
-  .hero-reveal-actions .waitlist-form .waitlist-consent {
-    font-size: 0.8125rem;
-  }
-
-  .hero-reveal-actions .waitlist-form .button,
+  /* Two CTAs (Join waitlist / Shop now, then How it works) share the row. */
   .hero-reveal-actions > .button {
+    width: 100%;
     padding: 0.5625rem 0.75rem;
     font-size: 0.875rem;
     line-height: 1.2;
-  }
-
-  /* Waitlist wraps the CTA in a form (display:contents); live mode
-     renders Shop now as a direct .button sibling of How it works. */
-  .hero-reveal-actions .waitlist-form .button,
-  .hero-reveal-actions > .button:not(.button--outline) {
-    grid-column: 1;
-    grid-row: 2;
-    width: 100%;
     text-align: center;
-  }
-
-  .hero-reveal-actions > .button--outline {
-    grid-column: 2;
-    grid-row: 2;
-    width: 100%;
-    text-align: center;
-  }
-
-  .hero-reveal-actions .waitlist-success {
-    grid-column: 1 / -1;
   }
 
   .hero-reveal-columns .word-board {
@@ -1335,6 +1320,26 @@ h2 {
   font-size: clamp(1.125rem, 3.2vw, 1.5rem);
   font-weight: 700;
   line-height: 1.35;
+}
+
+/* Waitlist reward, shown as a subtitle directly beneath the hero's Join
+   waitlist pill. An emphasised line (not a pill) so it reads as secondary to
+   the CTA. Waitlist mode only. */
+.hero-incentive {
+  margin: 0.15rem 0 0;
+  color: var(--ink);
+  font-size: clamp(0.8125rem, 1.7vw, 0.9375rem);
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+}
+
+/* In the reveal hero the incentive sits inside the pill row, which is a flex
+   row (wide) or a two-column grid (mobile); make it drop to its own full-width
+   line beneath the buttons in both. */
+.hero-reveal-actions .hero-incentive {
+  flex-basis: 100%;
+  grid-column: 1 / -1;
 }
 
 .waitlist-form {
@@ -3201,6 +3206,33 @@ footer {
   .nav-links--mobile.is-open a:nth-child(5) { transition-delay: 310ms; }
   .nav-links--mobile.is-open a:nth-child(6) { transition-delay: 370ms; }
   .nav-links--mobile.is-open a:nth-child(7) { transition-delay: 430ms; }
+
+  /* Full-width join pill at the foot of the drawer, revealed last so the
+     cascade ends on the primary action. */
+  .nav-links__cta {
+    margin-top: 0.75rem;
+    padding: 0.875rem 1rem;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--gold);
+    color: var(--ink);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 180ms ease, transform 200ms ease;
+  }
+
+  .nav-links--mobile.is-open .nav-links__cta {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 260ms ease,
+      transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 490ms;
+  }
 }
 
 @media (max-width: 719px) {
@@ -8849,6 +8881,93 @@ a.living-card__tag:hover {
 @media (prefers-reduced-motion: reduce) {
   .consent-overlay,
   .consent-modal {
+    animation: none;
+  }
+}
+
+/* ---------- Waitlist popup ---------- */
+
+.waitlist-pop-overlay {
+  position: fixed;
+  inset: 0;
+  /* Above the shop's nutrition/review pops (95) so it opens over the PDP;
+     below the consent modal (97) so a first-visit consent prompt stays on
+     top. Shares 96 with the gifting popup, which is live-mode only and never
+     co-occurs with the waitlist popup. */
+  z-index: 96;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(var(--ink-rgb) / 45%);
+  animation: cart-overlay-in 200ms ease-out;
+}
+
+.waitlist-pop {
+  position: relative;
+  width: min(28rem, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: clamp(1.75rem, 6vw, 2.25rem);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 6px 6px 0 rgb(var(--ink-rgb) / 35%);
+  text-align: center;
+  animation: consent-modal-in 240ms ease-out;
+}
+
+/* The global focus ring is white, which is invisible on cream. */
+.waitlist-pop :focus-visible {
+  outline-color: var(--terracotta);
+}
+
+.waitlist-pop__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.waitlist-pop__close:hover {
+  background: var(--ink);
+  color: var(--gold);
+}
+
+.waitlist-pop__title {
+  margin-bottom: 0.5rem;
+  padding: 0 1.5rem;
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.625rem, 5vw, 2rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.waitlist-pop__lede {
+  margin-bottom: 1.25rem;
+  font-size: clamp(0.9375rem, 2.4vw, 1rem);
+  line-height: 1.5;
+}
+
+/* Inside the popup the shared waitlist form fills the width and its email
+   field plus button sit centred; the hero/footer widths do not apply here. */
+.waitlist-pop .waitlist-form {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waitlist-pop-overlay,
+  .waitlist-pop {
     animation: none;
   }
 }

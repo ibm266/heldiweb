@@ -2,14 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import {
-  FormEvent,
-  useEffect,
-  useRef,
-  useState
-} from "react";
-import { track } from "@/lib/analytics";
-import { WAITLIST_CONSENT_COPY } from "@/lib/waitlist";
+import { useEffect, useRef, useState } from "react";
 import { AudienceGallery } from "@/components/audience-gallery";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { useCart } from "@/components/cart/cart-context";
@@ -23,7 +16,10 @@ import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
+import { WaitlistForm } from "@/components/waitlist-form";
+import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { WaysGallery } from "@/components/ways-gallery";
+import { WAITLIST_OFFER } from "@/lib/pricing";
 
 type HeroAnimation = "split-flap" | "dissolve";
 type HeroLayout = "video" | "classic" | "reveal";
@@ -120,7 +116,7 @@ const FAQS = HOME_FAQS;
 // price or discount lines; live carries the price lines and drops the
 // date. The launch date lives here (BRAND.md §11.5).
 const TICKER_COPY_WAITLIST =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  ";
+  `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  WAITLIST GETS ${WAITLIST_OFFER.percent}% OFF AT LAUNCH  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
 const TICKER_COPY_LIVE =
   "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
@@ -206,29 +202,43 @@ function HeroShowcasePills() {
   );
 }
 
-function HeroRevealActions({
-  joined,
-  onJoin,
-  id,
-  className
-}: {
-  joined: boolean;
-  onJoin: () => void;
-  id: string;
-  className: string;
-}) {
+function HeroRevealActions({ className }: { className: string }) {
+  const { mode } = useCart();
+  const { open } = useWaitlistPopup();
   return (
     <div className={className}>
-      <WaitlistForm
-        joined={joined}
-        onJoin={onJoin}
-        id={id}
-        buttonStyle="pill"
-      />
+      {mode === "live" ? (
+        <Link className="button button--pill" href="/shop">
+          Shop now
+        </Link>
+      ) : (
+        <button
+          className="button button--pill"
+          type="button"
+          onClick={() => open("popup-hero")}
+        >
+          Join waitlist
+        </button>
+      )}
       <a className="button button--pill button--outline" href="#how">
         How it works
       </a>
+      <HeroIncentive />
     </div>
+  );
+}
+
+// The waitlist reward, shown as a subtitle directly beneath the hero's Join
+// waitlist pill so joining has an obvious payoff. Waitlist mode only: in live
+// mode there is no offer to advertise. Used by both hero layouts (inside the
+// reveal actions row and beneath the split-flap form).
+function HeroIncentive() {
+  const { mode } = useCart();
+  if (mode === "live") return null;
+  return (
+    <p className="hero-incentive">
+      {WAITLIST_OFFER.percent}% off your first order at launch.
+    </p>
   );
 }
 
@@ -494,143 +504,6 @@ function DissolveBoard({ active = true }: { active?: boolean }) {
   );
 }
 
-function WaitlistForm({
-  joined,
-  onJoin,
-  id,
-  buttonStyle = "square"
-}: {
-  joined: boolean;
-  onJoin: () => void;
-  id: string;
-  buttonStyle?: "square" | "pill";
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const [wantsLetter, setWantsLetter] = useState(false);
-  const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
-  const inputRef = useRef<HTMLInputElement>(null);
-  const { mode } = useCart();
-
-  useEffect(() => {
-    if (expanded) inputRef.current?.focus();
-  }, [expanded]);
-
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (status === "sending") return;
-    const data = new FormData(event.currentTarget);
-    const email = String(data.get("email") ?? "").trim();
-    if (!email) return;
-    setStatus("sending");
-    try {
-      const response = await fetch("/api/waitlist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          marketingOptIn: wantsLetter,
-          placement: id,
-          website: String(data.get("website") ?? "")
-        })
-      });
-      if (!response.ok) throw new Error(`waitlist ${response.status}`);
-      track("waitlist_signup", { placement: id, marketing_opt_in: wantsLetter });
-      onJoin();
-    } catch {
-      setStatus("error");
-    }
-  }
-
-  const buttonClassName =
-    buttonStyle === "pill" ? "button button--pill" : "button button--square";
-
-  if (mode === "live") {
-    return (
-      <Link className={buttonClassName} href="/shop">
-        Shop now
-      </Link>
-    );
-  }
-
-  if (joined) {
-    return (
-      <p className="waitlist-success" role="status">
-        You&apos;re on the list. Tell your mum we said hi.
-      </p>
-    );
-  }
-
-  return (
-    <form
-      className={`waitlist-form${expanded ? " waitlist-form--expanded" : ""}`}
-      onSubmit={submit}
-    >
-      {expanded ? (
-        <>
-          <label className="sr-only" htmlFor={id}>
-            Email address
-          </label>
-          <input
-            ref={inputRef}
-            id={id}
-            name="email"
-            type="email"
-            placeholder="you@example.com"
-            required
-            disabled={status === "sending"}
-          />
-          <button
-            className={buttonClassName}
-            type="submit"
-            disabled={status === "sending"}
-          >
-            {status === "sending" ? "Joining…" : "Join waitlist"}
-          </button>
-          {/* Honeypot: humans never see it, bots fill it, the API bins it. */}
-          <div className="waitlist-form__trap" aria-hidden="true">
-            <label htmlFor={`${id}-website`}>Website</label>
-            <input
-              id={`${id}-website`}
-              name="website"
-              type="text"
-              tabIndex={-1}
-              autoComplete="off"
-              defaultValue=""
-            />
-          </div>
-          <label className="waitlist-consent">
-            <input
-              type="checkbox"
-              name="letter"
-              checked={wantsLetter}
-              disabled={status === "sending"}
-              onChange={(event) => setWantsLetter(event.target.checked)}
-            />
-            <span>{WAITLIST_CONSENT_COPY}</span>
-          </label>
-          <p className="waitlist-smallprint">
-            Unsubscribe anytime.{" "}
-            <Link href="/legal/privacy">Privacy policy</Link>
-          </p>
-          {status === "error" ? (
-            <p className="waitlist-error" role="alert">
-              That did not go through. Give it one more try.
-            </p>
-          ) : null}
-        </>
-      ) : (
-        <button
-          className={buttonClassName}
-          type="button"
-          onClick={() => setExpanded(true)}
-        >
-          Join waitlist
-        </button>
-      )}
-    </form>
-  );
-}
-
 function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -677,12 +550,8 @@ function HeroVideo() {
 }
 
 function HeroReveal({
-  joined,
-  onJoin,
   onIntroComplete
 }: {
-  joined: boolean;
-  onJoin: () => void;
   onIntroComplete?: () => void;
 }) {
   const [revealed, setRevealed] = useState(false);
@@ -887,12 +756,7 @@ function HeroReveal({
                     <DissolveBoard active={revealed} />
                   </span>
                 </h1>
-                <HeroRevealActions
-                  joined={joined}
-                  onJoin={onJoin}
-                  id="hero-reveal-email"
-                  className="hero-reveal-actions hero-reveal-actions--in-showcase"
-                />
+                <HeroRevealActions className="hero-reveal-actions hero-reveal-actions--in-showcase" />
               </div>
               <div className="hero-reveal-pouch">
                 <Image
@@ -914,12 +778,7 @@ function HeroReveal({
               <HeroShowcasePills />
             </div>
           </div>
-          <HeroRevealActions
-            joined={joined}
-            onJoin={onJoin}
-            id="hero-reveal-email-mobile"
-            className="hero-reveal-actions hero-reveal-actions--below"
-          />
+          <HeroRevealActions className="hero-reveal-actions hero-reveal-actions--below" />
         </div>
       </div>
 
@@ -961,25 +820,20 @@ export function HeldiHomepage({
   const [faqOpen, setFaqOpen] = useState(-1);
   const [joined, setJoined] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobileNav, setIsMobileNav] = useState(false);
-  const [floatingCtaSuppressed, setFloatingCtaSuppressed] = useState(true);
   const [heroIntroComplete, setHeroIntroComplete] = useState(
     heroLayout !== "reveal"
   );
   const { hidden: scrollHidden } = useNavScrollState();
   const { mode } = useCart();
+  const { open: openWaitlist } = useWaitlistPopup();
   const tickerCopy = mode === "live" ? TICKER_COPY_LIVE : TICKER_COPY_WAITLIST;
   const navHidden = scrollHidden && !menuOpen;
-  const heroSectionRef = useRef<HTMLElement>(null);
-  const footerWaitlistRef = useRef<HTMLDivElement>(null);
-  const menuSectionRef = useRef<HTMLElement>(null);
-  const truthSectionRef = useRef<HTMLElement>(null);
 
+  // Close the mobile menu when the viewport grows past the nav breakpoint.
   useEffect(() => {
     const media = window.matchMedia("(max-width: 899px)");
 
     function syncMobileNav() {
-      setIsMobileNav(media.matches);
       if (!media.matches) setMenuOpen(false);
     }
 
@@ -1009,42 +863,52 @@ export function HeldiHomepage({
     };
   }, [menuOpen]);
 
+  // A hash like /#join or /#how can arrive before this streamed homepage has
+  // finished mounting, so the browser's initial jump lands short or not at
+  // all. Land the target clear of the fixed nav once the layout settles, and
+  // re-run a few times because content above keeps loading and shifting it.
+  // Instant, not smooth: a deep-link arrival should just be there, and it
+  // also respects reduced motion for free. Bails the moment the visitor
+  // scrolls themselves.
   useEffect(() => {
-    if (!isMobileNav) {
-      // On desktop there's no floating CTA to show; the observer below only
-      // runs on mobile, so keep it suppressed here.
-      /* eslint-disable-next-line react-hooks/set-state-in-effect */
-      setFloatingCtaSuppressed(true);
-      return;
+    const id = window.location.hash.slice(1);
+    if (!id) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    let userMoved = false;
+    function markMoved() {
+      userMoved = true;
     }
+    window.addEventListener("wheel", markMoved, { passive: true });
+    window.addEventListener("touchstart", markMoved, { passive: true });
+    window.addEventListener("keydown", markMoved);
 
-    const anchors = [
-      heroSectionRef.current,
-      footerWaitlistRef.current,
-      menuSectionRef.current,
-      truthSectionRef.current
-    ].filter((element): element is HTMLDivElement | HTMLElement => element !== null);
-    if (!anchors.length) return;
+    const settle = () => {
+      if (userMoved) return;
+      const clearance =
+        parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue(
+            "--nav-clearance"
+          )
+        ) *
+          16 +
+        16;
+      const y = target.getBoundingClientRect().top + window.scrollY - clearance;
+      window.scrollTo({ top: y, behavior: "instant" });
+    };
 
-    const visibility = new Map<Element, boolean>();
+    const raf = requestAnimationFrame(() => requestAnimationFrame(settle));
+    const timers = [250, 700, 1500].map((ms) => window.setTimeout(settle, ms));
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          visibility.set(entry.target, entry.isIntersecting);
-        });
-        setFloatingCtaSuppressed([...visibility.values()].some(Boolean));
-      },
-      { threshold: 0.15 }
-    );
-
-    anchors.forEach((anchor) => observer.observe(anchor));
-
-    return () => observer.disconnect();
-  }, [isMobileNav, joined]);
-
-  const showFloatingCta =
-    isMobileNav && !floatingCtaSuppressed && heroIntroComplete;
+    return () => {
+      cancelAnimationFrame(raf);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      window.removeEventListener("wheel", markMoved);
+      window.removeEventListener("touchstart", markMoved);
+      window.removeEventListener("keydown", markMoved);
+    };
+  }, []);
 
   return (
     <main>
@@ -1104,6 +968,15 @@ export function HeldiHomepage({
             <Link href="/inside-the-pouch">Inside the pouch</Link>
             <Link href="/faq">FAQ</Link>
             <Link href="/shop">Shop</Link>
+            {mode !== "live" ? (
+              <button
+                className="nav-join"
+                type="button"
+                onClick={() => openWaitlist("popup-nav")}
+              >
+                Join waitlist
+              </button>
+            ) : null}
             <DevModeToggle variant="menu" />
           </div>
           <div
@@ -1119,6 +992,18 @@ export function HeldiHomepage({
             <Link href="/inside-the-pouch" onClick={() => setMenuOpen(false)}>Inside the pouch</Link>
             <Link href="/faq" onClick={() => setMenuOpen(false)}>FAQ</Link>
             <Link href="/shop" onClick={() => setMenuOpen(false)}>Shop</Link>
+            {mode !== "live" ? (
+              <button
+                className="nav-links__cta"
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  openWaitlist("popup-menu");
+                }}
+              >
+                Join waitlist
+              </button>
+            ) : null}
             <DevModeToggle variant="menu" />
           </div>
         </nav>
@@ -1127,20 +1012,8 @@ export function HeldiHomepage({
         </div>
       </div>
 
-      {showFloatingCta ? (
-        mode === "live" ? (
-          <Link className="floating-cta" href="/shop">
-            Shop now
-          </Link>
-        ) : (
-          <a className="floating-cta" href="#join">
-            Join waitlist
-          </a>
-        )
-      ) : null}
-
       <section
-        ref={heroSectionRef}
+        data-floating-cta-suppress
         data-nav-hero
         className={`hero${
           heroLayout === "video"
@@ -1152,11 +1025,7 @@ export function HeldiHomepage({
         id="top"
       >
         {heroLayout === "reveal" ? (
-          <HeroReveal
-            joined={joined}
-            onJoin={() => setJoined(true)}
-            onIntroComplete={() => setHeroIntroComplete(true)}
-          />
+          <HeroReveal onIntroComplete={() => setHeroIntroComplete(true)} />
         ) : heroLayout === "video" ? (
           <div className="hero-video-inner">
             <header className="hero-video-header">
@@ -1179,9 +1048,13 @@ export function HeldiHomepage({
                   Shop now
                 </Link>
               ) : (
-                <a className="button button--pill" href="#join">
+                <button
+                  className="button button--pill"
+                  type="button"
+                  onClick={() => openWaitlist("popup-hero-pill")}
+                >
                   Join waitlist
-                </a>
+                </button>
               )}
               <a className="button button--pill button--outline" href="#how">
                 How it works
@@ -1221,6 +1094,7 @@ export function HeldiHomepage({
                 </strong>
               </p>
               <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="hero-email" />
+              {!joined ? <HeroIncentive /> : null}
             </div>
             <Image
               className="hero-elephant"
@@ -1274,7 +1148,7 @@ export function HeldiHomepage({
       <section
         className="section section--gold section--bordered"
         id="truth"
-        ref={truthSectionRef}
+        data-floating-cta-suppress
       >
         <div className="truth-block">
           <p className="eyebrow">THE HONEST TRUTH</p>
@@ -1300,7 +1174,7 @@ export function HeldiHomepage({
         </div>
       </section>
 
-      <section className="section section--ink" id="thali" ref={menuSectionRef}>
+      <section className="section section--ink" id="thali" data-floating-cta-suppress>
         <MenuGallery gramsPerTbsp={grams} />
       </section>
 
@@ -1417,16 +1291,16 @@ export function HeldiHomepage({
       </section>
 
       {mode !== "live" ? (
-        <section className="final-cta section--bordered" id="join">
+        <section className="final-cta section--bordered" id="join" data-floating-cta-suppress>
           <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
           <div className="final-cta-copy">
             <h2>Be first to stir it in.</h2>
             <p>
-              One email the day we <CopyHighlight>launch</CopyHighlight>.
+              One email the day we <CopyHighlight>launch</CopyHighlight>, with{" "}
+              <CopyHighlight>{WAITLIST_OFFER.percent}% off</CopyHighlight> your
+              first order inside.
             </p>
-            <div ref={footerWaitlistRef}>
-              <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
-            </div>
+            <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
           </div>
           <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
         </section>

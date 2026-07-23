@@ -4,6 +4,8 @@ import { AnalyticsBoot } from "@/components/analytics-boot";
 import { CartProvider } from "@/components/cart/cart-context";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { ConsentModal } from "@/components/consent-modal";
+import { FloatingWaitlistCta } from "@/components/floating-waitlist-cta";
+import { WaitlistPopupProvider } from "@/components/waitlist-popup";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -47,10 +49,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${gelasio.variable} ${rozhaOne.variable}`}>
         <CartProvider>
-          <AnalyticsBoot />
-          {children}
-          <CartDrawer />
-          <ConsentModal />
+          <WaitlistPopupProvider>
+            <AnalyticsBoot />
+            {children}
+            <FloatingWaitlistCta />
+            <CartDrawer />
+            <ConsentModal />
+          </WaitlistPopupProvider>
         </CartProvider>
       </body>
     </html>

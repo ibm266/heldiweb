@@ -15,19 +15,20 @@ export type Tier = {
   /** Display name on the tier card. */
   name: string;
   pouches: number;
-  jars: number;
-  dabbas: number;
   rrpPence: number;
   launchPence: number;
 };
 
+// A tier is only pouches, RRP and launch price. The free jars and dabba a
+// basket earns are never a fixed per-tier number: they come from
+// `giftCountsForPouches` below (a jar per pouch up to the cap, one dabba once
+// the basket holds a full table), so the counts stay right when tiers are
+// combined. Don't reintroduce jars/dabbas fields here.
 export const TIERS: Record<TierId, Tier> = {
   single: {
     id: "single",
     name: "One pouch",
     pouches: 1,
-    jars: 1,
-    dabbas: 0,
     rrpPence: 3500,
     launchPence: 3000
   },
@@ -35,8 +36,6 @@ export const TIERS: Record<TierId, Tier> = {
     id: "double",
     name: "The pair",
     pouches: 2,
-    jars: 2,
-    dabbas: 0,
     rrpPence: 7000,
     launchPence: 5500
   },
@@ -44,8 +43,6 @@ export const TIERS: Record<TierId, Tier> = {
     id: "triple",
     name: "The full table",
     pouches: 3,
-    jars: 3,
-    dabbas: 1,
     rrpPence: 10500,
     launchPence: 8000
   }
@@ -157,4 +154,26 @@ export function giftingAudienceForCode(code: string): GiftingAudience | null {
 
 export function giftingDiscountPence(eligiblePence: number): number {
   return Math.round((eligiblePence * GIFTING.percent) / 100);
+}
+
+// Waitlist launch offer: the reward for joining the list before launch.
+// 20% off the first order, handed out in the launch-day email. Unlike the
+// gifting codes it applies to every pouch tier's launch price (single, pair
+// and full table), never the Sample. One use per customer, one code per
+// order, and — like everything else — it combines with nothing. The window
+// closes `windowDays` after launch. Shown as a percentage in waitlist-mode
+// copy (the ticker, the join forms, the launch FAQ); the code string itself
+// stays out of the site and only travels in the launch email.
+export const WAITLIST_OFFER = {
+  percent: 20,
+  code: "PEHLEAAP",
+  windowDays: 14
+} as const;
+
+export function isWaitlistCode(code: string): boolean {
+  return code.toUpperCase() === WAITLIST_OFFER.code;
+}
+
+export function waitlistDiscountPence(eligiblePence: number): number {
+  return Math.round((eligiblePence * WAITLIST_OFFER.percent) / 100);
 }

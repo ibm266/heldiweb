@@ -9,6 +9,7 @@
 
 import { HOME_FAQS } from "@/components/home-faqs";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
+import { WAITLIST_OFFER } from "@/lib/pricing";
 import type { CommerceMode } from "@/lib/commerce/types";
 
 export type SiteFaq = {
@@ -209,7 +210,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
             {
               question: "When does Heldi launch, and what does the waitlist do?",
               answer:
-                "Heldi launches in autumn 2026. You can browse the shop now, but checkout switches on at launch. Join the waitlist and we send one email the day it does, with nothing in between. That is the whole list: first to know, first to stir it in."
+                `Heldi launches in autumn 2026. You can browse the shop now, but checkout switches on at launch. Join the waitlist and we hold ${WAITLIST_OFFER.percent}% off your first order for you, then send one email the day we open so you can use it. That is the whole list: first to know, first to stir it in.`
             }
           ]
         : []),

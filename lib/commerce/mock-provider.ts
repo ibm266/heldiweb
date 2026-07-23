@@ -1,5 +1,14 @@
-import { giftingDiscountPence, isGiftingCode } from "@/lib/pricing";
-import { findVariantById, giftingEligiblePenceForLines } from "./catalog";
+import {
+  giftingDiscountPence,
+  isGiftingCode,
+  isWaitlistCode,
+  waitlistDiscountPence
+} from "@/lib/pricing";
+import {
+  findVariantById,
+  giftingEligiblePenceForLines,
+  waitlistEligiblePenceForLines
+} from "./catalog";
 import { moneyToPence, penceToMoney } from "./money";
 import type { CommerceProvider } from "./provider";
 import type {
@@ -81,20 +90,29 @@ function materialize(stored: StoredCart): Cart {
     0
   );
 
-  // The gifting codes (ACHABETA / RISHTA / SHABASH) are the only codes the mock
-  // recognises. They only count as applicable when the basket has an
-  // eligible portion (single or double blocks), mirroring how Shopify will
-  // reject them on excluded-only baskets.
-  const eligiblePence = giftingEligiblePenceForLines(lines);
+  // The codes the mock recognises: the three gifting codes (ACHABETA /
+  // RISHTA / SHABASH) and the waitlist launch code (PEHLEAAP). Each is only
+  // applicable when the basket holds the portion it applies to — gifting to
+  // single/pair blocks, the waitlist code to any pouch tier — mirroring how
+  // Shopify will reject them on excluded-only baskets.
+  const giftingEligiblePence = giftingEligiblePenceForLines(lines);
+  const waitlistEligiblePence = waitlistEligiblePenceForLines(lines);
   const discountCodes: CartDiscountCode[] = stored.discountCodes.map((code) => ({
     code,
-    applicable: isGiftingCode(code) && eligiblePence > 0
+    applicable:
+      (isGiftingCode(code) && giftingEligiblePence > 0) ||
+      (isWaitlistCode(code) && waitlistEligiblePence > 0)
   }));
 
-  // One discount per order, never stacked, and only on the eligible portion.
-  const giftingApplied = discountCodes.some((entry) => entry.applicable);
-  const totalPence =
-    subtotalPence - (giftingApplied ? giftingDiscountPence(eligiblePence) : 0);
+  // One discount per order, never stacked: apply the first applicable code
+  // only, computed on its own eligible portion.
+  const appliedCode = discountCodes.find((entry) => entry.applicable);
+  const discountPence = appliedCode
+    ? isWaitlistCode(appliedCode.code)
+      ? waitlistDiscountPence(waitlistEligiblePence)
+      : giftingDiscountPence(giftingEligiblePence)
+    : 0;
+  const totalPence = subtotalPence - discountPence;
 
   return {
     id: stored.id,

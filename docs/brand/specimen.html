@@ -800,6 +800,40 @@
   </div>
 </section>
 
+<!-- ============================ 09 OVERLAYS ============================ -->
+<section class="spec-section">
+  <p class="eyebrow">09 · OVERLAYS</p>
+  <h2>One dialog shell. Focus in, Escape out.</h2>
+  <p class="spec-lede">
+    Consent, nutrition and the waitlist popup share one contract: cream panel,
+    3px ink border, 6px hard offset shadow, ink-45% backdrop.
+    <span class="spec-code">role="dialog"</span>, focus moved in, Tab trapped,
+    Escape and backdrop close, body scroll locked. The waitlist popup opens
+    from any join CTA so a visitor signs up in place instead of being scrolled
+    away. Shown here on the page, without its fixed backdrop.
+  </p>
+  <div class="spec-row spec-row--center">
+    <div class="waitlist-pop" style="margin:0">
+      <button class="waitlist-pop__close" type="button" aria-label="Close">×</button>
+      <h2 class="waitlist-pop__title">Be first to stir it in.</h2>
+      <p class="waitlist-pop__lede">
+        One email the day we launch, with 20% off your first order inside. The
+        waitlist eats first.
+      </p>
+      <form class="waitlist-form waitlist-form--expanded" onsubmit="return false">
+        <input type="email" placeholder="you@example.com" aria-label="Email address" />
+        <button class="button button--pill" type="submit">Join waitlist</button>
+        <label class="waitlist-consent">
+          <input type="checkbox" />
+          <span>Also send me Heldi Living each week: honest protein reading, recipes and the occasional offer.</span>
+        </label>
+        <p class="waitlist-smallprint">Unsubscribe anytime. <a href="#">Privacy policy</a></p>
+      </form>
+    </div>
+  </div>
+  <span class="spec-caption">.waitlist-pop · __close / __title / __lede · reuses .waitlist-form</span>
+</section>
+
 <div class="double-rule" aria-hidden="true"></div>
 <footer class="spec-footer">
   © 2026 Heldi · Made in the UK · They shake, we stir<br />
