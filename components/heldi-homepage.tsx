@@ -774,6 +774,10 @@ function HeroReveal({
               <p className="pronunciation pronunciation--showcase">
                 /hel-dee/ <em>adj.</em> how my nani says “healthy.”
               </p>
+              <p className="hero-reveal-showcase__facts">
+                <strong>10g</strong> of protein in every spoonful. Zero change
+                in taste.
+              </p>
               <div className="hero-reveal-showcase__rule" aria-hidden="true" />
               <HeroShowcasePills />
             </div>

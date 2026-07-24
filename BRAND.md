@@ -418,7 +418,8 @@ left stale copy behind; do not repeat that. Touch list:
 2. The rounded marketing figure: `grams={10}` in `app/page.tsx`, the homepage bowl
    equation (6 + 10 = 16 in `PouchEquation`, including its aria-label), menu gallery
    totals (`heldiTotal = heldiTbsp × 10` hand-written per menu in `menu-gallery.tsx`),
-   stir gallery `boostGrams`.
+   stir gallery `boostGrams`, and the mobile hero facts line in
+   `components/heldi-homepage.tsx` ("10g of protein in every spoonful").
 3. Prose repetitions: `product-accordions.tsx` ("10.4g" and "16g in the same bowl"),
    `site-faqs.ts` ("How much protein does one spoonful add?", GLP-1 answers "past
    13g", "How do I add more protein…" "10.4g"), `truth-faqs.ts`, `truth-page.tsx`
