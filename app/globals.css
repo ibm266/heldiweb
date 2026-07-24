@@ -3457,7 +3457,7 @@ footer {
   align-self: stretch;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 6px;
 }
 
 .stir-card__name {
@@ -3467,7 +3467,7 @@ footer {
 }
 
 .stir-card__tag {
-  padding: 2px 9px;
+  padding: 2px 7px;
   border: 2px solid var(--ink);
   border-radius: 999px;
   color: var(--ink);
