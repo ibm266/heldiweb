@@ -111,18 +111,21 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   const [popping, setPopping] = useState(false);
   const [popAt, setPopAt] = useState(-1);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [animatingAt, setAnimatingAt] = useState(-1);
-  const [videoFading, setVideoFading] = useState(false);
+  // Per-card so the master button can play every stir video at once; a single
+  // tap still only lights its own card.
+  const [animating, setAnimating] = useState<boolean[]>(() =>
+    Array(DISHES.length).fill(false)
+  );
+  const [videoFading, setVideoFading] = useState<boolean[]>(() =>
+    Array(DISHES.length).fill(false)
+  );
   const [poppingAll, setPoppingAll] = useState(false);
-  const [burstAll, setBurstAll] = useState(false);
 
   const railRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const burstTimer = useRef<number | undefined>(undefined);
-  const burstAllTimer = useRef<number | undefined>(undefined);
   const popTimer = useRef<number | undefined>(undefined);
   const popAllTimer = useRef<number | undefined>(undefined);
-  const fadeTimer = useRef<number | undefined>(undefined);
+  const fadeTimers = useRef<number[]>([]);
   const scrollFlagTimer = useRef<number | undefined>(undefined);
   const isProgrammaticScroll = useRef(false);
 
@@ -137,27 +140,15 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   }, []);
 
   useEffect(() => {
+    const fades = fadeTimers.current;
     return () => {
       window.clearTimeout(burstTimer.current);
-      window.clearTimeout(burstAllTimer.current);
       window.clearTimeout(popTimer.current);
       window.clearTimeout(popAllTimer.current);
-      window.clearTimeout(fadeTimer.current);
+      fades.forEach((timer) => window.clearTimeout(timer));
       window.clearTimeout(scrollFlagTimer.current);
     };
   }, []);
-
-  useEffect(() => {
-    if (animatingAt < 0) return;
-    const video = videoRef.current;
-    if (!video) return;
-
-    setVideoFading(false);
-    video.currentTime = 0;
-    void video.play().catch(() => {
-      finishVideoStir();
-    });
-  }, [animatingAt]);
 
   function triggerPop(index: number) {
     setPopAt(index);
@@ -166,17 +157,32 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     popTimer.current = window.setTimeout(() => setPopping(false), POP_MS);
   }
 
-  function finishVideoStir() {
-    setVideoFading(true);
-    window.clearTimeout(fadeTimer.current);
-    fadeTimer.current = window.setTimeout(() => {
-      setAnimatingAt(-1);
-      setVideoFading(false);
+  function startStirVideo(index: number) {
+    setAnimating((current) =>
+      current.map((on, i) => (i === index ? true : on))
+    );
+    setVideoFading((current) =>
+      current.map((fading, i) => (i === index ? false : fading))
+    );
+  }
+
+  function finishVideoStir(index: number) {
+    setVideoFading((current) =>
+      current.map((fading, i) => (i === index ? true : fading))
+    );
+    window.clearTimeout(fadeTimers.current[index]);
+    fadeTimers.current[index] = window.setTimeout(() => {
+      setAnimating((current) =>
+        current.map((on, i) => (i === index ? false : on))
+      );
+      setVideoFading((current) =>
+        current.map((fading, i) => (i === index ? false : fading))
+      );
     }, VIDEO_FADE_MS);
   }
 
   function stir(index: number) {
-    if (animatingAt === index) return;
+    if (animating[index]) return;
     if (spoons[index] >= MAX_SPOONS) return;
 
     const dish = DISHES[index];
@@ -206,7 +212,7 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     });
 
     if (useVideo) {
-      setAnimatingAt(index);
+      startStirVideo(index);
       triggerPop(index);
       return;
     }
@@ -220,11 +226,13 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   }
 
   // Desktop-only master action: stir a spoonful into every bowl at once, up to
-  // the same per-bowl max. Every counter pops and every bowl bursts together;
-  // the single stir video is left to per-card taps, so nothing collides.
+  // the same per-bowl max. Every counter pops and every stir video plays
+  // together, the same feedback a per-card tap gives, five bowls at once.
   function stirAll() {
     const next = spoons.map((count) => Math.min(MAX_SPOONS, count + 1));
     if (next.every((count, index) => count === spoons[index])) return;
+
+    const changed = next.map((count, index) => count !== spoons[index]);
 
     setSpoons(next);
     setCaptions((current) =>
@@ -237,9 +245,16 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     setPoppingAll(true);
     window.clearTimeout(popAllTimer.current);
     popAllTimer.current = window.setTimeout(() => setPoppingAll(false), POP_MS);
-    setBurstAll(true);
-    window.clearTimeout(burstAllTimer.current);
-    burstAllTimer.current = window.setTimeout(() => setBurstAll(false), BURST_MS);
+    setAnimating((current) =>
+      current.map((on, index) =>
+        changed[index] && DISHES[index].video ? true : on
+      )
+    );
+    setVideoFading((current) =>
+      current.map((fading, index) =>
+        changed[index] && DISHES[index].video ? false : fading
+      )
+    );
   }
 
   function scrollToIndex(index: number) {
@@ -314,10 +329,9 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
             const count = spoons[index];
             const grams = dish.base + count * boostGrams;
             const boosted = count > 0;
-            const isAnimating = animatingAt === index;
+            const isAnimating = animating[index];
             const bursting =
-              !reducedMotion &&
-              (burstAll || (burstAt === index && !DISHES[index].video));
+              burstAt === index && !reducedMotion && !DISHES[index].video;
             const poppingHere = (popping && popAt === index) || poppingAll;
             const maxedOut = count >= MAX_SPOONS;
             const caption = boosted ? captions[index] : "";
@@ -355,15 +369,16 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
                       />
                       {isAnimating && dish.video ? (
                         <video
-                          ref={videoRef}
                           className={`stir-card__video${
-                            videoFading ? " is-fading" : ""
+                            videoFading[index] ? " is-fading" : ""
                           }`}
                           src={dish.video}
+                          autoPlay
                           muted
                           playsInline
                           preload="none"
-                          onEnded={finishVideoStir}
+                          onEnded={() => finishVideoStir(index)}
+                          onError={() => finishVideoStir(index)}
                         />
                       ) : null}
                     </div>
