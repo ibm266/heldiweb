@@ -114,10 +114,12 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   const [animatingAt, setAnimatingAt] = useState(-1);
   const [videoFading, setVideoFading] = useState(false);
   const [poppingAll, setPoppingAll] = useState(false);
+  const [burstAll, setBurstAll] = useState(false);
 
   const railRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const burstTimer = useRef<number | undefined>(undefined);
+  const burstAllTimer = useRef<number | undefined>(undefined);
   const popTimer = useRef<number | undefined>(undefined);
   const popAllTimer = useRef<number | undefined>(undefined);
   const fadeTimer = useRef<number | undefined>(undefined);
@@ -137,6 +139,7 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   useEffect(() => {
     return () => {
       window.clearTimeout(burstTimer.current);
+      window.clearTimeout(burstAllTimer.current);
       window.clearTimeout(popTimer.current);
       window.clearTimeout(popAllTimer.current);
       window.clearTimeout(fadeTimer.current);
@@ -217,8 +220,8 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   }
 
   // Desktop-only master action: stir a spoonful into every bowl at once, up to
-  // the same per-bowl max. The counters pop together; no per-card video plays,
-  // so this stays clean even though the single stir video is shared.
+  // the same per-bowl max. Every counter pops and every bowl bursts together;
+  // the single stir video is left to per-card taps, so nothing collides.
   function stirAll() {
     const next = spoons.map((count) => Math.min(MAX_SPOONS, count + 1));
     if (next.every((count, index) => count === spoons[index])) return;
@@ -234,6 +237,9 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     setPoppingAll(true);
     window.clearTimeout(popAllTimer.current);
     popAllTimer.current = window.setTimeout(() => setPoppingAll(false), POP_MS);
+    setBurstAll(true);
+    window.clearTimeout(burstAllTimer.current);
+    burstAllTimer.current = window.setTimeout(() => setBurstAll(false), BURST_MS);
   }
 
   function scrollToIndex(index: number) {
@@ -293,14 +299,6 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
             Every dish on tonight&apos;s table takes a spoonful. Nothing
             changes but <CopyHighlight>the protein</CopyHighlight>.
           </p>
-          <button
-            type="button"
-            className="stir-gallery__all"
-            onClick={stirAll}
-            disabled={allMaxed}
-          >
-            {allMaxed ? "The whole table is Heldi." : "Set the whole table"}
-          </button>
         </header>
 
         <p className="stir-gallery__hint" aria-hidden="true">
@@ -318,7 +316,8 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
             const boosted = count > 0;
             const isAnimating = animatingAt === index;
             const bursting =
-              burstAt === index && !reducedMotion && !DISHES[index].video;
+              !reducedMotion &&
+              (burstAll || (burstAt === index && !DISHES[index].video));
             const poppingHere = (popping && popAt === index) || poppingAll;
             const maxedOut = count >= MAX_SPOONS;
             const caption = boosted ? captions[index] : "";
@@ -440,6 +439,17 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
               onClick={() => scrollToIndex(index)}
             />
           ))}
+        </div>
+
+        <div className="stir-gallery__foot">
+          <button
+            type="button"
+            className="stir-gallery__all"
+            onClick={stirAll}
+            disabled={allMaxed}
+          >
+            {allMaxed ? "The whole table is Heldi." : "Set the whole table"}
+          </button>
         </div>
     </div>
   );

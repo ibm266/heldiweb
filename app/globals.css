@@ -3365,9 +3365,38 @@ footer {
   color: var(--brown);
 }
 
-/* Desktop-only master action; the mobile rail uses the swipe hint + dots. */
-.stir-gallery__all {
+/* Desktop-only master action, sitting under the grid; the mobile rail uses
+   the swipe hint + dots instead. The foot wrapper owns the show/hide. */
+.stir-gallery__foot {
   display: none;
+}
+
+.stir-gallery__all {
+  padding: 12px 30px;
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+
+.stir-gallery__all:hover {
+  transform: translateY(-2px);
+}
+
+.stir-gallery__all:focus-visible {
+  outline-color: var(--gold);
+}
+
+.stir-gallery__all:disabled {
+  background: transparent;
+  border-color: rgb(248 240 222 / 45%);
+  color: var(--gold);
+  cursor: default;
+  transform: none;
 }
 
 .stir-gallery__hint {
@@ -3869,35 +3898,10 @@ footer {
     font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
   }
 
-  .stir-gallery__all {
-    display: inline-flex;
-    align-items: center;
-    margin-top: clamp(1rem, 2vw, 1.5rem);
-    padding: 12px 30px;
-    border: 3px solid var(--ink);
-    border-radius: 999px;
-    background: var(--gold);
-    color: var(--ink);
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.12s ease;
-  }
-
-  .stir-gallery__all:hover {
-    transform: translateY(-2px);
-  }
-
-  .stir-gallery__all:focus-visible {
-    outline-color: var(--gold);
-  }
-
-  .stir-gallery__all:disabled {
-    background: transparent;
-    border-color: rgb(248 240 222 / 45%);
-    color: var(--gold);
-    cursor: default;
-    transform: none;
+  .stir-gallery__foot {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
   }
 
   .stir-gallery__rail {
