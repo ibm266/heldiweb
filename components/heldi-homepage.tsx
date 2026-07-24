@@ -40,6 +40,25 @@ const ELEPHANT_RUN_END_AT_S = 3;
 const CURTAIN_FADE_MS = 520;
 const ELEPHANT_KEY_TOLERANCE = 46;
 
+// The curtain plays once per tab session; the elephants button replays it.
+const CURTAIN_SEEN_KEY = "heldi_curtain_seen_v1";
+
+function hasSeenCurtain(): boolean {
+  try {
+    return window.sessionStorage.getItem(CURTAIN_SEEN_KEY) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function markCurtainSeen(): void {
+  try {
+    window.sessionStorage.setItem(CURTAIN_SEEN_KEY, "1");
+  } catch {
+    // Storage blocked: the curtain just plays again next load.
+  }
+}
+
 function sampleCurtainKeyColor(
   data: Uint8ClampedArray,
   width: number,
@@ -581,14 +600,21 @@ function HeroReveal({
 
   useEffect(() => {
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // First run only (replayNonce 0): a curtain already seen this tab session
+    // skips straight to the revealed state. Replays via the elephants button
+    // (replayNonce > 0) bypass the gate. Reading storage here, inside the
+    // effect, keeps server and first client render identical.
+    const skipToRevealed =
+      motionQuery.matches || (replayNonce === 0 && hasSeenCurtain());
 
-    if (motionQuery.matches) {
+    if (skipToRevealed) {
       // Reduced motion: skip the elephant intro and land on the revealed state
       // immediately. matchMedia is client-only, so this settles in an effect.
       /* eslint-disable-next-line react-hooks/set-state-in-effect */
       setRevealed(true);
       setCurtainDismissed(true);
       setCanCallElephants(true);
+      markCurtainSeen();
       if (!introCompletedRef.current) {
         introCompletedRef.current = true;
         onIntroCompleteRef.current?.();
@@ -606,6 +632,8 @@ function HeroReveal({
       if (finished) return;
       finished = true;
 
+      markCurtainSeen();
+      removeSkipListeners();
       setRevealed(true);
       if (!introCompletedRef.current) {
         introCompletedRef.current = true;
@@ -616,6 +644,26 @@ function HeroReveal({
         setCurtainDismissed(true);
         setCanCallElephants(true);
       }, CURTAIN_FADE_MS + 40);
+    }
+
+    // While the curtain is up, the first interaction of any kind skips it.
+    function skipIntroNow() {
+      el?.pause();
+      finishReveal();
+    }
+
+    const SKIP_EVENTS = ["pointerdown", "keydown", "wheel", "touchstart"] as const;
+
+    function addSkipListeners() {
+      for (const type of SKIP_EVENTS) {
+        window.addEventListener(type, skipIntroNow, { passive: true });
+      }
+    }
+
+    function removeSkipListeners() {
+      for (const type of SKIP_EVENTS) {
+        window.removeEventListener(type, skipIntroNow);
+      }
     }
 
     function onTimeUpdate() {
@@ -688,6 +736,8 @@ function HeroReveal({
       renderCurtainFrame();
     }
 
+    addSkipListeners();
+
     if (el && canvas && curtain) {
       window.cancelAnimationFrame(frameRef.current);
       el.pause();
@@ -700,12 +750,16 @@ function HeroReveal({
       el.play().catch(finishReveal);
     } else {
       const fallbackTimer = window.setTimeout(finishReveal, ELEPHANT_RUN_MS);
-      return () => window.clearTimeout(fallbackTimer);
+      return () => {
+        removeSkipListeners();
+        window.clearTimeout(fallbackTimer);
+      };
     }
 
     const safetyTimer = window.setTimeout(finishReveal, ELEPHANT_RUN_MS + 500);
 
     return () => {
+      removeSkipListeners();
       window.cancelAnimationFrame(frameRef.current);
       el?.removeEventListener("ended", finishReveal);
       el?.removeEventListener("timeupdate", onTimeUpdate);
