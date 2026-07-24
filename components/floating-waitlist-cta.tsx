@@ -7,11 +7,12 @@ import { useWaitlistPopup } from "@/components/waitlist-popup";
 
 // Mobile-only floating "Join waitlist" button, shown site-wide in waitlist
 // mode so a visitor can sign up from wherever they are. Opens the popup.
-// Hidden while the popup is open, on utility pages, and whenever a section
-// that carries its own join CTA is in view. Those sections are tagged
-// [data-floating-cta-suppress] (hero, footer CTA, menus, truth, page CTA
-// bands, the shop buy box) so the floating button never doubles up with an
-// in-place one.
+// It stays visible through the middle of every page and is hidden only at
+// the top and bottom: while the popup is open, on utility pages, and
+// whenever a section that carries its own join CTA is in view. Those
+// sections are tagged [data-floating-cta-suppress] (the hero, the footer
+// CTA, the page CTA bands, and the shop buy box) so the floating button
+// never doubles up with an in-place one.
 const HIDDEN_PREFIXES = ["/legal", "/preview", "/review"];
 
 export function FloatingWaitlistCta() {

@@ -1202,7 +1202,6 @@ export function HeldiHomepage({
       <section
         className="section section--gold section--bordered"
         id="truth"
-        data-floating-cta-suppress
       >
         <div className="truth-block">
           <p className="eyebrow">THE HONEST TRUTH</p>
@@ -1228,7 +1227,7 @@ export function HeldiHomepage({
         </div>
       </section>
 
-      <section className="section section--ink" id="thali" data-floating-cta-suppress>
+      <section className="section section--ink" id="thali">
         <MenuGallery gramsPerTbsp={grams} />
       </section>
 
