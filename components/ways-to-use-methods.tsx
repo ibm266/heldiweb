@@ -79,7 +79,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "In the bowl",
-      captions: ["Dahi like always.", "Sprinkle across.", "Stir until smooth."],
+      captions: ["Dahi like\nalways.", "Sprinkle\nacross.", "Stir until\nsmooth."],
       anchors: [21, 50, 80],
       alt: "Engraved metal bowls of dahi in the Heldi pouch style, shown three times: a full bowl with a spoon resting beside it, a bangled hand sprinkling a spoonful across the surface, and another hand stirring it smooth with a spoon."
     }
@@ -111,7 +111,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "On the table",
-      captions: ["Fill the jar.", "Park it by\nthe achaar.", "Everyone adds\ntheir own."],
+      captions: ["Fill\nthe jar.", "Park it by\nthe achaar.", "Everyone adds\ntheir own."],
       anchors: [20, 50, 80],
       alt: "Engraved table jar in the Heldi pouch style, shown three times: a plain pouch pouring powder into the open jar, the closed jar parked beside a little achaar pot, and two bangled hands lifting spoonfuls toward their own bowls."
     }
