@@ -260,7 +260,11 @@ function HeroLines({ variant }: { variant: "copy" | "foot" }) {
       </p>
       <p className="hero-reveal-claim__support">
         It goes into home-cooked food with all the other spices.{" "}
-        <strong>10g a spoonful</strong>, and nobody at the table can tell.
+        <strong>
+          <span className="hero-reveal-claim__grams">10g of protein</span> added
+          per spoonful
+        </strong>
+        , and nobody at the table can tell.
       </p>
     </div>
   );

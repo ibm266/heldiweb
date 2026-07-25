@@ -774,7 +774,12 @@ h2 {
 .hero-reveal-claim__support strong {
   color: var(--ink);
   font-weight: 700;
-  /* Keeps the figure and its noun on the same line when the sentence wraps. */
+}
+
+/* Keeps the figure and its noun together when the sentence wraps. The whole
+   emphasised phrase is too long to hold unbroken, so only this part is
+   protected. */
+.hero-reveal-claim__grams {
   white-space: nowrap;
 }
 
@@ -3866,6 +3871,10 @@ footer {
     --card-radius: 20px;
     --card-pad-x: clamp(1.375rem, 2.5vw, 2rem);
     --card-pad-b: clamp(1rem, 1.75vw, 1.375rem);
+    /* The size the headline actually renders at. The base `.hero h1` rule
+       (0,1,1) outranks `.hero-reveal-lede` (0,1,0), so this mirrors that rule
+       rather than the dead one below. The copy's measure is derived from it. */
+    --hero-lede-size: clamp(1.875rem, 4.5vw, 2.75rem);
     width: 100%;
     padding: clamp(1.125rem, 2vw, 1.625rem) var(--card-pad-x) var(--card-pad-b);
     border-radius: var(--card-radius);
@@ -3939,9 +3948,12 @@ footer {
   }
 
   /* Sits in the slack between the h1 and the CTAs: the copy column runs
-     shorter than the pouch beside it, so these lines add no card height. */
+     shorter than the pouch beside it, so these lines add no card height.
+     The measure is the width of "Protein Powder" above it (7.2x the prefix
+     size in Rozha One, prefix being the headline size plus 8px), so no line
+     ever runs past the "r" the headline ends on. */
   .hero-reveal-lines--copy {
-    max-width: 52ch;
+    max-width: calc(7.2 * (var(--hero-lede-size) + 8px));
     text-align: left;
   }
 
@@ -3949,10 +3961,8 @@ footer {
     font-size: clamp(1.125rem, min(1.55vw, 2.4svh), 1.375rem);
   }
 
-  /* Measure tuned so the line breaks at the full stop rather than mid-clause;
-     pretty (not balance) so it fills line one first. */
+  /* pretty, not balance, so the lines fill the measure the wrapper sets. */
   .hero-reveal-lines--copy .hero-reveal-claim__support {
-    max-width: 30em;
     font-size: clamp(0.9375rem, min(1.2vw, 1.85svh), 1.0625rem);
     text-wrap: pretty;
   }
