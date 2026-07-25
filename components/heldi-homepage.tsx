@@ -242,7 +242,26 @@ function HeroRevealActions({ className }: { className: string }) {
       <a className="button button--pill button--outline" href="#how">
         How it works
       </a>
-      <HeroIncentive />
+    </div>
+  );
+}
+
+// The two small lines under the headline: what the name means, then what the
+// product actually does (the h1 only names the category and the dish).
+// Rendered twice because they live in the copy column on wide and in the
+// full-width band under the pouch on mobile, where the copy column is ~150px
+// wide and too narrow to read a sentence in. Each breakpoint hides the variant
+// it does not use.
+function HeroLines({ variant }: { variant: "copy" | "foot" }) {
+  return (
+    <div className={`hero-reveal-lines hero-reveal-lines--${variant}`}>
+      <p className="hero-reveal-claim">
+        Protein that behaves like an ingredient, not a supplement.
+      </p>
+      <p className="hero-reveal-claim__support">
+        It goes into home-cooked food with all the other spices.{" "}
+        <strong>10g a spoonful</strong>, and nobody at the table can tell.
+      </p>
     </div>
   );
 }
@@ -775,29 +794,6 @@ function HeroReveal({
       <div className={`hero-reveal-panel${revealed ? " is-revealed" : ""}`}>
         <div className="hero-reveal-columns">
           <div className="hero-reveal-showcase">
-            {revealed ? (
-              <button
-                type="button"
-                className={`hero-reveal-call-elephants${
-                  canCallElephants ? " is-visible" : ""
-                }`}
-                onClick={handleCallElephants}
-                disabled={!canCallElephants}
-                aria-label="Press to call the elephants"
-                aria-hidden={!canCallElephants}
-                tabIndex={canCallElephants ? 0 : -1}
-                data-tooltip="Press to call the elephants"
-              >
-                <Image
-                  className="hero-reveal-call-elephants__icon"
-                  src={imageSrc("/images/elephant-large-transparent.webp")}
-                  alt=""
-                  width={2048}
-                  height={2048}
-                  sizes="34px"
-                />
-              </button>
-            ) : null}
             <div className="hero-reveal-showcase__main">
               <div className="hero-reveal-showcase__copy">
                 <h1 className="hero-reveal-lede">
@@ -810,6 +806,7 @@ function HeroReveal({
                     <DissolveBoard active={revealed} />
                   </span>
                 </h1>
+                <HeroLines variant="copy" />
                 <HeroRevealActions className="hero-reveal-actions hero-reveal-actions--in-showcase" />
               </div>
               <div className="hero-reveal-pouch">
@@ -820,19 +817,55 @@ function HeroReveal({
                   width={1360}
                   height={2048}
                   priority
-                  sizes="(max-width: 899px) 52vw, (max-width: 1280px) 320px, 420px"
+                  sizes="(max-width: 899px) 46vw, (max-width: 1280px) 320px, 420px"
                 />
               </div>
             </div>
+            {/* Mobile's CTA row, inside the card under the pack. Hidden on
+                wide, where the CTAs sit in the copy column instead. */}
+            <HeroRevealActions className="hero-reveal-actions hero-reveal-actions--below" />
+            {/* Lives in the foot so it can sit at the right-hand end of the
+                pill row on wide; on mobile the pills are hidden and it stays
+                anchored to the card, inside the definition band. */}
             <div className="hero-reveal-showcase__foot">
-              <p className="pronunciation pronunciation--showcase">
-                /hel-dee/ <em>adj.</em> how my nani says “healthy.”
-              </p>
+              <HeroLines variant="foot" />
               <div className="hero-reveal-showcase__rule" aria-hidden="true" />
               <HeroShowcasePills />
+              {revealed ? (
+                <button
+                  type="button"
+                  className={`hero-reveal-call-elephants${
+                    canCallElephants ? " is-visible" : ""
+                  }`}
+                  onClick={handleCallElephants}
+                  disabled={!canCallElephants}
+                  aria-label="Press to call the elephants"
+                  aria-hidden={!canCallElephants}
+                  tabIndex={canCallElephants ? 0 : -1}
+                  data-tooltip="Press to call the elephants"
+                >
+                  <Image
+                    className="hero-reveal-call-elephants__icon"
+                    src={imageSrc("/images/elephant-large-transparent.webp")}
+                    alt=""
+                    width={2048}
+                    height={2048}
+                    sizes="34px"
+                  />
+                </button>
+              ) : null}
             </div>
+            {/* The name, given the pack's own treatment: an ink band closing
+                the card, the way the ink band closes the pouch above it. It
+                is the one filled element in a white card, so it carries
+                without competing with the headline. */}
+            <p className="hero-reveal-definition">
+              <span className="hero-reveal-definition__term">/hel-dee/</span>
+              <span className="hero-reveal-definition__gloss">
+                <em>adj.</em> how my nani says “healthy.”
+              </span>
+            </p>
           </div>
-          <HeroRevealActions className="hero-reveal-actions hero-reveal-actions--below" />
         </div>
       </div>
 

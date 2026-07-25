@@ -710,9 +710,72 @@ h2 {
   display: none;
 }
 
-.pronunciation--showcase {
-  margin: clamp(0.75rem, 2vw, 1rem) 0 0;
-  text-align: center;
+/* Name gloss, then the line that says what the product does. One block, two
+   mount points (copy column on wide, foot band on mobile); each breakpoint
+   below shows one and hides the other. */
+/* Three deliberate steps so the block reads in order rather than as one grey
+   paragraph: an italic caption for the name, a bold promise, then the plain
+   sentence that explains how. Sizes per breakpoint below. */
+.hero-reveal-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* The definition band closing the card. Bleeds to the card's edges by pulling
+   back its padding, so the card's own padding vars are the single source for
+   both. Ink fill, gold term, cream gloss: the pack's bottom band. */
+.hero-reveal-definition {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin: 0 calc(-1 * var(--card-pad-x)) calc(-1 * var(--card-pad-b));
+  padding: 0.5625rem var(--card-pad-x);
+  /* Right side clears the elephant button, which sits over this band. */
+  padding-right: calc(var(--card-pad-x) + 2.25rem);
+  border-radius: 0 0 calc(var(--card-radius) - 3px) calc(var(--card-radius) - 3px);
+  background: var(--ink);
+  color: var(--cream);
+  gap: 0 0.5ch;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.hero-reveal-definition__term {
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+/* "for" is connective tissue between the two loud parts of the headline, so it
+   steps down rather than shouting alongside them. */
+.hero-reveal-lede__prefix-line:nth-child(3) {
+  font-size: 0.62em;
+  letter-spacing: 0;
+}
+
+.hero-reveal-claim {
+  margin: 0;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+
+.hero-reveal-claim__support {
+  margin: 0;
+  color: rgb(var(--ink-rgb) / 82%);
+  line-height: 1.45;
+  text-wrap: balance;
+}
+
+/* Gold would fail contrast at this size on white, so the grams carry weight
+   instead of colour. */
+.hero-reveal-claim__support strong {
+  color: var(--ink);
+  font-weight: 700;
+  /* Keeps the figure and its noun on the same line when the sentence wraps. */
+  white-space: nowrap;
 }
 
 .hero-reveal-lede {
@@ -847,37 +910,23 @@ h2 {
     max-width: 100%;
   }
 
+  /* Headline beside the pack, then the copy and the definition band across
+     the full width beneath them. */
   .hero-reveal-showcase {
+    --card-radius: 16px;
+    --card-pad-x: clamp(0.875rem, 3vw, 1.125rem);
+    --card-pad-b: clamp(0.875rem, 3vw, 1.125rem);
     display: grid;
-    grid-template-columns: minmax(0, 0.92fr) minmax(120px, 1.08fr);
-    grid-template-rows: 1fr auto;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr);
     column-gap: clamp(0.375rem, 1.5vw, 0.625rem);
-    align-items: stretch;
-    padding: clamp(0.875rem, 3vw, 1.125rem)
-      clamp(0.875rem, 3vw, 1.125rem)
-      clamp(2.5rem, 7vw, 2.875rem);
-    border-radius: 16px;
+    row-gap: clamp(0.625rem, 2.2vw, 0.875rem);
+    padding: clamp(0.875rem, 3vw, 1.125rem) var(--card-pad-x) var(--card-pad-b);
+    border-radius: var(--card-radius);
     box-shadow: 6px 6px 0 var(--ink);
   }
 
   .hero-reveal-showcase__main {
     display: contents;
-  }
-
-  .hero-reveal-showcase__copy {
-    grid-column: 1;
-    grid-row: 1;
-    align-self: center;
-  }
-
-  .hero-reveal-lede {
-    container-type: inline-size;
-    font-size: clamp(0.85rem, 12cqw, 2rem);
-    line-height: 1.03;
-  }
-
-  .hero-reveal-lede__prefix {
-    letter-spacing: -0.02em;
   }
 
   .hero-reveal-pouch {
@@ -887,22 +936,79 @@ h2 {
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-width: 0;
-    align-self: stretch;
   }
 
   .hero-reveal-pouch__image {
     width: 100%;
-    height: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    object-position: center;
+    max-width: none;
+    height: auto;
+    max-height: none;
+  }
+
+  /* The container the headline sizes itself against, so the type can never
+     outgrow the column the way it used to. */
+  .hero-reveal-showcase__copy {
+    container-type: inline-size;
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
   }
 
   .hero-reveal-showcase__foot {
     display: block;
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+
+  .hero-reveal-definition {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    margin-top: clamp(0.25rem, 1.5vw, 0.5rem);
+    font-size: clamp(0.875rem, 3.4vw, 1rem);
+  }
+
+  /* Sized off the copy column, not the viewport. The .hero in the selector
+     outranks the base `.hero h1` rule, which used to size this headline off
+     the viewport while it lived in a column worth 45% of the card, which is
+     how "Powder" ended up wider than the space it had. */
+  .hero .hero-reveal-lede {
+    container-type: normal;
+    font-size: clamp(1rem, 19cqw, 2.5rem);
+    line-height: 1.03;
+  }
+
+  /* "Protein Powder" flows and breaks on its own; "for" always starts a fresh
+     line and the rotating word sits under it. */
+  .hero-reveal-lede__prefix-line:nth-child(1),
+  .hero-reveal-lede__prefix-line:nth-child(2) {
+    display: inline;
+  }
+
+  .hero-reveal-lede__prefix-line:nth-child(3) {
+    display: block;
+  }
+
+  .hero-reveal-lede__prefix {
+    font-size: 1.3em;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-reveal-columns .dissolve-board {
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 1.3em;
+  }
+
+  .hero-reveal-columns .dissolve-word + .dissolve-word {
+    margin-left: 0.15em;
+  }
+
+  /* Two lines reserved: "INDIAN FOOD" needs both in a column this narrow while
+     the shorter words need one. Reserving the taller case keeps the headline
+     box a fixed height, so the block does not shuffle as the word rotates. */
+  .hero-reveal-columns .word-board {
+    min-height: calc(1.3em * 1.02 * 2.06);
+    align-items: flex-start;
   }
 
   .hero-reveal-showcase__rule,
@@ -914,26 +1020,64 @@ h2 {
     display: none;
   }
 
-  .hero-reveal-showcase__foot .pronunciation--showcase {
+  /* Here the button sits on the ink band, where an ink border and shadow
+     would disappear. */
+  .hero-reveal-call-elephants {
+    border-color: var(--cream);
+    box-shadow: none;
+  }
+
+  .hero-reveal-call-elephants:hover:not(:disabled),
+  .hero-reveal-call-elephants:focus-visible:not(:disabled),
+  .hero-reveal-call-elephants:active:not(:disabled) {
+    box-shadow: none;
+  }
+
+  .hero-reveal-lines--copy {
+    display: none;
+  }
+
+  .hero-reveal-lines--foot {
+    align-items: flex-start;
     width: 100%;
     margin-top: clamp(0.625rem, 2vw, 0.875rem);
-    margin-inline: 0;
-    font-size: clamp(0.875rem, 3.2vw, 1rem);
-    text-align: center;
+    text-align: left;
+  }
+
+  /* pretty, not balance: balanced lines pull the right-hand edge in and leave
+     a ragged margin down the side of the card. These fill the measure. */
+  .hero-reveal-lines--foot .hero-reveal-claim {
+    font-size: clamp(0.9375rem, 3.8vw, 1.125rem);
+    text-wrap: pretty;
+  }
+
+  .hero-reveal-lines--foot .hero-reveal-claim__support {
+    font-size: clamp(0.8125rem, 3.1vw, 0.9375rem);
+    text-wrap: pretty;
   }
 
   .hero-reveal-actions--in-showcase {
     display: none;
   }
 
+  /* Inside the card, under the copy, filling the space the tall portrait pack
+     leaves beside the headline. */
   .hero-reveal-actions--below {
+    grid-column: 1 / -1;
+    grid-row: 3;
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 0.5rem;
     row-gap: 0.5rem;
     align-items: stretch;
     width: 100%;
-    margin-bottom: clamp(2rem, 6vw, 3rem);
+    margin-bottom: 0;
+  }
+
+  /* The card now carries the CTAs, so the breathing room before the ticker
+     moves out to the column wrapper. */
+  .hero-reveal-columns {
+    padding-bottom: clamp(2rem, 6vw, 3rem);
   }
 
   /* Two CTAs (Join waitlist / Shop now, then How it works) share the row. */
@@ -945,14 +1089,23 @@ h2 {
     text-align: center;
   }
 
-  .hero-reveal-columns .word-board {
-    min-height: calc((1em + 10px) * 1.02 * 2.08);
-  }
-
   .hero-reveal-columns .dissolve-board {
-    font-size: calc(1em + 10px);
     line-height: 1.02;
     text-align: left;
+  }
+}
+
+/* Short phones (SE-class). The pack drives the card height, so give it a
+   slightly narrower column and tighten the gaps to keep the CTAs above the
+   fold. */
+@media (max-width: 899px) and (max-height: 740px) {
+  .hero-reveal-showcase {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    row-gap: 0.5rem;
+  }
+
+  .hero .hero-reveal-lede {
+    font-size: clamp(1rem, 17.5cqw, 2.25rem);
   }
 }
 
@@ -1332,14 +1485,6 @@ h2 {
   font-weight: 700;
   line-height: 1.35;
   text-align: center;
-}
-
-/* In the reveal hero the incentive sits inside the pill row, which is a flex
-   row (wide) or a two-column grid (mobile); make it drop to its own full-width
-   line beneath the buttons in both. */
-.hero-reveal-actions .hero-incentive {
-  flex-basis: 100%;
-  grid-column: 1 / -1;
 }
 
 .waitlist-form {
@@ -3452,11 +3597,14 @@ footer {
   box-shadow: 6px 6px 0 rgb(248 240 222 / 85%);
 }
 
+/* Fixed height so a two-line tag never pushes one card's photo, counter
+   and button out of line with the other four. */
 .stir-card__head {
   display: flex;
   align-self: stretch;
   align-items: center;
   justify-content: space-between;
+  min-height: 34px;
   gap: 6px;
 }
 
@@ -3464,16 +3612,20 @@ footer {
   color: var(--ink);
   font-family: var(--font-display), serif;
   font-size: 19px;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 .stir-card__tag {
+  flex: 0 1 auto;
   padding: 2px 7px;
   border: 2px solid var(--ink);
   border-radius: 999px;
   color: var(--ink);
   font-size: 10px;
   font-weight: 600;
-  white-space: nowrap;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .stir-card__photo {
@@ -3711,10 +3863,17 @@ footer {
   }
 
   .hero-reveal-showcase {
+    --card-radius: 20px;
+    --card-pad-x: clamp(1.375rem, 2.5vw, 2rem);
+    --card-pad-b: clamp(1rem, 1.75vw, 1.375rem);
     width: 100%;
-    padding: clamp(1.125rem, 2vw, 1.625rem) clamp(1.375rem, 2.5vw, 2rem)
-      clamp(1rem, 1.75vw, 1.375rem);
-    border-radius: 20px;
+    padding: clamp(1.125rem, 2vw, 1.625rem) var(--card-pad-x) var(--card-pad-b);
+    border-radius: var(--card-radius);
+  }
+
+  .hero-reveal-definition {
+    margin-top: clamp(0.75rem, 1.5vw, 1.125rem);
+    font-size: clamp(0.9375rem, min(1.2vw, 1.8svh), 1.0625rem);
   }
 
   .hero-reveal-showcase__main {
@@ -3775,19 +3934,40 @@ footer {
     margin-left: 0.15em;
   }
 
+  .hero-reveal-lines--foot {
+    display: none;
+  }
+
+  /* Sits in the slack between the h1 and the CTAs: the copy column runs
+     shorter than the pouch beside it, so these lines add no card height. */
+  .hero-reveal-lines--copy {
+    max-width: 52ch;
+    text-align: left;
+  }
+
+  .hero-reveal-lines--copy .hero-reveal-claim {
+    font-size: clamp(1.125rem, min(1.55vw, 2.4svh), 1.375rem);
+  }
+
+  /* Measure tuned so the line breaks at the full stop rather than mid-clause;
+     pretty (not balance) so it fills line one first. */
+  .hero-reveal-lines--copy .hero-reveal-claim__support {
+    max-width: 30em;
+    font-size: clamp(0.9375rem, min(1.2vw, 1.85svh), 1.0625rem);
+    text-wrap: pretty;
+  }
+
+  /* A container so the pill row below can size itself in cqw and therefore
+     always occupy the same fraction of the row, i.e. never wrap. Positioned so
+     the elephant button anchors to the pill row rather than to the card. */
   .hero-reveal-showcase__foot {
+    container-type: inline-size;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: clamp(0.75rem, 1.5vw, 1.125rem);
     gap: 0.625rem;
-  }
-
-  .hero-reveal-showcase__foot .pronunciation--showcase {
-    order: 1;
-    margin: 0;
-    text-align: center;
-    font-size: clamp(1rem, min(1.5vw, 2.2svh), 1.25rem);
   }
 
   .hero-reveal-showcase__rule {
@@ -3796,15 +3976,22 @@ footer {
     margin-bottom: 0;
   }
 
+  /* Sized in cqw throughout (text, padding, icons, gaps) so the whole row
+     scales with the card and the six pills stay on one line at every width.
+     nowrap is the belt to that braces: if a fallback font ever renders wider
+     than Gelasio, the row stays a single line. */
   .hero-reveal-showcase__pills {
     order: 3;
-    gap: 0.375rem 0.5rem;
-    padding-right: clamp(2rem, 3vw, 2.5rem);
+    flex-wrap: nowrap;
+    gap: 0.5cqw 0.75cqw;
+    padding-right: 2.4cqw;
   }
 
+  /* At the right-hand end of the pill row (the foot is the containing block
+     here), clear of the definition band below it. */
   .hero-reveal-call-elephants {
-    right: clamp(0.625rem, 1.1vw, 0.875rem);
-    bottom: clamp(0.5rem, 1vw, 0.75rem);
+    right: 0;
+    bottom: 0;
     width: clamp(1.625rem, 2.4vw, 1.875rem);
     height: clamp(1.625rem, 2.4vw, 1.875rem);
     padding: 0.15rem;
@@ -3867,12 +4054,13 @@ footer {
   }
 
   .hero-reveal-showcase__pill {
-    padding: 0.3125rem 0.625rem;
-    font-size: clamp(0.6875rem, min(0.9vw, 1.4svh), 0.75rem);
+    padding: 0.62cqw 0.95cqw;
+    font-size: 1.6cqw;
+    gap: 0.5cqw;
   }
 
   .hero-reveal-showcase__pill-icon {
-    height: clamp(1.125rem, 2svh, 1.375rem);
+    height: 2.85cqw;
   }
 
   /* How it works — laptop header + protein equation at bottom */
@@ -4166,9 +4354,12 @@ footer {
     max-width: clamp(200px, 17vw + 1.5vh, 300px);
   }
 
+  /* Through the vars, so the definition band's negative margins keep matching
+     the card's actual padding. */
   .hero-reveal-showcase {
-    padding: clamp(1rem, 1.75vh, 1.375rem) clamp(1.25rem, 2.5vw, 1.75rem)
-      clamp(0.875rem, 1.5vh, 1.125rem);
+    --card-pad-x: clamp(1.25rem, 2.5vw, 1.75rem);
+    --card-pad-b: clamp(0.875rem, 1.5vh, 1.125rem);
+    padding: clamp(1rem, 1.75vh, 1.375rem) var(--card-pad-x) var(--card-pad-b);
   }
 }
 
@@ -4180,7 +4371,9 @@ footer {
   }
 
   .hero-reveal-showcase {
-    padding: 0.875rem 1.25rem 0.75rem;
+    --card-pad-x: 1.25rem;
+    --card-pad-b: 0.75rem;
+    padding: 0.875rem var(--card-pad-x) var(--card-pad-b);
   }
 
   .hero-reveal-lede {
@@ -4204,14 +4397,8 @@ footer {
     gap: 0.5rem;
   }
 
-  .hero-reveal-showcase__pill {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.625rem;
-  }
-
-  .hero-reveal-showcase__pill-icon {
-    height: 1rem;
-  }
+  /* No pill overrides here: the row is sized in cqw so it already scales with
+     the card, and rem overrides would break the one-line guarantee. */
 }
 
 /* ---------- Pouch ingredient line ---------- */
