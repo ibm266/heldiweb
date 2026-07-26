@@ -4,8 +4,11 @@ import {
   WENT_WELL_CHIPS,
   WENT_WRONG_CHIPS
 } from "@/components/review-form-data";
+import { guard } from "@/lib/rate-limit";
 import {
+  MEDIA_MAX_LABEL,
   REVIEW_LIMITS,
+  REVIEW_MEDIA_PATH_PATTERN,
   REVIEW_MEDIA_TYPES,
   type ReviewSubmission
 } from "@/lib/review-submissions";
@@ -36,6 +39,12 @@ function fieldList(data: FormData, key: string, allowed: string[]): string[] {
 }
 
 export async function POST(request: Request) {
+  // The tightest cap on the site. This route accepts an unauthenticated
+  // upload into our storage bucket, so repetition here costs real money and
+  // could park anything at all in the bucket.
+  const blocked = guard(request, "reviews");
+  if (blocked) return blocked;
+
   let data: FormData;
   try {
     data = await request.formData();
@@ -78,31 +87,6 @@ export async function POST(request: Request) {
   const wentWell = rating >= 4 ? fieldList(data, "wentWell", WELL_VALUES) : [];
   const wentWrong = rating <= 3 ? fieldList(data, "wentWrong", WRONG_VALUES) : [];
 
-  const mediaEntry = data.get("media");
-  let media: ReviewSubmission["media"] = null;
-  let mediaBytes: Uint8Array | null = null;
-  if (mediaEntry instanceof File && mediaEntry.size > 0) {
-    const extension = REVIEW_MEDIA_TYPES[mediaEntry.type];
-    if (!extension) {
-      return NextResponse.json(
-        { error: "Unsupported media type." },
-        { status: 400 }
-      );
-    }
-    if (mediaEntry.size > REVIEW_LIMITS.mediaMaxBytes) {
-      return NextResponse.json(
-        { error: "Media over the 50MB limit." },
-        { status: 400 }
-      );
-    }
-    mediaBytes = new Uint8Array(await mediaEntry.arrayBuffer());
-    media = {
-      file: `media${extension}`,
-      contentType: mediaEntry.type,
-      bytes: mediaEntry.size
-    };
-  }
-
   const supabase = getSupabaseAdmin();
   if (!supabase) {
     return NextResponse.json(
@@ -111,21 +95,68 @@ export async function POST(request: Request) {
     );
   }
 
-  const id = `${new Date().toISOString().slice(0, 10)}-${randomUUID().slice(0, 8)}`;
-  // Store media under the review's id so the object and the row stay linked.
-  const mediaPath = media ? `${id}/${media.file}` : null;
+  // Media arrives as a storage path, not a file: the browser already uploaded
+  // it straight to the private bucket using a signed URL from
+  // /api/reviews/upload-url, so nothing multi-megabyte passes through here.
+  // None of what the form says about that file is trusted.
+  const claimedPath = fieldString(data, "mediaPath", 200);
+  let media: ReviewSubmission["media"] = null;
 
-  try {
-    if (media && mediaBytes && mediaPath) {
-      const { error: uploadError } = await supabase.storage
-        .from(REVIEW_MEDIA_BUCKET)
-        .upload(mediaPath, mediaBytes, {
-          contentType: media.contentType,
-          upsert: false
-        });
-      if (uploadError) throw uploadError;
+  if (claimedPath) {
+    // Shape first, so a traversal or someone else's folder is rejected before
+    // we spend a storage call on it.
+    if (!REVIEW_MEDIA_PATH_PATTERN.test(claimedPath)) {
+      return NextResponse.json(
+        { error: "That upload reference is not valid." },
+        { status: 400 }
+      );
     }
 
+    // Then existence and the real metadata. The bucket is private with no
+    // policies, so an object being here at all means we minted its URL. And
+    // reading size and type from storage rather than the form means a crafted
+    // submission cannot record a 2KB file as a 40MB video, or claim an image
+    // type for an executable.
+    const { data: info, error: infoError } = await supabase.storage
+      .from(REVIEW_MEDIA_BUCKET)
+      .info(claimedPath);
+    if (infoError || !info) {
+      return NextResponse.json(
+        { error: "That upload did not finish. Try attaching it again." },
+        { status: 400 }
+      );
+    }
+
+    const contentType = info.contentType ?? "";
+    const bytes = info.size ?? 0;
+    // Both of these should already be impossible (the mint route checks the
+    // type, the bucket enforces the size), so a hit here means something
+    // bypassed one of them: drop the object rather than keep it.
+    if (!REVIEW_MEDIA_TYPES[contentType] || bytes > REVIEW_LIMITS.mediaMaxBytes) {
+      await supabase.storage.from(REVIEW_MEDIA_BUCKET).remove([claimedPath]);
+      return NextResponse.json(
+        {
+          error: REVIEW_MEDIA_TYPES[contentType]
+            ? `Media over the ${MEDIA_MAX_LABEL} limit.`
+            : "Unsupported media type."
+        },
+        { status: 400 }
+      );
+    }
+
+    media = {
+      file: claimedPath.split("/").pop() ?? "media",
+      contentType,
+      bytes
+    };
+  }
+
+  const id = `${new Date().toISOString().slice(0, 10)}-${randomUUID().slice(0, 8)}`;
+  // The object was named before the row existed, so media_path is what links
+  // the two rather than a shared id prefix.
+  const mediaPath = claimedPath || null;
+
+  try {
     const { error: insertError } = await supabase.from("reviews").insert({
       id,
       submitted_at: new Date().toISOString(),

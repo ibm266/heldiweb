@@ -8,6 +8,25 @@ import type { NextConfig } from "next";
 // gated to dev so React Fast Refresh keeps working without loosening prod.
 const isDev = process.env.NODE_ENV === "development";
 
+// Review photos and videos upload from the browser straight to Supabase
+// storage (app/api/reviews/upload-url mints the signed URL), which is a
+// cross-origin request and so needs an explicit connect-src entry: the default
+// 'self' blocks it, and the only symptom is "Failed to fetch" in the console.
+//
+// Derived from SUPABASE_URL so the project ref stays out of the repo. That env
+// var must therefore be present at BUILD time, not just at runtime: without it
+// this entry is silently absent and every upload fails. Vercel exposes project
+// env vars to builds, so setting it for Production and Preview is enough.
+const supabaseOrigin = (() => {
+  const url = process.env.SUPABASE_URL;
+  if (!url) return "";
+  try {
+    return new URL(url).origin;
+  } catch {
+    return "";
+  }
+})();
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
@@ -16,7 +35,7 @@ const contentSecurityPolicy = [
   "img-src 'self' data: blob: https:",
   "media-src 'self' blob: https:",
   "font-src 'self' data:",
-  `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
+  `connect-src 'self'${supabaseOrigin ? ` ${supabaseOrigin}` : ""}${isDev ? " ws: wss:" : ""}`,
   // PostHog's session-replay recorder compresses in a blob-URL worker;
   // without an explicit worker-src, browsers fall back to script-src, which
   // blocks blob:.

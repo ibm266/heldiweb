@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { subscribeToKlaviyo } from "@/lib/klaviyo";
+import { guard } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import {
   WAITLIST_CONSENT_COPY,
@@ -27,6 +28,11 @@ function cleanPlacement(value: unknown): string | null {
 }
 
 export async function POST(request: Request) {
+  // Same-origin plus a per-address cap: a signup is a write to our database
+  // and a billable profile in Klaviyo, so it is not a door to leave open.
+  const blocked = guard(request, "waitlist");
+  if (blocked) return blocked;
+
   let body: Record<string, unknown>;
   try {
     body = await request.json();

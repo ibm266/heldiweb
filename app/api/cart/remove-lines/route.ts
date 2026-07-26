@@ -1,17 +1,22 @@
-import { NextResponse } from "next/server";
 import { removeLines } from "@/lib/commerce/shopify/cart-actions";
-import { cartResponse } from "@/lib/commerce/shopify/route-helpers";
+import {
+  badRequest,
+  cartGuard,
+  cartResponse,
+  readJson
+} from "@/lib/commerce/shopify/route-helpers";
 
 export async function POST(request: Request) {
-  const { cartId, lineIds } = (await request.json()) as {
-    cartId?: string;
-    lineIds?: string[];
-  };
+  const blocked = cartGuard(request);
+  if (blocked) return blocked;
+
+  const body = await readJson<{ cartId?: string; lineIds?: string[] }>(request);
+  if (!body) return badRequest("Expected JSON.");
+
+  const { cartId, lineIds } = body;
   if (!cartId || !lineIds?.length) {
-    return NextResponse.json(
-      { error: "cartId and lineIds are required" },
-      { status: 400 }
-    );
+    return badRequest("cartId and lineIds are required");
   }
+
   return cartResponse(() => removeLines(cartId, lineIds));
 }

@@ -45,6 +45,15 @@ Hard rules that are cheap to break by accident:
   PLAYBOOK.md §7 lists what to preserve whenever you touch a tracked surface.
 - Renaming a FAQ question in `home-faqs.ts`/`truth-faqs.ts` breaks the /faq build
   unless `site-faqs.ts` `pick()` calls are updated too.
+- **Every new route under `app/api/` calls `guard()` from `lib/rate-limit.ts`
+  first**, before it parses a body or touches Supabase, Klaviyo or Shopify.
+  These routes have no login, so a cap plus a same-origin check is the only
+  thing standing between a loop and our storage quota, Klaviyo bill or Shopify
+  API allowance. Add the route's cap to `RATE_RULES` rather than inventing a
+  number inline. GET routes use `checkRate()` alone (browsers send no `Origin`
+  on a same-origin GET). [docs/security.md](docs/security.md) has the table,
+  the honest limits of in-memory counters, and the Vercel dashboard work
+  (Pro plan, spend cap, WAF rules) that the repo cannot do for itself.
 
 Tooling and structure:
 

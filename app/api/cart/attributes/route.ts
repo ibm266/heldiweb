@@ -1,17 +1,25 @@
-import { NextResponse } from "next/server";
 import { updateAttributes } from "@/lib/commerce/shopify/cart-actions";
-import { cartResponse } from "@/lib/commerce/shopify/route-helpers";
+import {
+  badRequest,
+  cartGuard,
+  cartResponse,
+  readJson
+} from "@/lib/commerce/shopify/route-helpers";
 
 export async function POST(request: Request) {
-  const { cartId, attributes } = (await request.json()) as {
+  const blocked = cartGuard(request);
+  if (blocked) return blocked;
+
+  const body = await readJson<{
     cartId?: string;
     attributes?: { key: string; value: string }[];
-  };
+  }>(request);
+  if (!body) return badRequest("Expected JSON.");
+
+  const { cartId, attributes } = body;
   if (!cartId || !Array.isArray(attributes)) {
-    return NextResponse.json(
-      { error: "cartId and attributes are required" },
-      { status: 400 }
-    );
+    return badRequest("cartId and attributes are required");
   }
+
   return cartResponse(() => updateAttributes(cartId, attributes));
 }

@@ -12,13 +12,17 @@ import {
 } from "@/components/review-form-data";
 import { track } from "@/lib/analytics";
 import {
+  MEDIA_MAX_LABEL,
   REVIEW_LIMITS,
   REVIEW_MEDIA_ACCEPT,
   REVIEW_MEDIA_TYPES
 } from "@/lib/review-submissions";
 import { reviewProteinGrams } from "@/lib/reviews";
 
-type SendState = "idle" | "sending" | "sent" | "failed";
+// "uploading" is its own state because the photo or video goes straight to
+// storage before the form itself is sent, and a phone video on a slow
+// connection makes that the longest part of the wait by far.
+type SendState = "idle" | "uploading" | "sending" | "sent" | "failed";
 
 function starsFromParam(raw: string | null): number {
   const n = Number(raw);
@@ -83,7 +87,7 @@ export function ReviewForm() {
     if (file.size > REVIEW_LIMITS.mediaMaxBytes) {
       setMedia(null);
       setMediaError(
-        `That one is ${megabytes(file.size)}. The limit is 50MB; a shorter clip works.`
+        `That one is ${megabytes(file.size)}. The limit is ${MEDIA_MAX_LABEL}; a shorter clip works.`
       );
       event.target.value = "";
       return;
@@ -94,7 +98,7 @@ export function ReviewForm() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (sendState === "sending") return;
+    if (sendState === "uploading" || sendState === "sending") return;
 
     if (rating === 0) {
       setFormError("Stars first. Everything else hangs off them.");
@@ -120,10 +124,37 @@ export function ReviewForm() {
     for (const value of branchSelection) {
       body.append(branch === "wrong" ? "wentWrong" : "wentWell", value);
     }
-    if (media) body.set("media", media);
 
-    setSendState("sending");
     try {
+      // The file goes browser to Supabase, never through our own server:
+      // Vercel rejects request bodies over 4.5MB, which is smaller than most
+      // phone videos. The server mints a signed URL for a path it chooses, we
+      // PUT the file there, then the form carries only that path.
+      if (media) {
+        setSendState("uploading");
+        const mint = await fetch("/api/reviews/upload-url", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contentType: media.type, bytes: media.size })
+        });
+        if (!mint.ok) throw new Error(`mint ${mint.status}`);
+        const { path, signedUrl } = (await mint.json()) as {
+          path: string;
+          signedUrl: string;
+        };
+
+        // signedUrl carries its own token, so no Supabase client and no keys
+        // are needed in the browser.
+        const upload = await fetch(signedUrl, {
+          method: "PUT",
+          headers: { "content-type": media.type, "x-upsert": "false" },
+          body: media
+        });
+        if (!upload.ok) throw new Error(`upload ${upload.status}`);
+        body.set("mediaPath", path);
+      }
+
+      setSendState("sending");
       const response = await fetch("/api/reviews", { method: "POST", body });
       if (!response.ok) throw new Error(String(response.status));
       track("review_submitted", {
@@ -332,6 +363,7 @@ export function ReviewForm() {
         <p className="review-field__hint" id="review-media-hint">
           Pics or it didn&apos;t simmer. Reviews with a photo or video go up on
           the wall; words alone still count, they just stay off the gallery.
+          Keep it under {MEDIA_MAX_LABEL}, so a short clip rather than a long one.
         </p>
       </div>
 
@@ -447,9 +479,13 @@ export function ReviewForm() {
       <button
         className="button button--pill review-form__submit"
         type="submit"
-        disabled={sendState === "sending"}
+        disabled={sendState === "uploading" || sendState === "sending"}
       >
-        {sendState === "sending" ? "Sending…" : "Send the review"}
+        {sendState === "uploading"
+          ? "Sending the bowl…"
+          : sendState === "sending"
+            ? "Sending…"
+            : "Send the review"}
       </button>
 
       <p className="review-form__legal">

@@ -52,6 +52,13 @@ Hard rules that are cheap to break by accident:
   unless `site-faqs.ts` `pick()` calls are updated too.
 - Raw `<img>` is banned (use `next/image` with `sizes`); media budgets and encoding
   recipes are BRAND.md §15.
+- **Every new route under `app/api/` calls `guard()` from `lib/rate-limit.ts`
+  first**, before it parses a body or touches Supabase, Klaviyo or Shopify.
+  These routes have no login, so a cap plus a same-origin check is the only
+  thing standing between a loop and our storage quota, Klaviyo bill or Shopify
+  API allowance. Add the route's cap to `RATE_RULES` rather than inventing a
+  number inline. GET routes use `checkRate()` alone (browsers send no `Origin`
+  on a same-origin GET). See [docs/security.md](docs/security.md).
 
 The finishing gate for every change:
 

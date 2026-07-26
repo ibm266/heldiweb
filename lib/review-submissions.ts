@@ -51,8 +51,32 @@ export const REVIEW_LIMITS = {
   locationMax: 80,
   emailMax: 254,
   orderNumberMax: 32,
+  // Real phone video, which is the whole point of asking for a clip. The file
+  // never passes through a Vercel function (their request bodies cap at 4.5MB
+  // and fail with an opaque 413), so this number is not bounded by the host:
+  // the browser uploads straight to Supabase storage using a signed URL that
+  // /api/reviews/upload-url mints. Enforced in three places, deliberately:
+  // the form for feedback, the mint route as a cheap reject, and the bucket's
+  // own file_size_limit (migration 0004) as the one that cannot be bypassed
+  // by a hand-crafted upload.
   mediaMaxBytes: 50 * 1024 * 1024
 } as const;
+
+/** The limit as it should appear in copy, so the form and the route agree. */
+export const MEDIA_MAX_LABEL = `${REVIEW_LIMITS.mediaMaxBytes / 1024 / 1024}MB`;
+
+/** Folder every signed upload URL is minted under. */
+export const REVIEW_UPLOAD_PREFIX = "uploads";
+
+/**
+ * The only object paths a submission may claim. Because the bucket is private
+ * with no policies, the sole way an object can exist here is a signed URL this
+ * server minted, so a well-formed path that resolves to a real object is
+ * proof of provenance. The uuid segment also makes another submission's media
+ * unguessable.
+ */
+export const REVIEW_MEDIA_PATH_PATTERN =
+  /^uploads\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\/media\.[a-z0-9]{2,4}$/;
 
 /** Upload types we accept, mapped to the extension they are stored under. */
 export const REVIEW_MEDIA_TYPES: Record<string, string> = {

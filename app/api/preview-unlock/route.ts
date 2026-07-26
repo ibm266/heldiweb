@@ -1,6 +1,7 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { PREVIEW_COOKIE } from "@/lib/preview";
+import { crossOriginBlocked, guard, sameOrigin } from "@/lib/rate-limit";
 
 // Unlocks the consultant preview (/preview). The password lives in the
 // server-only PREVIEW_PASSWORD env var, so it never ships in the client
@@ -18,6 +19,12 @@ function passwordMatches(candidate: string, expected: string): boolean {
 }
 
 export async function POST(request: Request) {
+  // The real brake on guessing. The sleep below cannot do this job: each
+  // attempt runs in its own concurrent invocation, so a thousand parallel
+  // guesses all wait 400ms at the same time and finish together.
+  const blocked = guard(request, "previewUnlock");
+  if (blocked) return blocked;
+
   const expected = process.env.PREVIEW_PASSWORD;
   if (!expected) {
     return NextResponse.json(
@@ -35,7 +42,8 @@ export async function POST(request: Request) {
   }
 
   if (!password || !passwordMatches(password, expected)) {
-    // A small flat delay keeps casual brute-forcing boring.
+    // Kept only to slow a single interactive guesser. The cap above is what
+    // actually stops a script.
     await new Promise((resolve) => setTimeout(resolve, 400));
     return NextResponse.json({ error: "That password isn't right." }, { status: 401 });
   }
@@ -51,7 +59,11 @@ export async function POST(request: Request) {
   return response;
 }
 
-export async function DELETE() {
+export async function DELETE(request: Request) {
+  // Locking yourself out again is harmless, so no cap; the origin check just
+  // stops another site clearing the cookie for a visitor.
+  if (!sameOrigin(request)) return crossOriginBlocked();
+
   const response = NextResponse.json({ ok: true });
   response.cookies.set(PREVIEW_COOKIE, "", { path: "/", maxAge: 0 });
   return response;
