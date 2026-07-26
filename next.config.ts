@@ -46,10 +46,54 @@ const securityHeaders = [
   }
 ];
 
+// heldi.co.uk used to serve a Shopify theme, and Google still holds those URLs
+// in its index (a site: query on 26 Jul 2026 returned /pages/about-us and
+// /collections/dahi, both 404 now). A 404 drops out of the index eventually,
+// but slowly, and it throws away whatever link equity the URL had. A 301 moves
+// the URL and its equity to the live page in one recrawl, so every Shopify URL
+// shape gets a home here.
+//
+// Ordering matters: Next matches top to bottom, so the named /pages/* entries
+// must sit above the /pages/:slug* catch-all. These are permanent (308) because
+// the Shopify theme is gone and nothing will ever serve these paths again.
+const shopifyLegacyRedirects = [
+  // Shopify's default page slugs, in every spelling the old theme could have used.
+  { source: "/pages/about-us", destination: "/our-story" },
+  { source: "/pages/about", destination: "/our-story" },
+  { source: "/pages/our-story", destination: "/our-story" },
+  { source: "/pages/faq", destination: "/faq" },
+  { source: "/pages/faqs", destination: "/faq" },
+  { source: "/pages/contact", destination: "/faq" },
+  { source: "/pages/how-to-use", destination: "/ways-to-use" },
+  { source: "/pages/ingredients", destination: "/inside-the-pouch" },
+  // Shopify serves its legal docs under /policies/; ours live under /legal/.
+  { source: "/policies/privacy-policy", destination: "/legal/privacy" },
+  { source: "/policies/terms-of-service", destination: "/legal/terms" },
+  { source: "/policies/refund-policy", destination: "/legal/returns" },
+  { source: "/policies/shipping-policy", destination: "/legal/shipping" },
+  { source: "/policies/:slug*", destination: "/legal/terms" },
+  // Blog: Shopify nests posts as /blogs/<blog-handle>/<post-handle>. None of
+  // the old handles match ours, so the index page is the honest target.
+  { source: "/blogs/:path*", destination: "/heldi-living" },
+  // Catalogue: every collection, product and variant URL becomes the shop.
+  { source: "/collections/:path*", destination: "/shop" },
+  { source: "/products/:path*", destination: "/shop" },
+  { source: "/cart", destination: "/shop" },
+  { source: "/cart/:path*", destination: "/shop" },
+  { source: "/search", destination: "/shop" },
+  // Storefront chrome that has no equivalent here.
+  { source: "/account/:path*", destination: "/" },
+  { source: "/challenge", destination: "/" },
+  { source: "/pages/:slug*", destination: "/" }
+].map((rule) => ({ ...rule, permanent: true }));
+
 const nextConfig: NextConfig = {
   // PostHog API paths end in a slash; Next's default 308 to the non-slash
   // form would break them. Internal links never use trailing slashes.
   skipTrailingSlashRedirect: true,
+  async redirects() {
+    return shopifyLegacyRedirects;
+  },
   // Same-origin proxy for PostHog EU: beacons stay within connect-src 'self'
   // and off ad-blocker lists. The static host serves the lazy-loaded
   // replay recorder.
