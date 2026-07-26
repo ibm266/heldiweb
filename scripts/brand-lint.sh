@@ -126,24 +126,95 @@ else
   say "ok"
 fi
 
-# 6. WARNING: tracked assets over budget (§15.1: images ≤ 400KB, videos ≤ 8MB).
-#    All tracked assets were brought under budget in July 2026; compress new
-#    ones with the add-asset skill recipes before they land here.
+# Shared asset-reference index for checks 6 and 7.
+#
+# Every /images or /videos path written in app/ or components/, resolved to the
+# file it actually loads. imageSrc() in heldi-homepage.tsx rewrites
+# "/images/foo.webp" to the ink-blue variant directory, so a literal that looks
+# absent is usually being redirected; resolve that before reporting anything.
+VARIANT_BASE="public/images/variants/ink-blue"
+
+resolve_asset() {
+  ref="$1"
+  if [ -f "public$ref" ]; then
+    printf '%s\n' "public$ref"
+    return 0
+  fi
+  case "$ref" in
+    /images/*)
+      variant="$VARIANT_BASE/${ref#/images/}"
+      if [ -f "$variant" ]; then
+        printf '%s\n' "$variant"
+        return 0
+      fi
+      ;;
+  esac
+  return 1
+}
+
+ASSET_REFS=$(grep -rhoE '"/(images|videos)/[A-Za-z0-9._/-]+\.(webp|png|jpg|jpeg|avif|gif|mp4|webm|mov)"' \
+  app components --include='*.tsx' --include='*.ts' 2>/dev/null \
+  | tr -d '"' | sort -u || true)
+
+REFERENCED_FILES=$(while IFS= read -r ref; do
+  [ -n "$ref" ] || continue
+  resolve_asset "$ref" || true
+done < <(printf '%s\n' "$ASSET_REFS") | sort -u)
+
+# 6. WARNING: assets over budget (§15.1: images ≤ 400KB, videos ≤ 8MB).
+#    Checks everything git tracks (all of which deploys) plus any untracked
+#    file that code actually references. Using git ls-files alone used to let an
+#    untracked monster pass silently, which is how a 29MB hero video and a
+#    5.7MB poster were both reported "ok". Untracked master art that nothing
+#    references is deliberately ignored: it never ships, so it is not a budget
+#    problem, and listing it buries the findings that matter.
 rule "Asset budgets (§15.1)"
 OVER=0
 while IFS= read -r f; do
   [ -f "$f" ] || continue
+  case "$f" in
+    *.DS_Store|*.md) continue ;;
+  esac
   size=$(stat -f%z "$f" 2>/dev/null || stat -c%s "$f")
   case "$f" in
     public/videos/*) limit=$((8 * 1024 * 1024)) ;;
     *) limit=$((400 * 1024)) ;;
   esac
   if [ "$size" -gt "$limit" ]; then
-    printf 'WARNING: %6.1fMB  %s\n' "$(echo "$size / 1048576" | bc -l)" "$f"
+    if git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+      note="deployed"
+    else
+      note="untracked but referenced in code"
+    fi
+    printf 'WARNING: %6.1fMB  %s  (%s)\n' \
+      "$(echo "$size / 1048576" | bc -l)" "$f" "$note"
     OVER=$((OVER + 1))
   fi
-done < <(git ls-files public/images public/videos)
+done < <( { git ls-files public/images public/videos; printf '%s\n' "$REFERENCED_FILES"; } | sort -u)
 if [ "$OVER" -gt 0 ]; then
+  warnings=$((warnings + 1))
+else
+  say "ok"
+fi
+
+# 7. WARNING: an asset path in code that will 404 in production.
+#    Vercel deploys from git, so a component pointing at a gitignored file
+#    ships a broken image or video with no clue why. This is what the video
+#    hero does today: heroLayout="video" is a selectable layout whose film and
+#    poster are both excluded from the repo.
+rule "Referenced assets missing from the repo (§15)"
+MISSING=0
+while IFS= read -r ref; do
+  [ -n "$ref" ] || continue
+  if ! resolved=$(resolve_asset "$ref"); then
+    printf 'WARNING: referenced but absent:    %s\n' "$ref"
+    MISSING=$((MISSING + 1))
+  elif ! git ls-files --error-unmatch "$resolved" >/dev/null 2>&1; then
+    printf 'WARNING: referenced but untracked: %s  (will 404 in production)\n' "$ref"
+    MISSING=$((MISSING + 1))
+  fi
+done < <(printf '%s\n' "$ASSET_REFS")
+if [ "$MISSING" -gt 0 ]; then
   warnings=$((warnings + 1))
 else
   say "ok"
