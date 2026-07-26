@@ -228,6 +228,15 @@ webhook.
   (matches `lib/commerce/shopify/client.ts`). Copy the signing secret shown
   at the bottom of the webhooks page into Vercel as `SHOPIFY_WEBHOOK_SECRET`
   → redeploy.
+  **Use the apex, not the `www.` host.** The reasoning here is unchanged since
+  25 Jul 2026, only the direction is: register whichever host answers directly,
+  because a POST that has to follow a 308 depends on Shopify honouring the
+  redirect on POST, and the HMAC is computed over the raw body, so a redirect
+  hop is a free chance to break signature verification. That host used to be
+  `www.`; since 26 Jul 2026 the apex serves Vercel Production and `www.`
+  308-redirects to it, so the apex is the one to register. Verify with
+  `curl -sI https://heldi.co.uk/` before registering: it must answer 200, not
+  a redirect.
 - [ ] Click **Send test notification** on the webhook: expect HTTP 200 and a
   `purchase` event in PostHog → Activity with a `shopify-order-...`
   distinct id (the test payload carries no `_heldi_ph_id`).
