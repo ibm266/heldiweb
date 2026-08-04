@@ -393,6 +393,31 @@ the job. Grep before you declare victory.
 
 ### 11.1 Formulation / spices change
 
+> **STATUS, 28 Jul 2026: the formulation is NOT final and the site's version is
+> provisional.** The blend currently shipped in copy is the 4-ingredient
+> cumin-only one (`FORMULA` in `components/shop/nutrition-data.ts`). The real
+> product is still in development and is **expected to end up a blend of several
+> spices rather than cumin alone**, so treat every spice reference on the site as
+> a placeholder awaiting the final spec.
+>
+> This is a deliberate, accepted risk while pre-launch: it is not worth churning
+> the copy each time the recipe moves. Two rules follow from that.
+>
+> 1. **Do not "fix" spice copy to match `nutrition-data.ts` on the assumption
+>    that file is right.** It is provisional too. If you spot a mismatch (§13
+>    lists the known ones), flag it rather than silently propagating cumin-only
+>    wording into more surfaces.
+> 2. **The formulation must be confirmed before launch, and it is a hard gate**
+>    in `docs/go-live-checklist.md`. The real deadline is earlier than launch: it
+>    is the **pouch film print order**, because printed packaging carries the
+>    ingredients list and the nutrition declaration, and a wrong one is a false
+>    declaration under FIC Regulation 1169/2011, not a copy tweak. Nutrition
+>    figures must come from analysis of the final blend, not from the current
+>    calculated numbers.
+>
+> When the final spec lands, work the touch list below in one pass and delete
+> this note.
+
 The July 2026 reformulation (7-ingredient spiced blend → 4-ingredient cumin blend)
 left stale copy behind; do not repeat that. Touch list:
 
