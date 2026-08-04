@@ -1,11 +1,20 @@
 // Server-only read path for published customer reviews.
 //
-// The storefront still ships PLACEHOLDER_REVIEWS (see lib/reviews.ts) as the
-// design default. Once a submission is checked and its row flipped to
-// status='published' in Supabase, getPublishedReviews() surfaces it here with
-// a signed URL for its media. Consumers fall back to the placeholders whenever
-// this returns an empty array (no published reviews yet, or Supabase not
-// configured), so the site never breaks on a missing backend.
+// Once a submission is checked and its row flipped to status='published' in
+// Supabase, getPublishedReviews() surfaces it here with a signed URL for its
+// media. When this returns an empty array (nothing published yet, or Supabase
+// not configured) the review surfaces render nothing at all in production;
+// the invented placeholders behind lib/showcase.ts are for design review only
+// and never fill the gap on the live site.
+//
+// The VERIFIED badge is earned, not assumed: it is set from whether the row
+// carries an order number. Friends, family and testers reviewing before launch
+// have no order to match, so they publish without the badge, which is what
+// keeps the badge meaningful and the /review page's promise ("we match every
+// review to a real order before it goes up") true. Reviews given in exchange
+// for free product are incentivised under CMA guidance and need disclosing on
+// the review itself; there is no field for that yet, so see
+// docs/go-live-checklist.md before publishing any.
 import { getSupabaseAdmin, REVIEW_MEDIA_BUCKET } from "./supabase/admin";
 import type { Review, ReviewMedia } from "./reviews";
 
@@ -23,6 +32,7 @@ type ReviewRow = {
   body: string;
   media_path: string | null;
   media_content_type: string | null;
+  order_number: string | null;
   submitted_at: string;
 };
 
@@ -59,7 +69,7 @@ export async function getPublishedReviews(): Promise<Review[]> {
     const { data, error } = await supabase
       .from("reviews")
       .select(
-        "id, author, location, dish, tablespoons, rating, body, media_path, media_content_type, submitted_at"
+        "id, author, location, dish, tablespoons, rating, body, media_path, media_content_type, order_number, submitted_at"
       )
       .eq("status", "published")
       .order("display_order", { ascending: true, nullsFirst: false })
@@ -79,7 +89,8 @@ export async function getPublishedReviews(): Promise<Review[]> {
         rating: row.rating ?? undefined,
         text: row.body,
         media,
-        verified: true,
+        // Only a review matched to a real order may wear the badge.
+        verified: Boolean(row.order_number?.trim()),
         date: row.submitted_at.slice(0, 10)
       });
     }

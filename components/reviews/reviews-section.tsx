@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { Review } from "@/lib/reviews";
+import { displayReviews, displayStandings, type Review } from "@/lib/reviews";
 import { ReviewGallery } from "./review-gallery";
 import { ReviewLeaderboard } from "./review-leaderboard";
 
@@ -35,6 +35,14 @@ export function ReviewsSection({
   submitCta = false,
   reviews
 }: ReviewsSectionProps) {
+  // With no real reviews and showcase mode off, the whole band goes: header,
+  // gallery, leaderboard and CTA together. A heading promising "from real
+  // tables" above an empty rail is worse than no section at all, and the
+  // placeholder people behind it may not ship (lib/showcase.ts).
+  const gallery = displayReviews(reviews);
+  const standings = showLeaderboard ? displayStandings() : [];
+  if (gallery.length === 0 && standings.length === 0) return null;
+
   return (
     <section className={`section section--${tone} section--bordered`} id={id}>
       <div className="reviews">
@@ -44,9 +52,9 @@ export function ReviewsSection({
           <p className="reviews__lede">{lede}</p>
         </header>
 
-        <ReviewGallery reviews={reviews} />
+        {gallery.length > 0 ? <ReviewGallery reviews={reviews} /> : null}
 
-        {showLeaderboard ? <ReviewLeaderboard /> : null}
+        {standings.length > 0 ? <ReviewLeaderboard /> : null}
 
         {submitCta ? (
           <p className="reviews__submit-cta">

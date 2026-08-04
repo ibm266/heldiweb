@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  PLACEHOLDER_REVIEWS,
+  displayReviews,
   reviewProteinGrams,
   type Review,
   type ReviewMedia
@@ -116,10 +116,18 @@ function VideoReviewModal({
   );
 }
 
-export function PdpReviewTeasers() {
+export function PdpReviewTeasers({ reviews }: { reviews?: Review[] }) {
+  const shown = displayReviews(reviews);
   const teasers = useMemo(
-    () => PLACEHOLDER_REVIEWS.filter(isVideoReview).slice(0, TEASER_COUNT),
-    []
+    () => shown.filter(isVideoReview).slice(0, TEASER_COUNT),
+    [shown]
+  );
+  // Counted from the reviews actually being shown, never asserted. The old
+  // hard-coded "200+ five star reviews" was an invented figure sitting above
+  // invented reviewers, which is the exact shape the DMCC Act 2024 bans.
+  const fiveStarCount = useMemo(
+    () => shown.filter((review) => review.rating === 5).length,
+    [shown]
   );
   const [openReview, setOpenReview] = useState<VideoReview | null>(null);
 
@@ -131,20 +139,24 @@ export function PdpReviewTeasers() {
 
   return (
     <div className="pdp-review-teasers">
-      <div className="pdp-review-teasers__summary">
-        <p className="pdp-review-teasers__count">200+ five star reviews</p>
-        <p
-          className="pdp-review-teasers__stars"
-          role="img"
-          aria-label="5 out of 5 stars"
-        >
-          {Array.from({ length: 5 }, (_, i) => (
-            <span key={i} aria-hidden="true">
-              ★
-            </span>
-          ))}
-        </p>
-      </div>
+      {fiveStarCount > 0 ? (
+        <div className="pdp-review-teasers__summary">
+          <p className="pdp-review-teasers__count">
+            {fiveStarCount} five star {fiveStarCount === 1 ? "review" : "reviews"}
+          </p>
+          <p
+            className="pdp-review-teasers__stars"
+            role="img"
+            aria-label="5 out of 5 stars"
+          >
+            {Array.from({ length: 5 }, (_, i) => (
+              <span key={i} aria-hidden="true">
+                ★
+              </span>
+            ))}
+          </p>
+        </div>
+      ) : null}
       <ul className="pdp-review-teasers__grid">
         {teasers.map((review) => (
           <li key={review.id}>
