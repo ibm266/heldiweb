@@ -11,6 +11,12 @@ import { CONSENT_CHANGE_EVENT, readConsent } from "@/lib/consent";
 // panel) hides it via the consent change event. Escape and backdrop clicks
 // dismiss without recording a choice, so it returns on the next full page
 // load. Suppressed on /legal/* so the policy it links to stays readable.
+//
+// It waits SHOW_DELAY_MS before appearing so the homepage elephant curtain
+// (ELEPHANT_RUN_MS, 3s in heldi-homepage.tsx) gets to play uninterrupted.
+// Keep this above that run time if the curtain ever gets longer.
+
+const SHOW_DELAY_MS = 4000;
 
 const COPY = {
   title: "Cookies. Yes or no?",
@@ -28,17 +34,22 @@ export function ConsentModal() {
 
   // localStorage is client-only, so visibility is decided after mount; the
   // extra render is the cost of avoiding a hydration mismatch (same pattern
-  // as the cart hydration).
-  /* eslint-disable react-hooks/set-state-in-effect */
+  // as the cart hydration). Consent is re-read when the timer fires, not
+  // before it, so a choice made from the cookies page during the wait keeps
+  // the modal away.
   useEffect(() => {
-    if (!readConsent()) setVisible(true);
+    const timer = window.setTimeout(() => {
+      if (!readConsent()) setVisible(true);
+    }, SHOW_DELAY_MS);
     function onConsentChange() {
       if (readConsent()) setVisible(false);
     }
     window.addEventListener(CONSENT_CHANGE_EVENT, onConsentChange);
-    return () => window.removeEventListener(CONSENT_CHANGE_EVENT, onConsentChange);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener(CONSENT_CHANGE_EVENT, onConsentChange);
+    };
   }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Focus, Escape, Tab trap and scroll lock while open. Keyed on `open`, not
   // `visible`: navigating to /legal/* has to release the scroll lock.
