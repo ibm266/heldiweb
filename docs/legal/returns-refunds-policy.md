@@ -54,3 +54,28 @@ Refunds go back to the original payment method via our payment processor
 after we process it.
 
 Nothing in this policy affects your statutory rights.
+
+## Model cancellation form
+
+You do not have to use this form: an email to info@heldi.co.uk saying you wish
+to cancel is enough. It is here because the Consumer Contracts (Information,
+Cancellation and Additional Charges) Regulations 2013 require us to provide it.
+Complete and return it only if you want to cancel.
+
+> To Heldi LTD, 71-75 Shelton Street, Covent Garden, London, WC2H 9JQ,
+> info@heldi.co.uk:
+>
+> I/We [*] hereby give notice that I/We [*] cancel my/our [*] contract of sale
+> of the following goods [*]:
+>
+> Ordered on [*] / received on [*]:
+>
+> Name of consumer(s):
+>
+> Address of consumer(s):
+>
+> Signature of consumer(s) (only if this form is notified on paper):
+>
+> Date:
+>
+> [*] Delete as appropriate.

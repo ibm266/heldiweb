@@ -22,7 +22,7 @@ export default function InsideThePouchPage() {
             Four ingredients. Nothing to hide.
           </h1>
           <p className="story-hero__lede">
-            Whey protein isolate, sunflower lecithin, cumin, fine sea salt.{" "}
+            Whey protein isolate (MILK), sunflower lecithin, cumin, fine sea salt.{" "}
             <CopyHighlight>That is the whole label.</CopyHighlight> Here is
             where each one comes from, and the paperwork that follows it in.
           </p>

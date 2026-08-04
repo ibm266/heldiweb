@@ -6070,6 +6070,26 @@ a.living-card__tag:hover {
   line-height: 1.55;
 }
 
+/* The "RRP" that qualifies every struck-through price. Small and quiet, but
+   never hidden: it is what stops the strikethrough reading as a former price. */
+.price-rrp-label {
+  font-size: 0.75em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pdp__legal-name {
+  margin: 0.25rem 0 0;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.pdp__disclaimer {
+  margin-top: 1.5rem;
+}
+
 .heldi-disclaimer {
   margin: 2rem 0 0 !important;
   padding-top: 1.25rem;
@@ -6477,6 +6497,21 @@ a.living-card__tag:hover {
   color: var(--terracotta);
   font-size: 0.875rem;
   font-weight: 600;
+}
+
+/* Cart write failures. Bordered rather than tinted text because this one has
+   to be noticed: it is the only feedback a shopper gets when an add silently
+   fails, and it can appear above an otherwise empty basket. */
+.cart-drawer__error {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.875rem;
+  border: 2px solid var(--terracotta);
+  border-radius: 0.5rem;
+  color: var(--ink);
+  background: var(--cream);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 .cart-drawer__summary {

@@ -30,6 +30,7 @@ import { GiftingPopup } from "./gifting-popup";
 import { NutritionModal } from "./nutrition-modal";
 import { PdpReviewTeasers } from "./pdp-review-teasers";
 import { ProductAccordions } from "./product-accordions";
+import { StatutoryStatements } from "./statutory-statements";
 
 // The family-discount popup shows after the first add-to-basket of a
 // session, and never once a gifting code is already on the cart.
@@ -43,6 +44,19 @@ const PDP_PILLS: { icon: string; label: string; width: number; height: number }[
   { icon: "/images/pouch-badges/gluten-free.png", label: "Gluten free", width: 328, height: 225 },
   { icon: "/images/pouch-badges/vegetarian.png", label: "Vegetarian", width: 286, height: 367 }
 ];
+
+// A struck-through price has to say what it is. £35 has never been charged:
+// it is the recommended retail price, not a price Heldi previously sold at.
+// Under the DMCC Act 2024 a bare strikethrough invites the reader to assume a
+// former price and is a misleading action if it never was one. Labelling it
+// RRP is the whole fix, and it must stay wherever a compare-at is shown.
+function Rrp({ children }: { children: React.ReactNode }) {
+  return (
+    <s>
+      <span className="price-rrp-label">RRP</span> {children}
+    </s>
+  );
+}
 
 export function BuyBox({ product }: { product: Product }) {
   const [isPouch, setIsPouch] = useState(true);
@@ -117,6 +131,22 @@ export function BuyBox({ product }: { product: Product }) {
       : "Ships free.";
 
   async function handleAdd() {
+    const giftingApplied = (cart?.discountCodes ?? []).some(
+      (entry) => entry.applicable && isGiftingCode(entry.code)
+    );
+    // Pouch tiers add pouches, not lines: the cart repacks the running
+    // total into the cheapest bundle mix, so a pouch on top of a pair
+    // becomes the full table rather than two awkward lines.
+    const added = isPouch
+      ? await addPouches(tier.pouches)
+      : await addItem(selectedVariant.id, 1);
+
+    // Everything below is contingent on the write landing. Previously the
+    // event fired before the mutation and the button flashed "Added"
+    // regardless, so a failed add was counted as a conversion in PostHog and
+    // confirmed to the shopper. The drawer shows the error instead.
+    if (!added) return;
+
     track("add_to_cart", {
       product: "khana",
       format: isPouch ? "pouch" : "sample",
@@ -124,14 +154,6 @@ export function BuyBox({ product }: { product: Product }) {
       value: moneyToPence(selected.current) / 100,
       currency: "GBP"
     });
-    const giftingApplied = (cart?.discountCodes ?? []).some(
-      (entry) => entry.applicable && isGiftingCode(entry.code)
-    );
-    // Pouch tiers add pouches, not lines: the cart repacks the running
-    // total into the cheapest bundle mix, so a pouch on top of a pair
-    // becomes the full table rather than two awkward lines.
-    if (isPouch) await addPouches(tier.pouches);
-    else await addItem(selectedVariant.id, 1);
     setJustAdded(true);
     window.setTimeout(() => setJustAdded(false), 2000);
     if (!giftingApplied && !window.sessionStorage.getItem(GIFTING_POPUP_SEEN_KEY)) {
@@ -155,7 +177,7 @@ export function BuyBox({ product }: { product: Product }) {
           {showPrices ? (
             <div className="pdp__annos" aria-hidden="true">
               <span className="pdp__anno pdp__anno--price">
-                {annoPrice.compareAt ? <s>{formatMoney(annoPrice.compareAt)}</s> : null}
+                {annoPrice.compareAt ? <Rrp>{formatMoney(annoPrice.compareAt)}</Rrp> : null}
                 {formatMoney(annoPrice.current)}
               </span>
             </div>
@@ -179,6 +201,13 @@ export function BuyBox({ product }: { product: Product }) {
       <div className="pdp__buy">
         <p className="eyebrow">THE HELDI POUCH</p>
         <h1 className="pdp__title">Heldi Khana</h1>
+        {/* The descriptive legal name, which FIC Reg 1169/2011 requires next to
+            the brand name so a shopper knows what the product actually is. It
+            also discharges the "food supplement" designation at the top of the
+            page rather than only in the block at the bottom. */}
+        <p className="pdp__legal-name">
+          Whey protein isolate blend with warm spices. Food supplement.
+        </p>
         <p className="pdp__lede">{product.shortDescription}</p>
 
         <button
@@ -235,7 +264,7 @@ export function BuyBox({ product }: { product: Product }) {
             <span className="option-card__meta">{SERVINGS_PER_POUCH} meals</span>
             {showPrices ? (
               <span className="option-card__price">
-                {pouchSingle.compareAt ? <s>{formatMoney(pouchSingle.compareAt)}</s> : null}
+                {pouchSingle.compareAt ? <Rrp>{formatMoney(pouchSingle.compareAt)}</Rrp> : null}
                 {formatMoney(pouchSingle.current)}
               </span>
             ) : null}
@@ -252,7 +281,7 @@ export function BuyBox({ product }: { product: Product }) {
             <span className="option-card__meta">{SERVINGS_PER_SAMPLE} servings</span>
             {showPrices ? (
               <span className="option-card__price">
-                {sampleSingle.compareAt ? <s>{formatMoney(sampleSingle.compareAt)}</s> : null}
+                {sampleSingle.compareAt ? <Rrp>{formatMoney(sampleSingle.compareAt)}</Rrp> : null}
                 {formatMoney(sampleSingle.current)}
               </span>
             ) : null}
@@ -273,9 +302,13 @@ export function BuyBox({ product }: { product: Product }) {
                 );
                 return (
                   <label key={id} className={`option-card${tierId === id ? " is-selected" : ""}`}>
+                    {/* "BEST VALUE" is a price fact anyone can check against the
+                        per-serving figures. The old "MOST POPULAR" was a claim
+                        about what other customers buy, which is not something we
+                        can evidence with zero orders. */}
                     {id === FEATURED_TIER ? (
                       <span className="option-card__flag option-card__flag--gold">
-                        MOST POPULAR
+                        BEST VALUE
                       </span>
                     ) : null}
                     <input
@@ -300,11 +333,11 @@ export function BuyBox({ product }: { product: Product }) {
                           {formatPence(perMealPence)} per meal
                         </span>
                         <span className="option-card__price">
-                          {price.compareAt ? <s>{formatMoney(price.compareAt)}</s> : null}
+                          {price.compareAt ? <Rrp>{formatMoney(price.compareAt)}</Rrp> : null}
                           {formatMoney(price.current)}
                         </span>
                         <span className="option-card__save">
-                          Save {formatPence(tierSavingsPence(id))}
+                          {formatPence(tierSavingsPence(id))} below RRP
                         </span>
                       </>
                     ) : (
@@ -329,7 +362,10 @@ export function BuyBox({ product }: { product: Product }) {
                   <span>{item.title}</span>
                   {showPrices ? (
                     <>
-                      <s>{formatPence(item.valuePence)}</s>
+                      {/* Same rule as the pouch prices: the jar and dabba have
+                          never been sold at these figures, so the struck value
+                          is an RRP and has to say so. */}
+                      <Rrp>{formatPence(item.valuePence)}</Rrp>
                       <strong>Free</strong>
                     </>
                   ) : null}
@@ -352,6 +388,8 @@ export function BuyBox({ product }: { product: Product }) {
         <p className="pdp__promise">{shippingNote}</p>
 
         <PdpReviewTeasers />
+
+        <StatutoryStatements className="pdp__disclaimer" />
 
         <div className="pdp__desc">
           <p>

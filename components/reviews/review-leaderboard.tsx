@@ -1,13 +1,16 @@
 import {
   PROTEIN_GRAMS_PER_TBSP,
-  leaderboardStandings,
+  displayStandings,
   reviewProteinGrams
 } from "@/lib/reviews";
+import { SHOWCASE_MODE } from "@/lib/showcase";
 
-// The spoonboard: who stirred the most protein into one pot. Standings are
-// placeholder data until the review form ships (see lib/reviews.ts).
+// The spoonboard: who stirred the most protein into one pot. Until real
+// reviews arrive the standings are invented people, so they appear only in
+// showcase mode (lib/showcase.ts) and the table renders nothing otherwise.
 export function ReviewLeaderboard() {
-  const rows = leaderboardStandings();
+  const rows = displayStandings();
+  if (rows.length === 0) return null;
 
   return (
     <div className="leaderboard">
@@ -42,8 +45,9 @@ export function ReviewLeaderboard() {
       </ol>
 
       <p className="leaderboard__note">
-        Sample standings while the review form is being built. Review with a
-        photo or video and your spoon count to enter the league.
+        {SHOWCASE_MODE
+          ? "Sample standings, shown here to lay the table out. Not real people, and never shown to a customer."
+          : "Review with a photo or video and your spoon count to enter the league."}
       </p>
     </div>
   );

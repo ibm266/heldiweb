@@ -155,7 +155,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "What are the ingredients?",
         answer:
-          "Four things: whey protein isolate (94%), sunflower lecithin (4%), cumin (1.25%) and fine sea salt (0.6%). No added sugar, no sweeteners, no preservatives, no fillers. Contains milk (whey).",
+          "Four things: whey protein isolate (MILK) (94%), sunflower lecithin (4%), cumin (1.25%) and fine sea salt (0.6%). No added sugar, no sweeteners, no preservatives, no fillers. Contains naturally occurring sugars. Contains milk (whey).",
         more: { href: "/inside-the-pouch", label: "See the full breakdown" }
       },
       {
@@ -217,7 +217,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How do I reach a human?",
         answer:
-          "Email info@heldi.co.uk and the founder answers. It really is that small an operation right now, which is also why replies come with opinions about dal."
+          "Email info@heldi.co.uk and the founder answers, within two working days. It really is that small an operation right now, which is also why replies come with opinions about dal."
       }
     ]
   }

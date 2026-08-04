@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useMemo, useRef, useState } from "react";
 import {
-  PLACEHOLDER_REVIEWS,
+  displayReviews,
   reviewProteinGrams,
   type Review
 } from "@/lib/reviews";
@@ -39,10 +39,11 @@ function Stars({ rating }: { rating: number }) {
 }
 
 export function ReviewGallery({
-  reviews = PLACEHOLDER_REVIEWS
+  reviews: published
 }: {
   reviews?: Review[];
 }) {
+  const reviews = displayReviews(published);
   const [filter, setFilter] = useState<FilterId>("all");
   const [active, setActive] = useState(0);
   const [playingId, setPlayingId] = useState<string | null>(null);

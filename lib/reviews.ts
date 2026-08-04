@@ -4,14 +4,21 @@
 // review-request emails) posts to /api/reviews, and each submission lands in
 // data/review-submissions/ as JSON plus media, status pending. See
 // lib/review-submissions.ts for the stored shape and the moderation flow.
-// Everything displayed below is still PLACEHOLDER content so the homepage and
-// PDP review sections can be designed against realistic data. None of it may
-// ship as-is: the CMA (DMCC Act 2024) bans publishing fake consumer reviews,
-// so swap these for moderated real submissions before launch.
+//
+// The PLACEHOLDER_* arrays below are invented people. They exist so the review
+// gallery and the IPL leaderboard could be designed against realistic data,
+// and they must never reach a customer: publishing fake consumer reviews is a
+// banned practice under the DMCC Act 2024 and the CMA can enforce it directly.
+// Nothing here is imported by a component any more. Read them through
+// displayReviews() and displayStandings(), which return the placeholders only
+// when SHOWCASE_MODE is on (lib/showcase.ts), so a production build renders
+// real reviews or nothing at all.
 //
 // The tablespoon count is a first-class field because the leaderboard
 // aggregates it; hosted review platforms (Judge.me etc.) can collect it as a
 // custom question but won't do that maths, so display stays custom either way.
+
+import { SHOWCASE_MODE } from "./showcase";
 
 /** Keep in sync with the PDP "The protein numbers" accordion copy. */
 export const PROTEIN_GRAMS_PER_TBSP = 10.4;
@@ -44,7 +51,9 @@ export function reviewProteinGrams(tablespoons: number): number {
   return Math.round(tablespoons * PROTEIN_GRAMS_PER_TBSP * 10) / 10;
 }
 
-export const PLACEHOLDER_REVIEWS: Review[] = [
+// Deliberately not exported: displayReviews() below is the only way to reach
+// them, so no component can render an invented reviewer by accident.
+const PLACEHOLDER_REVIEWS: Review[] = [
   {
     id: "sample-priya-dal",
     author: "Priya M.",
@@ -185,9 +194,9 @@ export type LeaderboardEntry = {
   tablespoons: number;
 };
 
-// Placeholder standings. Live version aggregates the tablespoon counts from
-// published reviews instead.
-export const PLACEHOLDER_STANDINGS: LeaderboardEntry[] = [
+// Placeholder standings, module-private for the same reason as the reviews
+// above. The live version aggregates tablespoon counts from published reviews.
+const PLACEHOLDER_STANDINGS: LeaderboardEntry[] = [
   { author: "Anita B.", location: "Croydon", dish: "Sunday kadhi for six", tablespoons: 4 },
   { author: "Dev T.", location: "Slough", dish: "the family kadhi pot", tablespoons: 3 },
   { author: "Arjun S.", location: "Wembley", dish: "chana masala", tablespoons: 3 },
@@ -197,8 +206,51 @@ export const PLACEHOLDER_STANDINGS: LeaderboardEntry[] = [
   { author: "Meera K.", location: "Birmingham", dish: "cucumber raita", tablespoons: 1 }
 ];
 
+/** Highest spoon count first. Takes its rows explicitly rather than defaulting
+ *  to the placeholders, so calling it can never surface invented people. */
 export function leaderboardStandings(
-  entries: LeaderboardEntry[] = PLACEHOLDER_STANDINGS
+  entries: LeaderboardEntry[]
 ): LeaderboardEntry[] {
   return [...entries].sort((a, b) => b.tablespoons - a.tablespoons);
+}
+
+// The two gates every display surface goes through. Real moderated reviews
+// always win; the invented ones fill in only while showcasing the design; a
+// production build with no real reviews yet gets an empty array, and each
+// component renders nothing rather than an empty shell.
+
+// Frozen module-level empties so the "nothing to show" case keeps a stable
+// identity: ReviewGallery feeds this straight into a useMemo dependency, and a
+// fresh [] each render would invalidate it on every pass.
+const NO_REVIEWS: readonly Review[] = Object.freeze([]);
+const NO_STANDINGS: readonly LeaderboardEntry[] = Object.freeze([]);
+
+// The gate every display surface goes through. Real moderated reviews always
+// win; the invented ones fill in only in showcase mode; otherwise empty, and
+// each component renders nothing rather than an empty shell.
+//
+// Scope of what this guarantees, measured on a production build 28 Jul 2026:
+// no invented reviewer, no VERIFIED chip, no star count and no leaderboard
+// appears in any rendered HTML, so nothing reaches a customer or a crawler.
+// What it does NOT do is keep the arrays out of the JavaScript. Making them
+// module-private and branching on a compile-time constant were both tried, and
+// the bundler still ships them in a chunk that / and /shop download; the data
+// simply never renders. That residue is acceptable because publishing a fake
+// review means displaying it, and the real fix is deleting these arrays once
+// real reviews exist, which is a launch blocker in docs/go-live-checklist.md.
+// If you need them genuinely absent sooner, they have to move to a module that
+// only a showcase-only component imports.
+
+export function displayReviews(published?: Review[]): readonly Review[] {
+  if (published && published.length > 0) return published;
+  if (SHOWCASE_MODE) return PLACEHOLDER_REVIEWS;
+  return NO_REVIEWS;
+}
+
+export function displayStandings(
+  published?: LeaderboardEntry[]
+): readonly LeaderboardEntry[] {
+  if (published && published.length > 0) return leaderboardStandings(published);
+  if (SHOWCASE_MODE) return leaderboardStandings(PLACEHOLDER_STANDINGS);
+  return NO_STANDINGS;
 }
