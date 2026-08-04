@@ -4,6 +4,7 @@ import { siteFaqGroupsForMode } from "@/components/site-faqs";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { serializeJsonLd } from "@/lib/json-ld";
+import { StatutoryStatements } from "@/components/shop/statutory-statements";
 
 export const metadata: Metadata = {
   title: "FAQ · Heldi",
@@ -53,12 +54,7 @@ export default function FaqPage() {
       <section className="section section--cream section--bordered">
         <FaqPageList />
         <div className="faq">
-          <p className="heldi-disclaimer">
-            Heldi is a food supplement. Do not exceed the recommended daily
-            intake. Food supplements are not a substitute for a varied and
-            balanced diet and a healthy lifestyle. Keep out of reach of
-            children. Contains milk (whey).
-          </p>
+          <StatutoryStatements />
         </div>
       </section>
 

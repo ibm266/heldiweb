@@ -1,11 +1,31 @@
 // Nutrition declaration and amino acid profile for the Heldi blend.
 // Source: supplier analysis of the launch formula. Shared by the nutrition
 // modal (full data) and the Nutrition accordion (declaration only).
+//
+// PROVISIONAL, 28 Jul 2026. The formulation is still in development and is
+// expected to become a blend of several spices rather than cumin alone, so
+// FORMULA and the figures below will change. Accepted risk pre-launch; do not
+// spend effort reconciling spice copy across the site against this file yet.
+// Confirming the final formulation is a hard gate in
+// docs/go-live-checklist.md, and the real deadline is the pouch film print
+// order, not launch day: printed packaging carries the ingredients list and
+// the nutrition declaration, and getting those wrong is a false declaration
+// under FIC Regulation 1169/2011. The final numbers must come from analysis of
+// the finished blend, not calculated from ingredient inputs. Full change
+// impact: BRAND.md §11.1.
 
+// MILK is capitalised inside the list on purpose. FIC Reg 1169/2011 Art 21(1)
+// requires the allergen to be emphasised within the ingredients list itself;
+// a separate "contains milk" line elsewhere does not satisfy it.
 export const FORMULA =
-  "Whey protein isolate 94.15% · sunflower lecithin 4% · cumin 1.25% · fine sea salt 0.6%";
+  "Whey protein isolate (MILK) 94.15% · sunflower lecithin 4% · cumin 1.25% · fine sea salt 0.6%";
 
-export const SERVING_LABEL = "Per 12g serving (heaped tbsp)";
+/** One serving in grams. The recommended daily portion the statutory
+ *  statements have to declare, and the basis of every per-serving figure
+ *  below. Kept separate from SERVING_LABEL so callers never parse prose. */
+export const SERVING_GRAMS = 12;
+
+export const SERVING_LABEL = `Per ${SERVING_GRAMS}g serving (heaped tbsp)`;
 
 export type NutritionRow = {
   label: string;

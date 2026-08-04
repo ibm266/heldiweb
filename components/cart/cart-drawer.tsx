@@ -57,6 +57,7 @@ export function CartDrawer() {
     cart,
     isOpen,
     isPending,
+    error,
     mode,
     giftingMethod,
     applyGifting,
@@ -269,6 +270,15 @@ export function CartDrawer() {
             ×
           </button>
         </header>
+
+        {/* Sits above the lines and outside the empty/filled branch, because
+            the commonest failure is the very first add: the basket is still
+            empty, and without this the shopper is told nothing at all. */}
+        {error ? (
+          <p className="cart-drawer__error" role="alert">
+            {error}
+          </p>
+        ) : null}
 
         {lines.length === 0 ? (
           <div className="cart-drawer__empty">

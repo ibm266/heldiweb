@@ -14,6 +14,7 @@ import { HOME_FAQS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
+import { StatutoryStatements } from "@/components/shop/statutory-statements";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 import { WaitlistForm } from "@/components/waitlist-form";
@@ -1250,8 +1251,12 @@ export function HeldiHomepage({
             <CopyHighlight>honest fix</CopyHighlight>.
           </p>
           <PouchEquation />
+          {/* 94%, not 90%: the pouch is 94.15% whey protein isolate, while the
+              isolate itself is about 90% protein. See FORMULA in
+              components/shop/nutrition-data.ts, and BRAND.md §11.1 before
+              changing, since the formulation is still moving. */}
           <p className="pouch-section__ingredient">
-            90% whey protein isolate. The rest, spices you already know.
+            94% whey protein isolate. The rest, warm spices you already know.
           </p>
           <div className="pill-links">
             <a className="pill-link" href="/truth">
@@ -1356,12 +1361,12 @@ export function HeldiHomepage({
             <p className="eyebrow eyebrow--gold">WITH EVERY ORDER</p>
             <h2>A jar for the table. On us.</h2>
             <p>
-              Every Heldi order ships with a refillable jar for the{" "}
+              Every pouch order ships with a refillable jar for the{" "}
               <CopyHighlight>dinner table</CopyHighlight>. Not the cupboard.
               Right there <CopyHighlight>beside the dal</CopyHighlight>, where
-              everyone can reach for it. Silver or gold? That is a choice
-              every mama likes to make. Gold when the table is set for guests.
-              Silver for the meal the whole family eats every night.
+              everyone can reach for it. It comes in gold, and only gold. We
+              did look at silver, for about four minutes, and then we
+              remembered whose table it was going on.
             </p>
           </div>
           <div className="jar-card">
@@ -1369,7 +1374,7 @@ export function HeldiHomepage({
               <Image
                 className="jar-preview-image"
                 src={imageSrc("/images/jar-pouch.webp")}
-                alt="Heldi pouch with silver and gold table jars"
+                alt="Heldi pouch beside the gold refillable table jar"
                 width={768}
                 height={768}
                 sizes="(max-width: 560px) calc(100vw - 3rem), (max-width: 899px) min(92vw, 380px), 320px"
@@ -1395,6 +1400,14 @@ export function HeldiHomepage({
           <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
         </section>
       ) : null}
+
+      {/* The homepage carries Shop now CTAs and the tier line-up in live mode,
+          so it is a commercial surface and the mandatory supplement statements
+          have to be reachable here too, not only on /faq. See
+          components/shop/statutory-statements.tsx. */}
+      <section className="section section--cream">
+        <StatutoryStatements />
+      </section>
 
       <footer>
         <Wordmark footer onDark />

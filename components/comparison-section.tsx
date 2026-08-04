@@ -38,13 +38,21 @@ const TEXT_ROWS: TextRow[] = [
   {
     kind: "text",
     label: "Flavours",
-    heldi: "Cumin, turmeric, garam masala",
+    // Deliberately non-specific while the formulation is still moving
+    // (BRAND.md §11.1). The old row named turmeric and garam masala, neither of
+    // which is in the current blend. Name the actual spices again only once the
+    // final spec is signed off.
+    heldi: "Warm spices you already cook with",
     shakes: "Birthday Cake Blast\u2122"
   },
   {
     kind: "text",
     label: "On the label",
-    heldi: "90% whey isolate, the rest is spices you already know",
+    // 94%, not 90%. The pouch is 94.15% whey protein isolate (FORMULA in
+    // components/shop/nutrition-data.ts); the isolate itself is about 90%
+    // protein. Two different numbers that used to be conflated here. Both move
+    // if the formulation changes, so BRAND.md §11.1 greps for "94".
+    heldi: "94% whey protein isolate, then warm spices",
     shakes: "Sweeteners, gums and 'natural flavourings'"
   },
   {

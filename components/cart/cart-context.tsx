@@ -30,10 +30,20 @@ const CART_ID_KEY = "heldi_cart_id";
 const MODE_OVERRIDE_KEY = "heldi_mode_override";
 const GIFTING_METHOD_KEY = "heldi_gifting_method";
 
+// One message for every cart failure. The shopper cannot act on the difference
+// between a 502 and a 429, so it says what happened, what to do, and where to
+// go if it keeps happening, rather than naming a status code.
+const CART_ERROR =
+  "That did not go through. Give it another go in a moment, and email info@heldi.co.uk if it keeps happening.";
+
 type CartContextValue = {
   cart: Cart | null;
   isOpen: boolean;
   isPending: boolean;
+  // User-facing message for the last failed cart write; null when the cart is
+  // healthy. Rendered by the drawer, cleared on the next attempt.
+  error: string | null;
+  dismissError: () => void;
   mode: CommerceMode;
   // Runtime override of the env flag; null follows the env. Honoured in
   // development and in preview-unlocked browsers (see /preview).
@@ -45,20 +55,23 @@ type CartContextValue = {
   // How the gifting discount was applied — the code field and the checkout
   // checkbox never stack, so whichever applied first locks the other out.
   giftingMethod: GiftingMethod | null;
-  applyGifting: (method: GiftingMethod, audience?: GiftingAudience) => Promise<void>;
-  removeGifting: () => Promise<void>;
+  // Every cart write resolves to whether it landed. Callers that fire an
+  // analytics event or record local state must check it rather than assuming
+  // success; `error` carries the message the shopper sees.
+  applyGifting: (method: GiftingMethod, audience?: GiftingAudience) => Promise<boolean>;
+  removeGifting: () => Promise<boolean>;
   openCart: () => void;
   closeCart: () => void;
-  addItem: (merchandiseId: string, quantity: number) => Promise<void>;
+  addItem: (merchandiseId: string, quantity: number) => Promise<boolean>;
   // Pouch-level cart ops: the drawer steps pouches one at a time and the
   // buy box adds a tier's worth; both repack the underlying bundle lines
   // to the cheapest packing for the new total (see packPouches).
-  addPouches: (count: number) => Promise<void>;
-  setPouchCount: (pouches: number) => Promise<void>;
-  updateQuantity: (lineId: string, quantity: number) => Promise<void>;
-  removeItem: (lineId: string) => Promise<void>;
-  applyDiscount: (code: string) => Promise<void>;
-  clearDiscounts: () => Promise<void>;
+  addPouches: (count: number) => Promise<boolean>;
+  setPouchCount: (pouches: number) => Promise<boolean>;
+  updateQuantity: (lineId: string, quantity: number) => Promise<boolean>;
+  removeItem: (lineId: string) => Promise<boolean>;
+  applyDiscount: (code: string) => Promise<boolean>;
+  clearDiscounts: () => Promise<boolean>;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -110,6 +123,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<Cart | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [modeOverride, setModeOverrideState] = useState<CommerceMode | null>(null);
   const [previewUnlocked, setPreviewUnlockedState] = useState(false);
   const [giftingMethod, setGiftingMethodState] = useState<GiftingMethod | null>(null);
@@ -190,9 +204,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     else window.localStorage.removeItem(GIFTING_METHOD_KEY);
   }, []);
 
+  // Every cart write goes through here, so this is the one place a failure can
+  // be caught. Without it a 502, a 429, a 503 from an unconfigured store or a
+  // dropped connection all looked identical to success: the button flicked
+  // back to its resting state and nothing else happened, no message and no
+  // basket. Returns whether the write landed, because callers like applyGifting
+  // must not record local state for a change the server never accepted.
   const runMutation = useCallback(
-    async (mutate: (cartId: string) => Promise<Cart>) => {
+    async (mutate: (cartId: string) => Promise<Cart>): Promise<boolean> => {
       setIsPending(true);
+      setError(null);
       try {
         const provider = getCommerceProvider();
         let cartId = cart?.id;
@@ -203,6 +224,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         }
         const next = await mutate(cartId);
         setCart(next);
+        return true;
+      } catch (cause) {
+        // The detail is for us, not the shopper: it names the provider and the
+        // status, which is what makes a launch-day report actionable.
+        console.error("[cart] mutation failed", cause);
+        setError(CART_ERROR);
+        return false;
       } finally {
         setIsPending(false);
       }
@@ -212,10 +240,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = useCallback(
     async (merchandiseId: string, quantity: number) => {
-      await runMutation((cartId) =>
+      const added = await runMutation((cartId) =>
         getCommerceProvider().addLines(cartId, [{ merchandiseId, quantity }])
       );
+      // Open either way: on success it shows the basket, on failure it is
+      // where the error message lives, so the click is never silent.
       setIsOpen(true);
+      return added;
     },
     [runMutation]
   );
@@ -249,11 +280,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const removals = managedLines
         .filter((line) => !targetIds.has(line.merchandise.id))
         .map((line) => line.id);
+      // Nothing to change counts as success: the cart already says what the
+      // caller asked for, so there is no failure to report.
       if (additions.length === 0 && updates.length === 0 && removals.length === 0) {
-        return;
+        return true;
       }
 
-      await runMutation(async (cartId) => {
+      return runMutation(async (cartId) => {
         const provider = getCommerceProvider();
         let next: Cart | null = null;
         if (updates.length > 0) next = await provider.updateLines(cartId, updates);
@@ -267,8 +300,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addPouches = useCallback(
     async (count: number) => {
-      await setPouchCount(khanaPouchCount(cart?.lines ?? []) + count);
+      const changed = await setPouchCount(khanaPouchCount(cart?.lines ?? []) + count);
+      // Open either way, so a failed add shows its message instead of nothing.
       setIsOpen(true);
+      return changed;
     },
     [setPouchCount, cart?.lines]
   );
@@ -303,33 +338,38 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const applyGifting = useCallback(
     async (method: GiftingMethod, audience: GiftingAudience = "beta") => {
-      await runMutation((cartId) => {
+      const applied = await runMutation((cartId) => {
         const existing = cart?.discountCodes.map((entry) => entry.code) ?? [];
         return getCommerceProvider().updateDiscountCodes(cartId, [
           ...existing.filter((entry) => !isGiftingCode(entry)),
           GIFTING.codes[audience]
         ]);
       });
-      setGiftingMethod(method);
+      // Only remember the method if Shopify actually took the code, or the
+      // checkbox would lock the code field over a discount that is not applied.
+      if (applied) setGiftingMethod(method);
+      return applied;
     },
     [runMutation, cart?.discountCodes, setGiftingMethod]
   );
 
   const removeGifting = useCallback(async () => {
-    await runMutation((cartId) => {
+    const removed = await runMutation((cartId) => {
       const remaining = (cart?.discountCodes.map((entry) => entry.code) ?? []).filter(
         (entry) => !isGiftingCode(entry)
       );
       return getCommerceProvider().updateDiscountCodes(cartId, remaining);
     });
-    setGiftingMethod(null);
+    if (removed) setGiftingMethod(null);
+    return removed;
   }, [runMutation, cart?.discountCodes, setGiftingMethod]);
 
   const clearDiscounts = useCallback(async () => {
-    await runMutation((cartId) =>
+    const cleared = await runMutation((cartId) =>
       getCommerceProvider().updateDiscountCodes(cartId, [])
     );
-    setGiftingMethod(null);
+    if (cleared) setGiftingMethod(null);
+    return cleared;
   }, [runMutation, setGiftingMethod]);
 
   const value = useMemo<CartContextValue>(
@@ -337,6 +377,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       cart,
       isOpen,
       isPending,
+      error,
+      dismissError: () => setError(null),
       mode,
       setModeOverride,
       previewUnlocked,
@@ -358,6 +400,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       cart,
       isOpen,
       isPending,
+      error,
       mode,
       setModeOverride,
       previewUnlocked,
