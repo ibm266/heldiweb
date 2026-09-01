@@ -43,6 +43,76 @@ this list into exact admin clicks, API scopes and verification steps:
 Only `catalog.ts`, `shopify-provider.ts`, new `app/api/cart/` routes and env change at connect
 time — nothing under `components/` or `app/shop/`.
 
+## 1b. Put Heldi Chai on the shop line
+
+The Chai product page ships at [`/shop/chai`](app/shop/chai/page.tsx) as a
+**browsable, joinable page, not a buyable one**: gallery, positioning, the
+BREW / COOL / STIR method, the statutory block and a waitlist CTA. It carries
+no prices, no bundle tiers, no add-to-basket and no reviews, because none of
+those exist for Chai yet. Everything that turns it into a second SKU is below,
+and almost all of it is a decision rather than code.
+
+The one-line reason there is no nutrition table on the page: **Chai's numbers
+are not just provisional, they are contradicted**, and the reasoning is written
+out in full at the top of `components/shop/chai-data.ts`. Khana's figures are
+provisional but uncontradicted, which is why the site publishes those.
+
+### Decisions only you can make
+
+- [ ] **Is Chai in the next run at all, and is Dahi ahead of it?** HeldiPM's newest decision log (`context/product-gates.md`) still carries the Gate-2 line *"Chai spices not ordered this run"* and the Gate-3 line *"Chai market potentially larger, parked for behaviour not demand"*, and `data/project-status.json` names a two-SKU launch of **Khana and Dahi**, with Chai deferred. The August work resumed Chai development (testing day 16 Aug, print round 13 on 19 Aug, COGS 25 Aug) but no gate entry un-parks it, and the website has never heard of Dahi. The page as shipped does not depend on this answer. Every item below does
+- [ ] **Which formulation.** Two are live and they disagree. The pack artwork (HeldiPM `design/pouch-v2/CHAI-NUTRITION.md`, 18 Aug 2026) is 53.9% whey isolate / 13.5% micellar casein / 15% coconut sugar with a cardamom-led spice block. The COGS model (`lib/cogs/constants.ts`, `chai-current`, 25 Aug 2026) is 53.7% / 18.2% / 10% with a ginger-led block plus **2% black pepper**, which appears on no label anywhere. The print-ready PDFs on disk encode the older one. Nothing else on this list can be answered until one of them wins
+- [ ] **Net weight and mugs per pouch.** The print files say 100g and "around 12 servings"; the COGS model says a 250g pouch; HeldiPM's own pouch-v2 README calls 100g *"a placeholder for the sample"* and asks for a filled pouch to be weighed. The site currently states 100g / 12 mugs, from `CHAI_POUCH_GRAMS` and `CHAI_MUGS_PER_POUCH` in `components/shop/chai-data.ts`, because that is the pack in the product photography. Weigh a filled pouch and change those two constants together
+- [ ] **The serving size, and whether "5g per mug" survives.** Every protein number hangs off the whey purity, and there are three figures in play. The pack table assumes 93.5% because that is what Khana's table implies. The Arla certificate of analysis behind `lib/cogs/constants.ts` says **87.3% as-is**, and at 87.3% an 8g spoonful of the pack formulation gives about **4.7g**, below even the 4.9g failure case the nutrition spec's own sensitivity note describes. If the certificate wins, the serving moves to 9g or the claim softens, and **the front-of-pack roundel, the back-of-pack claims strip, the print PDFs and the five product shots in `public/images/shop/chai-*.webp` all have to be re-rendered**, because every one of them shows "5g PROTEIN PER MUG"
+- [ ] **The price ladder.** There is no agreed Chai price anywhere. `lib/cogs/constants.ts` carries £35 / £65 / £95 flagged `TIER_PRICES_PROVISIONAL.chai = true` and says outright *"Chai has no agreed pricing of its own and mirrors Khana for now"*; the only Chai price ever named is a **£20 entry point** for the 100g pouch in `data/project-status.json`, and it is recorded as parked. Note the COGS Khana ladder (£35/£65/£95) does not match the locked one in `lib/pricing.ts` (£35/£70/£105), so "mirror Khana" would mirror an error
+- [ ] **Does Chai get a Sample?** Khana's Sample is a real £5 SKU with its own variant, servings constant and gallery slot. Chai has no sample SKU, price or fill anywhere. A sachet shot is already rendered and sitting in the gitignored `public/images/originals/pre-webp/shop/chai-sample.png` if the answer is yes
+- [ ] **Do Chai pouches earn the free jar and the masala dabba, the 20% waitlist code, and the 10% family codes?** Today they would silently earn **nothing**: `khanaPouchCount`, `giftingEligiblePenceForLines` and `waitlistEligiblePenceForLines` in `lib/commerce/catalog.ts` all key off Khana's SKUs
+- [ ] **"Organic".** The printed back-of-pack strip says `ORGANIC SPICES`. Organic is a certified term in the UK, Heldi holds no certification, and `lib/cogs/constants.ts` records that no organic ground clove exists to buy, so one Chai spice cannot be organic even in principle. It is deliberately absent from the website; it has to come off the pack or the certification has to happen
+- [ ] **The casein line in Our story.** `app/our-story/page.tsx` lists casein in the trial menu as *"turned dal to cement"*, and Chai is a whey-and-casein blend. True of dal and not of hot milk, but a reader on both pages will notice. Decide whether that line gains a clause
+
+### Product facts the site cannot publish until the blend is signed off
+
+All of these are gated on the formulation decision above, and all of them must
+come from **analysis of the finished blend**, not from calculating the recipe.
+Getting them wrong on pack is a false declaration under FIC Regulation
+1169/2011, not a copy fix. Same rule as Khana (BRAND.md §11.1).
+
+- [ ] The **nutrition declaration**. Add `CHAI_NUTRITION_ROWS` alongside the existing constants in `components/shop/chai-data.ts` and swap the "Nutrition" accordion in `components/shop/chai-accordions.tsx` for the table. The rows need a `%RI per serving` column, which the HeldiPM table does not currently carry
+- [ ] The **ingredients list with percentages**, in final descending order. The names are already on the page; only the numbers and the order are withheld
+- [ ] The **protein per serving**, and with it a Chai equivalent of the "10 vs 10.4" rounding rule in BRAND.md §5
+- [ ] The **amino acid profile**. None exists in either repo. Without it the Chai page cannot carry Khana's "Nutrition & amino acids" modal or its complete-protein claim
+- [ ] **Gluten free**: the site shows the badge, on the same footing as Khana's. It is a legally defined claim (under 20ppm) and Chai's spices come from a different supplier, so it needs its own test result
+- [ ] **A lactose figure.** Khana's "98% lactose-free" is substantiated against Khana's whey certificate at a 12g spoonful and says nothing about a blend carrying micellar casein. The Chai page deliberately declines to borrow it
+- [ ] **Shelf life.** Khana publishes an 18-month best-before in two places; HeldiPM's Gate 4 records *"shelf-life 9-12 months usable"* and Chai has no stability data at all. The Chai page says "a best-before on the base" with no number until it does
+
+### Code, when Chai becomes buyable
+
+Nothing here is needed for the page as it stands. It is the list of what the
+"waitlist page" becomes when there is a price.
+
+- [ ] `lib/pricing.ts`: `TIERS` and `TIER_ORDER` have no product dimension, and neither does `packPouches`. A Chai tier added to the same SKU space means one Khana plus one Chai repacks into a pair of Khana
+- [ ] `lib/commerce/catalog.ts`: `TIER_VARIANT_IDS`, `SAMPLE_VARIANT_ID` and `TIER_SKUS` are single Khana constants; `khanaPouchCount`, `linesForPouchCount`, `cartItemCount` and both eligibility helpers follow them
+- [ ] Merge `components/shop/chai-buy-box.tsx` back into `components/shop/buy-box.tsx` as one product-driven component. The shared pieces are already shared: `pdp-accordion.tsx` is the shell both use, and `statutory-statements.tsx` takes the serving and allergen as props precisely so a second SKU cannot inherit Khana's 12g portion
+- [ ] Make reviews product-aware before showing any on `/shop/chai`: `lib/reviews-store.ts` selects no product column, `ReviewGallery` falls back to a placeholder set when there are none (BRAND.md §12 forbids seeding those on a new surface), and `PROTEIN_GRAMS_PER_TBSP` in `lib/reviews.ts` computes a reviewer's added grams from Khana's 10.4g
+- [ ] Add the `AggregateOffer` block to the Chai product schema in `app/shop/chai/page.tsx`, in the same `COMMERCE_MODE === "live"` shape `/shop` uses
+- [ ] Decide whether `GiftingBand` belongs on the Chai page. It is live-mode only and its copy is written around single pouches and 2-packs of Khana
+- [ ] The statutory block on the homepage and `/faq` passes Khana's 12g portion and "Contains milk (whey)". With two products on sale it needs a form that covers both, or the block moves onto each product's own surface
+- [ ] Nav: `/shop/chai` is reachable from the sitemap, from Our story, and from the Khana page copy, but there is no "Shop" submenu. Two buyable products probably means a `/shop` listing page or a nav split (PLAYBOOK.md has recipes for both, and neither is free: `SubpageNav` keeps duplicated mobile and desktop link lists that must change together)
+- [ ] `public/llms.txt` describes a one-product line ("One spoonful adds about 10g of complete protein") and would misdescribe a two-product range
+
+### Shopify
+
+- [ ] Create the **Heldi Chai** product with variants mirroring whatever `lib/pricing.ts` ends up carrying, SKUs in the `HELDI-CHAI-*` shape, and the images from `public/images/shop/chai-*.webp`. Then replace the placeholder GIDs the same way Khana's were on 16 Jul 2026
+- [ ] Three **archived** Chai products still sit in the store from the pre-bundle catalogue (`heldi-for-chai` at £20, `heldi-chai-tadka-sample` at £4, and the trio SKUs). Leave them archived or delete them, but do not reuse their GIDs: they are on the old one-variant model
+- [ ] Add Chai to the shipping profile and the VAT setting alongside Khana
+- [ ] Klaviyo's catalog is still empty (§5), so a second product is one more reason to verify that integration rather than read the metric list as proof of it
+
+### Assets
+
+- [x] Product photography for the terracotta v2 pouch: `chai-1`, `chai-pouch-solo`, `chai-bundle-2` and `chai-bundle-3` in `public/images/shop/`, all 1200×1200 WebP and all under 140KB. Generated 1 Sep 2026 from the HeldiPM round-13 print artwork as the reference, in the same scene as the Khana shots. Masters in the gitignored `public/images/originals/pre-webp/shop/`
+- [x] Share card art: `assets/og/pouch-chai.png`, wired through the new `OG_ART_FILES` map in `components/og/card.tsx` so a third SKU cannot silently ship Khana's pouch
+- [ ] **The two product pages now show two different pack generations.** Chai is the v2 terracotta pouch; Khana's shots are still the older gold pouch with "Same Recipes Same Taste More Protein". Reshoot Khana on the navy v2 pouch, or the range looks like two brands
+- [ ] All of it is AI-generated, like Khana's. Replace with real photography when the physical product exists
+
 ## 2. Waitlist form → real email capture
 
 Code-complete as of 20 Jul 2026. `WaitlistForm` posts to `/api/waitlist`, which
@@ -130,4 +200,6 @@ plus the `[TBC]` values (company number, VAT number, contact email).
 - Product photography is AI-generated (Higgsfield) — replace with real shots when the physical product exists
 - Servings per pouch is 25 (300g ÷ 12g serving, per the nutrition declaration) — constant `SERVINGS_PER_POUCH` in `catalog.ts`
 - "Khana" is a placeholder product name — one constant + copy strings to change
+- Chai's pouch weight (100g) and mugs per pouch (12) are the print-file figures and are contradicted by the COGS model's 250g — constants `CHAI_POUCH_GRAMS` and `CHAI_MUGS_PER_POUCH` in `components/shop/chai-data.ts`, and §1b above
+- The two product pages show two pack generations: Chai is the v2 terracotta pouch, Khana's shots are still the older gold pouch — reshoot Khana on the navy v2 pouch (§1b)
 - All pricing (RRP, launch prices, gifting discount, shipping) lives in `lib/pricing.ts` — after the launch period, set each tier's launch price equal to its RRP there and mirror the change in Shopify admin

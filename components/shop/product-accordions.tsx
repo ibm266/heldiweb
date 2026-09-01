@@ -1,6 +1,5 @@
 "use client";
 
-import { type ReactNode, useLayoutEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-context";
 import { formatPence } from "@/lib/commerce/money";
 import { SHIPPING } from "@/lib/pricing";
@@ -10,8 +9,12 @@ import {
   RI_FOOTNOTE,
   SERVING_LABEL
 } from "./nutrition-data";
+import { PdpAccordion, type PdpAccordionItem } from "./pdp-accordion";
 
-const ACCORDION_ITEMS: { question: string; answer: ReactNode }[] = [
+// Khana's facts. Every figure here is Khana's serving, Khana's blend and
+// Khana's shelf life; nothing in this file is safe for another SKU. A second
+// product supplies its own list to <PdpAccordion /> (see chai-accordions.tsx).
+const ACCORDION_ITEMS: PdpAccordionItem[] = [
   {
     question: "What's inside",
     answer: (
@@ -157,47 +160,5 @@ function ShippingAnswer() {
 }
 
 export function ProductAccordions() {
-  const [openIndex, setOpenIndex] = useState(-1);
-  const lockScrollY = useRef<number | null>(null);
-
-  useLayoutEffect(() => {
-    if (lockScrollY.current == null) return;
-    window.scrollTo({ top: lockScrollY.current });
-    lockScrollY.current = null;
-  }, [openIndex]);
-
-  function toggle(index: number) {
-    lockScrollY.current = window.scrollY;
-    setOpenIndex((current) => (current === index ? -1 : index));
-  }
-
-  return (
-    <div className="pdp-accordion">
-      {ACCORDION_ITEMS.map((item, index) => {
-        const open = openIndex === index;
-        return (
-          <article key={item.question}>
-            <h3>
-              <button
-                type="button"
-                aria-expanded={open}
-                aria-controls={`pdp-accordion-answer-${index}`}
-                onClick={() => toggle(index)}
-              >
-                <span>{item.question}</span>
-                <b aria-hidden="true">{open ? "–" : "+"}</b>
-              </button>
-            </h3>
-            <div
-              id={`pdp-accordion-answer-${index}`}
-              className="pdp-accordion__answer"
-              hidden={!open}
-            >
-              {item.answer}
-            </div>
-          </article>
-        );
-      })}
-    </div>
-  );
+  return <PdpAccordion items={ACCORDION_ITEMS} />;
 }

@@ -27,6 +27,7 @@ import {
   type TierId
 } from "@/lib/pricing";
 import { GiftingPopup } from "./gifting-popup";
+import { SERVING_GRAMS } from "./nutrition-data";
 import { NutritionModal } from "./nutrition-modal";
 import { PdpReviewTeasers } from "./pdp-review-teasers";
 import { ProductAccordions } from "./product-accordions";
@@ -72,8 +73,8 @@ export function BuyBox({ product }: { product: Product }) {
   useEffect(() => {
     if (viewTracked.current) return;
     viewTracked.current = true;
-    track("view_item", { product: "khana", mode });
-  }, [mode]);
+    track("view_item", { product: product.handle, mode });
+  }, [mode, product.handle]);
 
   const tierVariants = new Map<TierId, ProductVariant>();
   for (const id of TIER_ORDER) {
@@ -148,7 +149,7 @@ export function BuyBox({ product }: { product: Product }) {
     if (!added) return;
 
     track("add_to_cart", {
-      product: "khana",
+      product: product.handle,
       format: isPouch ? "pouch" : "sample",
       ...(isPouch ? { tier: tierId, pouches_added: tier.pouches } : {}),
       value: moneyToPence(selected.current) / 100,
@@ -389,7 +390,11 @@ export function BuyBox({ product }: { product: Product }) {
 
         <PdpReviewTeasers />
 
-        <StatutoryStatements className="pdp__disclaimer" />
+        <StatutoryStatements
+          servingGrams={SERVING_GRAMS}
+          allergens="Contains milk (whey)."
+          className="pdp__disclaimer"
+        />
 
         <div className="pdp__desc">
           <p>

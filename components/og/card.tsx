@@ -28,13 +28,21 @@ async function fontData(file: string): Promise<ArrayBuffer> {
   return data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength) as ArrayBuffer;
 }
 
+// One entry per SKU whose share card should show its own pouch. A new
+// product needs its art here, or its card silently ships the wrong pouch.
+const OG_ART_FILES = {
+  pouch: "og/pouch.png",
+  "pouch-chai": "og/pouch-chai.png",
+  elephant: "og/elephant.png"
+} as const;
+
 export type HeldiOgCardProps = {
   eyebrow: string;
   title: string;
   /** Optional line under the title; defaults to the pronunciation line. */
   sub?: string;
-  /** Right-hand artwork. Pouch for commercial surfaces, elephant elsewhere. */
-  art?: "pouch" | "elephant";
+  /** Right-hand artwork. A pouch for commercial surfaces, elephant elsewhere. */
+  art?: "pouch" | "pouch-chai" | "elephant";
   /** Override for long titles (blog posts). */
   titleSize?: number;
 };
@@ -49,14 +57,14 @@ export async function heldiOgImage({
   const [wordmark, artwork, rozha, gelasio, gelasioSemi, gelasioItalic] =
     await Promise.all([
       asset("og/wordmark.png"),
-      asset(art === "pouch" ? "og/pouch.png" : "og/elephant.png"),
+      asset(OG_ART_FILES[art]),
       fontData("RozhaOne-Regular.ttf"),
       fontData("Gelasio-normal-400.ttf"),
       fontData("Gelasio-normal-600.ttf"),
       fontData("Gelasio-italic-400.ttf")
     ]);
 
-  const artWidth = art === "pouch" ? 300 : 340;
+  const artWidth = art === "elephant" ? 340 : 300;
 
   return new ImageResponse(
     (
@@ -164,7 +172,7 @@ export async function heldiOgImage({
               </div>
             </div>
           </div>
-          {art === "pouch" ? (
+          {art !== "elephant" ? (
             <div
               style={{
                 display: "flex",

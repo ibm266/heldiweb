@@ -14,6 +14,7 @@ import { HOME_FAQS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
+import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
 import { StatutoryStatements } from "@/components/shop/statutory-statements";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
@@ -1406,7 +1407,7 @@ export function HeldiHomepage({
           have to be reachable here too, not only on /faq. See
           components/shop/statutory-statements.tsx. */}
       <section className="section section--cream">
-        <StatutoryStatements />
+        <StatutoryStatements servingGrams={SERVING_GRAMS} allergens="Contains milk (whey)." />
       </section>
 
       <footer>

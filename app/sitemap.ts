@@ -12,6 +12,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: SITE_URL, priority: 1 },
     { url: `${SITE_URL}/shop`, priority: 0.9 },
+    // Chai is browsable but not buyable yet (NEXT_STEPS.md §1b), so it sits
+    // below Khana rather than beside it.
+    { url: `${SITE_URL}/shop/chai`, priority: 0.7 },
     { url: `${SITE_URL}/truth`, priority: 0.9 },
     { url: `${SITE_URL}/heldi-living`, priority: 0.8 },
     { url: `${SITE_URL}/ways-to-use`, priority: 0.8 },

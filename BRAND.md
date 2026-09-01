@@ -33,9 +33,12 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
 - **Founder story, one line**: "My nani never said healthy. She said heldi. Warm food,
   made with care, made for you. That is where the name comes from." (founder band,
   homepage; photo of Mihir with nani; signed "— Mihir, founder")
-- **Product today**: one product, **Heldi Khana** (savoury blend, 300g pouch, 25
-  servings), sold as three bundle tiers plus a £5 Sample (3 servings). Chai is
-  publicly teased as "in development" on /our-story. There are no flavour SKUs.
+- **Product today**: one *sellable* product, **Heldi Khana** (savoury blend, 300g
+  pouch, 25 servings), sold as three bundle tiers plus a £5 Sample (3 servings).
+  **Heldi Chai** (terracotta pouch, hot drinks, 8g spoonful) has a browsable page
+  at /shop/chai with no prices, no tiers and no basket: its formulation, weight
+  and price are all unsettled, so it is a waitlist surface rather than a second
+  SKU. NEXT_STEPS.md §1b holds every open decision. There are no flavour SKUs.
 - **Stage**: pre-launch waitlist ("Launching autumn 2026" in the ticker), full storefront
   UI built behind a mock cart. CTAs switch on `COMMERCE_MODE` ("waitlist" | "live").
 
@@ -543,7 +546,33 @@ left stale copy behind; do not repeat that. Touch list:
   be mirrored there (satori cannot read CSS variables), and new routes get a card
   (PLAYBOOK.md R2). Blog cards pull title/tags from `posts.json` automatically.
 
-### 11.7 Analytics event names and checkout stitching
+### 11.7 A second product's facts (Heldi Chai)
+
+Khana's numbers are **not** Chai's, and the shared PDP components used to assume
+they were. Anything product-specific now comes from the product's own file:
+Khana's from `components/shop/nutrition-data.ts`, Chai's from
+`components/shop/chai-data.ts`. Three components used to hard-code Khana and no
+longer do, so keep them that way:
+
+- `statutory-statements.tsx` takes `servingGrams` and `allergens` as **required
+  props**. The recommended daily portion and the allergen are per-product
+  mandatory particulars; a default would silently declare 12g of whey on an 8g
+  whey-and-casein product, which is a false particular, not a copy slip.
+- `pdp-accordion.tsx` is the shell only. The answers live with the product
+  (`product-accordions.tsx` for Khana, `chai-accordions.tsx` for Chai).
+- `og/card.tsx` resolves its pouch art through `OG_ART_FILES`. A new SKU adds an
+  entry or its share card ships another product's pouch.
+
+What Chai deliberately does **not** repeat from Khana, and why: "No added sugar"
+(Chai carries coconut sugar), "98% lactose-free" (substantiated against Khana's
+whey certificate at a 12g spoonful), "All natural" (ASA exposure), "organic"
+(uncertified, and no organic ground clove exists to buy), the 10.4g protein
+figure, the cumin ingredients list, the 18-month best-before, and the reviews
+band (`reviews-store.ts` does not filter by product and `PROTEIN_GRAMS_PER_TBSP`
+is Khana's). Chai publishes no nutrition table at all until the finished blend
+is analysed; the reasoning is at the top of `chai-data.ts`.
+
+### 11.8 Analytics event names and checkout stitching
 
 The PostHog dashboard and the Shopify checkout stitching depend on exact event
 names, prop names, and cart-attribute keys in code. Renaming or moving any of

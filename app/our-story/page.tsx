@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
@@ -282,7 +283,9 @@ export default function OurStoryPage() {
             through the same kitchen trials, in front of the same taste panel,
             who have not lowered their standards for anyone.
           </p>
-          <p className="story-note">Watch this space.</p>
+          <p className="story-note">
+            <Link href="/shop/chai">Have a look at the Chai pouch</Link>.
+          </p>
         </div>
       </section>
 

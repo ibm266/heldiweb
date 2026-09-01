@@ -4,6 +4,7 @@ import { siteFaqGroupsForMode } from "@/components/site-faqs";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { serializeJsonLd } from "@/lib/json-ld";
+import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
 import { StatutoryStatements } from "@/components/shop/statutory-statements";
 
 export const metadata: Metadata = {
@@ -54,7 +55,7 @@ export default function FaqPage() {
       <section className="section section--cream section--bordered">
         <FaqPageList />
         <div className="faq">
-          <StatutoryStatements />
+          <StatutoryStatements servingGrams={SERVING_GRAMS} allergens="Contains milk (whey)." />
         </div>
       </section>
 
