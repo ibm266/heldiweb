@@ -61,10 +61,13 @@ export const CHAI_ALLERGENS = "Contains milk (whey and casein).";
 export const CHAI_LEGAL_NAME =
   "Whey protein and casein blend with chai spices and coconut sugar. Food supplement.";
 
-/** Ingredient names in the order the label prints them, with no percentages.
- *  The percentages and the final order are what the two formulations
- *  disagree about; the ingredients themselves are common to both apart from
- *  black pepper, which no label carries. */
+/** The ingredients, largest first, as a plain-English list. This is NOT the
+ *  legal declaration order: that order is one of the things the two
+ *  formulations disagree about (the pack label puts coconut sugar second,
+ *  ahead of the casein; the COGS blend puts casein second and cuts the sugar
+ *  to 10%). The ingredients themselves are common to both apart from black
+ *  pepper, which no label carries. The declaration, with percentages and a
+ *  settled order, publishes with the nutrition table. */
 export const CHAI_INGREDIENT_NAMES = [
   "whey protein isolate",
   "micellar casein",
@@ -105,17 +108,23 @@ export type ChaiPill = {
   height: number;
 };
 
-// Khana's six badges are not reusable here and the difference matters.
-// "No added sugar" is false: Chai is 10 to 15% coconut sugar. "98%
-// lactose-free" is substantiated against Khana's whey certificate at a 12g
-// spoonful and says nothing about a blend carrying micellar casein. "All
-// natural" already draws ASA scrutiny on the pack. The pack's "ORGANIC
-// SPICES" strip is worse: organic is a certified term, Heldi holds no
-// certification, and no organic ground clove exists to buy, so it must not
-// appear on the site at all.
+// Khana's six badges are not reusable here and the difference matters. Every
+// one dropped is dropped because Chai cannot stand it up:
+//  - "No added sugar" is simply false: Chai is 10 to 15% coconut sugar.
+//  - "98% lactose-free" is substantiated against Khana's whey certificate at
+//    a 12g spoonful and says nothing about a blend carrying micellar casein.
+//  - "All natural" already draws ASA scrutiny on the pack.
+//  - "Gluten free" is a legally defined claim (under 20mg/kg, Reg 828/2014).
+//    Chai's spices come from a different supplier to Khana's and no gluten
+//    result exists for this blend, so the badge waits for the test.
+//  - The pack's "ORGANIC SPICES" strip is worse than any of them: organic is
+//    a certified term, Heldi holds no certification, and no organic ground
+//    clove exists to buy, so it must not appear on the site at all.
+// "High in protein" is the one nutrition claim that holds under every
+// candidate blend (see the header note), and vegetarian is a fact about the
+// rennet, not a test result.
 export const CHAI_PILLS: ChaiPill[] = [
   { icon: "/images/pouch-badges/high-protein.png", label: "High protein", width: 256, height: 256 },
-  { icon: "/images/pouch-badges/gluten-free.png", label: "Gluten free", width: 328, height: 225 },
   { icon: "/images/pouch-badges/vegetarian.png", label: "Vegetarian", width: 286, height: 367 }
 ];
 

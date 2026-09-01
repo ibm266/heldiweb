@@ -32,11 +32,8 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
           The blend is still in trials, and the ingredients list on a food
           supplement is a legal declaration rather than a description, so it
           publishes when the finished blend has been analysed and not before.{" "}
-          <a href="/inside-the-pouch">
-            See where every ingredient comes from
-          </a>
-          , or <a href="/our-story">read our story</a> for why we built it
-          this way.
+          <a href="/our-story">Read our story</a> for why we built it this
+          way.
         </p>
       </>
     )
@@ -54,8 +51,7 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         </p>
         <p>
           It goes into more than chai. Tea, coffee, hot chocolate, warm milk.
-          Anything you would run back down a platform for.{" "}
-          <a href="/ways-to-use">See every way to use Heldi</a>.
+          Anything you would run back down a platform for.
         </p>
       </>
     )

@@ -109,7 +109,9 @@ export function ChaiBuyBox() {
         <p className="pdp__group-label">
           HOW IT GOES IN: <strong>THREE STEPS</strong>
         </p>
-        <ol className="pdp__method">
+        {/* role="list" because list-style:none drops list semantics in
+            Safari/VoiceOver, and the step numbers are CSS counters. */}
+        <ol className="pdp__method" role="list">
           {CHAI_METHOD.map((step) => (
             <li key={step.title} className="pdp__method-step">
               <span className="pdp__method-title">{step.title}</span>
@@ -161,7 +163,7 @@ export function ChaiBuyBox() {
 
         <p className="pdp__promise">
           {mode === "live"
-            ? "Chai is not in the shop yet. Khana is, and the pouch it ships in is the one on this page."
+            ? "Chai is not in the shop yet. Khana is, and it is the same spoonful for the food rather than the drink."
             : `Chai comes after Khana. The waitlist hears first, with ${WAITLIST_OFFER.percent}% off the first order.`}
         </p>
 
