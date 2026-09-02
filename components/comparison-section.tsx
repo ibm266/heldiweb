@@ -37,6 +37,14 @@ const TEXT_ROWS: TextRow[] = [
   },
   {
     kind: "text",
+    label: "Hot drinks",
+    // Chai's page is the source for what it goes into; no figure here because
+    // Chai publishes none yet (components/shop/chai-data.ts).
+    heldi: "Chai, tea, coffee. That is what Heldi Chai is for",
+    shakes: "Cold, from a bottle, every time"
+  },
+  {
+    kind: "text",
     label: "Flavours",
     // Deliberately non-specific while the formulation is still moving
     // (BRAND.md §11.1). The old row named turmeric and garam masala, neither of

@@ -42,6 +42,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       pick(HOME_FAQS, "Will my food taste different?"),
       pick(HOME_FAQS, "Can I use it in dishes that are not on the pouch?"),
       pick(HOME_FAQS, "Is there a Heldi for chai?"),
+      pick(HOME_FAQS, "Can I put Khana in my chai?"),
       pick(HOME_FAQS, "Why not just drink a protein shake?"),
       {
         question: "Does cooking destroy the protein?",

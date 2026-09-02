@@ -39,7 +39,7 @@ const RANGE: RangeProduct[] = [
       src: "/images/range/khana.webp?v=2",
       alt: "The navy Heldi Khana pouch on a linen table"
     },
-    href: "/shop"
+    href: "/shop/khana"
   },
   {
     id: "chai",

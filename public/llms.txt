@@ -7,7 +7,8 @@ Heldi exists because a cooked bowl of dal has 5 to 7g of protein (the 18g figure
 ## Key pages
 
 - [Home](https://heldi.co.uk/): What Heldi is, how it works (cook like always, stir in a spoonful, eat what you love), and family FAQ.
-- [Heldi Khana](https://heldi.co.uk/shop): The savoury pouch for the pot. Method, ingredients, nutrition and amino acid tables, dietary answers.
+- [Shop](https://heldi.co.uk/shop): Both pouches side by side, with a page each.
+- [Heldi Khana](https://heldi.co.uk/shop/khana): The savoury pouch for the pot. Method, ingredients, nutrition and amino acid tables, dietary answers.
 - [Heldi Chai](https://heldi.co.uk/shop/chai): The pouch for the mug: a whey and casein blend with real chai spices and coconut sugar, in development, browsable but not yet on sale.
 - [The honest truth about protein in dal](https://heldi.co.uk/truth): How much protein is really in dal, why dal is not a complete protein, daily protein needs, and how Indian vegetarians can close the gap.
 - [Heldi Living](https://heldi.co.uk/heldi-living): Honest, referenced writing on protein, strength, ageing and desi cooking.

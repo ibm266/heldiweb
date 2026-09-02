@@ -31,7 +31,7 @@ const AUDIENCES: {
     title: "For all the plans still on the list.",
     points: [
       <>Protein contributes to the maintenance of muscle mass.</>,
-      <>Not a single <CopyHighlight>recipe changes</CopyHighlight>. Not a single habit, either.</>
+      <>Not a single <CopyHighlight>recipe changes</CopyHighlight>. Not even the evening chai.</>
     ]
   }
 ];

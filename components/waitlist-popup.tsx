@@ -147,7 +147,7 @@ function WaitlistPopupPanel({
         </h2>
         <p className="waitlist-pop__lede">
           One email the day we launch, with {WAITLIST_OFFER.percent}% off your
-          first order inside. The waitlist eats first.
+          first order inside. The waitlist eats first. And drinks first.
         </p>
         <WaitlistForm
           joined={joined}

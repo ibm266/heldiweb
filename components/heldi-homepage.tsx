@@ -1217,8 +1217,9 @@ export function HeldiHomepage({
           <div className="pouch-section__copy">
             <h2>Food you love. Nutrients you need.</h2>
             <p>
-              <CopyHighlight>Vanishes clean</CopyHighlight> into every gravy,
-              dal and yoghurt base. No chalk, no aftertaste.
+              Khana <CopyHighlight>vanishes clean</CopyHighlight> into every
+              gravy, dal and yoghurt base. Chai does the same in the mug. No
+              chalk, no aftertaste.
             </p>
           </div>
           <PouchStats grams={grams} className="pouch-section__stats" />
@@ -1397,7 +1398,7 @@ export function HeldiHomepage({
             <p>
               One email the day we <CopyHighlight>launch</CopyHighlight>, with{" "}
               <CopyHighlight>{WAITLIST_OFFER.percent}% off</CopyHighlight> your
-              first order inside.
+              first order inside. Pot or mug, the waitlist hears first.
             </p>
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
           </div>

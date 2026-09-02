@@ -45,6 +45,11 @@ export const HOME_FAQS = [
       "Yes. Heldi Chai is a whey and casein blend with real chai spices, made to stir into chai, tea, coffee and hot chocolate once the cup is off the boil. Contains milk (whey and casein). It is still in development, so it has a page but no price yet, and the waitlist hears first when it is ready. Khana, the savoury blend, is the one for the pot."
   },
   {
+    question: "Can I put Khana in my chai?",
+    answer:
+      "Best not. Khana is the savoury blend, made with warm spices for dal, curry, sabzi and raita, and a mug of chai would taste of exactly that. Heldi Chai is the one for hot drinks: whey and casein with cardamom, ginger, cinnamon and clove, stirred in once the cup is off the boil. Contains milk."
+  },
+  {
     question: "Is it safe for kids?",
     answer:
       "Yes. Whey is a part of milk, the same protein kids already get from dahi and paneer, and protein is part of every balanced diet. Nothing artificial, no sweeteners, no caffeine. If the family pot gets a spoonful, everyone eats from it. Growing kids get what they need from normal meals, so there is no need to add extra to their bowls."

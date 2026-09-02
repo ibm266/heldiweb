@@ -11,7 +11,7 @@ import {
 export const metadata: Metadata = {
   title: "Ways to use · Heldi",
   description:
-    "Dal, dahi, takeaway, rotis and the jar in the middle of the table. Every way to stir Heldi in, three steps each. Ek, do, protein.",
+    "Dal, dahi, takeaway, rotis, the jar in the middle of the table, and the chai after. Every way to stir Heldi in, three steps each. Ek, do, protein.",
   alternates: { canonical: "/ways-to-use" }
 };
 

@@ -3,10 +3,10 @@ import { CopyHighlight } from "@/components/copy-highlight";
 import type { ComicStrip, Serving } from "@/components/ways-comic-strip";
 
 /**
- * The six ways to stir Heldi in. One source of truth: the /ways-to-use page
- * renders every method with its full copy, and the homepage "how it works"
- * gallery reuses three of them (pot, dahi, table) as animated cards. Editing a
- * method here updates both surfaces.
+ * The seven ways to stir Heldi in (six for Khana, one for Chai). One source
+ * of truth: the /ways-to-use page renders every method with its full copy,
+ * and the homepage "how it works" gallery reuses four of them (pot, dahi,
+ * table, mug) as animated cards. Editing a method here updates both surfaces.
  */
 export type Method = {
   id: string;
@@ -213,6 +213,39 @@ export const METHODS: Method[] = [
       captions: ["Into the atta.", "Knead and rest.", "Roll and cook."],
       anchors: [19, 51, 80],
       alt: "Engraved roti-making in the Heldi pouch style, shown three times: a pouch pouring Heldi into a plate of atta flour, two bangled hands kneading the dough, and a roti puffing up on a tawa over a flame."
+    }
+  },
+  {
+    id: "mug",
+    chip: "In the mug",
+    eyebrow: "THE MUG",
+    title: "How do you use it in chai?",
+    ground: "ink",
+    intro: (
+      <>
+        This one is Heldi Chai, not Khana: a whey and casein blend with real
+        chai spices, made for the mug rather than the pot. The rule is the
+        pot&apos;s rule: <CopyHighlight>off the boil first</CopyHighlight>,
+        then stir. Whey does not enjoy a rolling boil, and neither does the
+        taste.
+      </>
+    ),
+    steps: [
+      <>Brew your chai the way you always make it. Tea, coffee and hot chocolate count too.</>,
+      <>Take it off the boil and add your milk, so it is hot rather than boiling.</>,
+      <>Stir in a heaped tablespoon just before you drink. Gone in a few turns of the spoon.</>
+    ],
+    serving: "1 heaped tbsp a mug",
+    note: "Chai's protein figure follows the analysis of the finished blend; until then the mug is counted as a mug.",
+    strip: {
+      video: "/videos/ways-to-use/mug-strip.mp4",
+      poster: "/images/ways-to-use/mug-strip.webp",
+      width: 1920,
+      height: 1080,
+      label: "In the mug",
+      captions: ["Brew like always.", "Off the boil.", "Stir one in.\nGone."],
+      anchors: [18, 50, 82],
+      alt: "Engraved brass chai pan and tumbler in the Heldi pouch style, shown three times: brewing over a flame, off the heat beside a steaming cup, and with a bangled hand stirring a spoonful into the cup."
     }
   }
 ];

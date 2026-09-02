@@ -1,80 +1,99 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { ReviewsSection } from "@/components/reviews/reviews-section";
-import { BuyBox } from "@/components/shop/buy-box";
-import { GiftingBand } from "@/components/shop/gifting-band";
+import { CopyHighlight } from "@/components/copy-highlight";
+import { PouchPicker } from "@/components/shop/pouch-picker";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
-import { getProduct } from "@/lib/commerce/catalog";
-import { COMMERCE_MODE } from "@/lib/commerce/config";
+import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 import { serializeJsonLd } from "@/lib/json-ld";
-import { getPublishedReviews } from "@/lib/reviews-store";
 import { SITE_URL } from "@/lib/site";
-import { SAMPLE_PRICE_PENCE, TIERS } from "@/lib/pricing";
+
+// The shop front: both pouches side by side, pick one. Khana's buy box lives
+// at /shop/khana and Chai's page at /shop/chai; this page only routes. It
+// carries no prices in either mode (the product pages own those) and no
+// protein figures (Chai has none to publish yet, see chai-data.ts).
 
 export const metadata: Metadata = {
-  title: "Heldi Khana · Heldi",
-  description: "Protein that disappears into dal, curry and raita.",
+  title: "Shop · Heldi",
+  description:
+    "Two pouches. Khana for the pot, Chai for the mug. Pick the one your kitchen needs first.",
   alternates: { canonical: "/shop" }
 };
 
-// Refresh hourly so a review flipped to 'published' in Supabase appears
-// without needing a redeploy.
-export const revalidate = 3600;
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Heldi pouches",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      url: `${SITE_URL}/shop/khana`,
+      name: "Heldi Khana"
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      url: `${SITE_URL}/shop/chai`,
+      name: "Heldi Chai"
+    }
+  ]
+};
 
-export default async function ShopPage() {
-  const product = await getProduct("khana");
-  if (!product) notFound();
-
-  // Published reviews when there are any; otherwise the gallery falls back to
-  // its placeholder set (see components/reviews/review-gallery.tsx).
-  const publishedReviews = await getPublishedReviews();
-
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: product.title,
-    description: product.shortDescription,
-    image: product.images.map((image) => `${SITE_URL}${image.url}`),
-    brand: { "@type": "Brand", name: "Heldi" },
-    // No offer while in waitlist mode — availability would be misleading.
-    ...(COMMERCE_MODE === "live"
-      ? {
-          offers: {
-            "@type": "AggregateOffer",
-            lowPrice: (SAMPLE_PRICE_PENCE / 100).toFixed(2),
-            highPrice: (TIERS.triple.launchPence / 100).toFixed(2),
-            priceCurrency: "GBP",
-            availability: "https://schema.org/InStock",
-            url: `${SITE_URL}/shop`
-          }
-        }
-      : {})
-  };
-
+export default function ShopPage() {
   return (
     <main>
       <SubpageNav tone="cream" />
 
-      <section className="section section--cream" data-nav-hero>
-        <BuyBox product={product} />
+      <section className="section section--cream story-hero shop-front" data-nav-hero>
+        <div className="story-hero__inner">
+          <p className="eyebrow">TWO POUCHES</p>
+          <h1 className="story-hero__title">Pick your pouch.</h1>
+          <p className="story-hero__lede">
+            Khana goes into the food. Chai goes into the drink. Same heaped
+            tablespoon, same rule:{" "}
+            <CopyHighlight>nobody at the table can tell</CopyHighlight>.
+          </p>
+        </div>
+        <PouchPicker />
       </section>
 
-      <ReviewsSection
-        id="reviews"
-        tone="gold"
-        heading="Stirred, tasted, reviewed."
-        lede="Bowls from kitchens like yours. Some clips are ours, the rest arrive with the reviews, spoon count and all."
-        submitCta
-        reviews={publishedReviews.length ? publishedReviews : undefined}
-      />
+      <div className="double-rule" aria-hidden="true" />
 
-      <GiftingBand />
+      <section className="section section--gold story-copy">
+        <div className="story-copy__inner">
+          <p className="eyebrow">WHICH ONE?</p>
+          <h2>The pot or the mug.</h2>
+          <p>
+            <CopyHighlight>Khana</CopyHighlight> is the savoury one: whey
+            protein isolate with warm spices, made to vanish into dal, curry,
+            sabzi and raita once the pot is off the heat. It is the pouch on
+            sale first.
+          </p>
+          <p>
+            <CopyHighlight>Chai</CopyHighlight> is the one for hot drinks:
+            whey and casein with cardamom, ginger, cinnamon and clove, a
+            little coconut sugar, stirred into chai, tea, coffee or hot
+            chocolate once the cup is off the boil. It is still in
+            development, so it has a page and no price yet.
+          </p>
+          <p className="story-note">
+            Both contain milk. Both are vegetarian. Both are food
+            supplements, not a substitute for a varied and balanced diet.
+          </p>
+        </div>
+      </section>
+
+      <section className="final-cta section--bordered story-final">
+        <div className="final-cta-copy">
+          <h2>Pot or mug, the waitlist hears first.</h2>
+          <WaitlistOrShopCta />
+        </div>
+      </section>
 
       <SubpageFooter />
 
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: serializeJsonLd(productSchema) }}
+        dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListSchema) }}
       />
     </main>
   );

@@ -5,14 +5,23 @@ import { CopyHighlight } from "@/components/copy-highlight";
 
 type DishItem = {
   name: string;
-  grams: number;
+  /** Protein in the dish as served. Absent on the chai line, which is
+   *  deliberately uncounted (see CHAI_TO_FINISH). */
+  grams?: number;
   heldi?: boolean;
+  chai?: boolean;
 };
 
 type CourseSection = {
-  label: "TO START" | "THE MAIN" | "ON THE SIDE";
+  label: "TO START" | "THE MAIN" | "ON THE SIDE" | "TO FINISH";
   dishes: DishItem[];
 };
+
+// Every table finishes with chai, and the chai is Heldi Chai. It carries no
+// gram figure and stays out of every total: Chai publishes no protein number
+// until the finished blend is analysed (components/shop/chai-data.ts), and a
+// guessed figure in a menu total would be a product fact we cannot stand up.
+const CHAI_TO_FINISH: DishItem = { name: "Masala chai", chai: true };
 
 type MenuVariant = {
   id: string;
@@ -65,6 +74,10 @@ const MENUS: Menu[] = [
           { name: "Jeera rice", grams: 8 },
           { name: "Cucumber raita", grams: 6, heldi: true }
         ]
+      },
+      {
+        label: "TO FINISH",
+        dishes: [CHAI_TO_FINISH]
       }
     ]
   },
@@ -92,6 +105,10 @@ const MENUS: Menu[] = [
           { name: "Steamed rice", grams: 6 },
           { name: "Bowl of dahi", grams: 10, heldi: true }
         ]
+      },
+      {
+        label: "TO FINISH",
+        dishes: [CHAI_TO_FINISH]
       }
     ]
   },
@@ -119,6 +136,10 @@ const MENUS: Menu[] = [
           { name: "Jeera rice", grams: 8 },
           { name: "Boondi raita", grams: 8, heldi: true }
         ]
+      },
+      {
+        label: "TO FINISH",
+        dishes: [CHAI_TO_FINISH]
       }
     ],
     variants: {
@@ -165,6 +186,10 @@ const MENUS: Menu[] = [
           { name: "Khichdi", grams: 10, heldi: true },
           { name: "Roasted papad", grams: 4 }
         ]
+      },
+      {
+        label: "TO FINISH",
+        dishes: [CHAI_TO_FINISH]
       }
     ]
   },
@@ -192,6 +217,10 @@ const MENUS: Menu[] = [
           { name: "Two rotis", grams: 8 },
           { name: "Cucumber raita", grams: 6, heldi: true }
         ]
+      },
+      {
+        label: "TO FINISH",
+        dishes: [CHAI_TO_FINISH]
       }
     ]
   }
@@ -207,9 +236,10 @@ function dishGrams(
   heldiTbsp: number,
   heldiDishCount: number
 ) {
-  if (!dish.heldi || heldiDishCount === 0) return dish.grams;
+  const base = dish.grams ?? 0;
+  if (!dish.heldi || heldiDishCount === 0) return base;
   const tbspPerDish = heldiTbsp / heldiDishCount;
-  return dish.grams + Math.round(tbspPerDish * gramsPerTbsp);
+  return base + Math.round(tbspPerDish * gramsPerTbsp);
 }
 
 function MenuCard({
@@ -287,14 +317,26 @@ function MenuCard({
             <ul>
               {course.dishes.map((dish) => (
                 <li
-                  className={dish.heldi ? "menu-card__dish menu-card__dish--heldi" : "menu-card__dish"}
+                  className={
+                    dish.chai
+                      ? "menu-card__dish menu-card__dish--chai"
+                      : dish.heldi
+                        ? "menu-card__dish menu-card__dish--heldi"
+                        : "menu-card__dish"
+                  }
                   key={dish.name}
                 >
                   <span className="menu-card__dish-name">{dish.name}</span>
                   <span className="menu-card__dish-leader" aria-hidden="true" />
-                  <span className="menu-card__dish-grams">
-                    {dishGrams(dish, gramsPerTbsp, menu.heldiTbsp, heldiDishCount)}g
-                  </span>
+                  {dish.chai ? (
+                    <span className="menu-card__dish-grams menu-card__dish-grams--chai">
+                      Heldi Chai
+                    </span>
+                  ) : (
+                    <span className="menu-card__dish-grams">
+                      {dishGrams(dish, gramsPerTbsp, menu.heldiTbsp, heldiDishCount)}g
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -366,7 +408,8 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
         <p className="menu-gallery__lede">
           <strong>Five ways to lay the table.</strong> Gold dishes are{" "}
           <CopyHighlight>boosted with Heldi</CopyHighlight>,{" "}
-          <strong>counted for a couple.</strong>
+          <strong>counted for a couple.</strong> Chai to finish, not yet
+          counted.
         </p>
       </header>
 

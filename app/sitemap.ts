@@ -11,7 +11,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     { url: SITE_URL, priority: 1 },
+    // /shop is the two-pouch listing; each pouch has its own page under it.
     { url: `${SITE_URL}/shop`, priority: 0.9 },
+    { url: `${SITE_URL}/shop/khana`, priority: 0.9 },
     // Chai is browsable but not buyable yet (NEXT_STEPS.md §1b), so it sits
     // below Khana rather than beside it.
     { url: `${SITE_URL}/shop/chai`, priority: 0.7 },

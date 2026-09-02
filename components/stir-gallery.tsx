@@ -7,10 +7,14 @@ import { getStirFrameStyle, getStirImageFrame } from "@/lib/stir-gallery-frames"
 
 type Dish = {
   name: string;
-  tag: "THE MAIN" | "ON THE SIDE";
+  tag: "THE MAIN" | "ON THE SIDE" | "TO FINISH";
   base: number;
   image: string;
   video?: string;
+  /** Heldi Chai in the mug rather than Khana in the pot. The card plays the
+   *  same stir but shows no gram figure: Chai publishes none until the
+   *  finished blend is analysed (components/shop/chai-data.ts). */
+  chai?: boolean;
 };
 
 const DISHES: Dish[] = [
@@ -48,7 +52,21 @@ const DISHES: Dish[] = [
     base: 5,
     image: "/images/stir-gallery/bowl-of-dahi-clean.webp",
     video: "/videos/stir-gallery/bowl-of-dahi-stir.mp4"
+  },
+  {
+    name: "Masala chai",
+    tag: "TO FINISH",
+    base: 0,
+    image: "/images/stir-gallery/masala-chai.webp",
+    video: "/videos/stir-gallery/masala-chai-stir.mp4",
+    chai: true
   }
+];
+
+const CHAI_CAPTIONS = [
+  "Not one comment at the table.",
+  "Same chai. Nobody asked.",
+  "Papa had a second cup and still has no idea."
 ];
 
 const DAL_CAPTIONS = [
@@ -69,12 +87,20 @@ const SHARED_CAPTIONS = [
 const MAX_SPOONS = 2;
 const MAX_CAPTION = "Protein sorted. Taste unchanged.";
 
+// One heaped tablespoon a mug is Chai's serving; the pot takes two.
+function maxSpoons(dish: Dish) {
+  return dish.chai ? 1 : MAX_SPOONS;
+}
+
 function isDalDish(dish: Dish) {
   return /dal/i.test(dish.name);
 }
 
 function pickCaption(index: number, usedElsewhere: string[]) {
   const dish = DISHES[index];
+  if (dish.chai) {
+    return CHAI_CAPTIONS[Math.floor(Math.random() * CHAI_CAPTIONS.length)];
+  }
   if (isDalDish(dish)) {
     return DAL_CAPTIONS[Math.floor(Math.random() * DAL_CAPTIONS.length)];
   }
@@ -183,7 +209,7 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
 
   function stir(index: number) {
     if (animating[index]) return;
-    if (spoons[index] >= MAX_SPOONS) return;
+    if (spoons[index] >= maxSpoons(DISHES[index])) return;
 
     const dish = DISHES[index];
     const useVideo = Boolean(dish.video) && !reducedMotion;
@@ -194,7 +220,7 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     );
     setCaptions((current) => {
       const nextCaption =
-        nextCount >= MAX_SPOONS
+        nextCount >= maxSpoons(dish)
           ? MAX_CAPTION
           : pickCaption(
               index,
@@ -229,7 +255,9 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
   // the same per-bowl max. Every counter pops and every stir video plays
   // together, the same feedback a per-card tap gives, five bowls at once.
   function stirAll() {
-    const next = spoons.map((count) => Math.min(MAX_SPOONS, count + 1));
+    const next = spoons.map((count, index) =>
+      Math.min(maxSpoons(DISHES[index]), count + 1)
+    );
     if (next.every((count, index) => count === spoons[index])) return;
 
     const changed = next.map((count, index) => count !== spoons[index]);
@@ -237,7 +265,9 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     setSpoons(next);
     setCaptions((current) =>
       current.map((caption, index) =>
-        next[index] >= MAX_SPOONS ? MAX_CAPTION : pickCaption(index, [])
+        next[index] >= maxSpoons(DISHES[index]) && !DISHES[index].chai
+          ? MAX_CAPTION
+          : pickCaption(index, [])
       )
     );
 
@@ -303,7 +333,9 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     setActive((current) => (current === best ? current : best));
   }
 
-  const allMaxed = spoons.every((count) => count >= MAX_SPOONS);
+  const allMaxed = spoons.every(
+    (count, index) => count >= maxSpoons(DISHES[index])
+  );
 
   return (
     <div className="stir-gallery">
@@ -333,7 +365,7 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
             const bursting =
               burstAt === index && !reducedMotion && !DISHES[index].video;
             const poppingHere = (popping && popAt === index) || poppingAll;
-            const maxedOut = count >= MAX_SPOONS;
+            const maxedOut = count >= maxSpoons(dish);
             const caption = boosted ? captions[index] : "";
 
             const imageFrame = getStirImageFrame(dish.name);
@@ -362,7 +394,7 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
                     >
                       <Image
                         src={imageSrc}
-                        alt={`${dish.name}, home-cooked bowl`}
+                        alt={`${dish.name}, ${dish.chai ? "home-brewed mug" : "home-cooked bowl"}`}
                         width={380}
                         height={380}
                         sizes="190px"
@@ -412,9 +444,11 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
                     boosted ? " is-boosted" : ""
                   }${poppingHere ? " is-popping" : ""}`}
                 >
-                  {grams}g
+                  {dish.chai ? "Chai" : `${grams}g`}
                 </p>
-                <p className="stir-card__counter-label">protein in this bowl</p>
+                <p className="stir-card__counter-label">
+                  {dish.chai ? "Heldi Chai, figure to follow" : "protein in this bowl"}
+                </p>
 
                 <button
                   type="button"
@@ -426,7 +460,9 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
                   {isAnimating
                     ? "Adding Heldi…"
                     : maxedOut
-                      ? "This dish is Heldi."
+                      ? dish.chai
+                        ? "This mug is Heldi."
+                        : "This dish is Heldi."
                       : count === 0
                         ? "Stir in a spoonful"
                         : "Stir in another"}

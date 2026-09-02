@@ -15,7 +15,7 @@ import { METHODS } from "@/components/ways-to-use-methods";
  * Strip data and copy come straight from the shared METHODS source so the two
  * surfaces never drift.
  */
-const RAIL_IDS = ["pot", "dahi", "table"] as const;
+const RAIL_IDS = ["pot", "dahi", "table", "mug"] as const;
 
 const RAIL_METHODS = RAIL_IDS.map((id) => {
   const method = METHODS.find((candidate) => candidate.id === id);
@@ -82,13 +82,13 @@ export function WaysGallery() {
         <p className="ways-gallery__lede">
           Once the pouch is open, you can{" "}
           <CopyHighlight>stop shaking and start stirring</CopyHighlight>. These
-          are the ways Heldi works best, and every one of them is just three
-          steps.
+          are the ways Heldi works best, pot and mug, and every one of them is
+          just three steps.
         </p>
       </header>
 
       <p className="ways-gallery__hint" aria-hidden="true">
-        scroll for all three &#8594;
+        scroll for all four &#8594;
       </p>
 
       <div className="ways-gallery__rail" ref={railRef} onScroll={onRailScroll}>

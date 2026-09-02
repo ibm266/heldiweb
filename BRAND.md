@@ -355,7 +355,9 @@ product shots are AI-generated placeholders to be replaced with real photography
 | `/inside-the-pouch` | Provenance: suppliers, batch report, made in England | `app/inside-the-pouch/page.tsx` |
 | `/heldi-living` | Blog: honest-truth educational pieces + recipes | `content/heldi-living/posts.json` + HTML files |
 | `/faq` | Everything, grouped; FAQPage schema | `components/site-faqs.ts` |
-| `/shop` | PDP: buy box, tiers, nutrition modal, accordions, reviews, gifting | `components/shop/*` |
+| `/shop` | The shop front: both pouches side by side, pick one (`components/shop/pouch-picker.tsx`) | `app/shop/page.tsx` |
+| `/shop/khana` | Khana PDP: buy box, tiers, nutrition modal, accordions, reviews, gifting | `components/shop/*` |
+| `/shop/chai` | Chai page: gallery, method, statutory block, waitlist CTA; no prices yet | `components/shop/chai-*` |
 | `/legal/*` | Statutory pages | `docs/legal/*.md` via `lib/legal.ts` |
 
 Plumbing worth knowing:
@@ -574,8 +576,13 @@ stay true under every candidate blend and to carry **no figure**: the homepage
 range band (`components/range-section.tsx`, which names what each pouch is
 for and nothing else), the "Is there a Heldi for chai?" answer in
 `home-faqs.ts` (picked into /faq by `site-faqs.ts`), and the Chai lines in
-`public/llms.txt`. When Chai's declaration lands, those are the places a
-number could be added; until then keep them figure-free.
+`public/llms.txt`, the "To finish · Masala chai" line on every homepage menu
+card (`menu-gallery.tsx`), the "In the mug" method (`ways-to-use-methods.tsx`,
+on /ways-to-use and the homepage how-it-works rail), the "Masala chai" stir
+card (`stir-gallery.tsx`, counter reads "Chai" and "figure to follow"), the
+"Hot drinks" comparison row and the /shop pouch picker. When Chai's
+declaration lands, those are the places a number could be added; until then
+keep them figure-free.
 
 What Chai deliberately does **not** repeat from Khana, and why: "No added sugar"
 (Chai carries coconut sugar), "98% lactose-free" (substantiated against Khana's

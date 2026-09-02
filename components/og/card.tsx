@@ -33,6 +33,8 @@ async function fontData(file: string): Promise<ArrayBuffer> {
 const OG_ART_FILES = {
   pouch: "og/pouch.png",
   "pouch-chai": "og/pouch-chai.png",
+  // Both pouches side by side, for the /shop listing card.
+  pouches: "og/pouches.png",
   elephant: "og/elephant.png"
 } as const;
 
@@ -42,7 +44,7 @@ export type HeldiOgCardProps = {
   /** Optional line under the title; defaults to the pronunciation line. */
   sub?: string;
   /** Right-hand artwork. A pouch for commercial surfaces, elephant elsewhere. */
-  art?: "pouch" | "pouch-chai" | "elephant";
+  art?: "pouch" | "pouch-chai" | "pouches" | "elephant";
   /** Override for long titles (blog posts). */
   titleSize?: number;
 };
@@ -64,7 +66,10 @@ export async function heldiOgImage({
       fontData("Gelasio-italic-400.ttf")
     ]);
 
-  const artWidth = art === "elephant" ? 340 : 300;
+  const artWidth = art === "elephant" ? 340 : art === "pouches" ? 400 : 300;
+  // The two-pouch composite is landscape (1140x744); everything else is square
+  // or portrait.
+  const artHeight = art === "pouches" ? Math.round((artWidth * 744) / 1140) : artWidth;
 
   return new ImageResponse(
     (
@@ -172,7 +177,7 @@ export async function heldiOgImage({
               </div>
             </div>
           </div>
-          {art !== "elephant" ? (
+          {art !== "elephant" && art !== "pouches" ? (
             <div
               style={{
                 display: "flex",
@@ -208,7 +213,7 @@ export async function heldiOgImage({
               <img
                 src={artwork}
                 width={artWidth}
-                height={artWidth}
+                height={artHeight}
                 alt=""
                 style={{ objectFit: "contain" }}
               />
