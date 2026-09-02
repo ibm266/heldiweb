@@ -29,7 +29,9 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
 - **Slogan**: **They shake, we stir.** (A Bond allusion. It is in the ticker, the footer,
   the meta description, and the Organization schema. Treat it as locked.)
 - **Tagline family**: "The same food, just a little Heldier." · "Bringing something new
-  to the table." · "Same recipes. Same taste. More protein." (pack front)
+  to the table." · "Same recipes. Same taste. More protein." (the gold v1 pack front;
+  the navy v2 front, on every product shot since 2 Sep 2026, reads "Protein powder for
+  Indian food")
 - **Founder story, one line**: "My nani never said healthy. She said heldi. Warm food,
   made with care, made for you. That is where the name comes from." (founder band,
   homepage; photo of Mihir with nani; signed "— Mihir, founder")
@@ -347,7 +349,7 @@ product shots are AI-generated placeholders to be replaced with real photography
 
 | Route | Job | Registered in |
 |---|---|---|
-| `/` | Convert: hero reveal, pouch stats, stir gallery, how-it-works, gifting, truth teaser, menus, audience, vs-shaker, reviews, founder band, FAQ teaser, jar, waitlist CTA | `components/heldi-homepage.tsx` |
+| `/` | Convert: hero reveal, pouch stats, stir gallery, the two-pouch range band (Khana for the pot, Chai for the mug, `components/range-section.tsx`), how-it-works, gifting, truth teaser, menus, audience, vs-shaker, reviews, founder band, FAQ teaser, jar, waitlist CTA | `components/heldi-homepage.tsx` |
 | `/truth` | Educate + rank for protein questions (interactive myth-busting) | `components/truth-page.tsx` |
 | `/our-story` | Founder trust: nani, kitchen trials, taste panel, what's next | `app/our-story/page.tsx` |
 | `/inside-the-pouch` | Provenance: suppliers, batch report, made in England | `app/inside-the-pouch/page.tsx` |
@@ -494,10 +496,14 @@ left stale copy behind; do not repeat that. Touch list:
 ### 11.4 Product name change ("Khana" is a placeholder)
 
 `lib/commerce/catalog.ts` (title, handle, SKUs, GIDs, image alts and filenames),
-`app/shop/page.tsx` metadata, `buy-box.tsx` H1, our-story "What's next" section
-("Khana is on the table. Chai is on the stove."), blog posts and `posts.json`,
-`cart-drawer`/`cart-context` identifier names (cosmetic), Shopify product. Grep
-`Khana|khana`.
+`app/shop/page.tsx` metadata, `buy-box.tsx` H1 and its "Meet Heldi Chai" line,
+our-story "What's next" section ("Khana is on the table. Chai is on the stove."),
+the homepage range band (`components/range-section.tsx`: card titles, alts, the
+`/images/range/khana.webp` filename), the ticker line "KHANA FOR THE POT, CHAI
+FOR THE MUG", the "Is there a Heldi for chai?" FAQ in `home-faqs.ts`, the
+Organization schema description in `app/page.tsx`, `public/llms.txt`, blog
+posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
+(cosmetic), Shopify product. Grep `Khana|khana`.
 
 ### 11.5 Launch date / launch state
 
@@ -562,6 +568,14 @@ longer do, so keep them that way:
   (`product-accordions.tsx` for Khana, `chai-accordions.tsx` for Chai).
 - `og/card.tsx` resolves its pouch art through `OG_ART_FILES`. A new SKU adds an
   entry or its share card ships another product's pouch.
+
+Chai also appears on three surfaces away from its own page, all written to
+stay true under every candidate blend and to carry **no figure**: the homepage
+range band (`components/range-section.tsx`, which names what each pouch is
+for and nothing else), the "Is there a Heldi for chai?" answer in
+`home-faqs.ts` (picked into /faq by `site-faqs.ts`), and the Chai lines in
+`public/llms.txt`. When Chai's declaration lands, those are the places a
+number could be added; until then keep them figure-free.
 
 What Chai deliberately does **not** repeat from Khana, and why: "No added sugar"
 (Chai carries coconut sugar), "98% lactose-free" (substantiated against Khana's

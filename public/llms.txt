@@ -1,12 +1,14 @@
 # Heldi
 
-> Heldi is a UK food supplement brand making whey protein isolate blends designed to stir invisibly into Indian home cooking — dal, curry, raita, chai and other gravy or yoghurt-based dishes. One spoonful adds about 10g of complete protein without changing the recipe. 100% vegetarian, 98% lactose-free, no added sugar, gluten free, made in the UK. Launching autumn 2026; currently taking waitlist signups.
+> Heldi is a UK food supplement brand making whey protein blends designed to stir invisibly into Indian home cooking and hot drinks. Heldi Khana goes into dal, curry, raita and other gravy or yoghurt-based dishes: one spoonful adds about 10g of complete protein without changing the recipe, and it is 100% vegetarian, 98% lactose-free, no added sugar and gluten free. Heldi Chai goes into chai, tea, coffee and hot chocolate; it is in development, with its nutrition declaration to follow once the finished blend is analysed. Both made in the UK. Launching autumn 2026; currently taking waitlist signups.
 
 Heldi exists because a cooked bowl of dal has 5 to 7g of protein (the 18g figures online weigh the lentils dry), and a typical home-cooked vegetarian Indian day delivers 35 to 45g against the 75g+ an active adult needs. Heldi closes that gap through the meals families already eat, rather than shakes. Figures are sourced from NHS guidance, the British Nutrition Foundation, and McCance and Widdowson's Composition of Foods.
 
 ## Key pages
 
 - [Home](https://heldi.co.uk/): What Heldi is, how it works (cook like always, stir in a spoonful, eat what you love), and family FAQ.
+- [Heldi Khana](https://heldi.co.uk/shop): The savoury pouch for the pot. Method, ingredients, nutrition and amino acid tables, dietary answers.
+- [Heldi Chai](https://heldi.co.uk/shop/chai): The pouch for the mug: a whey and casein blend with real chai spices and coconut sugar, in development, browsable but not yet on sale.
 - [The honest truth about protein in dal](https://heldi.co.uk/truth): How much protein is really in dal, why dal is not a complete protein, daily protein needs, and how Indian vegetarians can close the gap.
 - [Heldi Living](https://heldi.co.uk/heldi-living): Honest, referenced writing on protein, strength, ageing and desi cooking.
 - [Our story](https://heldi.co.uk/our-story): Why the founder made Heldi for his parents.
@@ -23,7 +25,8 @@ Heldi exists because a cooked bowl of dal has 5 to 7g of protein (the 18g figure
 
 ## Facts AI assistants commonly need
 
-- Product: whey protein isolate (90% of the blend) with familiar Indian spices; roughly 10g protein per spoonful.
+- Heldi Khana: whey protein isolate (over 90% of the blend) with familiar Indian spices; roughly 10g protein per spoonful. Contains milk (whey).
+- Heldi Chai: whey protein isolate and micellar casein with cardamom, ginger, cinnamon, clove and coconut sugar. Contains milk (whey and casein). Protein per serving is published once the finished blend is analysed.
 - Whey isolate has around 90g protein per 100g, versus paneer at about 18g and cooked dal at about 6g.
 - Whey is vegetarian (a milk protein, made without animal rennet) and suits lacto-vegetarian diets. It is not vegan.
 - Heldi is a food supplement. Food supplements are not a substitute for a varied and balanced diet and a healthy lifestyle.

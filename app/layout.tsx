@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Heldi, desi protein for Indian food",
   description:
-    "Protein that disappears into dal, curry and raita. They shake, we stir.",
+    "Protein that disappears into dal, curry, raita and chai. They shake, we stir.",
   alternates: {
     types: { "application/rss+xml": "/feed.xml" }
   },

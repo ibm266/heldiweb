@@ -15,7 +15,7 @@ const organizationSchema = {
   url: SITE_URL,
   slogan: "They shake, we stir",
   description:
-    "Heldi makes whey protein isolate blends designed to stir invisibly into Indian home cooking: dal, curry, raita and other home-cooked favourites. 100% vegetarian, made in the UK.",
+    "Heldi makes whey protein blends designed to stir invisibly into Indian home cooking and hot drinks: Khana for dal, curry and raita, Chai for chai, tea and coffee. 100% vegetarian, made in the UK.",
   founder: { "@type": "Person", name: "Mihir" }
 };
 

@@ -12,6 +12,7 @@ import { FooterLegal } from "@/components/subpage-nav";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { HOME_FAQS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
+import { RangeSection } from "@/components/range-section";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
 import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
@@ -137,9 +138,9 @@ const FAQS = HOME_FAQS;
 // price or discount lines; live carries the price lines and drops the
 // date. The launch date lives here (BRAND.md §11.5).
 const TICKER_COPY_WAITLIST =
-  `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  WAITLIST GETS ${WAITLIST_OFFER.percent}% OFF AT LAUNCH  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
+  `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  WAITLIST GETS ${WAITLIST_OFFER.percent}% OFF AT LAUNCH  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
 const TICKER_COPY_LIVE =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
+  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -194,7 +195,7 @@ const HERO_SHOWCASE_PILLS: {
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-9";
+const IMAGE_VERSION = "ink-blue-10";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -819,9 +820,9 @@ function HeroReveal({
                 <Image
                   className="hero-reveal-pouch__image"
                   src={imageSrc("/images/pouch.webp")}
-                  alt="Heldi pouch, same recipes, same taste, more protein"
-                  width={1360}
-                  height={2048}
+                  alt="Heldi Khana pouch, protein powder for Indian food"
+                  width={1696}
+                  height={2528}
                   priority
                   sizes="(max-width: 899px) 46vw, (max-width: 1280px) 320px, 420px"
                 />
@@ -1232,7 +1233,9 @@ export function HeldiHomepage({
         <StirGallery boostGrams={grams} />
       </section>
 
-      <section className="section section--cream" id="how">
+      <RangeSection />
+
+      <section className="section section--cream section--bordered" id="how">
         <WaysGallery />
       </section>
 

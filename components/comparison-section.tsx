@@ -74,7 +74,7 @@ const ALL_ROWS: ComparisonRow[] = [...TICK_ROWS, ...TEXT_ROWS];
 /* Scaled-down large elephant (not elephant-small) for crisp mobile icons */
 const ELEPHANT_ICON = "/images/comparison/elephant-icon.png";
 const SHAKER_ICON = "/images/comparison/shaker-icon.png";
-const POUCH_SHOT = "/images/comparison/heldi-pouch.png";
+const POUCH_SHOT = "/images/comparison/heldi-pouch.png?v=2";
 
 function TickMark({ yes }: { yes: boolean }) {
   return (

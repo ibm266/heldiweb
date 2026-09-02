@@ -9150,6 +9150,141 @@ a.living-card__tag:hover {
   }
 }
 
+/* ---------- Range (the two pouches, homepage) ----------
+   Mobile (<=899px): the two cards sit side by side so both pouches land in
+   one glance, with a full-width pill-link for the tap target. Wide (>=900px):
+   the same two cards in a 2-column grid capped at 1000px, pill-link inline.
+   Gold ground between the ink stir gallery and the cream how-it-works. */
+
+.range__head {
+  max-width: 640px;
+  margin: 0 auto clamp(2rem, 4.5vw, 3rem);
+  text-align: center;
+}
+
+.range__head h2 {
+  margin: 0.75rem 0 1rem;
+  line-height: 1.1;
+  /* Two beats, two lines: "One for the pot." / "One for the mug." Without
+     this the wide widths orphan "mug." on its own line. */
+  text-wrap: balance;
+}
+
+.range__lede {
+  max-width: 34rem;
+  margin: 0 auto;
+  color: var(--brown);
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.range__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0;
+  gap: clamp(0.75rem, 3vw, 2.5rem);
+  list-style: none;
+}
+
+.range-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(0.625rem, 1.6vw, 1.25rem);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 8px 8px 0 var(--ink);
+  gap: clamp(0.75rem, 1.6vw, 1.125rem);
+}
+
+.range-card__media {
+  overflow: hidden;
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  background: var(--cream);
+  line-height: 0;
+}
+
+.range-card__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.range-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.range-card__tag {
+  margin: 0;
+  color: var(--terracotta);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+.range-card__title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.25rem, 2.6vw, 1.875rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.range-card__line {
+  margin: 0;
+  color: var(--brown);
+  font-size: clamp(0.875rem, 1.4vw, 1.0625rem);
+  line-height: 1.5;
+}
+
+.range-card__note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.range-card .pill-link {
+  align-self: flex-start;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.range-card__body > .pill-link {
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 899px) {
+  .range-card {
+    border-radius: 16px;
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .range-card__media {
+    border-radius: 10px;
+  }
+
+  .range-card .pill-link {
+    display: block;
+    align-self: stretch;
+    padding-inline: 0.5rem;
+    font-size: 0.875rem;
+    text-align: center;
+  }
+}
+
 /* ---------- Consent modal ---------- */
 
 .consent-overlay {

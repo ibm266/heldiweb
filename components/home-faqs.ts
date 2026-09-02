@@ -40,6 +40,11 @@ export const HOME_FAQS = [
       "Yes. Anything with a gravy, a dal or a yoghurt base works, sambar, kadhi, korma, bhindi in gravy, even a chaat with dahi on top. Non-veg pots too: chicken curry, keema and egg bhurji all take a spoonful for an extra protein boost. If a spoon can stir it, Heldi can disappear into it."
   },
   {
+    question: "Is there a Heldi for chai?",
+    answer:
+      "Yes. Heldi Chai is a whey and casein blend with real chai spices, made to stir into chai, tea, coffee and hot chocolate once the cup is off the boil. Contains milk (whey and casein). It is still in development, so it has a page but no price yet, and the waitlist hears first when it is ready. Khana, the savoury blend, is the one for the pot."
+  },
+  {
     question: "Is it safe for kids?",
     answer:
       "Yes. Whey is a part of milk, the same protein kids already get from dahi and paneer, and protein is part of every balanced diet. Nothing artificial, no sweeteners, no caffeine. If the family pot gets a spoonful, everyone eats from it. Growing kids get what they need from normal meals, so there is no need to add extra to their bowls."

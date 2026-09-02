@@ -95,19 +95,19 @@ export function isGiftLine(line: Pick<CartLine, "merchandise">): boolean {
 
 // ?v= busts the Next image-optimizer cache when a shot is regenerated in place.
 const TIER_IMAGES: Record<TierId, { url: string; altText: string }> = {
-  single: { url: "/images/shop/khana-1.webp", altText: "Heldi Khana pouch with its refillable gold table jar" },
-  double: { url: "/images/shop/khana-bundle-2.webp", altText: "Two Heldi Khana pouches with their refillable gold and silver table jars" },
-  triple: { url: "/images/shop/khana-bundle-3.webp", altText: "The full table bundle: three Heldi Khana pouches with refillable table jars and a masala dabba" }
+  single: { url: "/images/shop/khana-1.webp?v=2", altText: "Heldi Khana pouch with its refillable gold table jar" },
+  double: { url: "/images/shop/khana-bundle-2.webp?v=2", altText: "Two Heldi Khana pouches with their refillable gold and silver table jars" },
+  triple: { url: "/images/shop/khana-bundle-3.webp?v=2", altText: "The full table bundle: three Heldi Khana pouches with refillable table jars and a masala dabba" }
 };
-const SAMPLE_IMAGE = { url: "/images/shop/sample.webp", altText: "Heldi Sample sachet" };
+const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=2", altText: "Heldi Sample sachet" };
 
 // Clean pouch-only shot for contents breakdowns (the gallery images show
 // the pouches with their jars and dabba).
-export const POUCH_THUMB = "/images/shop/pouch-solo.webp";
+export const POUCH_THUMB = "/images/shop/pouch-solo.webp?v=2";
 
 export const JAR_THUMB = "/images/shop/gift-jar-gold.webp";
 export const DABBA_THUMB = "/images/shop/gift-masala-dabba.webp";
-export const SAMPLE_THUMB = "/images/shop/sample.webp";
+export const SAMPLE_THUMB = "/images/shop/sample.webp?v=2";
 
 // A 300g pouch at a 12g heaped-tbsp serving (see nutrition declaration)
 // gives 25 servings; the Sample holds 3.

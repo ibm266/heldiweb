@@ -405,6 +405,8 @@ export function BuyBox({ product }: { product: Product }) {
             <strong>High in protein</strong>, and protein contributes to the
             maintenance of muscle mass. Contains <strong>milk</strong> (whey).
             New to Heldi? <a href="/truth">Start with the honest truth about protein</a>.
+            Making chai rather than dal? <a href="/shop/chai">Meet Heldi Chai</a>,
+            the blend for the mug.
           </p>
         </div>
 

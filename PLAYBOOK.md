@@ -212,9 +212,10 @@ Every recipe ends with the finishing gate from the top of this file.
 1. Define the job and voice (BRAND.md §3, §4), then the two-line responsive spec
    (§1.3.1).
 2. Pick the ground colour by continuing the alternation. Current order on `/`:
-   gold hero + ink ticker → cream pouch → ink stir → cream how → ink gifting →
-   gold truth → ink thali → gold audience → ink vs-shaker → cream reviews →
-   gold founder → cream faq → ink jar → gold final CTA → ink footer. Slot in
+   gold hero + ink ticker → cream pouch → ink stir → gold range (the two
+   pouches) → cream how → ink gifting → gold truth → ink thali → gold audience →
+   ink vs-shaker → cream reviews → gold founder → cream faq → ink jar → gold
+   final CTA → ink footer. Slot in
    without creating two same-ground neighbours; copy the seam treatment
    (`.section--bordered` or nothing) from the nearest identical transition.
 3. Scaffold inside the `return` of `components/heldi-homepage.tsx`:
