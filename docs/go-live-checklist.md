@@ -118,16 +118,20 @@ Nobody has audited this. The whole site assumes a product, stock, a packer and a
   not a small quantity. If the ruling goes against us the fix is a percentage on the
   spice total or a legal name that stops naming them. Cheap to ask, expensive to
   reprint. **(Mihir)**
-- [ ] **Record how the 12.5g serving was arrived at, and keep the record.** The gram is
+- [ ] **Record how the 12g serving was arrived at, and keep the record.** The gram is
   the declared portion and the whole per-serving column hangs off it, but the spoon it
   describes is not a defined measure: a heaped tablespoon of this powder runs roughly 10
   to 14g between one hand and the next. Nobody certifies a tablespoon and no register
   says what one weighs, so what has to exist is evidence the number was chosen honestly
-  rather than flatteringly. Weigh five to ten heaped spoonfuls on a 0.1g scale, from a
+  rather than flatteringly. Half of that evidence now exists: 12g was solved for 10g of
+  protein against the Arla certificate, and the certificate's bulk density of 0.42 g/cm³
+  puts a heaped 15 ml tablespoon at 11.3 to 12.6g independently. The bench weighing is
+  the missing half. Weigh five to ten heaped spoonfuls on a 0.1g scale, from a
   full pouch **and** a half-empty one (powder settles and spoons differently as it goes
   down), with two different tablespoons; write down the date, the spread and why 12.5
   was picked out of it. The middle of a measured spread is defensible; the top of it is
-  not. This lives in the product technical file with the COAs, not in the repo, and it
+  not. 12 sits at the bottom of the 12 to 14g already weighed, which is the safe end:
+  a customer's real spoonful then carries slightly more than declared, not less. This lives in the product technical file with the COAs, not in the repo, and it
   is what a s.21 Food Safety Act 1990 due diligence defence would rest on. Same exercise
   for Chai's 8g level spoon, where the existing "7 to 8g" note is the draft of it.
   **(Mihir, real world)**
@@ -177,9 +181,9 @@ Nobody has audited this. The whole site assumes a product, stock, a packer and a
 - [ ] One shared statutory-statements component rendered on every commercial surface: food supplement designation, recommended daily portion, do not exceed it, not a substitute for a varied and balanced diet, keep out of reach of children, contains milk. Today the block exists only at `app/faq/page.tsx:56-61`, with a partial version at `components/truth-page.tsx:510-514`. `BRAND.md` §12 already requires it to be reachable from every commercial surface. **(code)**
 - [ ] Declare the Sample's net quantity in grams (3 x 12g = 36g ℮, if that is the fill). It appears nowhere. **(code, after Mihir confirms the fill)**
 - [ ] Add "contains naturally occurring sugars" wherever "no added sugar" appears (`components/heldi-homepage.tsx:177`, `:353`, `components/shop/buy-box.tsx:42`, `components/shop/product-accordions.tsx:21`, `:74`, `components/home-faqs.ts:50`, `:55`, `components/site-faqs.ts:158`), or drop the claim. **(code)**
-- [ ] Add a descriptive legal name near the H1 at `components/shop/buy-box.tsx:181`, for example "Whey protein isolate blend with cumin. Food supplement." One line, and it also discharges the supplement designation. **(code)**
-- [ ] "All natural" decision. Whey **isolate** is produced by industrial microfiltration or ion exchange and sunflower lecithin at 4% is functioning as an emulsifier. This is the weakest claim on the site. `components/site-faqs.ts:158` already says something defensible ("no sweeteners, no preservatives, no fillers"). Decide before the pouch artwork goes to print, because it retires `all-natural.png`. **(Mihir, then code)**
-- [ ] Origin. "Made in the UK" (`components/subpage-nav.tsx:184`, `components/heldi-homepage.tsx:1401`, ticker at `:138`, `:140`) against Arla whey at 94.15% triggers the primary-ingredient origin rule (retained Reg 2018/775). Confirm Arla's actual sourcing, then either state the whey's origin or keep the safer process statement "Blended and packed in England". **(Mihir, then code)**
+- [ ] Add a descriptive legal name near the H1 at `components/shop/buy-box.tsx:181`, for example "Whey protein isolate blend with warm spices. Food supplement." (not "with cumin": the blend is eight ingredients as of 3 Sep 2026) One line, and it also discharges the supplement designation. **(code)**
+- [ ] "All natural" decision. Whey **isolate** is produced by industrial microfiltration or ion exchange and sunflower lecithin, now 1.5%, is functioning as an emulsifier. This is the weakest claim on the site. `components/site-faqs.ts:158` already says something defensible ("no sweeteners, no preservatives, no fillers"). Decide before the pouch artwork goes to print, because it retires `all-natural.png`. **(Mihir, then code)**
+- [ ] Origin. "Made in the UK" (`components/subpage-nav.tsx:184`, `components/heldi-homepage.tsx:1401`, ticker at `:138`, `:140`) against Arla whey at 94% triggers the primary-ingredient origin rule (retained Reg 2018/775). Confirm Arla's actual sourcing, then either state the whey's origin or keep the safer process statement "Blended and packed in England". **(Mihir, then code)**
 - [ ] Rewrite "Is it safe for kids? Yes" (`components/home-faqs.ts:43-45`). It opens unqualified, sits on the same page as a "keep out of reach of children" warning, and unlike the pregnancy and medication answers it never hands off to a GP or health visitor, which `BRAND.md` §7 requires. **(code)**
 - [ ] Add a rule to `BRAND.md` §12: the "98%" and "lactose-free" travel together, always, in every ad, badge and social crop. The qualifier is what keeps the claim lawful. **(code)**
 
