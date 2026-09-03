@@ -814,7 +814,29 @@ The working tree is deliberately two-layered: a small tracked app plus large
 | `hero-video/`, `stir-gallery-video/` | no | Video generation workspaces (plans, keyframes, renders). Final cuts get copied into `public/videos/` |
 | `design_handoff_*/` | no | Point-in-time design handoff bundles |
 | `public/images/originals/` | no | Uncompressed asset masters kept out of the deploy |
+| `public/images/elephant-large-transparent.png`, `heldi-wordmark.png` | **yes** | Brand primitives, tracked since 3 Sep 2026. HeldiPM's `compose_front_v8.py` reads both **by absolute path** to build the pouch front, so they must exist here at that path. `elephant-large.png` and `-small.png` stay ignored |
 | `assets/` | yes | Build-time inputs that never ship raw: og-card fonts (TTF) and scaled art read by `components/og/card.tsx` |
+
+### The sibling repository
+
+`~/Projects/HeldiPM` is the internal app and the **pack design workshop**: the
+pouches, tin, tape, labels, merch and printed review packs. Its map is
+`HeldiPM/docs/repo-map.md`.
+
+**This repo wins on every product fact.** HeldiPM holds no copy of the nutrition
+calculator; it reads the figures from here. Two rules follow:
+
+1. When a product fact changes here, it does **not** propagate. The pouch artwork,
+   the prompt masters and the copy bank in HeldiPM all carry their own copies and
+   have to be updated deliberately. Work `docs/handover.md` and BRAND.md §11
+   together.
+2. HeldiPM's pouch front build reads two files out of this repo by absolute path
+   (row above). Moving or renaming either breaks the pack build in a repo that will
+   not tell you.
+
+`docs/handover.md` is the cross-repo orientation: which repo owns what, the settled
+figures, the dry-matter trap, and what is still open. Read it before a session that
+touches both.
 
 Placement rules:
 
