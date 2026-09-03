@@ -7,6 +7,12 @@ stir into Indian home cooking). Pre-launch: waitlist mode, mock cart.
 `.cursor/rules/` mirrors the project skills. If you change the rules here, update
 those mirrors in the same commit.)
 
+**New session, new machine, or new model? Start with
+[docs/handover.md](docs/handover.md).** It is the map: which repo owns what, which
+file owns which fact, the settled product figures, what is currently open, and the
+one thing that will bite you (HeldiPM's `design/` is gitignored, so a fresh clone
+contains none of the pouch artwork or print files).
+
 **Before writing copy, styling anything, or changing product facts, read
 [BRAND.md](BRAND.md).** It holds the brand identity, the two voices, the humour
 rules, the visual token system, and (most importantly) §11, the change-impact map

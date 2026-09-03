@@ -7,6 +7,12 @@ thin pointers, the actual rules live in BRAND.md and PLAYBOOK.md.
 Next.js storefront for Heldi, a UK food supplement brand (whey protein blends that
 stir into Indian home cooking). Pre-launch: waitlist mode, mock cart.
 
+**New session, new machine, or new model? Start with docs/handover.md.**
+It is the map: which repo owns what, which file owns which fact, the settled product
+figures, what is currently open, and the one thing that will bite you (HeldiPM's
+`design/` is gitignored, so a fresh clone contains none of the pouch artwork or
+print files).
+
 **Before writing copy, styling anything, or changing product facts, read
 BRAND.md.** It holds the brand identity, the two voices, the humour rules, the
 visual token system, and (most importantly) §11, the change-impact map listing
