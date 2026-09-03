@@ -27,15 +27,15 @@ Selling is unlawful, technically impossible, or reputationally fatal until every
 - [~] **Royal Mail business account is live.** Confirmed 28 Jul 2026: not set up yet, will be. Needed before the first dispatch, not before launch day, but every published rate in `lib/pricing.ts:112-119` and `docs/legal/shipping-policy.md` assumes it. **(Mihir, real world)**
   Tracked 48 is not a counter service: every rate in `lib/pricing.ts:112-119` and every line of `docs/legal/shipping-policy.md` assumes a Click and Drop or OBA account.
 - [ ] **Solicitor has reviewed all five documents in `docs/legal/`.** Still outstanding per `docs/legal/README.md:23` and `NEXT_STEPS.md:74`. See §2 for the specific questions to put to them. **(Mihir, real world)**
-- [ ] **The formulation is confirmed, and every spice reference on the site matches it.** As of 28 July the blend is still in development and is expected to become several spices rather than cumin alone, so `FORMULA` in `components/shop/nutrition-data.ts` is provisional and so is every spice mention in copy. Work `BRAND.md` §11.1's touch list in one pass once the spec is final. The binding deadline is the **pouch film print order**, earlier than launch, because printed packaging carries the ingredients list and nutrition declaration. Final nutrition figures must come from analysis of the finished blend, not calculated from inputs. **(Mihir, real world, then code)**
+- [x] **The formulation is confirmed, and every spice reference on the site matches it. Done 3 Sep 2026.** Khana is the eight-ingredient spiced blend: whey protein isolate (MILK) 94%, cumin 1.7%, sunflower lecithin 1.5%, coriander 1.25%, fine sea salt 0.75%, garam masala 0.5%, Kashmiri chilli 0.2%, turmeric 0.1%. `FORMULA` and both tables in `components/shop/nutrition-data.ts` were regenerated from it by `scripts/nutrition-calc.mjs`, and the `BRAND.md` §11.1 touch list was worked in one pass: the /inside-the-pouch hero, lede, spice and salt paragraphs and its OG card now say eight ingredients rather than four; the ingredients and ultra-processed FAQs name all eight; the comparison table's Flavours row names the real spices again after being deliberately vague through the reformulation. Two `BRAND.md` §13 drift items closed with it. **The pouch film print order is still the binding deadline for the artwork.**
 - [ ] **Showcase mode is off in Production, and everything it hides has been resolved.** `NEXT_PUBLIC_SHOWCASE_MODE` gates the placeholder review gallery and the IPL leaderboard (`lib/showcase.ts`). Off is the safe state, but "switched off" is not "done": before launch each gated section must either have real moderated reviews behind it or be deleted. Confirm the variable is absent from Vercel **Production** (Preview may keep it). **(Mihir, dashboard, then code)**
 - [ ] **Fake social proof is off the site.** Three separate breaches of the DMCC Act 2024 banned-practice list, enforceable by the CMA without going to court: the literal string `200+ five star reviews` plus a 5-star block (`components/shop/pdp-review-teasers.tsx:135-146`), eight invented reviewers with towns and VERIFIED badges (`lib/reviews.ts:47-178`), seven invented leaderboard standings (`lib/reviews.ts:190-198`). The file's own header at `lib/reviews.ts:7-10` says none of it may ship. **(code)**
 - [x] **False product facts are corrected. Done 28 Jul 2026, all four:** the comparison Flavours row no longer names turmeric and garam masala (now "Warm spices you already cook with", deliberately vague while the formulation moves); "Every Heldi order ships with a refillable jar" is now "Every pouch order", so the £5 Sample no longer implies a free jar; "90% whey protein isolate" is now 94% in both places it appeared, ending the conflation between the pouch being 94.15% isolate and the isolate itself being about 90% protein; and two live indexed blog posts no longer quote protein figures for "Heldi Chai" and "Heldi Dahi", which do not exist.
-- [~] **Mandatory food information is on the commercial surfaces. Mostly done 28 Jul 2026.** Fixed: MILK is now emphasised inside the ingredients list itself in all three places it appears, which is what FIC Art 21(1) actually requires (a separate "contains milk" line elsewhere does not satisfy it); the statutory statements moved into one shared `components/shop/statutory-statements.tsx` and now render on `/shop`, the homepage and `/faq`, carrying the food-supplement designation, the recommended daily portion (12g, from the new `SERVING_GRAMS` constant so nothing parses prose), do-not-exceed, not-a-substitute, keep-out-of-reach and contains-milk; a descriptive legal name ("Whey protein isolate blend with warm spices. Food supplement.") now sits under the PDP H1; and the ingredients FAQ carries "contains naturally occurring sugars". Verified rendering at 375 and 1280 with no horizontal scroll.
+- [~] **Mandatory food information is on the commercial surfaces. Mostly done 28 Jul 2026.** Fixed: MILK is now emphasised inside the ingredients list itself in all three places it appears, which is what FIC Art 21(1) actually requires (a separate "contains milk" line elsewhere does not satisfy it); the statutory statements moved into one shared `components/shop/statutory-statements.tsx` and now render on `/shop`, the homepage and `/faq`, carrying the food-supplement designation, the recommended daily portion (12g, from the `SERVING_GRAMS` constant so nothing parses prose, and worded gram-first so the spoon reads as the approximation it is), do-not-exceed, not-a-substitute, keep-out-of-reach and contains-milk; a descriptive legal name ("Whey protein isolate blend with warm spices. Food supplement.") now sits under the PDP H1; and the ingredients FAQ carries "contains naturally occurring sugars". Verified rendering at 375 and 1280 with no horizontal scroll.
   **Still open, two items:** the Sample's net quantity in grams is declared nowhere and needs the fill confirmed first (3 x 12g = 36g?); and "No added sugar" still appears as a bare badge on the PDP pill row and the homepage, where there is no room for the qualifier, so decide whether the badge goes or the qualifier sits adjacent to it. **(Mihir confirms the fill and the badge call, then code)**
 - [~] **The model cancellation form exists.** Added to `docs/legal/returns-refunds-policy.md` 28 Jul 2026 in the CCR Sch 3 Part B form, with a line making clear the customer does not have to use it. That closes the on-site half. **Still open, and it is the half that carries the risk:** it has to reach the customer in a durable medium, which means pasting it into the Shopify order confirmation notification. Until that is done the extended cancellation window argument is still live. **(Mihir, dashboard, Settings → Notifications)**
 - [~] **Struck prices are labelled as RRP.** Done in code 28 Jul 2026 via a single `Rrp` helper in `components/shop/buy-box.tsx`, so every strikethrough on the PDP now reads "RRP £35" rather than a bare £35, and "Save £5.00" became "£5.00 below RRP". Verified live: **six** strikethroughs on `/shop`, all labelled. That was one more than the audit found, because the free gift rows struck the jar's £8 and the dabba's £15 with no label either, and those have never been sold at those figures. **Still open:** mirror the decision in Shopify's compare-at fields so the hosted checkout tells the same story. **(Mihir, dashboard)**
-- [ ] **Pack artwork is regenerated from live data before it goes to print.** `fable/compliance-requirements.md:33-63` still carries the retired seven-ingredient blend and the old nutrition figures (82.6g protein against the live 86.9g). Anything printed from it is a false nutrition declaration and a false ingredients list. **(Mihir, real world + code)**
+- [ ] **Pack artwork is regenerated from live data before it goes to print.** `fable/compliance-requirements.md:33-63` carries a retired seven-ingredient blend and stale nutrition figures, and it is not the eight-ingredient blend confirmed on 3 Sep 2026 either. The live declaration is 84.1g protein per 100g and 10.1g per 12g serving. Anything printed from the old file is a false nutrition declaration and a false ingredients list. **(Mihir, real world + code)**
 - [ ] **ICO data protection fee paid and registration number added to the privacy policy.** Tier 1, £52, or £40 by direct debit. A legal duty with a fixed monetary penalty for non-payment. Five minutes at ico.org.uk. **(Mihir, dashboard)**
 - [~] **VAT position confirmed and Shopify agrees with it.** Confirmed 28 Jul 2026: **not VAT registered, and staying that way for now.** Heldi LTD is not VAT registered, so it must not charge or appear to charge VAT (VATA 1994 s.67). **The runbook's Phase 1 tax instruction is wrong as written** and must not be followed: do not tick "All prices include tax", do not enter a UK VAT registration. Target state is £0.00 tax on the test checkout. **(Mihir with accountant, then dashboard)**
 - [ ] **Shopify can actually take an order.** Shipping rates configured (nothing exists today, so checkout says no shipping available), Shopify Payments out of test mode with KYC done, a **business** bank account in the name Heldi LTD for payout, all five policies pasted into Settings → Policies, and the Online Store password removed. Runbook Phase 1 and Phase 6. **(Mihir, dashboard)**
@@ -52,7 +52,88 @@ Nobody has audited this. The whole site assumes a product, stock, a packer and a
 - [ ] Blending run: booked or completed? Date, quantity, co-packer name. If not booked, launch is a lead time and not a date. **(Mihir, real world)**
 - [ ] Lot code format agreed with the packer, and who applies it. **(Mihir, real world)**
 - [ ] The 18-month best-before is substantiated by stability data, not assumed. **(Mihir, real world)**
-- [ ] Finished-product nutritional analysis on the first run. The figures in `components/shop/nutrition-data.ts` appear to be calculated from ingredient inputs, and GB tolerance guidance expects them to hold on analysis. **(Mihir, real world)**
+- [x] **The whey purity is settled, 3 Sep 2026, and the serving is solved rather than
+  guessed.** Arla certificate 0000672935 (batch FF25466001, the one in hand) reports
+  **92.66% protein in DRY MATTER at 4.13% moisture**, which is **88.83% as-is**. Every
+  earlier figure in the repo was a misreading of that one document in one direction or
+  the other: `scripts/nutrition-calc.mjs` carried 87.3% (the spec's worst-case moisture,
+  conservative), and `nutrition-data.ts` implied 92.06% (the dry-matter number used as
+  as-is, too high). At 94% whey the blend is **84.06 g protein per 100 g**, so 10.0 g of
+  protein needs **11.90 g** and the serving is **12 g, delivering 10.09 g**. 12 g also
+  divides the 300 g pouch into exactly 25 servings, and it holds under the unsettled
+  formulation question (the 4-ingredient FORMULA needs 11.93 g for the same 10 g). The
+  certificate's own bulk density, 0.42 g/cm³, corroborates the spoon independently: a
+  heaped 15 ml tablespoon lands at 11 to 13 g. The script is corrected; the site's
+  per-100g table is not, and waits on the formulation below.
+- [x] **Which Khana formulation is real: answered 3 Sep 2026, the eight-ingredient garam
+  masala blend.** The site now carries it and the §11.1 sweep is done. For the record, the
+  choice moved fat from 4.3 to 2.4 g/100g (lecithin 4% down to 1.5%) and left protein
+  essentially where it was, which is why the 12 g serving was safe to settle first.
+- [~] **Chai now carries MPC85 and the corrected whey, 3 Sep 2026.** `chai-data.ts` was
+  regenerated: the ingredients list, legal name and allergen sentence all say **milk
+  protein concentrate** rather than micellar casein, and the declaration moved on energy
+  (1521 to 1532 kJ), fat (2.2 to 2.1), saturates (0.8 to 0.7), carbohydrate (18.5 to
+  19.3), sugars (10.7 to 11.6) and lactose (**1.4 to 2.2 g/100g**, the one that matters).
+  Protein stayed at 64.0 g/100g and 5.1 g a mug because the whey rising to 88.83% and the
+  MPC falling to 80.75% very nearly cancel. **Still open:** get Bacarel's own spec sheet
+  for the MPC and replace the typical values with it, because 80.75% is the industry dry
+  basis convention rather than a measured figure for this product. **(Mihir, supplier)**
+- [x] **Decided 3 Sep 2026: no finished-product analysis for the first run.** The
+  declaration is the calculation in `scripts/nutrition-calc.mjs`, which FIC Reg 1169/2011
+  Art 31(4)(b) permits as a basis in its own right ("average values based on the
+  manufacturer's calculation from the known average values of the ingredients used"). It
+  is a legal basis, not a stopgap. What has to be true for it to hold:
+    - **The tolerance is the safety margin, and it is generous here.** For protein above
+      40 g/100g the GB guidance allows ±8 g, so a declared 84.1 survives an analysed
+      result anywhere from about 76 to 92. Even the worst batch Arla's spec permits
+      (90% protein in DM at 6% moisture) computes to 80.1 g/100g. Salt is the tighter
+      row: declared 1.2 g/100g against a ±0.375 g band once it is above 1.25.
+    - **The certificate is the evidence.** Arla 0000672935 goes in the product technical
+      file with the spice specs, the recipe as actually blended, and the batch records.
+      Without it the calculation has no basis and the s.21 Food Safety Act 1990 due
+      diligence defence has nothing to stand on. Get a certificate for every new whey
+      delivery and re-run the script if the protein moves.
+    - **Recalculate rather than assume when a supplier changes.** A different whey lot at
+      a different moisture changes the declaration.
+  Revisit if a retailer, an insurer or a co-packer asks for analysis, which they may.
+  **(Mihir, decided)**
+- [ ] **Name the garam masala's supplier, and check it for allergens.** Two jobs, one
+  email, and the site is currently short an answer on both.
+    - ~~**The supplier.**~~ Answered 3 Sep 2026: **Buy Whole Foods Online**. The page had
+      claimed "every spice we blend comes from Spice Entice", which was never true of the
+      garam masala; it now credits Spice Entice for the four single spices (cumin,
+      coriander, chilli, turmeric) and Buy Whole Foods Online for the garam masala. Named
+      without a link, the same way Special Ingredients is handled on that page.
+    - **The allergens.** Garam masala is a compound ingredient at 0.5%. FIC Annex VII
+      Part E lets a compound ingredient under 2% be named without breaking out its
+      components, **but allergens are never exempt**. Commercial garam masala sometimes
+      carries mustard, and occasionally nuts, both Annex II allergens that would have to
+      appear emphasised in the ingredients list and would change every "Contains milk
+      (whey)" line on the site. Same question for the Kashmiri chilli if it is a
+      compound product rather than straight ground chilli. **(Mihir, supplier)**
+- [ ] **Get a labelling consultant to rule on QUID for Chai specifically.** Khana is
+  straightforward: its spices are flavouring at 0.1 to 1.7%, so Annex VIII Part A(4)
+  exempts them and only the whey's 94% is published. Chai is arguable, because the
+  spices characterise it, `CHAI_LEGAL_NAME` says "chai spices", and ginger at 6.77% is
+  not a small quantity. If the ruling goes against us the fix is a percentage on the
+  spice total or a legal name that stops naming them. Cheap to ask, expensive to
+  reprint. **(Mihir)**
+- [ ] **Record how the 12.5g serving was arrived at, and keep the record.** The gram is
+  the declared portion and the whole per-serving column hangs off it, but the spoon it
+  describes is not a defined measure: a heaped tablespoon of this powder runs roughly 10
+  to 14g between one hand and the next. Nobody certifies a tablespoon and no register
+  says what one weighs, so what has to exist is evidence the number was chosen honestly
+  rather than flatteringly. Weigh five to ten heaped spoonfuls on a 0.1g scale, from a
+  full pouch **and** a half-empty one (powder settles and spoons differently as it goes
+  down), with two different tablespoons; write down the date, the spread and why 12.5
+  was picked out of it. The middle of a measured spread is defensible; the top of it is
+  not. This lives in the product technical file with the COAs, not in the repo, and it
+  is what a s.21 Food Safety Act 1990 due diligence defence would rest on. Same exercise
+  for Chai's 8g level spoon, where the existing "7 to 8g" note is the draft of it.
+  **(Mihir, real world)**
+- [ ] **Get the pack artwork checked by a food labelling consultant before the film
+  print order**, not before launch. The print run is the irreversible spend and it
+  carries the ingredients list, the nutrition declaration and the portion. **(Mihir)**
 - [ ] Finished-product gluten test (not a supplier assurance). Cumin is a spice with a cross-contamination history and the claim ships on six surfaces. **(Mihir, real world)**
 - [ ] "Blended and packed in England, with every batch tested" (`app/inside-the-pouch/page.tsx:9`, which is page metadata and therefore in Google's snippet) is substantiated, or reworded. What the page shows at `:59-98` is Arla's ingredient COA, not a finished-blend test. **(Mihir, then code)**
 - [ ] The ℮ mark on the pack: only lawful if the packer runs and records the average quantity system (Weights and Measures (Packaged Goods) Regs 2006). If not, drop it and declare a plain minimum net quantity. **(Mihir, real world)**
@@ -312,7 +393,7 @@ Klaviyo account `V9JqrE`. Lists: Waitlist `Staq52` (single opt-in), Weekly lette
 - [x] "90% whey protein isolate" corrected to 94% in both places, 28 Jul 2026, with a comment at each site pointing at `FORMULA` and BRAND.md §11.1. Note both numbers move if the formulation changes; §11.1 already greps for "94".
 - [ ] Replace "protein boost" (`components/shop/product-accordions.tsx:37`, `components/home-faqs.ts:40`). The permitted nutrition claims are "source of protein" and "high in protein". **(code)**
 - [x] "MOST POPULAR" changed to "BEST VALUE" 28 Jul 2026. One is a price fact anyone can check; the other was a consumer-behaviour claim with zero orders behind it.
-- [ ] Fix the two hard-coded prose leaks that break `BRAND.md` §11: "A 300g pouch is about 25 meals" at `components/site-faqs.ts:205` (should come from `SERVINGS_PER_POUCH`) and "over £40 ship free, £3.55" at `:178` (should come from `SHIPPING`). **(code)**
+- [~] Hard-coded prose leaks that break `BRAND.md` §11. **Half done 3 Sep 2026:** the pouch-life FAQ now reads `${SERVINGS_PER_POUCH}` instead of a literal "25 meals", so the number can never drift from the constant again. **Still open:** "over £40 ship free, £3.55" at `components/site-faqs.ts:178` should come from `SHIPPING`. **(code)**
 - [ ] Make the PDP teaser strip able to show real reviews. `components/shop/pdp-review-teasers.tsx:121` reads `PLACEHOLDER_REVIEWS` directly and takes no props, so even after moderation the strip keeps showing invented people while the band below updates. **(code)**
 - [ ] **The homepage loses its closing CTA at launch.** `components/heldi-homepage.tsx:1382` wraps the whole final band in `mode !== "live"`, so in live mode the homepage ends with the jar preview and the footer, with no "Shop now". Every other page keeps its CTA via `<WaitlistOrShopCta>`. The `#join` anchor disappears with it, so any older email pointing at `heldi.co.uk/#join` becomes a dead link. **(code)**
 - [ ] Add the banned vocabulary word to `scripts/brand-lint.sh` rule 2 alongside "scoop", then fix the two live instances: `content/heldi-living/high-protein-tadka-dal.html:54` and the stale `.ways-steps-card__dose` label documented at `docs/brand/specimen.html:741`. Two-line tooling change. **(code)**

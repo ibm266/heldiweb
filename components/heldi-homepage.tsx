@@ -1244,10 +1244,11 @@ export function HeldiHomepage({
             <CopyHighlight>honest fix</CopyHighlight>.
           </p>
           <PouchEquation />
-          {/* 94%, not 90%: the pouch is 94.15% whey protein isolate, while the
-              isolate itself is about 90% protein. See FORMULA in
-              components/shop/nutrition-data.ts, and BRAND.md §11.1 before
-              changing, since the formulation is still moving. */}
+          {/* 94%, not 90%: the pouch is 94% whey protein isolate, while the
+              isolate itself is 88.83% protein as it arrives. See FORMULA in
+              components/shop/nutrition-data.ts. The blend was confirmed on
+              3 Sep 2026, so this line is no longer provisional; BRAND.md §11.1
+              still lists everything that moves if the recipe does. */}
           <p className="pouch-section__ingredient">
             94% whey protein isolate. The rest, warm spices you already know.
           </p>

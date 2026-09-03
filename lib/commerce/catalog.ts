@@ -118,8 +118,10 @@ export const JAR_THUMB = "/images/shop/gift-jar-gold.webp";
 export const DABBA_THUMB = "/images/shop/gift-masala-dabba.webp";
 export const SAMPLE_THUMB = "/images/shop/sample.webp?v=4";
 
-// A 300g pouch at a 12g heaped-tbsp serving (see nutrition declaration)
-// gives 25 servings; the Sample holds 3.
+// A 300g pouch at a 12g serving (see the nutrition declaration; the gram is
+// the declared portion and the heaped tablespoon is an approximation of it,
+// not the other way round) gives exactly 25 servings; the Sample holds 3,
+// which is a 36g fill and still unconfirmed in docs/go-live-checklist.md.
 export const SERVINGS_PER_POUCH = 25;
 export const SERVINGS_PER_SAMPLE = 3;
 

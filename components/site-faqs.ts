@@ -8,6 +8,7 @@
 // FAQ JSON-LD go through siteFaqGroupsForMode so they never disagree.
 
 import { HOME_FAQS } from "@/components/home-faqs";
+import { SERVINGS_PER_POUCH } from "@/lib/commerce/catalog";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
 import { WAITLIST_OFFER } from "@/lib/pricing";
 import type { CommerceMode } from "@/lib/commerce/types";
@@ -52,7 +53,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How do I add more protein to Indian food?",
         answer:
-          "Three moves cover most meals. Use more dahi and paneer across the week. Make dals thicker rather than soupy, which raises the dal in every bowl. And stir a clean whey isolate like Heldi into gravies, dals and yoghurt dishes: one heaped tablespoon adds 10.4g without changing the recipe. Eggs and chicken do the heavy lifting in non-veg homes."
+          "Three moves cover most meals. Use more dahi and paneer across the week. Make dals thicker rather than soupy, which raises the dal in every bowl. And stir a clean whey isolate like Heldi into gravies, dals and yoghurt dishes: one heaped tablespoon adds 10.1g without changing the recipe. Eggs and chicken do the heavy lifting in non-veg homes."
       },
       {
         question: "When is the best time to eat protein?",
@@ -67,7 +68,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How much protein does one spoonful add?",
         answer:
-          "One heaped tablespoon, a 12g serving, adds 10.4g of complete protein with all nine essential amino acids. A bowl of dal has around 6g on its own, so with Heldi that is about 16g in the same bowl, same taste."
+          "A 12g serving, about one heaped tablespoon, adds 10.1g of complete protein with all nine essential amino acids. A bowl of dal has around 6g on its own, so with Heldi that is about 16g in the same bowl, same taste."
       },
       pick(HOME_FAQS, "Why do I need more protein?"),
       pick(TRUTH_FAQS, "How much protein is in a bowl of dal?"),
@@ -121,7 +122,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Is whey protein ultra-processed?",
         answer:
-          "A powder is processed by definition, so the honest question is what is in it. Whey is milk protein filtered out of the same liquid your nani strains off when making paneer, then gently dried. Heldi adds sunflower lecithin, cumin and sea salt. No sweeteners, no flavourings, no thickeners, nothing you would need to look up. Read the label and judge it like you would any food."
+          "A powder is processed by definition, so the honest question is what is in it. Whey is milk protein filtered out of the same liquid your nani strains off when making paneer, then gently dried. Heldi adds sunflower lecithin, sea salt and five spices you already cook with. No sweeteners, no flavourings, no thickeners, nothing you would need to look up. Read the label and judge it like you would any food."
       }
     ]
   },
@@ -157,7 +158,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "What are the ingredients?",
         answer:
-          "Four things: whey protein isolate (MILK) (94%), sunflower lecithin (4%), cumin (1.25%) and fine sea salt (0.6%). No added sugar, no sweeteners, no preservatives, no fillers. Contains naturally occurring sugars. Contains milk (whey).",
+          "Eight things, most to least: whey protein isolate (MILK) (94%), cumin, sunflower lecithin, coriander, fine sea salt, garam masala, Kashmiri chilli and turmeric. Six of those are spices you already cook with. We list them in order of how much is in the pouch, which is what the law asks for, and we keep the exact spice ratios to ourselves, which is the recipe. No added sugar, no sweeteners, no preservatives, no fillers. Contains naturally occurring sugars. Contains milk (whey).",
         more: { href: "/inside-the-pouch", label: "See the full breakdown" }
       },
       {
@@ -204,7 +205,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How long does a pouch keep?",
         answer:
-          "Every pouch has an 18-month best-before date, printed on the base. Once it is open, reseal it after each use, keep it somewhere cool and dry, and use it within 3 months for the best taste and texture. Never dip a wet spoon in. A 300g pouch is about 25 meals, so most kitchens finish it long before any of that matters."
+          `Every pouch has an 18-month best-before date, printed on the base. Once it is open, reseal it after each use, keep it somewhere cool and dry, and use it within 3 months for the best taste and texture. Never dip a wet spoon in. A 300g pouch is about ${SERVINGS_PER_POUCH} meals, so most kitchens finish it long before any of that matters.`
       },
       // Only makes sense before launch; live mode drops it.
       ...(mode === "waitlist"

@@ -19,6 +19,16 @@
 // would silently declare the wrong portion on a second SKU, which is a false
 // mandatory particular rather than a copy slip.
 //
+// THE GRAM LEADS AND THE SPOON FOLLOWS AS AN APPROXIMATION. It used to read
+// "one heaped tablespoon (12g)", which makes the spoon the declared portion
+// and the gram a gloss on it. A heaped tablespoon of this powder measures
+// roughly 10 to 14 g depending on whose spoon and how full the pouch is, so
+// declaring the spoon declares a quantity we cannot hold. The gram is what
+// the nutrition table is calculated on and what FIC Reg 1169/2011 Art 33
+// requires quantified, so it goes first; "about" marks the spoon as the
+// estimate it is. Do not flip these back for tone. Marketing prose elsewhere
+// is still free to say "one spoonful", because it declares nothing.
+//
 // The three permitted protein claims (BRAND.md §5) are used verbatim elsewhere
 // and are deliberately not repeated here; this block is the mandatory text.
 export function StatutoryStatements({
@@ -40,8 +50,8 @@ export function StatutoryStatements({
 }) {
   return (
     <p className={`heldi-disclaimer${className ? ` ${className}` : ""}`}>
-      Heldi is a food supplement. Recommended daily portion: one {spoon} (
-      {servingGrams}g). Do not exceed the recommended daily
+      Heldi is a food supplement. Recommended daily portion: {servingGrams}g,
+      about one {spoon}. Do not exceed the recommended daily
       intake. Food supplements are not a substitute for a varied and balanced
       diet and a healthy lifestyle. Keep out of reach of children. {allergens}
     </p>

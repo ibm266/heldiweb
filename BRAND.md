@@ -138,13 +138,30 @@ kadhi, spoonful, pot), and zero wellness jargon.
   growth of muscle mass" or "muscle growth". Paraphrasing an authorised claim is itself
   a breach, so copy the wording rather than retyping it from memory. Never write "builds
   muscle", "prevents muscle loss", "helps you lose weight", or any medical benefit. See §12.
-- **Numbers**: grams as figures with no space ("6g", "75g", "10.4g"). Money always in
+- **Numbers**: grams as figures with no space ("6g", "75g", "10.1g"). Money always in
   pence integers via `lib/pricing.ts`, rendered with `formatPence`/`formatMoney`; never
   type "£30" into copy (one legacy exception lives in `site-faqs.ts`, see §11.3).
-- **The 10 vs 10.4 rule**: marketing prose and interactive toys round to **10g** per
+- **The 10 vs 10.1 rule**: marketing prose and interactive toys round to **10g** per
   heaped tablespoon ("one spoonful, ten grams"); declaration-adjacent surfaces quote
-  **10.4g** exactly (nutrition accordion, "The protein numbers" FAQ, review gram
-  maths via `PROTEIN_GRAMS_PER_TBSP`). The bowl equation is 6g dal + 10g Heldi = 16g.
+  **10.1g** exactly (nutrition accordion, "The protein numbers" FAQ, review gram
+  maths via `PROTEIN_GRAMS_PER_TBSP`). Marketing rounds **down** from 10.1,
+  deliberately: understating a nutrient is never a compliance problem, and "ten grams"
+  is the locked phrase. Do not "correct" prose to 11g without deciding the bowl
+  equation and every menu total with it.
+- **Two bowl equations, and they must not be mixed inside one paragraph.** The
+  marketing one is 6g dal + 10g Heldi = **16g** (homepage `PouchEquation`, menu cards,
+  blog posts, the specimen). The exact one is 6g + 10.1g = **16g** today, and it is the
+  only one allowed in a paragraph that has already quoted 10.1g, because a reader who adds
+  up the figures on the page has to land on the number the page prints. Today that is
+  two surfaces: the "How much protein does one spoonful add?" FAQ and the PDP "The
+  protein numbers" accordion. Move the serving gram and you re-check both sums.
+- **The gram leads, the spoon approximates**: on any declaration-adjacent surface the
+  portion reads "12g, about one heaped tablespoon", never "one heaped tablespoon
+  (12g)". A heaped tablespoon of this powder measures roughly 10 to 14g between one
+  hand and the next, so the spoon cannot be the thing being declared; the gram is what
+  the table is calculated on and what FIC Reg 1169/2011 Art 33 wants quantified, and
+  "about" marks the spoon as the estimate. Marketing prose stays free to say "one
+  spoonful", because it declares nothing. Chai follows the same rule at 8g.
 - **Vocabulary, always**: stir, spoon, spoonful, heaped tablespoon, pouch, pot, bowl,
   the table, disappear into, vanish clean, desi, home-cooked, dal, sabzi, raita, dahi,
   kadhi, chaat, nani, mama, aunties and uncles, Heldier.
@@ -383,8 +400,8 @@ Change these files, and only these files, for their facts:
 | Shipping thresholds and rates | `SHIPPING` in `lib/pricing.ts` | £40 free threshold, £3.55 Tracked 48, sample letter absorbed |
 | Gifting discount + codes | `GIFTING` in `lib/pricing.ts` | ACHABETA / RISHTA / SHABASH, 10%, single+double tiers only |
 | Servings per pouch / sample | `SERVINGS_PER_POUCH`, `SERVINGS_PER_SAMPLE` in `lib/commerce/catalog.ts` | 25 and 3; feeds every per-meal price |
-| Formulation, nutrition table, amino profile | `components/shop/nutrition-data.ts` | `FORMULA`: whey isolate 94.15%, sunflower lecithin 4%, cumin 1.25%, sea salt 0.6%. Protein 10.4g per 12g serving |
-| Precise protein per tbsp for maths | `PROTEIN_GRAMS_PER_TBSP` in `lib/reviews.ts` (10.4) | Keep in sync with nutrition-data |
+| Formulation, nutrition table, amino profile | `components/shop/nutrition-data.ts` | `FORMULA` publishes the whey's 94% and names the rest without percentages (see §12). Real ratios: cumin 1.7, lecithin 1.5, coriander 1.25, salt 0.75, garam masala 0.5, chilli 0.2, turmeric 0.1. Protein 10.1g per 12g serving, 84.1g per 100g |
+| Precise protein per tbsp for maths | `PROTEIN_GRAMS_PER_TBSP` in `lib/reviews.ts` (10.1) | Keep in sync with nutrition-data |
 | Marketing grams per spoon (10) | `grams={10}` prop in `app/page.tsx` → homepage, stir gallery, menus | The rounded figure, see §5 |
 | Product name and SKUs | `lib/commerce/catalog.ts` | "Khana" is a placeholder name (NEXT_STEPS.md) |
 | Canonical URL | `lib/site.ts` | https://heldi.co.uk |
@@ -400,33 +417,34 @@ the job. Grep before you declare victory.
 
 ### 11.1 Formulation / spices change
 
-> **STATUS, 28 Jul 2026: the formulation is NOT final and the site's version is
-> provisional.** The blend currently shipped in copy is the 4-ingredient
-> cumin-only one (`FORMULA` in `components/shop/nutrition-data.ts`). The real
-> product is still in development and is **expected to end up a blend of several
-> spices rather than cumin alone**, so treat every spice reference on the site as
-> a placeholder awaiting the final spec.
+> **STATUS, 3 Sep 2026: the formulation is CONFIRMED and the site matches it.**
+> Khana is the eight-ingredient spiced blend: whey protein isolate (MILK) 94%,
+> cumin 1.7%, sunflower lecithin 1.5%, coriander 1.25%, fine sea salt 0.75%,
+> garam masala 0.5%, Kashmiri chilli 0.2%, turmeric 0.1%. `FORMULA` in
+> `components/shop/nutrition-data.ts` is the single source, and the whole touch
+> list below was worked in one pass on that date. The long "spice copy is
+> provisional, do not fix it" warning that used to sit here is retired.
 >
-> This is a deliberate, accepted risk while pre-launch: it is not worth churning
-> the copy each time the recipe moves. Two rules follow from that.
+> Two facts the copy now leans on, so keep them straight:
 >
-> 1. **Do not "fix" spice copy to match `nutrition-data.ts` on the assumption
->    that file is right.** It is provisional too. If you spot a mismatch (§13
->    lists the known ones), flag it rather than silently propagating cumin-only
->    wording into more surfaces.
-> 2. **The formulation must be confirmed before launch, and it is a hard gate**
->    in `docs/go-live-checklist.md`. The real deadline is earlier than launch: it
->    is the **pouch film print order**, because printed packaging carries the
->    ingredients list and the nutrition declaration, and a wrong one is a false
->    declaration under FIC Regulation 1169/2011, not a copy tweak. Nutrition
->    figures must come from analysis of the final blend, not from the current
->    calculated numbers.
+> 1. **Six of the eight are kitchen spices.** That is the line the copy uses
+>    ("Eight ingredients. Nothing to hide." / "Six of those are already in your
+>    kitchen"), and it is what turns a longer label into the brand's argument
+>    rather than against it. Counting: cumin, coriander, garam masala, chilli,
+>    turmeric, salt.
+> 2. **The whey is 88.83% protein as it arrives, not 92.66%.** The Arla
+>    certificate reports protein *in dry matter*; as-is is 3 g/100g lower. Copy
+>    must never say "over 90% protein" of the powder, and nothing should be
+>    calculated from Bacarel's retail bag, which quotes 92 g/100g and appears to
+>    repeat the same misreading.
 >
-> When the final spec lands, work the touch list below in one pass and delete
-> this note.
+> The remaining hard gate is the **pouch film print order**, not launch day:
+> printed packaging carries the ingredients list and the nutrition declaration,
+> and a wrong one is a false declaration under FIC Regulation 1169/2011.
 
 The July 2026 reformulation (7-ingredient spiced blend → 4-ingredient cumin blend)
-left stale copy behind; do not repeat that. Touch list:
+left stale copy behind; the Sep 2026 one back to eight ingredients did not. Touch
+list, for the next time:
 
 1. `components/shop/nutrition-data.ts`: FORMULA, all NUTRITION_ROWS, AMINO_ROWS.
 2. `app/inside-the-pouch/page.tsx`: hero ingredient list, percentages in prose, the
@@ -444,21 +462,24 @@ left stale copy behind; do not repeat that. Touch list:
 9. Grep terms: `cumin`, `turmeric`, `garam`, `coriander`, `Kashmiri`, `spices`,
    `94`, `four ingredients`, `Four ingredients`.
 
-### 11.2 Protein-per-serving change (currently 10.4g, marketed as 10g)
+### 11.2 Protein-per-serving change (currently 10.1g per 12g serving, marketed as 10g)
 
 1. `nutrition-data.ts` (declaration) and `lib/reviews.ts` `PROTEIN_GRAMS_PER_TBSP`.
 2. The rounded marketing figure: `grams={10}` in `app/page.tsx`, the homepage bowl
    equation (6 + 10 = 16 in `PouchEquation`, including its aria-label), menu gallery
    totals (`heldiTotal = heldiTbsp × 10` hand-written per menu in `menu-gallery.tsx`),
    stir gallery `boostGrams`.
-3. Prose repetitions: `product-accordions.tsx` ("10.4g" and "16g in the same bowl"),
+3. Prose repetitions: `product-accordions.tsx` ("10.1g" and "16g in the same bowl"),
    `site-faqs.ts` ("How much protein does one spoonful add?", GLP-1 answers "past
-   13g", "How do I add more protein…" "10.4g"), `truth-faqs.ts`, `truth-page.tsx`
+   13g", "How do I add more protein…" "10.1g"), `truth-faqs.ts`, `truth-page.tsx`
    FIXES ("+ 2 tbsp Heldi 20g") and the non-veg paragraph ("an extra 10g"),
    `our-story/page.tsx` ("one spoonful, ten grams" and the menu card gap maths),
    `inside-the-pouch/page.tsx` closing ("ten grams of protein a spoonful").
 4. Blog posts repeating the 16g bowl maths (`grep -rl "16g" content/`).
-5. Grep terms: `10.4`, `10g`, `ten grams`, `16g`, `13g`, `20g` (near "tbsp").
+5. Grep terms: `10.1`, `10g`, `ten grams`, `16g`, `13g`, `20g` (near "tbsp").
+6. The serving gram itself is a separate sweep: `SERVING_GRAMS`, `SERVINGS_PER_POUCH`
+   (300 ÷ 12 = 25), the Sample fill (3 × 12 = 36g), and every "12g" in prose.
+   Moving the gram moves the whole per-serving column and the amino column with it.
 
 ### 11.3 Price / tier / discount change
 
@@ -541,8 +562,8 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
 - **Contact email** (info@heldi.co.uk): footer (`subpage-nav.tsx`), FAQ page lede,
   several `site-faqs.ts` answers, all `docs/legal/*`.
 - **Company address**: `FooterLegal` and the legal docs.
-- **Servings per pouch (25)**: single constant, but "25 meals" phrasing appears via
-  the constant only; keep it that way.
+- **Servings per pouch (25)**: single constant, and every "meals" phrasing now goes
+  through it, including the pouch-life FAQ. Keep it that way.
 - **Health claim wording**: appears verbatim in at least 8 files; if regulation ever
   changes it, `grep -rl "contributes to the maintenance"`.
 - **Nav changes**: four link lists (§9) + `app/sitemap.ts`.
@@ -587,7 +608,7 @@ keep them figure-free.
 What Chai deliberately does **not** repeat from Khana, and why: "No added sugar"
 (Chai carries coconut sugar), "98% lactose-free" (substantiated against Khana's
 whey certificate at a 12g spoonful), "All natural" (ASA exposure), "organic"
-(uncertified, and no organic ground clove exists to buy), the 10.4g protein
+(uncertified, and no organic ground clove exists to buy), the 10.1g protein
 figure, the cumin ingredients list, the 18-month best-before, and the reviews
 band (`reviews-store.ts` does not filter by product and `PROTEIN_GRAMS_PER_TBSP`
 is Khana's). Since 3 Sep 2026 Chai publishes its own declaration and amino
@@ -624,33 +645,50 @@ this breaks; the dashboard just goes quiet.
 - "98% lactose-free", "no added sugar", "gluten free", "vegetarian", "all natural"
   are the approved badge claims; do not invent new badges without substantiation.
   Substantiation: Arla Ultrawhey COA lactose ~2.2 to 2.4% (batch FF25466001
-  2.28%); finished pouch slightly lower after blend. Per ~12g spoon ~0.3g
-  lactose, well below traditional whey concentrate.
+  2.28%); at 94% whey the finished pouch is 2.14g lactose per 100g, so **97.9%
+  lactose-free** and the "98%" badge rounds rather than overstates. Per 12g spoon
+  0.26g lactose, well below traditional whey concentrate.
 - Do not imply Heldi replaces meals or that anyone *needs* a supplement; the honest
   framing is closing a gap in an otherwise good diet.
+- **Publish the ingredient list, not the recipe.** The list is mandatory and must stay
+  in **descending order of weight** (FIC Art 18(1)), and MILK stays emphasised inside
+  it. Percentages are a separate obligation: QUID (Art 22) only bites on an ingredient
+  named in the food's name, emphasised in words or pictures, or essential to
+  characterise it, and Annex VIII Part A(4) exempts "ingredients used in small
+  quantities for the purposes of flavouring". So Khana publishes **94% on the whey and
+  nothing on the spices**, and Chai publishes the two milk proteins and the coconut
+  sugar (its legal name names them) and nothing on its spices. The ratios are the
+  recipe and stay in `scripts/nutrition-calc.mjs`. Two traps: never reorder the list to
+  disguise the ratios, because the order is the part that is legally fixed; and Annex
+  VII Part B's "mixed spices" shorthand is **not** available to either blend, since it
+  needs spices to total 2% or less and Khana's are 3.75%, Chai's over 19%. Chai's
+  exemption is the weaker of the two and a consultant should rule on it before print.
 
 ## §13 Known drift to fix (as of July 2026)
 
 Live inconsistencies a copy pass should resolve:
 
-1. `comparison-section.tsx` "Flavours" row still says "Cumin, turmeric, garam masala";
-   the current formula contains cumin only. Stale from the old blend.
-2. Homepage truth teaser says "90% whey protein isolate. The rest, spices you already
-   know." The pouch is 94.15% isolate (the *isolate* is ~90% protein: two different
-   numbers conflated), and "spices" overstates cumin + salt.
+1. ~~`comparison-section.tsx` "Flavours" row~~ RESOLVED 3 Sep 2026. The row names the
+   real spices again now the eight-ingredient blend is confirmed.
+2. ~~Homepage truth teaser "90% whey protein isolate"~~ RESOLVED. It reads 94%, and
+   "spices you already know" is now literally true of five of them.
 3. `fable/compliance-requirements.md` carries the old 7-ingredient list and 9.9g
    figures; `fable/brand-voice.md` says the Khana/Chai/Dahi line is retired while the
    live site names Khana and teases Chai, and its "10g per bowl (placeholder)" is now
-   a confirmed 10.4g. Update or clearly deprecate both files.
-4. `home-faqs.ts` "The spices are designed to disappear" reads oddly against a
-   one-spice formula; soften to "the blend".
+   a confirmed 10.1g. Update or clearly deprecate both files.
+4. ~~`home-faqs.ts` "The spices are designed to disappear"~~ RESOLVED. It read oddly
+   against a one-spice formula; with five spices in the blend it is accurate as written.
+5. **Still open:** the *whey* purity appears in prose as "over 90% protein" in places
+   written before the certificate was read properly. As it arrives the powder is 88.83%.
+   Grep `90% protein` and `over 90` before writing any new supplier copy.
 
 ## §14 Pre-flight checklist for any copy or design change
 
 1. Voice: does the surface know whether it is Voice A or B (§4)? No mixing.
 2. Grep your diff for `—` and `&mdash;`; restructure any sentence that wanted one.
 3. Maximum one easter egg on the surface, allusion not quotation (§6).
-4. Numbers: 10g in prose, 10.4g in declarations; money from `pricing.ts` helpers.
+4. Numbers: 10g in prose, 10.1g in declarations, and declarations lead with the
+   gram ("12g, about one heaped tablespoon"); money from `pricing.ts` helpers.
 5. Health language: one of the three authorised claims verbatim, or nothing (§5, §12).
 6. Colours from the tokens, borders in ink, shadows hard-offset with zero blur; no
    `#000`, no sans-serif, no soft Material shadows (§8).

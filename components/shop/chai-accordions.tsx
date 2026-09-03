@@ -2,6 +2,7 @@
 
 import { useCart } from "@/components/cart/cart-context";
 import {
+  CHAI_ALLERGENS,
   CHAI_FORMULA,
   CHAI_LACTOSE_PER_100G,
   CHAI_MUGS_PER_POUCH,
@@ -29,15 +30,16 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     answer: (
       <>
         <p>
-          Whey protein isolate and micellar casein, both from milk, blended
-          with real chai spices and a little coconut sugar. In full, largest
-          first: {CHAI_FORMULA}. <strong>Contains milk (whey and casein).</strong>{" "}
+          Whey protein isolate and milk protein concentrate, both from milk,
+          blended with real chai spices and a little coconut sugar. In full,
+          largest first: {CHAI_FORMULA}. <strong>{CHAI_ALLERGENS}</strong>{" "}
           Blended and packed in the UK.
         </p>
         <p>
-          The percentages are the recipe as it is blended. They are checked
-          against the analysis of the finished blend before the first pouch
-          is sealed, and this page changes if the analysis says so.{" "}
+          The order is the order, largest first, which is what the label has to
+          show. We publish how much of each milk protein and how much coconut
+          sugar is in there, and we keep the spice ratios to ourselves, because
+          that part is the recipe.{" "}
           <a href="/our-story">Read our story</a> for why we built it this
           way.
         </p>

@@ -46,21 +46,23 @@ const TEXT_ROWS: TextRow[] = [
   {
     kind: "text",
     label: "Flavours",
-    // Deliberately non-specific while the formulation is still moving
-    // (BRAND.md §11.1). The old row named turmeric and garam masala, neither of
-    // which is in the current blend. Name the actual spices again only once the
-    // final spec is signed off.
-    heldi: "Warm spices you already cook with",
+    // Named again 3 Sep 2026, now the eight-ingredient blend is confirmed.
+    // This row was deliberately vague through the reformulation, when the
+    // blend was cumin-only and the old copy still promised turmeric and garam
+    // masala. Both are back in the recipe, so the row can be specific again.
+    // Keep it in step with FORMULA in components/shop/nutrition-data.ts.
+    heldi: "Cumin, coriander, garam masala, chilli, turmeric",
     shakes: "Birthday Cake Blast\u2122"
   },
   {
     kind: "text",
     label: "On the label",
-    // 94%, not 90%. The pouch is 94.15% whey protein isolate (FORMULA in
-    // components/shop/nutrition-data.ts); the isolate itself is about 90%
-    // protein. Two different numbers that used to be conflated here. Both move
-    // if the formulation changes, so BRAND.md §11.1 greps for "94".
-    heldi: "94% whey protein isolate, then warm spices",
+    // 94%, not 90%. The pouch is 94% whey protein isolate (FORMULA in
+    // components/shop/nutrition-data.ts); the isolate itself is 88.83% protein
+    // as it arrives, 92.66% with the water out. Three different numbers that
+    // used to be conflated here. All move if the formulation changes, so
+    // BRAND.md §11.1 greps for "94".
+    heldi: "94% whey protein isolate, then kitchen spices",
     shakes: "Sweeteners, gums and 'natural flavourings'"
   },
   {

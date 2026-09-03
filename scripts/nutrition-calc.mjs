@@ -11,10 +11,30 @@
 //   node scripts/nutrition-calc.mjs chai       # one blend
 //
 // Sources, per 100 g as-is:
-//  - Whey protein isolate: Arla Ultrawhey 90 Instant certificate of analysis
-//    (protein 87.3% N x 6.38 as-is, lactose 2.28%), the figure HeldiPM's COGS
-//    model uses; fat, ash, moisture and sodium from the Arla typical spec.
-//  - Micellar casein 85: Bacarel / supplier typical spec (85% protein as-is).
+//  - Whey protein isolate: Arla Lacprodan Ultrawhey 90 Instant, certificate
+//    0000672935 (batch FF25466001, produced 15.11.2025, shipped to Bacarel).
+//    READ THE CERTIFICATE CAREFULLY: it reports "Protein in DM (Nx6.38)",
+//    which is DRY MATTER, not as-is. Batch FF25466001 is 92.66% protein in DM
+//    at 4.13% moisture, so as-is protein is 92.66 x (100 - 4.13)/100 = 88.83%.
+//    That is the figure below. The two numbers this file used to carry were
+//    both wrong readings of the same document: 87.3% assumed the spec's
+//    worst-case 5.8% moisture rather than the batch's actual 4.13%, and the
+//    site's old 86.9 g/100g blend figure implied whey at 92.06% as-is, which
+//    is the DM number used as though it were as-is. The other three batches
+//    on the certificate are 88.92% (FF25465001) and 89.60% (FF25467001), a
+//    three-batch mean of 89.12%; the worst batch Arla's spec permits (90% DM
+//    at 6% moisture) would be 84.60%, comfortably inside the +/-8 g protein
+//    tolerance around a declared 84. Fat, ash and lactose are as-is on the
+//    certificate; sodium from the Arla typical spec.
+//  - MPC85 (milk protein concentrate): the Chai milk protein. MPC grades are
+//    quoted on DRY BASIS, the same convention that caught the whey above, so
+//    an "85" MPC is about 80.75% protein as-is at a typical 5% moisture, not
+//    85%. That is the figure used here, and it is the conservative reading.
+//    Read as a literal 85% as-is instead, the mug goes from 5.12 to 5.18 g and
+//    the blend from 64.0 to 64.8 g/100g, so the declaration barely moves and
+//    the 5 g roundel survives either way. Lactose is the row that actually
+//    cares: MPC carries about 5.5% against micellar casein's 1%. Replace both
+//    with the supplier's own spec when Bacarel sends it.
 //  - Coconut sugar, spices, salt: USDA FoodData Central SR Legacy typical
 //    values (cardamom 02006, ginger 02021, cinnamon 02010, cloves 02011,
 //    pepper 02030, cumin 02014, coriander seed 02013, turmeric 02043,
@@ -37,8 +57,8 @@ const RI = { kcal: 2000, fat: 70, sat: 20, carb: 260, sugar: 90, protein: 50, sa
 // fibre, protein, salt. Energy is recomputed from the macros (FIC conversion
 // factors) so it is consistent with the rows, not copied from the source.
 const INGREDIENTS = {
-  wpi:        { name: "Whey protein isolate (MILK)", fat: 0.5,  sat: 0.3,  carb: 2.3,  sugar: 2.3,  fibre: 0,    protein: 87.3, salt: 0.45 },
-  casein:     { name: "Micellar casein (MILK)",       fat: 1.5,  sat: 1.0,  carb: 1.0,  sugar: 1.0,  fibre: 0,    protein: 85.0, salt: 0.25 },
+  wpi:        { name: "Whey protein isolate (MILK)", fat: 0.3,  sat: 0.18, carb: 2.28, sugar: 2.28, fibre: 0,    protein: 88.83, salt: 0.45 },
+  mpc85:      { name: "Milk protein concentrate (MILK)", fat: 1.6, sat: 1.0, carb: 5.5, sugar: 5.5, fibre: 0,    protein: 80.75, salt: 0.25 },
   coconut:    { name: "Coconut sugar",                fat: 0.4,  sat: 0.3,  carb: 93.0, sugar: 90.0, fibre: 1.0,  protein: 1.1,  salt: 0.11 },
   cardamom:   { name: "Cardamom",                     fat: 6.7,  sat: 0.7,  carb: 40.5, sugar: 0.0,  fibre: 28.0, protein: 10.8, salt: 0.05 },
   ginger:     { name: "Ginger",                       fat: 4.2,  sat: 2.6,  carb: 57.5, sugar: 3.4,  fibre: 14.1, protein: 9.0,  salt: 0.07 },
@@ -72,29 +92,40 @@ const AMINO = {
     "Tryptophan": 1.2, "Tyrosine": 5.6, "Valine": 6.3
   }
 };
+// MPC is whole milk protein, so its amino profile is the milk ratio: roughly
+// four parts casein to one part whey. Derived rather than typed out, so it
+// cannot drift from the two profiles above.
+AMINO.mpc85 = Object.fromEntries(
+  Object.keys(AMINO.whey).map((k) => [k, AMINO.casein[k] * 0.8 + AMINO.whey[k] * 0.2])
+);
 const ESSENTIAL = new Set(["Histidine", "Isoleucine", "Leucine", "Lysine", "Methionine", "Phenylalanine", "Threonine", "Tryptophan", "Valine"]);
 
 // The blends. Percentages by weight; serving in grams.
 const BLENDS = {
   khana: {
     name: "Heldi Khana",
-    serving: 12.5,
+    // 12 g, solved for 10 g of protein rather than picked for a round spoon.
+    // At 88.83% whey the blend is 84.06 g protein per 100 g, so 10.0 g needs
+    // 11.90 g and 12 g delivers 10.09 g. It survives the open formulation
+    // question: the site's 4-ingredient FORMULA needs 11.93 g for the same
+    // 10 g. 12 g also divides the 300 g pouch into exactly 25 servings.
+    serving: 12,
     pouch: 300,
     lines: [
       ["wpi", 94.0], ["cumin", 1.7], ["lecithin", 1.5], ["coriander", 1.25], ["salt", 0.75],
       ["garam", 0.5], ["chilli", 0.2], ["turmeric", 0.1]
     ],
-    proteinSources: { whey: 94.0 * 0.873 }
+    proteinSources: { whey: 94.0 * 0.8883 }
   },
   chai: {
     name: "Heldi Chai",
     serving: 8,
     pouch: 250,
     lines: [
-      ["wpi", 53.69], ["casein", 18.18], ["coconut", 10], ["ginger", 6.77], ["cardamom", 5],
+      ["wpi", 53.69], ["mpc85", 18.18], ["coconut", 10], ["ginger", 6.77], ["cardamom", 5],
       ["cinnamon", 2], ["pepper", 2], ["clove", 1.56], ["lecithin", 0.8]
     ],
-    proteinSources: { whey: 53.69 * 0.873, casein: 18.18 * 0.85 }
+    proteinSources: { whey: 53.69 * 0.8883, mpc85: 18.18 * 0.8075 }
   }
 };
 

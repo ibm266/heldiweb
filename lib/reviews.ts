@@ -21,7 +21,7 @@
 import { SHOWCASE_MODE } from "./showcase";
 
 /** Keep in sync with the PDP "The protein numbers" accordion copy. */
-export const PROTEIN_GRAMS_PER_TBSP = 10.4;
+export const PROTEIN_GRAMS_PER_TBSP = 10.1;
 
 export type ReviewMedia =
   | { kind: "image"; src: string; alt: string }

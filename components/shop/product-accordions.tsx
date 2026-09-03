@@ -47,9 +47,9 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     question: "The protein numbers",
     answer: (
       <p>
-        One heaped tablespoon, a <strong>12g serving</strong>, adds{" "}
-        <strong>10.4g of protein</strong> to a bowl; the blend itself is{" "}
-        <strong>86.9g protein per 100g</strong>. A bowl of dal has around 6g on
+        A <strong>12g serving</strong>, about one heaped tablespoon, adds{" "}
+        <strong>10.1g of protein</strong> to a bowl; the blend itself is{" "}
+        <strong>84.1g protein per 100g</strong>. A bowl of dal has around 6g on
         its own, so with Heldi that&apos;s <strong>16g in the same bowl</strong>,
         same taste. Protein contributes to the maintenance of muscle mass.{" "}
         <a href="/truth">Read the honest truth about protein</a>.

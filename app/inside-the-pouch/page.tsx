@@ -19,12 +19,14 @@ export default function InsideThePouchPage() {
         <div className="story-hero__inner">
           <p className="eyebrow">INSIDE THE POUCH</p>
           <h1 className="story-hero__title">
-            Four ingredients. Nothing to hide.
+            Eight ingredients. Nothing to hide.
           </h1>
           <p className="story-hero__lede">
-            Whey protein isolate (MILK), sunflower lecithin, cumin, fine sea salt.{" "}
-            <CopyHighlight>That is the whole label.</CopyHighlight> Here is
-            where each one comes from, and the paperwork that follows it in.
+            Whey protein isolate (MILK), cumin, sunflower lecithin, coriander,
+            fine sea salt, garam masala, Kashmiri chilli, turmeric.{" "}
+            <CopyHighlight>Six of those are already in your kitchen.</CopyHighlight>{" "}
+            Here is where each one comes from, and the paperwork that follows
+            it in.
           </p>
         </div>
       </section>
@@ -45,8 +47,12 @@ export default function InsideThePouchPage() {
             cooperative behind some of the most trusted dairy in Europe. Whey
             is the part of milk your nani strains off when she makes paneer.
             Arla filters it until it is{" "}
-            <CopyHighlight>over 90% protein</CopyHighlight>, gently dries it,
-            and sends it to us with its test results attached.
+            <CopyHighlight>close to 90% protein</CopyHighlight>, gently dries
+            it, and sends it to us with its test results attached. The
+            certificate for our batch says 92.66%, but that figure is measured
+            with the water taken out; as the powder actually arrives it is
+            88.83%, and that is the number every calculation on this site
+            uses.
           </p>
           <p>
             It is made <CopyHighlight>without animal rennet</CopyHighlight>,
@@ -108,7 +114,7 @@ export default function InsideThePouchPage() {
           <p className="eyebrow">THE OTHER THREE</p>
           <h2>Ingredients with a name and an address.</h2>
           <p>
-            Every spice we blend comes from{" "}
+            The single spices come from{" "}
             <a
               href="https://www.spicentice.com/collections/cooks-ingredients"
               rel="noopener"
@@ -118,8 +124,14 @@ export default function InsideThePouchPage() {
             </a>
             , a British spice house, from the same cook&apos;s ingredients
             range they sell to home kitchens. In Khana, that is{" "}
-            <CopyHighlight>cumin</CopyHighlight>, there to help the blend
-            settle into the dishes you already make.
+            <CopyHighlight>
+              cumin, coriander, Kashmiri chilli and turmeric
+            </CopyHighlight>
+            , there to help the blend settle into the dishes you already make.
+            The <CopyHighlight>garam masala</CopyHighlight> is a blend rather
+            than a single spice, so it has its own supplier:{" "}
+            <CopyHighlight>Buy Whole Foods Online</CopyHighlight>, also in the
+            UK.
           </p>
           <p>
             The <CopyHighlight>sunflower lecithin</CopyHighlight> comes from
@@ -128,9 +140,8 @@ export default function InsideThePouchPage() {
             top in clumps. Ours comes from sunflowers, not soy.
           </p>
           <p>
-            The last ingredient is <CopyHighlight>fine sea salt</CopyHighlight>,
-            0.6% of the blend. Just enough to keep it tasting like food rather
-            than a supplement.
+            There is <CopyHighlight>fine sea salt</CopyHighlight> too. Just
+            enough to keep it tasting like food rather than a supplement.
           </p>
         </div>
       </section>
@@ -157,7 +168,7 @@ export default function InsideThePouchPage() {
         <div className="final-cta-copy">
           <h2>Read the label out loud.</h2>
           <p>
-            Four ingredients, ten grams of protein a spoonful, nothing you
+            Eight ingredients, ten grams of protein a spoonful, nothing you
             need to look up.
           </p>
           <WaitlistOrShopCta />
