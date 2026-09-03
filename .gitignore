@@ -58,10 +58,13 @@ scripts/capture-fable-screenshots.mjs
 public/images/originals/
 
 # Root copies superseded by ink-blue variants
-public/images/elephant-large-transparent.png
+# elephant-large-transparent.png and heldi-wordmark.png ARE tracked, from
+# 3 Sep 2026. They are brand primitives rather than photography originals, and
+# HeldiPM's pouch front composition reads both by absolute path
+# (design/pouch-v2/compose_front_v8.py). Ignoring them here meant the two source
+# files the pack artwork is built from existed in no repository at all. 2.4 MB.
 public/images/elephant-large.png
 public/images/elephant-small.png
-public/images/heldi-wordmark.png
 public/images/how-it-works/
 public/images/jar-gold.png
 public/images/jar-silver.png
