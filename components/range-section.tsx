@@ -36,7 +36,7 @@ const RANGE: RangeProduct[] = [
     image: {
       // Cropped from the /shop gallery shot; masters in the gitignored
       // public/images/originals/pre-webp/shop/.
-      src: "/images/range/khana.webp?v=2",
+      src: "/images/range/khana.webp?v=3",
       alt: "The navy Heldi Khana pouch on a linen table"
     },
     href: "/shop/khana"
@@ -47,7 +47,7 @@ const RANGE: RangeProduct[] = [
     title: "Heldi Chai",
     line: "Chai, tea, coffee, hot chocolate. Stirred into the mug once it is off the boil.",
     image: {
-      src: "/images/range/chai.webp",
+      src: "/images/range/chai.webp?v=2",
       alt: "The terracotta Heldi Chai pouch on a linen table"
     },
     href: "/shop/chai"

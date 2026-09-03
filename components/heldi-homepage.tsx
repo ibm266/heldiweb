@@ -181,7 +181,7 @@ const HERO_SHOWCASE_PILLS: {
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-10";
+const IMAGE_VERSION = "ink-blue-11";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -809,8 +809,8 @@ function HeroReveal({
                   className="hero-reveal-pouch__image"
                   src={imageSrc("/images/hero-pair.webp")}
                   alt="The Heldi Khana and Heldi Chai pouches side by side, one for the pot and one for the mug"
-                  width={1856}
-                  height={2304}
+                  width={1744}
+                  height={2336}
                   priority
                   sizes="(max-width: 899px) 46vw, (max-width: 1280px) 320px, 420px"
                 />
