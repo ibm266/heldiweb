@@ -48,8 +48,8 @@ export default function ShopPage() {
           <p className="eyebrow">TWO POUCHES</p>
           <h1 className="story-hero__title">Pick your pouch.</h1>
           <p className="story-hero__lede">
-            Khana goes into the food. Chai goes into the drink. Same heaped
-            tablespoon, same rule:{" "}
+            Khana goes into the food. Chai goes into the drink. A spoonful
+            each, same rule:{" "}
             <CopyHighlight>nobody at the table can tell</CopyHighlight>.
           </p>
         </div>

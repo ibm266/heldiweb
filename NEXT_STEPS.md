@@ -60,9 +60,9 @@ provisional but uncontradicted, which is why the site publishes those.
 ### Decisions only you can make
 
 - [ ] **Is Chai in the next run at all, and is Dahi ahead of it?** HeldiPM's newest decision log (`context/product-gates.md`) still carries the Gate-2 line *"Chai spices not ordered this run"* and the Gate-3 line *"Chai market potentially larger, parked for behaviour not demand"*, and `data/project-status.json` names a two-SKU launch of **Khana and Dahi**, with Chai deferred. The August work resumed Chai development (testing day 16 Aug, print round 13 on 19 Aug, COGS 25 Aug) but no gate entry un-parks it, and the website has never heard of Dahi. The page as shipped does not depend on this answer. Every item below does
-- [ ] **Which formulation.** Two are live and they disagree. The pack artwork (HeldiPM `design/pouch-v2/CHAI-NUTRITION.md`, 18 Aug 2026) is 53.9% whey isolate / 13.5% micellar casein / 15% coconut sugar with a cardamom-led spice block. The COGS model (`lib/cogs/constants.ts`, `chai-current`, 25 Aug 2026) is 53.7% / 18.2% / 10% with a ginger-led block plus **2% black pepper**, which appears on no label anywhere. The print-ready PDFs on disk encode the older one. Nothing else on this list can be answered until one of them wins
-- [ ] **Net weight and mugs per pouch.** The print files say 100g and "around 12 servings"; the COGS model says a 250g pouch; HeldiPM's own pouch-v2 README calls 100g *"a placeholder for the sample"* and asks for a filled pouch to be weighed. The site currently states 100g / 12 mugs, from `CHAI_POUCH_GRAMS` and `CHAI_MUGS_PER_POUCH` in `components/shop/chai-data.ts`, because that is the pack in the product photography. Weigh a filled pouch and change those two constants together
-- [ ] **The serving size, and whether "5g per mug" survives.** Every protein number hangs off the whey purity, and there are three figures in play. The pack table assumes 93.5% because that is what Khana's table implies. The Arla certificate of analysis behind `lib/cogs/constants.ts` says **87.3% as-is**, and at 87.3% an 8g spoonful of the pack formulation gives about **4.7g**, below even the 4.9g failure case the nutrition spec's own sensitivity note describes. If the certificate wins, the serving moves to 9g or the claim softens, and **the front-of-pack roundel, the back-of-pack claims strip and the print PDFs all have to be re-rendered**, because every one of them shows "5g PROTEIN PER MUG". The four site shots in `public/images/shop/chai-*.webp` already have the roundel removed, so they do not publish a figure the page withholds; they will need re-rendering again if the roundel comes back with a settled number
+- [x] **Which formulation.** Decided 3 Sep 2026: the COGS `chai-current` blend (250 g pouch, no salt, 85:15 whey to plain micellar casein, 10% coconut sugar, ginger-led spices with 2% black pepper). The site carries it in `components/shop/chai-data.ts`; the round-13 print files still encode the earlier recipe and need re-emitting. Earlier note kept for the record: two were live and they disagreed. The pack artwork (HeldiPM `design/pouch-v2/CHAI-NUTRITION.md`, 18 Aug 2026) is 53.9% whey isolate / 13.5% micellar casein / 15% coconut sugar with a cardamom-led spice block. The COGS model (`lib/cogs/constants.ts`, `chai-current`, 25 Aug 2026) is 53.7% / 18.2% / 10% with a ginger-led block plus **2% black pepper**, which appears on no label anywhere. The print-ready PDFs on disk encode the older one. Nothing else on this list can be answered until one of them wins
+- [x] **Net weight and mugs per pouch.** 250 g and 31 level tablespoons, from the COGS decision (site constants updated 3 Sep 2026; the print files still say 100 g). Earlier note: the print files say 100g and "around 12 servings"; the COGS model says a 250g pouch; HeldiPM's own pouch-v2 README calls 100g *"a placeholder for the sample"* and asks for a filled pouch to be weighed. The site currently states 100g / 12 mugs, from `CHAI_POUCH_GRAMS` and `CHAI_MUGS_PER_POUCH` in `components/shop/chai-data.ts`, because that is the pack in the product photography. Weigh a filled pouch and change those two constants together
+- [x] **The serving size, and whether "5g per mug" survives.** It survives: 8 g is a LEVEL tablespoon (Mihir weighed a level spoon at 7 to 8 g, a heaped one at 12 to 14 g) and the calculation gives 5.1 g at the whey certificate's 87.3%. The site says "level tablespoon" everywhere Chai is spooned (`CHAI_SERVING_SPOON`). The roundel can come back onto the site's pack shots now; they were rendered without it. Earlier note: Every protein number hangs off the whey purity, and there are three figures in play. The pack table assumes 93.5% because that is what Khana's table implies. The Arla certificate of analysis behind `lib/cogs/constants.ts` says **87.3% as-is**, and at 87.3% an 8g spoonful of the pack formulation gives about **4.7g**, below even the 4.9g failure case the nutrition spec's own sensitivity note describes. If the certificate wins, the serving moves to 9g or the claim softens, and **the front-of-pack roundel, the back-of-pack claims strip and the print PDFs all have to be re-rendered**, because every one of them shows "5g PROTEIN PER MUG". The four site shots in `public/images/shop/chai-*.webp` already have the roundel removed, so they do not publish a figure the page withholds; they will need re-rendering again if the roundel comes back with a settled number
 - [ ] **The price ladder.** There is no agreed Chai price anywhere. `lib/cogs/constants.ts` carries £35 / £65 / £95 flagged `TIER_PRICES_PROVISIONAL.chai = true` and says outright *"Chai has no agreed pricing of its own and mirrors Khana for now"*; the only Chai price ever named is a **£20 entry point** for the 100g pouch in `data/project-status.json`, and it is recorded as parked. Note the COGS Khana ladder (£35/£65/£95) does not match the locked one in `lib/pricing.ts` (£35/£70/£105), so "mirror Khana" would mirror an error
 - [ ] **Does Chai get a Sample?** Khana's Sample is a real £5 SKU with its own variant, servings constant and gallery slot. Chai has no sample SKU, price or fill anywhere. A sachet shot is already rendered and sitting in the gitignored `public/images/originals/pre-webp/shop/chai-sample.png` if the answer is yes
 - [ ] **Do Chai pouches earn the free jar and the masala dabba, the 20% waitlist code, and the 10% family codes?** Today they would silently earn **nothing**: `khanaPouchCount`, `giftingEligiblePenceForLines` and `waitlistEligiblePenceForLines` in `lib/commerce/catalog.ts` all key off Khana's SKUs
@@ -77,12 +77,12 @@ come from **analysis of the finished blend**, not from calculating the recipe.
 Getting them wrong on pack is a false declaration under FIC Regulation
 1169/2011, not a copy fix. Same rule as Khana (BRAND.md §11.1).
 
-- [ ] The **nutrition declaration**. Add `CHAI_NUTRITION_ROWS` alongside the existing constants in `components/shop/chai-data.ts` and swap the "Nutrition" accordion in `components/shop/chai-accordions.tsx` for the table. The rows need a `%RI per serving` column, which the HeldiPM table does not currently carry
-- [ ] The **ingredients list with percentages**, in final descending order. The names are already on the page; only the numbers and the order are withheld
-- [ ] The **protein per serving**, and with it a Chai equivalent of the "10 vs 10.4" rounding rule in BRAND.md §5
-- [ ] The **amino acid profile**. None exists in either repo. Without it the Chai page cannot carry Khana's "Nutrition & amino acids" modal or its complete-protein claim
+- [x] The **nutrition declaration**, calculated 3 Sep 2026 by `scripts/nutrition-calc.mjs` from the recipe and each ingredient's own analysis (FIC Art 31(4) allows it; Khana's table is on the same basis). `CHAI_NUTRITION_ROWS` in `chai-data.ts`, rendered in the Nutrition accordion and the shared nutrition modal. Still to do: send the finished blend for analysis and paste the analysed rows over the calculated ones
+- [x] The **ingredients list with percentages**, in descending order, with QUID on the two milk proteins (`CHAI_FORMULA`)
+- [x] The **protein per serving**: 5.1 g per 8 g level tablespoon, 64 g per 100 g; the pack and marketing prose say 5 g (`CHAI_PROTEIN_MARKETING_GRAMS`), declaration-adjacent surfaces say 5.1 g, the Chai equivalent of Khana's 10 vs 10.4 rule
+- [x] The **amino acid profile**, calculated from the supplier whey profile and the published bovine casein composition, each scaled by its share of the protein (`CHAI_AMINO_ROWS`); the modal is now product-driven and Chai has it. Replace the casein half with the supplier's amino sheet when one exists
 - [ ] **A gluten result.** "Gluten free" is a legally defined claim (under 20mg/kg, Reg 828/2014) and Chai's spices come from a different supplier to Khana's, so the badge is deliberately absent from the Chai page until this blend is tested. Add it to `CHAI_PILLS` in `components/shop/chai-data.ts` when the result lands
-- [ ] **A lactose figure.** Khana's "98% lactose-free" is substantiated against Khana's whey certificate at a 12g spoonful and says nothing about a blend carrying micellar casein. The Chai page deliberately declines to borrow it
+- [~] **A lactose figure.** Calculated at about 1.4 g per 100 g (0.1 g a mug) from the whey certificate and the casein spec, and stated as a figure on the Chai page. Not a test, so no "lactose-free" badge until one is done
 - [ ] **Shelf life.** Khana publishes an 18-month best-before in two places; HeldiPM's Gate 4 records *"shelf-life 9-12 months usable"* and Chai has no stability data at all. The Chai page says "a best-before on the base" with no number until it does
 
 ### Code, when Chai becomes buyable
@@ -114,6 +114,105 @@ Nothing here is needed for the page as it stands. It is the list of what the
 - [x] **Khana reshot on the navy v2 pouch, 2 Sep 2026.** Every Khana pouch image on the site now carries the HeldiPM round-14 front (navy ground, gold wordmark and elephant, 10g roundel, KHANA / PROTEIN POWDER / for Indian food): the four `/shop` scenes and the Sample sachet in `public/images/shop/`, the hero cut-out and the jar shot in `public/images/variants/ink-blue/` (IMAGE_VERSION `ink-blue-10`), the homepage range tile, the comparison-table cut-out and the share-card art in `assets/og/pouch.png`. Same method as Chai: nano_banana_pro with the print front as reference and the old shot as the scene reference. Gold-pack masters archived in the gitignored `public/images/originals/pre-webp/shop/archive-gold-pack/`. Still showing the gold pack: the stir-gallery and ways-to-use videos and any blog heroes that include a pouch
 - [x] **Chai on the homepage, 2 Sep 2026 (evening).** Beyond the range band: a "To finish · Masala chai" line on every menu card (uncounted, outlined pill, `CHAI_TO_FINISH` in `menu-gallery.tsx`), a fourth how-it-works card "In the mug" (the `mug` method in `ways-to-use-methods.tsx`, strip art `public/images/ways-to-use/mug-strip.webp` + `public/videos/ways-to-use/mug-strip.mp4`, made to `fable/ways-to-use-strips/STYLE.md`; the desktop grid went 3-up to 2×2), a sixth stir-gallery card "Masala chai" that plays a stir but shows "Chai, figure to follow" instead of grams (`masala-chai.webp` + `masala-chai-stir.mp4`), a "Hot drinks" row in Heldi vs the shaker, one line each in the pouch section, the parents audience card, the final CTA and the popup, and a second FAQ ("Can I put Khana in my chai?"). Every one of them is figure-free until Chai's declaration lands; when it does, the menu pill, the stir counter and the ways note are the three places a number goes
 - [ ] All of it is AI-generated, like Khana's. Replace with real photography when the physical product exists
+
+## 1c. Pricing decided 2 Sep 2026 (NOT built yet — notes for the rework)
+
+**The build plan, phased with checkpoints, is [docs/two-product-cart-plan.md](docs/two-product-cart-plan.md).** Work it in order; Phase 0 (copy only) can ship this week.
+
+Decided in HeldiPM with the Price Book (claude.ai/code/artifact/bee7cef4-bc72-48bb-b4a7-e4f1bddbfd9c),
+which holds the working, the COGS and the run maths. The mechanics were settled the same evening: fixed-price size-and-mix variants, no discount app (see "Shopify shape"). Nothing below is implemented; every
+bullet is a change to make when the shop is rebuilt for two products. Until then the
+site still carries the July model (launch prices with a struck-through RRP, Khana tier
+variants, 10% gifting codes on single and pair, 20% waitlist code).
+
+**The structure**
+
+- **Ladder:** £35 for the first pouch, **£30 for every pouch after it**, counted across
+  Khana and Chai together. So £65 / £95 / £125 / £155 / £185 for 2–6, any mix. Per-pouch
+  price only ever falls; there is no repacking into "table + one". RRP is the price on the
+  page from day one — no launch price, no compare-at, no "Launch prices. Not forever
+  prices." framing.
+- **Family codes** ACHABETA / RISHTA / SHABASH: **15%** (was 10%), any quantity (was single
+  and pair only), one use per customer, one code per order. Printed on the site in the
+  gifting band as today — deliberately not gated.
+- **Founders code: 25%** ("the family 15% plus an extra 10%", written as one straight code,
+  not 15% then 10%) for close friends and the **first 100 waitlist joiners**, one use each.
+  Replaces the 20% `PEHLEAAP` promise: **remove "20% off" from the eight places it appears**
+  (ticker, homepage ×3, popup, form, FAQ, Chai buy box) — only 4 people have ever seen it.
+- **After launch, an email gets free postage on the first order.** A Shopify *shipping*
+  discount, one use, set to combine with product discounts, so it stacks with a family
+  code (a single pouch on SHABASH then reads "£29.75 delivered"). Optional extra pop-up
+  lead magnets: a free Khana + Chai taster while sachets last (cap 200), and the 1994
+  recipes as a PDF.
+- **Presents, first order only:** 1 pouch → 1 jar; 2 → 1 jar + tote (tote ≈ £1 each, to
+  be sourced); 3+ → 2 jars + tote. **No dabba** (never ordered — delete or unpublish
+  `HELDI-DABBA`). The first 50 waitlist joiners also get a taster pack posted before launch.
+- **Chai** 250 g is priced identically to Khana 300 g at every level.
+
+**Shopify shape — decided 2 Sep 2026 (evening): size × mix variants, no discount app**
+
+- **One product, "Heldi pouches", with two options: Pouches (1–6) and Khana (0–6).** Only the
+  27 valid combinations exist as variants (Khana ≤ Pouches; the rest are Chai). Each variant
+  is priced from the ladder — 1: £35, 2: £65, 3: £95, 4: £125, 5: £155, 6: £185 — so the
+  "£30 for every pouch after the first" rule lives in the variant prices, not in a discount.
+  SKUs in the shape `HELDI-K2C1` (2 Khana + 1 Chai). No compare-at anywhere.
+- The frontend does what `packPouches` does today, one step further: the basket keeps a
+  pouch count per product (k Khana, c Chai) and maps `(k + c, k)` to the one variant ID. Any
+  change to either count replaces the line. Checkout shows one line, "Heldi pouches —
+  3 pouches / 2 Khana", at £95, which is what the customer expects to see.
+- **Six is the ceiling.** The picker stops at six per product line combined; over six the
+  ladder would need a second line (7 = 6 + 1 is £220 against the rule's £215). Either cap at
+  six with "email us for more" or accept the £5. Decided: cap at six.
+- **Inventory is the one real cost.** A "3 pouches / 2 Khana" variant does not decrement
+  Khana stock. Untrack inventory on all 27 variants and keep the pouch count in the site
+  (Supabase, decremented by the orders webhook already planned at
+  `/api/webhooks/shopify-orders`, which has the variant SKU and can add k and c), and let
+  the buy box refuse counts the stock cannot cover. At 515 pouches this is watchable by hand
+  in run 1; it is the thing to automate for run 2.
+- **Reporting** follows the same webhook: Shopify's own analytics show units of
+  "3 pouches / 2 Khana", so pouches per product per week come from the site's order table,
+  not from Shopify reports.
+- Codes: family 15% and founders 25% are product discounts on the one product; the Sample is
+  a separate product and stays out of every code. The welcome code is a free-shipping
+  discount issued per person by Klaviyo.
+- `HELDI-TOTE` as a third £0.00 present product alongside `HELDI-JAR`; delete or unpublish
+  `HELDI-DABBA`. Presents keyed to the pouch count as today.
+- A third product later (Dahi) is the same model with three counts: 83 variants for six
+  pouches, still inside Shopify's limit, and the mapping function is the only code that grows.
+
+**Code that changes (do not touch until the Shopify product exists)**
+
+- `lib/pricing.ts`: `TIERS`/`TIER_ORDER`/`packPouches` become a ladder function
+  (`35 + 30 * (n - 1)`, n ≤ 6) and a `(pouches, khana) → variant` lookup; `launchPence ===
+  rrpPence` and no strikethrough; `GIFTING.percent` 15, scope any quantity;
+  `WAITLIST_OFFER` 25% for the first 100 joiners; `giftCountsForPouches` → jar / jar + tote /
+  2 jars + tote, and `GIFT_CAPS.dabbas` 0.
+- `lib/commerce/catalog.ts`: one product, 27 variants with real GIDs; `khanaPouchCount`
+  becomes a per-product count read back from the variant's option values; `linesForPouchCount`,
+  both eligibility helpers and the gift helpers key off the total.
+- `lib/commerce/cart-context.tsx` and `lib/commerce/shopify/gift-policy.ts`: the managed
+  line is one variant chosen from `(k + c, k)`; gift lines keyed to `k + c`; **first-order
+  gating** — open question: the headless cart cannot see a customer's order history before
+  checkout, so either presents go in every order for run 1 (almost all are first orders
+  anyway) or gating waits for a customer-account signal. Decide before building.
+- `components/shop/buy-box.tsx` / `chai-buy-box.tsx`: merge into one product-driven buy box
+  with a quantity picker per product and a running price ("3 pouches, £95 — one more is £30");
+  each page defaults its own product to 1.
+- Copy: `gifting-band.tsx` / `gifting-popup.tsx` (15%, any quantity), `site-faqs.ts`
+  (delivery FAQ, waitlist FAQ), `heldi-homepage.tsx` ticker and waitlist lines,
+  `waitlist-popup.tsx`, `waitlist-form.tsx`, `chai-buy-box.tsx` waitlist line,
+  `public/llms.txt`. BRAND.md §5 (mechanics) and §11.3 need the same edit; the
+  heldi-email-writer skill's locked prices and "no stacking" rule need updating
+  (free-shipping welcome code is the one thing that stacks).
+- `docs/launch-runbook.md` and `docs/go-live-checklist.md`: variant and code setup steps;
+  the go-live inventory notes (§149–151) are superseded by the webhook count above.
+
+**Why (short):** the July model stacked a launch sale with the waitlist code, taking the
+public floor to 28–39% off. Charging RRP and discounting only through codes keeps every
+public price at or above 49% landed margin, keeps the aunties' visible code, and gives the
+post-launch email something that stacks without being a percentage. Revenue at the assumed
+run-1 mix is about £14.2k of £16.7k all-RRP; the pricing detail and the evidence are in
+the Price Book.
 
 ## 2. Waitlist form → real email capture
 

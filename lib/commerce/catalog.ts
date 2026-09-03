@@ -31,6 +31,15 @@ import type {
 // price is the launch price, compareAtPrice is the RRP that gets struck
 // through.
 
+// PRICING REWORK DECIDED 2 SEP 2026, NOT YET BUILT — see NEXT_STEPS.md §1c.
+// The three tier variants here become ONE Shopify product ("Heldi pouches")
+// with 27 fixed-price variants, one per (pouches 1–6, Khana 0–6) combination,
+// SKUs like HELDI-K2C1. The cart keeps a pouch count per product and maps
+// (khana + chai, khana) to a single variant, the way packPouches maps a count
+// to a tier today. Inventory is untracked on those variants and the pouch
+// stock is kept by the site via the orders webhook. Every helper below that
+// keys off Khana's tier SKUs then reads the counts off the variant's options.
+
 export const KHANA_VARIANT_ID = "gid://shopify/ProductVariant/57986783052159";
 export const KHANA_DOUBLE_VARIANT_ID = "gid://shopify/ProductVariant/57986783084927";
 export const KHANA_TRIPLE_VARIANT_ID = "gid://shopify/ProductVariant/57986783117695";

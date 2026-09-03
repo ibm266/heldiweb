@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { CopyHighlight } from "@/components/copy-highlight";
+import { CHAI_PROTEIN_MARKETING_GRAMS } from "@/components/shop/chai-data";
 
 type DishItem = {
   name: string;
@@ -17,11 +18,14 @@ type CourseSection = {
   dishes: DishItem[];
 };
 
-// Every table finishes with chai, and the chai is Heldi Chai. It carries no
-// gram figure and stays out of every total: Chai publishes no protein number
-// until the finished blend is analysed (components/shop/chai-data.ts), and a
-// guessed figure in a menu total would be a product fact we cannot stand up.
-const CHAI_TO_FINISH: DishItem = { name: "Masala chai", chai: true };
+// Every table finishes with chai, and the chai is Heldi Chai. Counted for a
+// couple like the rest of the card: two mugs made with milk carry about 10g
+// of protein between them (whole milk 3.4g per 100ml, a mug about 150ml of
+// it), and one level tablespoon of Heldi Chai in each adds the pack's 5g,
+// read from chai-data.ts so it moves with the declaration.
+const CHAI_MUGS_PER_TABLE = 2;
+const CHAI_BOOST_GRAMS = CHAI_MUGS_PER_TABLE * CHAI_PROTEIN_MARKETING_GRAMS;
+const CHAI_TO_FINISH: DishItem = { name: "Masala chai", grams: 10, chai: true };
 
 type MenuVariant = {
   id: string;
@@ -237,6 +241,7 @@ function dishGrams(
   heldiDishCount: number
 ) {
   const base = dish.grams ?? 0;
+  if (dish.chai) return base + CHAI_BOOST_GRAMS;
   if (!dish.heldi || heldiDishCount === 0) return base;
   const tbspPerDish = heldiTbsp / heldiDishCount;
   return base + Math.round(tbspPerDish * gramsPerTbsp);
@@ -265,9 +270,12 @@ function MenuCard({
     };
   });
 
-  const foodTotal = activeVariant?.foodTotal ?? menu.foodTotal;
-  const heldiTotal = menu.heldiTotal;
-  const tableTotal = activeVariant?.tableTotal ?? menu.tableTotal;
+  // The hand-written totals predate the chai line; it is added here so the
+  // five cards (and the Friday Feast variants) stay in step with one constant.
+  const foodTotal = (activeVariant?.foodTotal ?? menu.foodTotal) + (CHAI_TO_FINISH.grams ?? 0);
+  const heldiTotal = menu.heldiTotal + CHAI_BOOST_GRAMS;
+  const tableTotal =
+    (activeVariant?.tableTotal ?? menu.tableTotal) + (CHAI_TO_FINISH.grams ?? 0) + CHAI_BOOST_GRAMS;
   const heldiDishCount = courses.reduce(
     (count, course) => count + course.dishes.filter((dish) => dish.heldi).length,
     0
@@ -318,25 +326,17 @@ function MenuCard({
               {course.dishes.map((dish) => (
                 <li
                   className={
-                    dish.chai
-                      ? "menu-card__dish menu-card__dish--chai"
-                      : dish.heldi
-                        ? "menu-card__dish menu-card__dish--heldi"
-                        : "menu-card__dish"
+                    dish.heldi || dish.chai
+                      ? "menu-card__dish menu-card__dish--heldi"
+                      : "menu-card__dish"
                   }
                   key={dish.name}
                 >
                   <span className="menu-card__dish-name">{dish.name}</span>
                   <span className="menu-card__dish-leader" aria-hidden="true" />
-                  {dish.chai ? (
-                    <span className="menu-card__dish-grams menu-card__dish-grams--chai">
-                      Heldi Chai
-                    </span>
-                  ) : (
-                    <span className="menu-card__dish-grams">
-                      {dishGrams(dish, gramsPerTbsp, menu.heldiTbsp, heldiDishCount)}g
-                    </span>
-                  )}
+                  <span className="menu-card__dish-grams">
+                    {dishGrams(dish, gramsPerTbsp, menu.heldiTbsp, heldiDishCount)}g
+                  </span>
                 </li>
               ))}
             </ul>
@@ -351,7 +351,7 @@ function MenuCard({
         </p>
         <div className="menu-card__heldi-band">
           <span className="menu-card__heldi-label">
-            Boosted with Heldi · {menu.heldiTbsp} tbsp
+            Boosted with Heldi · {menu.heldiTbsp} tbsp Khana + {CHAI_MUGS_PER_TABLE} Chai
           </span>
           <strong className="menu-card__heldi-value">+{heldiTotal}g</strong>
         </div>
@@ -408,8 +408,8 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
         <p className="menu-gallery__lede">
           <strong>Five ways to lay the table.</strong> Gold dishes are{" "}
           <CopyHighlight>boosted with Heldi</CopyHighlight>,{" "}
-          <strong>counted for a couple.</strong> Chai to finish, not yet
-          counted.
+          <strong>counted for a couple.</strong> Chai to finish, counted
+          too.
         </p>
       </header>
 

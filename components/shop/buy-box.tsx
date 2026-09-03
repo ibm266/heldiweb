@@ -27,7 +27,8 @@ import {
   type TierId
 } from "@/lib/pricing";
 import { GiftingPopup } from "./gifting-popup";
-import { SERVING_GRAMS } from "./nutrition-data";
+import {
+  KHANA_NUTRITION, SERVING_GRAMS } from "./nutrition-data";
 import { NutritionModal } from "./nutrition-modal";
 import { PdpReviewTeasers } from "./pdp-review-teasers";
 import { ProductAccordions } from "./product-accordions";
@@ -219,7 +220,7 @@ export function BuyBox({ product }: { product: Product }) {
           Nutrition &amp; amino acids <b aria-hidden="true">→</b>
         </button>
         {nutritionOpen ? (
-          <NutritionModal onClose={() => setNutritionOpen(false)} />
+          <NutritionModal onClose={() => setNutritionOpen(false)} product={KHANA_NUTRITION} />
         ) : null}
         {giftingPopupOpen ? (
           <GiftingPopup onClose={() => setGiftingPopupOpen(false)} />

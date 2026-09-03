@@ -56,6 +56,20 @@ export type AminoRow = {
   essential?: boolean;
 };
 
+/** Everything the nutrition modal needs for one product. Khana's bundle is
+ *  below; Chai's is CHAI_NUTRITION in chai-data.ts. */
+export type NutritionProduct = {
+  productName: string;
+  formula: string;
+  servingLabel: string;
+  aminoServingLabel: string;
+  rows: NutritionRow[];
+  aminoRows: AminoRow[];
+  riFootnote: string;
+  /** One sentence on where the figures come from, shown under the formula. */
+  basisNote: string;
+};
+
 export const AMINO_ROWS: AminoRow[] = [
   { name: "Alanine", per100g: "4.43 g", perServing: "0.53 g" },
   { name: "Arginine", per100g: "1.41 g", perServing: "0.17 g" },
@@ -76,3 +90,15 @@ export const AMINO_ROWS: AminoRow[] = [
   { name: "Tyrosine", per100g: "2.17 g", perServing: "0.26 g" },
   { name: "Valine", per100g: "4.71 g", perServing: "0.57 g", essential: true }
 ];
+
+export const KHANA_NUTRITION: NutritionProduct = {
+  productName: "Heldi Khana",
+  formula: FORMULA,
+  servingLabel: SERVING_LABEL,
+  aminoServingLabel: `Per ${SERVING_GRAMS}g serving`,
+  rows: NUTRITION_ROWS,
+  aminoRows: AMINO_ROWS,
+  riFootnote: RI_FOOTNOTE,
+  basisNote:
+    "Calculated from the supplier analysis of each ingredient; the figures from analysis of the finished blend replace these before launch."
+};

@@ -15,10 +15,14 @@ import {
   CHAI_LEGAL_NAME,
   CHAI_METHOD,
   CHAI_MUGS_PER_POUCH,
+  CHAI_NUTRITION,
   CHAI_PILLS,
   CHAI_POUCH_GRAMS,
-  CHAI_SERVING_GRAMS
+  CHAI_PROTEIN_MARKETING_GRAMS,
+  CHAI_SERVING_GRAMS,
+  CHAI_SERVING_SPOON
 } from "./chai-data";
+import { NutritionModal } from "./nutrition-modal";
 import { StatutoryStatements } from "./statutory-statements";
 
 // The Chai product page's gallery and buy column.
@@ -39,6 +43,7 @@ import { StatutoryStatements } from "./statutory-statements";
 // which Chai does not have, are not.
 export function ChaiBuyBox() {
   const [shownIndex, setShownIndex] = useState(0);
+  const [nutritionOpen, setNutritionOpen] = useState(false);
   const { mode } = useCart();
   const { open: openWaitlist } = useWaitlistPopup();
   const viewTracked = useRef(false);
@@ -89,6 +94,17 @@ export function ChaiBuyBox() {
         <p className="pdp__legal-name">{CHAI_LEGAL_NAME}</p>
         <p className="pdp__lede">Protein that disappears into your chai.</p>
 
+        <button
+          type="button"
+          className="pdp__nutrition-link"
+          onClick={() => setNutritionOpen(true)}
+        >
+          Nutrition &amp; amino acids <b aria-hidden="true">→</b>
+        </button>
+        {nutritionOpen ? (
+          <NutritionModal onClose={() => setNutritionOpen(false)} product={CHAI_NUTRITION} />
+        ) : null}
+
         <ul className="pdp__pills" aria-label="Product attributes">
           {CHAI_PILLS.map((pill) => (
             <li key={pill.label} className="pdp__pill">
@@ -110,12 +126,25 @@ export function ChaiBuyBox() {
           HOW IT GOES IN: <strong>THREE STEPS</strong>
         </p>
         {/* role="list" because list-style:none drops list semantics in
-            Safari/VoiceOver, and the step numbers are CSS counters. */}
+            Safari/VoiceOver. No step numbers: the pack has none either, the
+            drawings and the eyebrow carry the sequence. The art is decorative
+            (its title sits beside it), so alt is empty. */}
         <ol className="pdp__method" role="list">
           {CHAI_METHOD.map((step) => (
             <li key={step.title} className="pdp__method-step">
-              <span className="pdp__method-title">{step.title}</span>
-              <span className="pdp__method-body">{step.body}</span>
+              <span className="pdp__method-art" aria-hidden="true">
+                <Image
+                  src={step.art.src}
+                  alt=""
+                  width={step.art.width}
+                  height={step.art.height}
+                  sizes="(max-width: 899px) 64px, 200px"
+                />
+              </span>
+              <span className="pdp__method-text">
+                <span className="pdp__method-title">{step.title}</span>
+                <span className="pdp__method-body">{step.body}</span>
+              </span>
             </li>
           ))}
         </ol>
@@ -136,7 +165,8 @@ export function ChaiBuyBox() {
             </span>
           </div>
           <p className="pdp__includes-note">
-            One heaped tablespoon ({CHAI_SERVING_GRAMS}g) a mug. Good in{" "}
+            One {CHAI_SERVING_SPOON} ({CHAI_SERVING_GRAMS}g) a mug,{" "}
+            {CHAI_PROTEIN_MARKETING_GRAMS}g of protein. Good in{" "}
             {CHAI_DRINKS.slice(0, -1).join(", ").toLowerCase()} and{" "}
             {CHAI_DRINKS[CHAI_DRINKS.length - 1].toLowerCase()}.
           </p>
@@ -169,6 +199,7 @@ export function ChaiBuyBox() {
 
         <StatutoryStatements
           servingGrams={CHAI_SERVING_GRAMS}
+          spoon={CHAI_SERVING_SPOON}
           allergens={CHAI_ALLERGENS}
           className="pdp__disclaimer"
         />
@@ -180,7 +211,8 @@ export function ChaiBuyBox() {
             Stir it into <strong>chai, tea, coffee or hot chocolate</strong>{" "}
             once the pot is off the boil, and the cup still tastes like your
             cup: no chalk, no aftertaste, no shaker on the draining board.{" "}
-            <strong>High in protein</strong>, and protein contributes to the
+            <strong>High in protein</strong>: {CHAI_PROTEIN_MARKETING_GRAMS}g
+            in every mug, and protein contributes to the
             maintenance of muscle mass. Contains{" "}
             <strong>milk</strong> (whey and casein). New to Heldi?{" "}
             <a href="/truth">Start with the honest truth about protein</a>, or{" "}

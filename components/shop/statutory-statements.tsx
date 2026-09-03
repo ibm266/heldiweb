@@ -24,19 +24,24 @@
 export function StatutoryStatements({
   servingGrams,
   allergens,
+  spoon = "heaped tablespoon",
   className = ""
 }: {
   /** The recommended daily portion in grams, from the product's own data. */
   servingGrams: number;
   /** The allergen sentence, e.g. "Contains milk (whey)." Product-specific. */
   allergens: string;
+  /** How the portion is spooned: Khana's is a heaped tablespoon, Chai's a
+   *  level one (CHAI_SERVING_SPOON). Part of the mandatory particular, so it
+   *  is passed rather than assumed. */
+  spoon?: string;
   /** Extra class for spacing at the call site; the type styling is shared. */
   className?: string;
 }) {
   return (
     <p className={`heldi-disclaimer${className ? ` ${className}` : ""}`}>
-      Heldi is a food supplement. Recommended daily portion: one heaped
-      tablespoon ({servingGrams}g). Do not exceed the recommended daily
+      Heldi is a food supplement. Recommended daily portion: one {spoon} (
+      {servingGrams}g). Do not exceed the recommended daily
       intake. Food supplements are not a substitute for a varied and balanced
       diet and a healthy lifestyle. Keep out of reach of children. {allergens}
     </p>

@@ -9,6 +9,7 @@ export default function Image() {
   return heldiOgImage({
     eyebrow: "Desi protein",
     title: "The same food, just a little Heldier.",
-    art: "pouch"
+    art: "pouches",
+    titleSize: 64
   });
 }

@@ -233,10 +233,10 @@ export const METHODS: Method[] = [
     steps: [
       <>Brew your chai the way you always make it. Tea, coffee and hot chocolate count too.</>,
       <>Take it off the boil and add your milk, so it is hot rather than boiling.</>,
-      <>Stir in a heaped tablespoon just before you drink. Gone in a few turns of the spoon.</>
+      <>Stir in a level tablespoon just before you drink. Gone in a few turns of the spoon.</>
     ],
-    serving: "1 heaped tbsp a mug",
-    note: "Chai's protein figure follows the analysis of the finished blend; until then the mug is counted as a mug.",
+    serving: "1 level tbsp a mug",
+    note: "A level tablespoon (8g) adds 5g of protein, calculated from the recipe; the figure from analysis of the finished blend follows.",
     strip: {
       video: "/videos/ways-to-use/mug-strip.mp4",
       poster: "/images/ways-to-use/mug-strip.webp",

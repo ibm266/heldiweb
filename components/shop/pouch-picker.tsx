@@ -58,7 +58,7 @@ const POUCHES: Pouch[] = [
     title: "Heldi Chai",
     legalName:
       "Whey protein and casein blend with chai spices and coconut sugar. Food supplement.",
-    line: "Chai, tea, coffee, hot chocolate. A heaped tablespoon stirred into the mug once it is off the boil, and the cup still tastes like your cup.",
+    line: "Chai, tea, coffee, hot chocolate. A level tablespoon stirred into the mug once it is off the boil, and the cup still tastes like your cup.",
     image: {
       src: "/images/range/chai.webp",
       alt: "The terracotta Heldi Chai pouch on a linen table"

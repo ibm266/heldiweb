@@ -590,8 +590,11 @@ whey certificate at a 12g spoonful), "All natural" (ASA exposure), "organic"
 (uncertified, and no organic ground clove exists to buy), the 10.4g protein
 figure, the cumin ingredients list, the 18-month best-before, and the reviews
 band (`reviews-store.ts` does not filter by product and `PROTEIN_GRAMS_PER_TBSP`
-is Khana's). Chai publishes no nutrition table at all until the finished blend
-is analysed; the reasoning is at the top of `chai-data.ts`.
+is Khana's). Since 3 Sep 2026 Chai publishes its own declaration and amino
+profile, calculated from the recipe by `scripts/nutrition-calc.mjs` (the
+header of `chai-data.ts` says how and on what basis); the analysed figures
+replace them in that one file. Chai's spoon is a **level** tablespoon (8g),
+Khana's a heaped one; `CHAI_SERVING_SPOON` is the only place that word lives.
 
 ### 11.8 Analytics event names and checkout stitching
 

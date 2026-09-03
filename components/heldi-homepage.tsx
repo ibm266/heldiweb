@@ -128,7 +128,7 @@ function drawCurtainCover(
   ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
 }
 
-const WORDS = ["INDIAN FOOD", "DAL", "CURRY", "RAITA", "DAHI", "CHAAT"];
+const WORDS = ["INDIAN FOOD", "DAL", "CURRY", "RAITA", "DAHI", "CHAAT", "CHAI"];
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const COLS = 11;
 
@@ -151,6 +151,10 @@ const POUCH_BADGE_ICONS = {
   vegetarian: "/images/pouch-badges/vegetarian.png"
 } as const;
 
+// The hero shows both pouches, so its pills are only the claims both can
+// stand up. Khana's own row (98% lactose-free, no added sugar, gluten free)
+// lives on /shop/khana; Chai carries coconut sugar and has no gluten or
+// lactose test yet, so none of those three belong beside the pair.
 const HERO_SHOWCASE_PILLS: {
   icon: string;
   label: string;
@@ -165,27 +169,9 @@ const HERO_SHOWCASE_PILLS: {
   },
   {
     icon: POUCH_BADGE_ICONS.allNatural,
-    label: "All natural",
+    label: "Real spices",
     width: 256,
     height: 256
-  },
-  {
-    icon: POUCH_BADGE_ICONS.lactoseFree,
-    label: "98% lactose-free",
-    width: 280,
-    height: 377
-  },
-  {
-    icon: POUCH_BADGE_ICONS.noSugar,
-    label: "No added sugar",
-    width: 386,
-    height: 390
-  },
-  {
-    icon: POUCH_BADGE_ICONS.glutenFree,
-    label: "Gluten free",
-    width: 328,
-    height: 225
   },
   {
     icon: POUCH_BADGE_ICONS.vegetarian,
@@ -262,12 +248,14 @@ function HeroLines({ variant }: { variant: "copy" | "foot" }) {
         Protein that behaves like an ingredient, not a supplement.
       </p>
       <p className="hero-reveal-claim__support">
-        It goes into home-cooked food with all the other spices.{" "}
+        Two pouches, one rule. Khana goes into the pot with all the other
+        spices,{" "}
         <strong>
-          <span className="hero-reveal-claim__grams">10g of protein</span> added
-          per spoonful
+          <span className="hero-reveal-claim__grams">10g of protein</span> a
+          spoonful
         </strong>
-        , and nobody at the table can tell.
+        . Chai goes into the mug, <strong>5g a spoonful</strong>. Nobody at
+        the table can tell.
       </p>
     </div>
   );
@@ -819,10 +807,10 @@ function HeroReveal({
               <div className="hero-reveal-pouch">
                 <Image
                   className="hero-reveal-pouch__image"
-                  src={imageSrc("/images/pouch.webp")}
-                  alt="Heldi Khana pouch, protein powder for Indian food"
-                  width={1696}
-                  height={2528}
+                  src={imageSrc("/images/hero-pair.webp")}
+                  alt="The Heldi Khana and Heldi Chai pouches side by side, one for the pot and one for the mug"
+                  width={1856}
+                  height={2304}
                   priority
                   sizes="(max-width: 899px) 46vw, (max-width: 1280px) 320px, 420px"
                 />

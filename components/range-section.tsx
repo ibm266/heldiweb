@@ -79,8 +79,8 @@ export function RangeSection() {
           <p className="eyebrow">TWO POUCHES</p>
           <h2>One for the pot. One for the mug.</h2>
           <p className="range__lede">
-            Khana goes into the food. Chai goes into the drink. Same heaped
-            tablespoon, same rule:{" "}
+            Khana goes into the food. Chai goes into the drink. A spoonful
+            each, same rule:{" "}
             <CopyHighlight>nobody at the table can tell</CopyHighlight>.
           </p>
         </div>

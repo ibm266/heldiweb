@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { getStirFrameStyle, getStirImageFrame } from "@/lib/stir-gallery-frames";
+import { CHAI_PROTEIN_MARKETING_GRAMS } from "@/components/shop/chai-data";
 
 type Dish = {
   name: string;
@@ -11,10 +12,10 @@ type Dish = {
   base: number;
   image: string;
   video?: string;
-  /** Heldi Chai in the mug rather than Khana in the pot. The card plays the
-   *  same stir but shows no gram figure: Chai publishes none until the
-   *  finished blend is analysed (components/shop/chai-data.ts). */
+  /** Heldi Chai in the mug rather than Khana in the pot: one level
+   *  tablespoon adds Chai's own figure instead of the pot's boostGrams. */
   chai?: boolean;
+  boost?: number;
 };
 
 const DISHES: Dish[] = [
@@ -56,10 +57,13 @@ const DISHES: Dish[] = [
   {
     name: "Masala chai",
     tag: "TO FINISH",
-    base: 0,
+    // A mug of chai made with milk: about 150ml of whole milk at 3.4g per
+    // 100ml, rounded to the pot's whole grams.
+    base: 5,
     image: "/images/stir-gallery/masala-chai.webp",
     video: "/videos/stir-gallery/masala-chai-stir.mp4",
-    chai: true
+    chai: true,
+    boost: CHAI_PROTEIN_MARKETING_GRAMS
   }
 ];
 
@@ -359,7 +363,7 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
         >
           {DISHES.map((dish, index) => {
             const count = spoons[index];
-            const grams = dish.base + count * boostGrams;
+            const grams = dish.base + count * (dish.boost ?? boostGrams);
             const boosted = count > 0;
             const isAnimating = animating[index];
             const bursting =
@@ -444,10 +448,10 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
                     boosted ? " is-boosted" : ""
                   }${poppingHere ? " is-popping" : ""}`}
                 >
-                  {dish.chai ? "Chai" : `${grams}g`}
+                  {grams}g
                 </p>
                 <p className="stir-card__counter-label">
-                  {dish.chai ? "Heldi Chai, figure to follow" : "protein in this bowl"}
+                  {dish.chai ? "protein in this mug" : "protein in this bowl"}
                 </p>
 
                 <button

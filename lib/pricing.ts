@@ -8,6 +8,18 @@
 // ("waitlist" | "live"); CTAs switch on that rather than a separate
 // LAUNCH_MODE boolean here.
 
+// PRICING REWORK DECIDED 2 SEP 2026, NOT YET BUILT — see NEXT_STEPS.md §1c.
+// The model below (launch price with a struck-through RRP, three Khana tier
+// variants, packPouches, 10% gifting on single + pair, 20% waitlist) is being
+// replaced by: RRP from day one; one Shopify product with size × mix variants
+// (1–6 pouches, any split of Khana and Chai, 27 variants) priced £35 for the
+// first pouch and £30 for every pouch after it, chosen by the frontend from the
+// two pouch counts; family codes at 15% on any quantity; a 25% founders code
+// for close friends + the first 100 joiners; free first-order postage for an
+// email; presents on the first order only (jar / jar + tote / 2 jars + tote, no
+// dabba). Do not change these constants piecemeal; the rework touches this
+// file, lib/commerce/catalog.ts, the cart, the buy boxes and copy.
+
 export type TierId = "single" | "double" | "triple";
 
 export type Tier = {
