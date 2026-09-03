@@ -19,13 +19,14 @@ type CourseSection = {
 };
 
 // Every table finishes with chai, and the chai is Heldi Chai. Counted for a
-// couple like the rest of the card: two mugs made with milk carry about 10g
-// of protein between them (whole milk 3.4g per 100ml, a mug about 150ml of
-// it), and one level tablespoon of Heldi Chai in each adds the pack's 5g,
-// read from chai-data.ts so it moves with the declaration.
+// couple like the rest of the card: two mugs of chai carry about 4g of
+// protein between them (a UK mug is mostly water with a splash of milk,
+// about 2g a mug), and one level tablespoon of Heldi Chai in each adds the
+// pack's 5g, read from chai-data.ts so it moves with the declaration. So the
+// line reads 14g: 4g from the chai, 10g from Heldi.
 const CHAI_MUGS_PER_TABLE = 2;
 const CHAI_BOOST_GRAMS = CHAI_MUGS_PER_TABLE * CHAI_PROTEIN_MARKETING_GRAMS;
-const CHAI_TO_FINISH: DishItem = { name: "Masala chai", grams: 10, chai: true };
+const CHAI_TO_FINISH: DishItem = { name: "Masala chai", grams: 4, chai: true };
 
 type MenuVariant = {
   id: string;

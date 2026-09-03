@@ -41,7 +41,7 @@ const POUCHES: Pouch[] = [
     legalName: "Whey protein isolate blend with warm spices. Food supplement.",
     line: "Dal, curry, sabzi, raita. A heaped tablespoon stirred into the pot once it is off the heat, and nobody at the table can tell.",
     image: {
-      src: "/images/range/khana.webp?v=3",
+      src: "/images/range/khana.webp?v=4",
       alt: "The navy Heldi Khana pouch on a linen table"
     },
     pills: [
@@ -60,7 +60,7 @@ const POUCHES: Pouch[] = [
       "Whey protein and casein blend with chai spices and coconut sugar. Food supplement.",
     line: "Chai, tea, coffee, hot chocolate. A level tablespoon stirred into the mug once it is off the boil, and the cup still tastes like your cup.",
     image: {
-      src: "/images/range/chai.webp?v=2",
+      src: "/images/range/chai.webp?v=3",
       alt: "The terracotta Heldi Chai pouch on a linen table"
     },
     pills: [

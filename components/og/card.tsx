@@ -69,7 +69,7 @@ export async function heldiOgImage({
   const artWidth = art === "elephant" ? 340 : art === "pouches" ? 400 : 300;
   // The two-pouch composite is landscape (1140x744); everything else is square
   // or portrait.
-  const artHeight = art === "pouches" ? Math.round((artWidth * 744) / 1140) : artWidth;
+  const artHeight = art === "pouches" ? Math.round((artWidth * 900) / 1280) : artWidth;
 
   return new ImageResponse(
     (

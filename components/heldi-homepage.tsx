@@ -181,7 +181,7 @@ const HERO_SHOWCASE_PILLS: {
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-11";
+const IMAGE_VERSION = "ink-blue-12";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {

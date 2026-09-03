@@ -9389,7 +9389,14 @@ a.living-card__tag:hover {
 
 .range-card--page .range-card__cta {
   align-self: flex-start;
-  margin-top: 0.75rem;
+  /* auto, not a fixed gap: the two tiles carry different pill counts, and the
+     CTAs have to sit on one baseline across the pair. */
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.range-card--page .range-card__note {
+  margin-bottom: 0.75rem;
 }
 
 @media (max-width: 899px) {

@@ -57,9 +57,9 @@ const DISHES: Dish[] = [
   {
     name: "Masala chai",
     tag: "TO FINISH",
-    // A mug of chai made with milk: about 150ml of whole milk at 3.4g per
-    // 100ml, rounded to the pot's whole grams.
-    base: 5,
+    // A mug of chai: mostly water with a splash of milk, about 2g. One level
+    // tablespoon of Heldi Chai takes it to 7g.
+    base: 2,
     image: "/images/stir-gallery/masala-chai.webp",
     video: "/videos/stir-gallery/masala-chai-stir.mp4",
     chai: true,
