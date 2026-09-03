@@ -154,7 +154,7 @@ export function ChaiBuyBox() {
           <div className="pdp__includes-row">
             <Image
               className="pdp__includes-img"
-              src="/images/shop/chai-pouch-solo.webp?v=2"
+              src="/images/shop/chai-pouch-solo.webp?v=3"
               alt=""
               width={28}
               height={28}

@@ -221,19 +221,19 @@ export type ChaiImage = { url: string; altText: string };
  *  Regenerate with a ?v= bump so the image optimizer drops the old one. */
 export const CHAI_IMAGES: ChaiImage[] = [
   {
-    url: "/images/shop/chai-1.webp?v=2",
+    url: "/images/shop/chai-1.webp?v=3",
     altText: "The terracotta Heldi Chai pouch on a linen table with a refillable brass jar"
   },
   {
-    url: "/images/shop/chai-pouch-solo.webp?v=2",
+    url: "/images/shop/chai-pouch-solo.webp?v=3",
     altText: "The Heldi Chai pouch on its own, front facing"
   },
   {
-    url: "/images/shop/chai-bundle-2.webp?v=2",
+    url: "/images/shop/chai-bundle-2.webp?v=3",
     altText: "Two Heldi Chai pouches with brass and steel refillable jars"
   },
   {
-    url: "/images/shop/chai-bundle-3.webp?v=2",
+    url: "/images/shop/chai-bundle-3.webp?v=3",
     altText: "Three Heldi Chai pouches with refillable jars and an open masala dabba"
   }
 ];
