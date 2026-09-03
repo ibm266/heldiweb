@@ -33,7 +33,7 @@ useful thing in this file.
 | What it is | The public Next.js storefront | Internal product-management app plus all pack and print design |
 | Owns | Every product fact, all site copy, pricing, the nutrition calculator | Pouch artwork, print files, COGS, design testing, review packs |
 | Source of truth for facts | **Yes.** Everything downstream reads from here | No. It consumes heldiweb's figures |
-| Git | Everything tracked | **`design/` is gitignored.** See section 4 |
+| Git | Everything tracked | Most of `design/` is ignored, but the **pouch build sources are tracked** since 3 Sep. See section 4 |
 
 There are two smaller repos: `~/Projects/heldi-shopify-mcp` (a self-owned Shopify
 Admin MCP server) and `~/Projects/heldi-video`.
@@ -92,33 +92,47 @@ board.
 
 ---
 
-## 4. The backup problem, and it is the reason this file exists
+## 4. The backup situation
 
-**`design/` is gitignored in HeldiPM** (`.gitignore` line 72). It holds hundreds of
-megabytes of PSD, TIFF and PNG, which is a sensible thing to keep out of git, but the
-consequence is severe:
+**Fixed on 3 September: the pouch build sources are now in git.** They were not,
+and that was the largest risk in the whole setup. `HeldiPM/design/` is 1.2 GB, of
+which 1.1 GB is 276 intermediate PNGs, so the whole tree had been ignored. The
+consequence was that a clone of HeldiPM contained no pouch design at all: not the
+compliance typesetter, not the compose scripts, not the seventeen prompts, not the
+print PDFs.
 
-> **A fresh clone of HeldiPM contains no pouch artwork at all.** Not the compliance
-> typesetter, not the compose scripts, not the prompts, not the print PDFs. All of it
-> exists only on the disk of whatever machine it was made on.
+The default is still "ignore everything under `design/`". Negated back in is the
+set needed to rebuild from a fresh clone and nothing else: **56 files, 25 MB.**
 
-Everything in the table below is **disk-only** and unversioned:
-
-| File | Last changed |
+| Tracked | Not tracked |
 |---|---|
-| `design/pouch-v2/typeset_compliance.py` | 3 Sep 13:39 |
-| `design/pouch-v2/compose_back_v8.py` | 3 Sep 13:40 |
-| `design/pouch-v2/compose_front_v8.py` | 3 Sep 13:46 |
-| `design/pouch-v2/edit_upper_copy.py` | 3 Sep 13:46 |
-| `design/pouch-v2/prompts/` (17 files) | 3 Sep |
-| `design/testing_day.py` | 3 Sep 17:37 |
-| `design/build_review_pack.py` | 3 Sep 17:41 |
-| The four print PDFs | 3 Sep 18:00 |
+| The Python (17 files) | Mockups and source imagery |
+| Artwork prompts and briefs (19 txt, 9 md) | CMYK TIFFs and sRGB previews |
+| The three fonts | Archived print rounds |
+| The 4 generated PNGs the compose scripts read | The other 272 PNGs |
+| The 4 print-ready PDFs | |
 
-**Before switching machines, copy `~/Projects/HeldiPM/design/` across by hand**, or
-put it somewhere backed up. Cloning the repo is not enough. This is the single
-biggest risk in the whole setup and nothing in either repo currently guards against
-it.
+Two dependencies live outside HeldiPM and were found by walking every file path
+the compose chain reads: heldiweb's `public/images/elephant-large-transparent.png`
+and `public/images/heldi-wordmark.png`, read by absolute path and gitignored there
+too. Both are now tracked in heldiweb. **The absolute path means heldiweb must be
+checked out at `~/Projects/heldiweb` for the pouch front to build.**
+
+Reproducible from a clone means the **live** path, `compose_back_v8.py` and
+`compose_front_v8.py`. The superseded `compose_back.py`, `compose_front.py` and
+`patch_label.py` are kept as history but their v4/v5 input art is not tracked, so
+they will not run from a clean checkout.
+
+**Adding a new artwork input?** It must be negated in `.gitignore` explicitly or a
+clone cannot rebuild. Check with `git check-ignore -v <path>`.
+
+### What is still only on this machine
+
+**Nothing is pushed.** As of writing, `heldiweb` is ahead of `origin` on branch
+`chai-product-page` and the `HeldiPM` branch `pouch-round15-new-formulation` has no
+upstream at all. The work is now *committable* and *clonable*, but it is not yet
+*off this Mac*. Push both branches, or the git work above buys you nothing against
+losing the machine.
 
 ---
 
