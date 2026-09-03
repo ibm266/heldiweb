@@ -164,7 +164,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Where do the ingredients come from?",
         answer:
-          "The whey protein isolate comes from Arla, the farmer-owned dairy cooperative, and every batch arrives with a certificate of analysis. The spices come from Spice Entice, a British spice house, and the sunflower lecithin from Special Ingredients, a UK supplier. Everything is blended and packed in England.",
+          "The whey protein isolate comes from Arla, the farmer-owned dairy cooperative, and every batch arrives with a certificate of analysis. The single spices come from Spice Entice, a British spice house, and the garam masala from Buy Whole Foods Online, since it is a blend rather than one spice. The sunflower lecithin comes from Special Ingredients, a UK supplier. Everything is blended and packed in England.",
         more: { href: "/inside-the-pouch", label: "Read where it all comes from" }
       }
     ]

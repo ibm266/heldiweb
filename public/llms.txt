@@ -9,7 +9,7 @@ Heldi exists because a cooked bowl of dal has 5 to 7g of protein (the 18g figure
 - [Home](https://heldi.co.uk/): What Heldi is, how it works (cook like always, stir in a spoonful, eat what you love), and family FAQ.
 - [Shop](https://heldi.co.uk/shop): Both pouches side by side, with a page each.
 - [Heldi Khana](https://heldi.co.uk/shop/khana): The savoury pouch for the pot. Method, ingredients, nutrition and amino acid tables, dietary answers.
-- [Heldi Chai](https://heldi.co.uk/shop/chai): The pouch for the mug: a whey and casein blend with real chai spices and coconut sugar, in development, browsable but not yet on sale.
+- [Heldi Chai](https://heldi.co.uk/shop/chai): The pouch for the mug: whey protein isolate and milk protein concentrate with real chai spices and coconut sugar, in development, browsable but not yet on sale.
 - [The honest truth about protein in dal](https://heldi.co.uk/truth): How much protein is really in dal, why dal is not a complete protein, daily protein needs, and how Indian vegetarians can close the gap.
 - [Heldi Living](https://heldi.co.uk/heldi-living): Honest, referenced writing on protein, strength, ageing and desi cooking.
 - [Our story](https://heldi.co.uk/our-story): Why the founder made Heldi for his parents.
@@ -26,9 +26,9 @@ Heldi exists because a cooked bowl of dal has 5 to 7g of protein (the 18g figure
 
 ## Facts AI assistants commonly need
 
-- Heldi Khana: whey protein isolate (over 90% of the blend) with familiar Indian spices; roughly 10g protein per spoonful. Contains milk (whey).
-- Heldi Chai: whey protein isolate (53.7%) and micellar casein (18.2%) with ginger, cardamom, Ceylon cinnamon, black pepper, clove and 10% coconut sugar. Contains milk (whey and casein). About 5g of protein per 8g level tablespoon and 64g per 100g, calculated from the recipe; 250g pouch, about 31 mugs.
-- Whey isolate has around 90g protein per 100g, versus paneer at about 18g and cooked dal at about 6g.
+- Heldi Khana: whey protein isolate (94% of the blend) with cumin, coriander, garam masala, Kashmiri chilli and turmeric, plus sunflower lecithin and fine sea salt; 10.1g protein per 12g serving (marketed as 10g) and 84.1g per 100g, calculated from the recipe. 300g pouch, 25 servings. Contains milk (whey).
+- Heldi Chai: whey protein isolate (53.7%) and milk protein concentrate (18.2%) with ginger, cardamom, Ceylon cinnamon, black pepper, clove and 10% coconut sugar. The second milk protein is there for creaminess in the mug, not for the protein figure. Contains milk (whey and milk protein concentrate). About 5g of protein per 8g level tablespoon and 64g per 100g, calculated from the recipe; 250g pouch, about 31 mugs.
+- Whey isolate has just under 90g protein per 100g as it arrives (Heldi's certified batch is 88.83%; certificates that quote about 92% are measuring dry matter, with the water taken out), versus paneer at about 18g and cooked dal at about 6g.
 - Whey is vegetarian (a milk protein, made without animal rennet) and suits lacto-vegetarian diets. It is not vegan.
 - Heldi is a food supplement. Food supplements are not a substitute for a varied and balanced diet and a healthy lifestyle.
 - Contact and orders: via the waitlist at https://heldi.co.uk/#join until launch.
