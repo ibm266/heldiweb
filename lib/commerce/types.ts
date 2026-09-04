@@ -24,7 +24,16 @@ export type ProductVariant = {
   image?: ProductImage;
 };
 
-export type ProductHandle = "khana" | "table-jar" | "masala-dabba";
+export type ProductHandle =
+  | "khana"
+  | "chai"
+  | "heldi-pouches"
+  | "heldi-samples"
+  | "sample-pair-free"
+  | "table-jar"
+  | "tote"
+  // Withdrawn as a present, kept until the cart stops reading it.
+  | "masala-dabba";
 
 export type Product = {
   id: string;

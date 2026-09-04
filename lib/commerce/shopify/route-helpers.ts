@@ -45,3 +45,100 @@ export async function cartResponse(
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }
+
+// ---------------------------------------------------------------------------
+// Request-shape caps
+// ---------------------------------------------------------------------------
+// The cart routes have no login and forward what they are given straight to
+// the Storefront API, so without a ceiling one request can ask Shopify to do
+// thousands of things. The rate limit caps requests per minute; these cap the
+// work inside a single request. Same reasoning as MAX_CODES in
+// app/api/cart/discount-codes/route.ts, applied to the routes that take
+// arrays. See docs/security.md.
+//
+// The numbers sit far above any basket the site can build and far below
+// anything that costs money. The largest real basket is one pouch line, a jar,
+// a tote and a sachet or two, and the largest real mutation touches three of
+// them at once.
+
+/** Line inputs, line updates or line ids in one request. */
+export const MAX_LINES = 10;
+
+/** Per line. The pouch line is always 1 (the mix SKU carries the count) and a
+ *  present is capped at 1, so this only ever bites on sachets. */
+export const MAX_LINE_QUANTITY = 10;
+
+/** Attributes in one request. The checkout handoff writes three. */
+export const MAX_ATTRIBUTES = 10;
+
+/** Cart ids and line ids are Shopify GIDs, which are nowhere near this long. */
+const MAX_ID_LENGTH = 256;
+
+const MAX_ATTRIBUTE_KEY_LENGTH = 64;
+
+// Generous, because the first-touch attribution value carries a referrer URL
+// and whatever utm parameters a campaign link happened to use. Truncating a
+// legitimate one would lose the channel a sale came from.
+const MAX_ATTRIBUTE_VALUE_LENGTH = 1024;
+
+function isId(value: unknown): value is string {
+  return typeof value === "string" && value.length > 0 && value.length <= MAX_ID_LENGTH;
+}
+
+/** A usable cart id. Shape only: whether it exists is Shopify's answer. */
+export function isCartId(value: unknown): value is string {
+  return isId(value);
+}
+
+/** Same shape, different job: the id of one line inside a cart. */
+export function isLineId(value: unknown): value is string {
+  return isId(value);
+}
+
+function isQuantity(value: unknown, min: number): value is number {
+  return (
+    typeof value === "number" &&
+    Number.isInteger(value) &&
+    value >= min &&
+    value <= MAX_LINE_QUANTITY
+  );
+}
+
+/** `{ merchandiseId, quantity }` for cartLinesAdd and cartCreate. */
+export function isLineInput(
+  value: unknown
+): value is { merchandiseId: string; quantity: number } {
+  if (typeof value !== "object" || value === null) return false;
+  const line = value as { merchandiseId?: unknown; quantity?: unknown };
+  return isId(line.merchandiseId) && isQuantity(line.quantity, 1);
+}
+
+/** `{ id, quantity }` for cartLinesUpdate. Quantity zero is legitimate: it is
+ *  how Shopify removes a line through an update. */
+export function isLineUpdate(
+  value: unknown
+): value is { id: string; quantity: number } {
+  if (typeof value !== "object" || value === null) return false;
+  const line = value as { id?: unknown; quantity?: unknown };
+  return isId(line.id) && isQuantity(line.quantity, 0);
+}
+
+/** `{ key, value }` for cartAttributesUpdate. */
+export function isAttribute(
+  value: unknown
+): value is { key: string; value: string } {
+  if (typeof value !== "object" || value === null) return false;
+  const attribute = value as { key?: unknown; value?: unknown };
+  return (
+    typeof attribute.key === "string" &&
+    attribute.key.length > 0 &&
+    attribute.key.length <= MAX_ATTRIBUTE_KEY_LENGTH &&
+    typeof attribute.value === "string" &&
+    attribute.value.length <= MAX_ATTRIBUTE_VALUE_LENGTH
+  );
+}
+
+/** The 400 for an array longer than its cap. One wording, five routes. */
+export function tooManyItems(what: string, max: number): NextResponse {
+  return badRequest(`No more than ${max} ${what} at a time.`);
+}

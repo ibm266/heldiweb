@@ -77,8 +77,11 @@ export const DABBA_VARIANT_ID = "gid://shopify/ProductVariant/58012531196287";
 
 export const GIFT_SKUS = { jar: "HELDI-JAR", dabba: "HELDI-DABBA" } as const;
 
-// Widened to string[] so `.includes(sku)` accepts any SKU string.
-const GIFT_VARIANT_IDS: string[] = [JAR_VARIANT_ID, DABBA_VARIANT_ID];
+// A function rather than an array literal because TOTE_VARIANT_ID is declared
+// at the foot of this file; a const array here would read it before it exists.
+function giftVariantIds(): string[] {
+  return [JAR_VARIANT_ID, DABBA_VARIANT_ID, TOTE_VARIANT_ID];
+}
 
 export function tierForSku(sku: string): TierId | null {
   return TIER_ORDER.find((id) => TIER_SKUS[id] === sku) ?? null;
@@ -99,13 +102,17 @@ export function isDabbaGiftLine(line: Pick<CartLine, "merchandise">): boolean {
 }
 
 export function isGiftVariantId(id: string): boolean {
-  return GIFT_VARIANT_IDS.includes(id);
+  return giftVariantIds().includes(id);
 }
 
-// True for the free jar / dabba lines. Matches by variant GID first, SKU as a
-// fallback (a cart mutated outside the site could carry either).
+// True for the free jar / tote lines, and the withdrawn dabba so a stale cart
+// still renders it as a gift rather than as something the shopper bought.
+// Matches by variant GID first, SKU as a fallback (a cart mutated outside the
+// site could carry either). Anything here renders as a struck-out "Free" row
+// with no stepper and no remove button, so missing a gift type shows it as a
+// normal purchasable line.
 export function isGiftLine(line: Pick<CartLine, "merchandise">): boolean {
-  return isJarGiftLine(line) || isDabbaGiftLine(line);
+  return isJarGiftLine(line) || isToteGiftLine(line) || isDabbaGiftLine(line);
 }
 
 // ?v= busts the Next image-optimizer cache when a shot is regenerated in place.
@@ -243,8 +250,17 @@ const GIFT_PRODUCTS: Product[] = [
   }
 ];
 
-// Everything the cart can price: the sellable catalog plus the gift products.
-const ALL_PRODUCTS: Product[] = [...PRODUCTS, ...GIFT_PRODUCTS];
+// Everything the cart can price: the sellable catalog, the gift products, and
+// the mix products defined at the foot of this file. Built on first use rather
+// than at module load, because MIX_PRODUCTS is declared below this line and
+// touching it here would hit the temporal dead zone.
+let allProductsCache: Product[] | null = null;
+function allProducts(): Product[] {
+  if (!allProductsCache) {
+    allProductsCache = [...PRODUCTS, ...GIFT_PRODUCTS, ...MIX_PRODUCTS];
+  }
+  return allProductsCache;
+}
 
 export async function getProducts(): Promise<Product[]> {
   return PRODUCTS;
@@ -258,7 +274,7 @@ export async function getProduct(handle: string): Promise<Product | null> {
 // Searches the gift products too so the mock cart can build their lines.
 export function findProductByVariantId(variantId: string): Product | null {
   return (
-    ALL_PRODUCTS.find((product) =>
+    allProducts().find((product) =>
       product.variants.some((variant) => variant.id === variantId)
     ) ?? null
   );
@@ -267,7 +283,7 @@ export function findProductByVariantId(variantId: string): Product | null {
 export function findVariantById(
   variantId: string
 ): { product: Product; variant: ProductVariant } | null {
-  for (const product of ALL_PRODUCTS) {
+  for (const product of allProducts()) {
     const variant = product.variants.find((item) => item.id === variantId);
     if (variant) return { product, variant };
   }
@@ -327,10 +343,28 @@ export function includedItemsForQuantity(
   return buildIncludedItems(jars, dabbas);
 }
 
-// Items included with a basket of `pouches` pouches, after the per-order caps.
+// Items included with a basket of `pouches` pouches. Reads the agreed present
+// model, so the PDP panel says the same thing the cart will put in the box: a
+// jar with a single, a jar and a tote with a pair.
 export function includedItemsForPouches(pouches: number): IncludedItem[] {
-  const { jars, dabbas } = giftCountsForPouches(pouches);
-  return buildIncludedItems(jars, dabbas);
+  if (pouches < 1 || pouches > MAX_POUCHES) return [];
+  const { jars, totes } = presentsForPouches(pouches);
+  const items: IncludedItem[] = [];
+  if (jars > 0) {
+    items.push({
+      title: jars === 1 ? "1 refillable table jar" : `${jars} refillable table jars`,
+      image: JAR_THUMB,
+      valuePence: jars * EXTRA_VALUE_PENCE.jar
+    });
+  }
+  if (totes > 0) {
+    items.push({
+      title: totes === 1 ? "1 cotton tote bag" : `${totes} cotton tote bags`,
+      image: TOTE_THUMB,
+      valuePence: totes * EXTRA_VALUE_PENCE.tote
+    });
+  }
+  return items;
 }
 
 // The gift lines a basket of `pouches` pouches should hold, capped per order
@@ -361,6 +395,16 @@ export function includedItemsForGiftLines(lines: CartLine[]): IncludedItem[] {
       valuePence: jar.cost.compareAtAmount
         ? moneyToPence(jar.cost.compareAtAmount)
         : EXTRA_VALUE_PENCE.jar * jar.quantity
+    });
+  }
+  const tote = lines.find(isToteGiftLine);
+  if (tote) {
+    items.push({
+      title: tote.quantity === 1 ? "1 cotton tote bag" : `${tote.quantity} cotton tote bags`,
+      image: TOTE_THUMB,
+      valuePence: tote.cost.compareAtAmount
+        ? moneyToPence(tote.cost.compareAtAmount)
+        : EXTRA_VALUE_PENCE.tote * tote.quantity
     });
   }
   const dabba = lines.find(isDabbaGiftLine);
@@ -641,3 +685,123 @@ export function presentWorthForLines(
     return sum;
   }, 0);
 }
+
+// Everything the cart can price under the mix model. Deliberately NOT in
+// PRODUCTS: these never appear in the shop listing, the PDP gallery or the
+// AggregateOffer schema. The pages render the display products above; this is
+// only so the mock cart can build and price a line the same way Shopify will.
+const MIX_PRODUCTS: Product[] = [
+  {
+    id: MIX_PRODUCT_ID,
+    handle: "heldi-pouches",
+    title: "Heldi pouches",
+    shortDescription: "One pouch or two, in whatever mix you want.",
+    description:
+      "One pouch or two, Khana for the pot and Chai for the mug, in whatever mix you want.",
+    images: [TIER_IMAGES.single],
+    tags: ["pouches"],
+    variants: Object.entries(MIX_VARIANT_IDS).map(([sku, id]) => {
+      const mix = parseMixSku(sku)!;
+      return {
+        id,
+        title:
+          mix.khana && mix.chai
+            ? `${mix.khana} Khana + ${mix.chai} Chai`
+            : `${mix.pouches} ${mix.khana ? "Khana" : "Chai"}`,
+        sku,
+        price: penceToMoney(ladderPence(mix.pouches)),
+        // No compare-at on the variant. The RRP is shown by the page from
+        // rrpPence, not carried on the line, so nothing can drift between the
+        // two and no line ever renders a strikethrough the site did not mean.
+        compareAtPrice: null,
+        availableForSale: true,
+        image: imageForCounts(mix.khana, mix.chai)
+      };
+    })
+  },
+  {
+    id: SAMPLE_PRODUCT_ID,
+    handle: "heldi-samples",
+    title: "Heldi samples",
+    shortDescription: "A 30g sachet to try before you buy a pouch.",
+    description:
+      "A 30g sachet to try before you buy a pouch. Khana for the pot, Chai for the mug, or one of each.",
+    images: [SAMPLE_IMAGE],
+    tags: ["samples"],
+    variants: [
+      {
+        id: SAMPLE_VARIANT_IDS[SAMPLE_SKU],
+        title: "Khana",
+        sku: SAMPLE_SKU,
+        price: penceToMoney(SAMPLE_PRICE_PENCE),
+        compareAtPrice: null,
+        availableForSale: true,
+        image: SAMPLE_IMAGE
+      },
+      {
+        id: SAMPLE_VARIANT_IDS[SAMPLE_CHAI_SKU],
+        title: "Chai",
+        sku: SAMPLE_CHAI_SKU,
+        price: penceToMoney(SAMPLE_PRICE_PENCE),
+        compareAtPrice: null,
+        availableForSale: true,
+        image: SAMPLE_IMAGE
+      },
+      {
+        id: SAMPLE_VARIANT_IDS[SAMPLE_PAIR_SKU],
+        title: "Khana + Chai",
+        sku: SAMPLE_PAIR_SKU,
+        price: penceToMoney(samplePairPence()),
+        // The pair is the one sachet with a real saving to show, so it is the
+        // one that carries a compare-at.
+        compareAtPrice: penceToMoney(SAMPLE_PRICE_PENCE * 2),
+        availableForSale: true,
+        image: SAMPLE_IMAGE
+      }
+    ]
+  },
+  {
+    id: FREE_PAIR_PRODUCT_ID,
+    handle: "sample-pair-free",
+    title: "Heldi sample pair, on us",
+    shortDescription: "Two sachets, free for the first hundred.",
+    description:
+      "Two 30g sachets, one Khana for the pot and one Chai for the mug, free for the first 100. Postage is on us too.",
+    images: [SAMPLE_IMAGE],
+    tags: ["samples", "free-trial"],
+    variants: [
+      {
+        id: FREE_PAIR_VARIANT_ID,
+        title: "Khana + Chai",
+        sku: FREE_PAIR_SKU,
+        price: penceToMoney(0),
+        // The compare-at is what makes the drawer able to say "minus £8"
+        // rather than showing a free thing worth nothing.
+        compareAtPrice: penceToMoney(samplePairPence()),
+        availableForSale: true,
+        image: SAMPLE_IMAGE
+      }
+    ]
+  },
+  {
+    id: TOTE_PRODUCT_ID,
+    handle: "tote",
+    title: "Heldi tote bag",
+    shortDescription: "Undyed cotton, terracotta elephant.",
+    description:
+      "Undyed cotton tote with the Heldi elephant printed in terracotta. Ships free with any two pouches, never sold on its own.",
+    images: [{ url: TOTE_THUMB, altText: "Heldi cotton tote bag" }],
+    tags: ["gift-with-order"],
+    variants: [
+      {
+        id: TOTE_VARIANT_ID,
+        title: "Cotton tote",
+        sku: TOTE_SKU,
+        price: penceToMoney(0),
+        compareAtPrice: penceToMoney(EXTRA_VALUE_PENCE.tote),
+        availableForSale: true,
+        image: { url: TOTE_THUMB, altText: "Heldi cotton tote bag" }
+      }
+    ]
+  }
+];

@@ -12,18 +12,20 @@ import {
   SERVINGS_PER_SAMPLE,
   TIER_VARIANT_IDS,
   displayPrice,
-  includedItemsForQuantity
+  imageForCounts,
+  includedItemsForPouches,
+  mixSku
 } from "@/lib/commerce/catalog";
 import { formatMoney, formatPence, moneyToPence } from "@/lib/commerce/money";
 import type { IncludedItem, Product, ProductVariant } from "@/lib/commerce/types";
 import {
-  FEATURED_TIER,
-  SHIPPING,
-  TIERS,
-  TIER_ORDER,
   FOUNDERS,
+  SHIPPING,
+  TIER_ORDER,
+  bundleSavingPence,
   isGiftingCode,
-  tierSavingsPence,
+  ladderPence,
+  rrpPence,
   type TierId
 } from "@/lib/pricing";
 import { GiftingPopup } from "./gifting-popup";
@@ -62,7 +64,7 @@ function Rrp({ children }: { children: React.ReactNode }) {
 
 export function BuyBox({ product }: { product: Product }) {
   const [isPouch, setIsPouch] = useState(true);
-  const [tierId, setTierId] = useState<TierId>("single");
+  const [pouchQty, setPouchQty] = useState(1);
   const [imageOverride, setImageOverride] = useState<number | null>(null);
   const [justAdded, setJustAdded] = useState(false);
   const [nutritionOpen, setNutritionOpen] = useState(false);
@@ -85,8 +87,9 @@ export function BuyBox({ product }: { product: Product }) {
   const sampleVariant = product.variants.find((variant) => variant.id === SAMPLE_VARIANT_ID);
   if (tierVariants.size !== TIER_ORDER.length || !sampleVariant) return null;
 
-  const tier = TIERS[tierId];
-  const selectedVariant = isPouch ? tierVariants.get(tierId)! : sampleVariant;
+  // The tier variants are only still read for the gallery and the Sample; the
+  // pouch price now comes from the ladder, not from a variant.
+  const selectedVariant = isPouch ? tierVariants.get("single")! : sampleVariant;
   // Waitlist mode keeps the whole PDP browsable but shows no money at all:
   // no prices, no strikethroughs, no savings, no shipping rates.
   const showPrices = mode === "live";
@@ -96,16 +99,19 @@ export function BuyBox({ product }: { product: Product }) {
     setImageOverride(null);
   }
 
-  function selectTier(id: TierId) {
-    setTierId(id);
+  function selectQty(qty: number) {
+    setPouchQty(qty);
     setImageOverride(null);
-    track("tier_selected", { tier: id });
+    // The event name and its `tier` prop are load-bearing (PLAYBOOK §7): the
+    // dashboard tile reads `tier`, so it keeps the name and carries the mix
+    // SKU instead of a tier id.
+    track("tier_selected", { tier: mixSku(qty, 0), pouches: qty });
   }
 
   // Gallery indexes 0-2 are the single/pair/full-table bundles, index 3 is
   // the Sample; the image follows the selection unless a thumb was
   // clicked.
-  const autoImageIndex = isPouch ? TIER_ORDER.indexOf(tierId) : product.images.length - 1;
+  const autoImageIndex = isPouch ? pouchQty - 1 : product.images.length - 1;
   const shownIndex = imageOverride ?? autoImageIndex;
   const mainImage = product.images[shownIndex] ?? product.images[0];
 
@@ -113,7 +119,7 @@ export function BuyBox({ product }: { product: Product }) {
   const sampleSingle = displayPrice(sampleVariant, 1);
   const selected = displayPrice(selectedVariant, 1);
   const included: IncludedItem[] = isPouch
-    ? includedItemsForQuantity(selectedVariant, 1)
+    ? includedItemsForPouches(pouchQty)
     : [];
 
   // The price callout describes whichever image is on screen; prices always
@@ -128,7 +134,7 @@ export function BuyBox({ product }: { product: Product }) {
   // mode says why there is no price on the page instead.
   const shippingNote = !showPrices
     ? `Prices arrive when the shop opens. The waitlist hears first, and the first ${FOUNDERS.firstJoiners} on it get ${FOUNDERS.percent}% off.`
-    : isPouch && tierId === "single"
+    : isPouch && ladderPence(pouchQty) < SHIPPING.freeOverPence
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
       : "Ships free.";
 
@@ -136,11 +142,11 @@ export function BuyBox({ product }: { product: Product }) {
     const giftingApplied = (cart?.discountCodes ?? []).some(
       (entry) => entry.applicable && isGiftingCode(entry.code)
     );
-    // Pouch tiers add pouches, not lines: the cart repacks the running
-    // total into the cheapest bundle mix, so a pouch on top of a pair
-    // becomes the full table rather than two awkward lines.
+    // Pouches are counts, not lines: the cart resolves the running total to
+    // the one mix variant that encodes it. A refusal (over the cap) returns
+    // false and the drawer says why, so the event below does not fire.
     const added = isPouch
-      ? await addPouches(tier.pouches)
+      ? await addPouches({ khana: pouchQty })
       : await addItem(selectedVariant.id, 1);
 
     // Everything below is contingent on the write landing. Previously the
@@ -152,8 +158,10 @@ export function BuyBox({ product }: { product: Product }) {
     track("add_to_cart", {
       product: product.handle,
       format: isPouch ? "pouch" : "sample",
-      ...(isPouch ? { tier: tierId, pouches_added: tier.pouches } : {}),
-      value: moneyToPence(selected.current) / 100,
+      ...(isPouch
+        ? { tier: mixSku(pouchQty, 0), pouches_added: pouchQty, khana: pouchQty, chai: 0 }
+        : {}),
+      value: (isPouch ? ladderPence(pouchQty) : moneyToPence(selected.current)) / 100,
       currency: "GBP"
     });
     setJustAdded(true);
@@ -243,12 +251,10 @@ export function BuyBox({ product }: { product: Product }) {
           ))}
         </ul>
 
-        {showPrices ? (
-          <div className="pdp__launch">
-            <p className="eyebrow">LAUNCH PRICES</p>
-            <p className="pdp__launch-title">Launch prices. Not forever prices.</p>
-          </div>
-        ) : null}
+        {/* The launch-price block is gone with launch pricing (plan P2, revised
+            4 Sep). The price is the price; the only thing struck through is the
+            RRP on a pair, which is a real comparison because a single pouch
+            genuinely sells at £35. */}
 
         <p className="pdp__group-label">
           SIZE: <strong>{isPouch ? "300G POUCH" : "SAMPLE"}</strong>
@@ -293,58 +299,55 @@ export function BuyBox({ product }: { product: Product }) {
         {isPouch ? (
           <>
             <p className="pdp__group-label">
-              BUNDLE: <strong>{tier.name.toUpperCase()}</strong>
+              HOW MANY: <strong>{pouchQty === 1 ? "ONE POUCH" : "TWO POUCHES"}</strong>
             </p>
-            <div className="option-grid">
-              {TIER_ORDER.map((id) => {
-                const option = TIERS[id];
-                const price = displayPrice(tierVariants.get(id)!, 1);
-                const perMealPence = Math.round(
-                  moneyToPence(price.current) / (option.pouches * SERVINGS_PER_POUCH)
-                );
+            <div className="option-grid option-grid--pair">
+              {[1, 2].map((qty) => {
+                const price = ladderPence(qty);
+                const rrp = rrpPence(qty);
+                const saving = bundleSavingPence(qty);
+                const perMealPence = Math.round(price / (qty * SERVINGS_PER_POUCH));
                 return (
-                  <label key={id} className={`option-card${tierId === id ? " is-selected" : ""}`}>
-                    {/* "BEST VALUE" is a price fact anyone can check against the
-                        per-serving figures. The old "MOST POPULAR" was a claim
-                        about what other customers buy, which is not something we
-                        can evidence with zero orders. */}
-                    {id === FEATURED_TIER ? (
-                      <span className="option-card__flag option-card__flag--gold">
-                        BEST VALUE
-                      </span>
-                    ) : null}
+                  <label key={qty} className={`option-card${pouchQty === qty ? " is-selected" : ""}`}>
                     <input
                       type="radio"
                       name="bundle"
-                      value={id}
-                      checked={tierId === id}
-                      onChange={() => selectTier(id)}
+                      value={qty}
+                      checked={pouchQty === qty}
+                      onChange={() => selectQty(qty)}
                     />
                     <Image
                       className="option-card__img"
-                      src={product.images[TIER_ORDER.indexOf(id)].url}
+                      src={imageForCounts(qty, 0).url}
                       alt=""
                       width={56}
                       height={56}
                       sizes="56px"
                     />
-                    <span className="option-card__name">{option.name}</span>
+                    <span className="option-card__name">
+                      {qty === 1 ? "One pouch" : "Two pouches"}
+                    </span>
                     {showPrices ? (
                       <>
                         <span className="option-card__meta">
-                          {formatPence(perMealPence)} per meal
+                          {formatPence(perMealPence)} a meal
                         </span>
                         <span className="option-card__price">
-                          {price.compareAt ? <Rrp>{formatMoney(price.compareAt)}</Rrp> : null}
-                          {formatMoney(price.current)}
+                          {/* Struck through only where there is a real saving.
+                              At one pouch the RRP IS the price, so striking it
+                              would be inventing a discount. */}
+                          {saving > 0 ? <Rrp>{formatPence(rrp)}</Rrp> : null}
+                          {formatPence(price)}
                         </span>
-                        <span className="option-card__save">
-                          {formatPence(tierSavingsPence(id))} below RRP
-                        </span>
+                        {saving > 0 ? (
+                          <span className="option-card__save">
+                            Save {formatPence(saving)}
+                          </span>
+                        ) : null}
                       </>
                     ) : (
                       <span className="option-card__meta">
-                        {option.pouches * SERVINGS_PER_POUCH} meals
+                        {qty * SERVINGS_PER_POUCH} meals
                       </span>
                     )}
                   </label>
@@ -356,7 +359,7 @@ export function BuyBox({ product }: { product: Product }) {
               <p className="pdp__includes-title">Includes:</p>
               <div className="pdp__includes-row">
                 <Image className="pdp__includes-img" src={POUCH_THUMB} alt="" width={28} height={28} sizes="28px" />
-                <span>{tier.pouches} × 300g pouch{tier.pouches > 1 ? "es" : ""}</span>
+                <span>{pouchQty} × 300g pouch{pouchQty > 1 ? "es" : ""}</span>
               </div>
               {included.map((item) => (
                 <div className="pdp__includes-row" key={item.title}>

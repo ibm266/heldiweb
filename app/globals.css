@@ -6505,6 +6505,28 @@ a.living-card__tag:hover {
   line-height: 1.4;
 }
 
+/* A refusal the shopper caused, not something that broke: same shape as the
+   error above, ink border instead of terracotta so it reads as information
+   rather than alarm. */
+.cart-drawer__notice {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.875rem;
+  border: 2px solid var(--ink);
+  border-radius: 0.5rem;
+  color: var(--ink);
+  background: var(--cream);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* The pouch group's price line. It carries no image, so it indents to sit
+   under the product rows above rather than aligning with them. */
+.cart-line--total {
+  padding-left: calc(72px + 0.875rem);
+  border-top: 1px dashed var(--ink);
+}
+
 .cart-drawer__summary {
   margin-top: auto;
   padding-top: 1.25rem;

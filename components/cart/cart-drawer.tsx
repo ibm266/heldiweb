@@ -5,25 +5,32 @@ import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { prepareCheckoutHandoff } from "@/lib/checkout-handoff";
 import {
+  FREE_PAIR_SKU,
+  SAMPLE_CHAI_SKU,
+  SAMPLE_PAIR_SKU,
   SAMPLE_SKU,
   SERVINGS_PER_POUCH,
-  giftingEligiblePenceForLines,
+  imageForCounts,
   includedItemsForGiftLines,
   isGiftLine,
-  khanaImageForPouches,
-  khanaPouchCount,
-  tierForSku
+  isMixLine,
+  pouchCounts,
+  pouchPenceForCounts
 } from "@/lib/commerce/catalog";
 import { COMMERCE_PROVIDER } from "@/lib/commerce/config";
 import { formatMoney, formatPence, moneyToPence } from "@/lib/commerce/money";
 import type { IncludedItem } from "@/lib/commerce/types";
+import { CHAI_MUGS_PER_POUCH } from "@/components/shop/chai-data";
 import {
   GIFTING,
+  MAX_POUCHES,
   SAMPLE_PRICE_PENCE,
   SHIPPING,
-  TIERS,
+  bundleSavingPence,
   giftingAudienceForCode,
-  isGiftingCode
+  isFoundersCode,
+  isGiftingCode,
+  rrpPence
 } from "@/lib/pricing";
 import { useCart } from "./cart-context";
 import { FreeShippingMeter } from "./free-shipping-meter";
@@ -63,7 +70,8 @@ export function CartDrawer() {
     applyGifting,
     removeGifting,
     closeCart,
-    setPouchCount,
+    notice,
+    setPouchCounts,
     updateQuantity,
     removeItem,
     applyDiscount
@@ -75,69 +83,69 @@ export function CartDrawer() {
   const lines = cart?.lines ?? [];
   const appliedCodes = cart?.discountCodes ?? [];
 
-  // The pouch tiers render as one row the shopper steps a pouch at a time;
-  // the underlying bundle lines repack behind it. Everything else (the
-  // Sample) keeps its own line.
-  const khanaLines = lines.filter((line) => tierForSku(line.merchandise.sku) !== null);
-  // The free gift lines render as struck-out "Free" rows under the pouch line,
+  // The basket holds ONE pouch line whose variant encodes both counts, but it
+  // renders as one row per product so each can be stepped on its own. The
+  // group line under them carries the price, because the price belongs to the
+  // pair rather than to either pouch.
+  const mixLines = lines.filter((line) => isMixLine(line));
+  // The free lines render as struck-out "Free" rows under the pouch group,
   // never as normal rows with a stepper or a remove button.
   const giftLines = lines.filter((line) => isGiftLine(line));
   const giftUnitCount = giftLines.reduce((sum, line) => sum + line.quantity, 0);
-  // The gift rows shown in the basket; their worth also feeds the saving total.
   const giftItems = includedItemsForGiftLines(lines);
   const otherLines = lines.filter(
-    (line) => tierForSku(line.merchandise.sku) === null && !isGiftLine(line)
+    (line) => !isMixLine(line) && !isGiftLine(line)
   );
-  const pouchCount = khanaPouchCount(lines);
-  const khanaTotalPence = khanaLines.reduce(
+  const { khana, chai, pouches: pouchCount } = pouchCounts(lines);
+  const pouchTotalPence = mixLines.reduce(
     (sum, line) => sum + moneyToPence(line.cost.totalAmount),
     0
   );
-  const khanaComparePence = khanaLines.reduce(
-    (sum, line) =>
-      sum + moneyToPence(line.cost.compareAtAmount ?? line.cost.totalAmount),
-    0
-  );
-  const khanaName =
-    pouchCount === 1
-      ? TIERS.single.name
-      : pouchCount === 2
-        ? TIERS.double.name
-        : pouchCount === 3
-          ? TIERS.triple.name
-          : `${pouchCount} pouches`;
-  const perMealPence =
-    pouchCount > 0
-      ? Math.round(khanaTotalPence / (pouchCount * SERVINGS_PER_POUCH))
-      : 0;
+  // RRP is what the same pouches cost bought one at a time. Shown struck
+  // through from two pouches up, where there is a real saving; at one pouch
+  // the RRP IS the price, so there is nothing to strike.
+  const pouchRrpPence = pouchCount > 0 ? rrpPence(pouchCount) : 0;
+  const bundleSaving = pouchCount > 0 ? bundleSavingPence(pouchCount) : 0;
+  // One pouch price divided evenly: every pouch in a pair costs the same, so
+  // the per-meal and per-mug figures come off the same share.
+  const perPouchPence = pouchCount > 0 ? Math.round(pouchTotalPence / pouchCount) : 0;
+  const perMealPence = Math.round(perPouchPence / SERVINGS_PER_POUCH);
+  const perMugPence = Math.round(perPouchPence / CHAI_MUGS_PER_POUCH);
 
   const totalPence = cart ? moneyToPence(cart.cost.totalAmount) : 0;
 
-  // Three components of the saving, each on its own summary line, summing to
-  // the "You're saving" headline. Launch saving: RRP struck against the launch
-  // price (tier lines only). Discount: whatever a code took off, worked out as
-  // the pre-discount full price minus the cart total (Shopify allocates code
-  // discounts into the lines, so subtotal - total reads as zero and can't be
-  // used). Free gifts: the worth of the £0 jar/dabba lines, struck out on their
-  // own rows and counted toward the total too.
+  // Two components of the saving now, each on its own summary line, summing to
+  // the "You're saving" headline. There is no launch saving any more: the price
+  // is the price. Discount: whatever a code took off, worked out as the
+  // pre-discount full price minus the cart total (Shopify allocates code
+  // discounts into the lines, so subtotal - total reads as zero and cannot be
+  // used). Free: the worth of every £0 line, the jar and tote that come with a
+  // pair and the trial pair if they claimed one, struck out on their own rows
+  // and counted toward the total too.
   const fullPricePence = lines.reduce(
     (sum, line) => sum + moneyToPence(line.merchandise.price) * line.quantity,
     0
   );
-  const launchSavingsPence = khanaLines.reduce((sum, line) => {
-    if (!line.cost.compareAtAmount) return sum;
-    const launch = moneyToPence(line.merchandise.price) * line.quantity;
-    return sum + Math.max(0, moneyToPence(line.cost.compareAtAmount) - launch);
-  }, 0);
   const discountPence = Math.max(0, fullPricePence - totalPence);
   const giftWorthPence = giftItems.reduce((sum, item) => sum + item.valuePence, 0);
-  const savingsPence = launchSavingsPence + discountPence + giftWorthPence;
+  // The claimed trial pair is a £0 line the shopper chose rather than one the
+  // cart added, so it is not a "gift" row, but its £8 is a real saving and the
+  // drawer says so. Without this the basket shows a free thing worth nothing.
+  const freePairLine = lines.find(
+    (line) => line.merchandise.sku === FREE_PAIR_SKU
+  );
+  const freePairWorthPence = freePairLine
+    ? moneyToPence(
+        freePairLine.cost.compareAtAmount ?? { amount: "8.00", currencyCode: "GBP" }
+      ) * freePairLine.quantity
+    : 0;
+  const savingsPence = discountPence + giftWorthPence + freePairWorthPence;
   const discountCodeLabel =
     appliedCodes.find((entry) => entry.applicable)?.code ?? null;
 
   // Gifting discount state. The stored method only counts while the code is
   // actually on the cart.
-  const eligiblePence = giftingEligiblePenceForLines(lines);
+  const eligiblePence = pouchPenceForCounts(lines);
   const giftingApplied = appliedCodes.some(
     (entry) => entry.applicable && isGiftingCode(entry.code)
   );
@@ -152,10 +160,13 @@ export function CartDrawer() {
       : null;
   const codeFieldLocked = activeMethod === "checkbox";
 
-  // Shipping, recalculated after discounts. A Sample on its own ships
-  // free (Heldi absorbs the Large Letter rate).
+  // Shipping, recalculated after discounts. Sachets on their own ship free
+  // (Heldi absorbs the Large Letter rate), which includes a claimed trial pair:
+  // a free thing must not arrive with a postage charge attached.
+  const SACHET_SKUS = [SAMPLE_SKU, SAMPLE_CHAI_SKU, SAMPLE_PAIR_SKU, FREE_PAIR_SKU];
   const sampleOnly =
-    lines.length > 0 && lines.every((line) => line.merchandise.sku === SAMPLE_SKU);
+    lines.length > 0 &&
+    lines.every((line) => SACHET_SKUS.includes(line.merchandise.sku ?? ""));
   const shippingPence =
     sampleOnly || totalPence >= SHIPPING.freeOverPence ? 0 : SHIPPING.standardPence;
   const showSampleNudge =
@@ -202,15 +213,17 @@ export function CartDrawer() {
     if (!isOpen || savingsPence <= 0) return;
     if (lastTrackedSavings.current === savingsPence) return;
     lastTrackedSavings.current = savingsPence;
-    // basket_savings_total is the headline saving (launch + discount + gift
-    // worth); the split rides alongside it, nothing renamed (PLAYBOOK §7).
+    // basket_savings_total is the headline saving; the split rides alongside
+    // it. launch_savings is gone because launch pricing is, and dropping a
+    // prop is safe where renaming an event would not be: the dashboard tile
+    // reads the total (PLAYBOOK §7).
     track("savings_displayed", {
       basket_savings_total: savingsPence / 100,
-      launch_savings: launchSavingsPence / 100,
       discount_savings: discountPence / 100,
-      gift_worth: giftWorthPence / 100
+      gift_worth: giftWorthPence / 100,
+      free_pair_worth: freePairWorthPence / 100
     });
-  }, [isOpen, savingsPence, launchSavingsPence, discountPence, giftWorthPence]);
+  }, [isOpen, savingsPence, discountPence, giftWorthPence, freePairWorthPence]);
 
   if (mode !== "live" || !isOpen) return null;
 
@@ -241,12 +254,21 @@ export function CartDrawer() {
 
   const lastCode = appliedCodes[appliedCodes.length - 1];
   const showCodeRejected = lastCode && !lastCode.applicable;
+  // A code can be inapplicable for two different reasons, and telling a
+  // first-100 claimer their real code is "invalid" because their basket is a
+  // free sachet is the wrong one. If the code is one of ours and the basket
+  // simply has no pouches to discount yet, say that instead.
+  const codeIsOurs =
+    lastCode &&
+    (isGiftingCode(lastCode.code) || isFoundersCode(lastCode.code));
   const rejectionMessage =
-    lastCode && isGiftingCode(lastCode.code)
+    lastCode && isGiftingCode(lastCode.code) && pouchCount > 0
       ? BEST_PRICE_HINT
-      : lastCode
-        ? `“${lastCode.code}” isn’t a valid code`
-        : null;
+      : codeIsOurs && pouchCount === 0
+        ? `${lastCode.code} is saved. It comes off as soon as there is a pouch in the basket.`
+        : lastCode
+          ? `“${lastCode.code}” isn’t a valid code`
+          : null;
 
   return (
     <div className="cart-overlay" onClick={closeCart}>
@@ -279,6 +301,14 @@ export function CartDrawer() {
             {error}
           </p>
         ) : null}
+        {/* A refusal, not a failure: the basket is already right and nothing
+            was written, so it gets a quieter treatment than the error above
+            and a status role rather than an alert. */}
+        {notice ? (
+          <p className="cart-drawer__notice" role="status">
+            {notice}
+          </p>
+        ) : null}
 
         {lines.length === 0 ? (
           <div className="cart-drawer__empty">
@@ -290,66 +320,94 @@ export function CartDrawer() {
         ) : (
           <>
             <ul className="cart-lines">
+              {[
+                { key: "khana", count: khana, title: "Heldi Khana", unit: `${formatPence(perMealPence)} a meal` },
+                { key: "chai", count: chai, title: "Heldi Chai", unit: `${formatPence(perMugPence)} a mug` }
+              ]
+                .filter((row) => row.count > 0)
+                .map((row) => {
+                  const image = imageForCounts(
+                    row.key === "khana" ? row.count : 0,
+                    row.key === "chai" ? row.count : 0
+                  );
+                  // Step this product only, leaving the other where it is.
+                  const step = (next: number) =>
+                    setPouchCounts({
+                      khana: row.key === "khana" ? next : khana,
+                      chai: row.key === "chai" ? next : chai
+                    });
+                  return (
+                    <li className="cart-line" key={row.key}>
+                      <Image
+                        className="cart-line__image"
+                        src={image.url}
+                        alt={image.altText}
+                        width={72}
+                        height={72}
+                        sizes="72px"
+                      />
+                      <div className="cart-line__details">
+                        <p className="cart-line__title">{row.title}</p>
+                        <p className="cart-line__variant">
+                          {row.count} {row.count === 1 ? "pouch" : "pouches"} · {row.unit}
+                        </p>
+                        <div className="qty-stepper">
+                          <button
+                            type="button"
+                            onClick={() => step(row.count - 1)}
+                            disabled={isPending}
+                            aria-label={`One ${row.title} pouch fewer`}
+                          >
+                            −
+                          </button>
+                          <span aria-live="polite">{row.count}</span>
+                          <button
+                            type="button"
+                            onClick={() => step(row.count + 1)}
+                            disabled={isPending || pouchCount >= MAX_POUCHES}
+                            aria-label={`One ${row.title} pouch more`}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
+                      <div className="cart-line__pricing">
+                        <span className="cart-line__price">
+                          {formatPence(perPouchPence * row.count)}
+                        </span>
+                        <button
+                          className="cart-line__remove"
+                          type="button"
+                          onClick={() => step(0)}
+                          disabled={isPending}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
               {pouchCount > 0 ? (
-                <li className="cart-line" key="khana-pouches">
-                  <Image
-                    className="cart-line__image"
-                    src={khanaImageForPouches(pouchCount).url}
-                    alt={khanaImageForPouches(pouchCount).altText}
-                    width={72}
-                    height={72}
-                  />
+                <li className="cart-line cart-line--total" key="pouch-total">
                   <div className="cart-line__details">
                     <p className="cart-line__title">
-                      {khanaLines[0].merchandise.product.title}
+                      {pouchCount} {pouchCount === 1 ? "pouch" : "pouches"}
                     </p>
-                    <p className="cart-line__variant">
-                      {khanaName} · {formatPence(perMealPence)} per meal
-                    </p>
-                    <div className="qty-stepper">
-                      <button
-                        type="button"
-                        onClick={() => setPouchCount(pouchCount - 1)}
-                        disabled={isPending}
-                        aria-label="One pouch fewer"
-                      >
-                        −
-                      </button>
-                      <span aria-live="polite">{pouchCount}</span>
-                      <button
-                        type="button"
-                        onClick={() => setPouchCount(pouchCount + 1)}
-                        disabled={isPending}
-                        aria-label="One pouch more"
-                      >
-                        +
-                      </button>
-                    </div>
-                    {pouchCount === 2 ? (
+                    {pouchCount < MAX_POUCHES ? (
                       <p className="cart-line__nudge">
-                        One more pouch adds a free masala dabba.
+                        A second pouch is {formatPence(perPouchPence - bundleSavingPence(2))}, and the parcel ships free.
                       </p>
                     ) : null}
                   </div>
                   <div className="cart-line__pricing">
-                    {khanaComparePence > khanaTotalPence ? (
-                      <s className="cart-line__compare">
-                        {formatPence(khanaComparePence)}
-                      </s>
+                    {bundleSaving > 0 ? (
+                      <s className="cart-line__compare">{formatPence(pouchRrpPence)}</s>
                     ) : null}
-                    <span className="cart-line__price">
-                      {formatPence(khanaTotalPence)}
-                    </span>
-                    <button
-                      className="cart-line__remove"
-                      type="button"
-                      onClick={() => setPouchCount(0)}
-                      disabled={isPending}
-                    >
-                      Remove
-                    </button>
+                    <span className="cart-line__price">{formatPence(pouchTotalPence)}</span>
                   </div>
-                  <IncludedList items={giftItems} />
+                  {/* The presents sit under the group, not under either pouch
+                      row: they are earned by the order, not by one product. */}
+                  {giftItems.length > 0 ? <IncludedList items={giftItems} /> : null}
                 </li>
               ) : null}
               {otherLines.map((line) => {
@@ -474,10 +532,10 @@ export function CartDrawer() {
             ) : null}
 
             <div className="cart-drawer__summary">
-              {launchSavingsPence > 0 ? (
+              {freePairWorthPence > 0 ? (
                 <p className="cart-drawer__saving-line">
-                  <span>Launch saving</span>
-                  <span>{"−"}{formatPence(launchSavingsPence)}</span>
+                  <span>Sample pair, on us</span>
+                  <span>{"−"}{formatPence(freePairWorthPence)}</span>
                 </p>
               ) : null}
               {discountPence > 0 ? (
@@ -547,8 +605,12 @@ export function CartDrawer() {
                       value: totalPence / 100,
                       currency: "GBP",
                       // Paid units only; the free gift lines don't count.
-                      item_count: cart.totalQuantity - giftUnitCount,
+                      // Pouches plus sachets, never the free lines: the gifts
+                      // are not something the shopper chose to buy.
+                      item_count: pouchCount + otherLines.reduce((sum, line) => sum + line.quantity, 0),
                       pouches: pouchCount,
+                      khana,
+                      chai,
                       discount_codes: applied.join(","),
                       ...(audience ? { gifting_audience: audience } : {})
                     });

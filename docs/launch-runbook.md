@@ -67,8 +67,8 @@ verification. The Storefront API version is pinned in `client.ts`
   `HELDI-JAR` (compare-at £8) and `HELDI-DABBA` (compare-at £15), created
   19 Jul 2026; compare-at prices mirror `EXTRA_VALUE_PENCE`. The cart caps them
   at 2 jars + 1 dabba per order (`GIFT_CAPS` in `lib/pricing.ts`) and a
-  server-side clamp (`lib/commerce/shopify/gift-policy.ts`) re-enforces the cap
-  on every mutation. Admin steps that the Storefront API depends on: publish
+  server-side clamp (`lib/commerce/shopify/cart-policy.ts`) re-enforces the cap
+  on every mutating cart route. Admin steps that the Storefront API depends on: publish
   both to the **Headless channel this token uses** (not Online Store), untrack
   their inventory, set the SKUs and upload images. Until they are published the
   Storefront API answers "merchandise does not exist" for their variants and no

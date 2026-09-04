@@ -18,7 +18,12 @@ repeating a legitimate request until it costs us money:
   Repetition burns the shop's API allowance, and then real customers see
   checkout errors.
 - `/api/cart/discount-codes` is a guess at a real discount code every time. A
-  working guess (the waitlist 20%, a gifting code) is revenue lost once shared.
+  working guess (a family code at 15%, a founders code at 25%) is revenue lost
+  once shared.
+- `/api/cart/*` also decides what a basket may hold. Nothing there has a login
+  and the cart id comes from the caller, so a crafted sequence can build a
+  basket the site would never build: free presents with no pouches under them,
+  Chai while Chai is not on sale, or more pouches than one order can carry.
 
 ## What the code does
 
@@ -34,6 +39,57 @@ repeating a legitimate request until it costs us money:
 | `/api/cart/discount-codes` | 10 / minute | yes |
 | `/api/cart/*` (others) | 60 / minute | yes, except `get` |
 | `/api/webhooks/shopify-orders` | none, by design | no |
+
+## What one request may ask for
+
+The rate limit caps requests per minute. It does nothing about the size of one
+request, and the routes forward what they are given straight to the Storefront
+API, so a single call could ask Shopify to do thousands of things. The caps
+live in `lib/commerce/shopify/route-helpers.ts` and every array route applies
+them before touching Shopify:
+
+| Route | Cap | Per element |
+| --- | --- | --- |
+| `/api/cart/create` | 10 lines | `{ merchandiseId, quantity 1 to 10 }` |
+| `/api/cart/add-lines` | 10 lines | `{ merchandiseId, quantity 1 to 10 }` |
+| `/api/cart/update-lines` | 10 lines | `{ id, quantity 0 to 10 }` (0 removes) |
+| `/api/cart/remove-lines` | 10 line ids | a string id, 256 characters |
+| `/api/cart/attributes` | 10 attributes | key 64 characters, value 1024 |
+| `/api/cart/discount-codes` | 5 codes | a string code, 64 characters |
+
+Ten is far above any basket the site can build (one pouch line, a jar, a tote
+and a sachet or two) and far below anything that costs money. An element that
+is not the expected shape is a 400, not something forwarded and left for
+Shopify to reject: a rejected mutation still spends the API allowance.
+
+The one deliberately generous number is the 1024-character attribute value.
+It carries the first-touch attribution written at checkout handoff, which
+includes a referrer URL and whatever utm parameters a campaign link used, and
+losing a real one loses the channel a sale came from.
+
+## The cart clamp, and why its error handling is split
+
+`lib/commerce/shopify/cart-policy.ts` (`enforceCartPolicy`) runs on the result
+of **create, add-lines, update-lines and remove-lines**, all four. It reduces a
+cart to something Heldi actually sells: one pouch line at quantity one, the
+presents that pouch count earns (`presentsForPouches`), sachets, and nothing
+else. It never adds a line, because the storefront owns additions and adding
+here would double them.
+
+Its error handling is split on purpose, and collapsing it back into one
+try/catch is a regression:
+
+- **Fail closed on the pouch lines** (the Chai gate, an over-cap basket, a
+  second mix line, a line that is not ours). If the repair cannot be applied,
+  handing back the un-clamped cart publishes a checkout URL for exactly what
+  the clamp exists to stop. An error costs a retry.
+- **Fail open on the presents.** The worst case of a present clamp that did not
+  land is a free jar in a box that had not earned it, which the pick-pack sheet
+  catches by eye. Turning a valid add-to-basket into an error costs a sale.
+
+`remove-lines` was the one mutating route with no clamp at all until 4 Sep
+2026, which meant a crafted sequence could strip the pouch line, leave the free
+presents and walk to `checkoutUrl` with a box of gifts.
 
 ## Review media uploads go straight to Supabase
 

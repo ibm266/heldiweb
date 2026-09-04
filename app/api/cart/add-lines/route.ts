@@ -1,26 +1,31 @@
 import { addLines } from "@/lib/commerce/shopify/cart-actions";
-import { enforceGiftPolicy } from "@/lib/commerce/shopify/gift-policy";
+import { enforceCartPolicy } from "@/lib/commerce/shopify/cart-policy";
 import {
+  MAX_LINES,
   badRequest,
   cartGuard,
   cartResponse,
-  readJson
+  isCartId,
+  isLineInput,
+  readJson,
+  tooManyItems
 } from "@/lib/commerce/shopify/route-helpers";
 
 export async function POST(request: Request) {
   const blocked = cartGuard(request);
   if (blocked) return blocked;
 
-  const body = await readJson<{
-    cartId?: string;
-    lines?: { merchandiseId: string; quantity: number }[];
-  }>(request);
+  const body = await readJson<{ cartId?: unknown; lines?: unknown }>(request);
   if (!body) return badRequest("Expected JSON.");
 
   const { cartId, lines } = body;
-  if (!cartId || !lines?.length) {
+  if (!isCartId(cartId) || !Array.isArray(lines) || lines.length === 0) {
     return badRequest("cartId and lines are required");
   }
+  if (lines.length > MAX_LINES) return tooManyItems("lines", MAX_LINES);
+  if (!lines.every(isLineInput)) return badRequest("That is not a cart line.");
 
-  return cartResponse(async () => enforceGiftPolicy(await addLines(cartId, lines)));
+  return cartResponse(async () =>
+    enforceCartPolicy(await addLines(cartId, lines))
+  );
 }

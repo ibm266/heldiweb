@@ -6,25 +6,31 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState
 } from "react";
 import {
-  giftLinesForPouchCount,
+  FREE_PAIR_VARIANT_ID,
   isGiftLine,
-  khanaPouchCount,
-  linesForPouchCount,
-  tierForSku
+  isMixLine,
+  mixLineForCounts,
+  pouchCounts,
+  presentLinesForPouches
 } from "@/lib/commerce/catalog";
-import { COMMERCE_MODE } from "@/lib/commerce/config";
+import { CHAI_SELLABLE, COMMERCE_MODE } from "@/lib/commerce/config";
 import { getCommerceProvider } from "@/lib/commerce/provider";
 import type { Cart, CartLineInput, CommerceMode } from "@/lib/commerce/types";
 import { PREVIEW_UNLOCK_KEY } from "@/lib/preview";
 import {
   GIFTING,
+  MAX_POUCHES,
   isGiftingCode,
   type GiftingAudience,
   type GiftingMethod
 } from "@/lib/pricing";
+
+/** What a basket holds, as the two numbers the pickers and the drawer edit. */
+export type PouchCounts = { khana: number; chai: number };
 
 const CART_ID_KEY = "heldi_cart_id";
 const MODE_OVERRIDE_KEY = "heldi_mode_override";
@@ -36,6 +42,14 @@ const GIFTING_METHOD_KEY = "heldi_gifting_method";
 const CART_ERROR =
   "That did not go through. Give it another go in a moment, and email info@heldi.co.uk if it keeps happening.";
 
+// A refusal is not a failure. Asking for a third pouch, or for Chai before it
+// is on sale, means the basket is already right and nothing was written. Those
+// get their own channel so the drawer can say so quietly, instead of the red
+// "that did not go through" that belongs to a dropped request.
+const OVER_CAP_NOTICE = `Two pouches is the most one order can carry. Email us if you want more.`;
+const CHAI_NOT_YET_NOTICE =
+  "Chai is not on sale yet. Join the list and you will hear the day it is.";
+
 type CartContextValue = {
   cart: Cart | null;
   isOpen: boolean;
@@ -44,6 +58,10 @@ type CartContextValue = {
   // healthy. Rendered by the drawer, cleared on the next attempt.
   error: string | null;
   dismissError: () => void;
+  // A refusal the shopper caused and can act on, as opposed to `error`, which
+  // is something that went wrong. Cleared on the next attempt.
+  notice: string | null;
+  dismissNotice: () => void;
   mode: CommerceMode;
   // Runtime override of the env flag; null follows the env. Honoured in
   // development and in preview-unlocked browsers (see /preview).
@@ -63,11 +81,16 @@ type CartContextValue = {
   openCart: () => void;
   closeCart: () => void;
   addItem: (merchandiseId: string, quantity: number) => Promise<boolean>;
-  // Pouch-level cart ops: the drawer steps pouches one at a time and the
-  // buy box adds a tier's worth; both repack the underlying bundle lines
-  // to the cheapest packing for the new total (see packPouches).
-  addPouches: (count: number) => Promise<boolean>;
-  setPouchCount: (pouches: number) => Promise<boolean>;
+  // Pouch-level cart ops. The basket is described by two numbers, and both of
+  // these resolve them to the single mix variant that encodes the pair, plus
+  // the present lines that come with it.
+  addPouches: (add: Partial<PouchCounts>) => Promise<boolean>;
+  setPouchCounts: (counts: PouchCounts) => Promise<boolean>;
+  // What the basket currently holds, for pickers and steppers to read.
+  counts: PouchCounts & { pouches: number };
+  // Adds the free trial pair, for the link in the launch email. Idempotent:
+  // a refresh or a second click will not add a second one.
+  claimFreePair: (code?: string) => Promise<boolean>;
   updateQuantity: (lineId: string, quantity: number) => Promise<boolean>;
   removeItem: (lineId: string) => Promise<boolean>;
   applyDiscount: (code: string) => Promise<boolean>;
@@ -76,13 +99,13 @@ type CartContextValue = {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-// Bring a cart's gift lines to the capped target for its pouch count, once.
-// Heals carts persisted before gifts existed, or mutated outside the site
-// (leftover gifts, wrong quantities, gifts with no pouches). Returns the
+// Bring a cart's present lines to the target for its pouch count, once. Heals
+// carts persisted before the tote existed, or mutated outside the site
+// (leftover dabbas, wrong quantities, presents with no pouches). Returns the
 // corrected cart, or null when nothing needed changing. Callers run this at
 // most once and swallow errors: it must never block hydration.
 async function reconcileGiftLines(cart: Cart): Promise<Cart | null> {
-  const target = giftLinesForPouchCount(khanaPouchCount(cart.lines));
+  const target = presentLinesForPouches(pouchCounts(cart.lines).pouches);
   const targetIds = new Set(target.map((input) => input.merchandiseId));
   const giftLines = cart.lines.filter(isGiftLine);
   const currentByVariant = new Map(
@@ -124,6 +147,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  // The email claim link must not run until the saved cart has loaded, or it
+  // would create a second cart and orphan the shopper's existing basket.
+  const [hydrated, setHydrated] = useState(false);
+  const claimAttempted = useRef(false);
   const [modeOverride, setModeOverrideState] = useState<CommerceMode | null>(null);
   const [previewUnlocked, setPreviewUnlockedState] = useState(false);
   const [giftingMethod, setGiftingMethodState] = useState<GiftingMethod | null>(null);
@@ -153,7 +181,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
 
     const cartId = window.localStorage.getItem(CART_ID_KEY);
-    if (!cartId) return;
+    if (!cartId) {
+      setHydrated(true);
+      return;
+    }
     getCommerceProvider()
       .getCart(cartId)
       .then(async (existing) => {
@@ -172,7 +203,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       })
       .catch(() => {
         window.localStorage.removeItem(CART_ID_KEY);
-      });
+      })
+      .finally(() => setHydrated(true));
   }, []);
   /* eslint-enable react-hooks/set-state-in-effect */
 
@@ -214,6 +246,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     async (mutate: (cartId: string) => Promise<Cart>): Promise<boolean> => {
       setIsPending(true);
       setError(null);
+      setNotice(null);
       try {
         const provider = getCommerceProvider();
         let cartId = cart?.id;
@@ -251,20 +284,37 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [runMutation]
   );
 
-  const setPouchCount = useCallback(
-    async (pouches: number) => {
-      // The pouch bundle lines and the free gift lines both derive from the
-      // pouch count, so they repack together: tier lines to the cheapest mix,
-      // gift lines to the capped jar/dabba counts.
+  const counts = useMemo(() => pouchCounts(cart?.lines ?? []), [cart?.lines]);
+
+  const setPouchCounts = useCallback(
+    async ({ khana, chai }: PouchCounts) => {
+      // Refuse before writing anything. Both of these mean the basket is
+      // already correct, so they return false with a notice rather than an
+      // error: nothing was attempted, so nothing failed. Decision D8 is that
+      // the extra pouch is refused out loud, never silently clamped.
+      if (khana < 0 || chai < 0) return false;
+      if (khana + chai > MAX_POUCHES) {
+        setNotice(OVER_CAP_NOTICE);
+        return false;
+      }
+      if (chai > 0 && !CHAI_SELLABLE) {
+        setNotice(CHAI_NOT_YET_NOTICE);
+        return false;
+      }
+
+      // The pouch line and the present lines both derive from the counts, so
+      // they move together: one mix variant encoding (khana, chai), plus the
+      // jar and tote that come with it.
       const managedLines = (cart?.lines ?? []).filter(
-        (line) => tierForSku(line.merchandise.sku) !== null || isGiftLine(line)
+        (line) => isMixLine(line) || isGiftLine(line)
       );
       const currentByVariant = new Map(
         managedLines.map((line) => [line.merchandise.id, line])
       );
+      const mixLine = mixLineForCounts(khana, chai);
       const target = [
-        ...linesForPouchCount(pouches),
-        ...giftLinesForPouchCount(pouches)
+        ...(mixLine ? [mixLine] : []),
+        ...presentLinesForPouches(khana + chai)
       ];
       const targetIds = new Set(target.map((input) => input.merchandiseId));
 
@@ -289,6 +339,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return runMutation(async (cartId) => {
         const provider = getCommerceProvider();
         let next: Cart | null = null;
+        // Add the new mix variant BEFORE removing the old one. Changing a
+        // count swaps variants rather than editing a quantity, so one of the
+        // two orders is always momentarily wrong. This way a failed removal
+        // leaves two pouch lines, which the server-side clamp collapses on the
+        // next request; the other way round, a failed addition would empty the
+        // basket the shopper just built. Losing their order is worse.
         if (updates.length > 0) next = await provider.updateLines(cartId, updates);
         if (additions.length > 0) next = await provider.addLines(cartId, additions);
         if (removals.length > 0) next = await provider.removeLines(cartId, removals);
@@ -299,13 +355,60 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   );
 
   const addPouches = useCallback(
-    async (count: number) => {
-      const changed = await setPouchCount(khanaPouchCount(cart?.lines ?? []) + count);
-      // Open either way, so a failed add shows its message instead of nothing.
+    async (add: Partial<PouchCounts>) => {
+      const current = pouchCounts(cart?.lines ?? []);
+      const changed = await setPouchCounts({
+        khana: current.khana + (add.khana ?? 0),
+        chai: current.chai + (add.chai ?? 0)
+      });
+      // Open either way, so a refusal or a failed add shows its message
+      // instead of the button flicking back and nothing happening.
       setIsOpen(true);
       return changed;
     },
-    [setPouchCount, cart?.lines]
+    [setPouchCounts, cart?.lines]
+  );
+
+  // The launch email links straight here with the trial pair already chosen,
+  // so the first thing a claimer sees is a basket with it in, not a shop they
+  // have to navigate. Idempotent, because a refresh must not claim twice and
+  // React runs mount effects twice in development.
+  const claimFreePair = useCallback(
+    async (code?: string) => {
+      const alreadyHas = (cart?.lines ?? []).some(
+        (line) => line.merchandise.id === FREE_PAIR_VARIANT_ID
+      );
+      const existingCodes = cart?.discountCodes.map((entry) => entry.code) ?? [];
+
+      // Both writes go through ONE runMutation, because runMutation resolves
+      // the cart id from the `cart` state it closed over. Two calls in a row
+      // would both see the pre-claim value, so the second would create a
+      // SECOND cart and the first one's lines would be silently orphaned.
+      const claimed = await runMutation(async (cartId) => {
+        const provider = getCommerceProvider();
+        let next = alreadyHas
+          ? null
+          : await provider.addLines(cartId, [
+              { merchandiseId: FREE_PAIR_VARIANT_ID, quantity: 1 }
+            ]);
+        // The code rides the same link so the shopper never types it. Applied
+        // after the pair, so a dead or spent code still leaves them holding
+        // the free pair rather than an empty basket and no explanation.
+        if (code) {
+          next = await provider.updateDiscountCodes(cartId, [
+            ...existingCodes.filter(
+              (entry) => entry.toUpperCase() !== code.toUpperCase()
+            ),
+            code
+          ]);
+        }
+        // Nothing to do means the basket already says what the link asked for.
+        return next ?? (await provider.getCart(cartId))!;
+      });
+      setIsOpen(true);
+      return claimed;
+    },
+    [runMutation, cart?.lines, cart?.discountCodes]
   );
 
   const updateQuantity = useCallback(
@@ -372,6 +475,35 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return cleared;
   }, [runMutation, setGiftingMethod]);
 
+  // ?claim=pair&code=XXX, the link in the launch email. It fills the basket
+  // and opens the drawer, so the first thing a claimer sees is their free pair
+  // and their discount already applied, not a shop to navigate.
+  //
+  // Both params are stripped from the address bar as soon as they are read.
+  // The code is personal and single-use: leaving it in the URL would put it in
+  // the browser history, in the next screenshot, and in any link they share.
+  useEffect(() => {
+    if (!hydrated || claimAttempted.current) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("claim") !== "pair") return;
+    claimAttempted.current = true;
+
+    const code = params.get("code")?.trim() || undefined;
+    params.delete("claim");
+    params.delete("code");
+    const query = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      window.location.pathname + (query ? `?${query}` : "") + window.location.hash
+    );
+
+    // Only in live mode: in waitlist mode there is no checkout to send them to,
+    // and adding lines to a mock cart would teach them the wrong thing.
+    if (mode !== "live") return;
+    void claimFreePair(code);
+  }, [hydrated, mode, claimFreePair]);
+
   const value = useMemo<CartContextValue>(
     () => ({
       cart,
@@ -379,6 +511,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       isPending,
       error,
       dismissError: () => setError(null),
+      notice,
+      dismissNotice: () => setNotice(null),
       mode,
       setModeOverride,
       previewUnlocked,
@@ -390,7 +524,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       closeCart: () => setIsOpen(false),
       addItem,
       addPouches,
-      setPouchCount,
+      setPouchCounts,
+      counts,
+      claimFreePair,
       updateQuantity,
       removeItem,
       applyDiscount,
@@ -401,6 +537,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       isOpen,
       isPending,
       error,
+      notice,
       mode,
       setModeOverride,
       previewUnlocked,
@@ -410,7 +547,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       removeGifting,
       addItem,
       addPouches,
-      setPouchCount,
+      setPouchCounts,
+      counts,
+      claimFreePair,
       updateQuantity,
       removeItem,
       applyDiscount,
