@@ -33,10 +33,11 @@
 // actually buy a single pouch at today, so £70 struck through beside £65 is a
 // real comparison rather than a launch-price framing.
 //
-// The ceiling is deliberately low for run 1. It keeps Shopify at five variants
-// instead of twenty-seven, keeps the picker to two choices, and keeps one set
-// of presents per order true by construction. Raising it later is this one
-// number plus the extra Shopify variants: nothing else in the model changes.
+// Shopify holds five variants, one per (khana, chai) basket up to a pair. A
+// larger order is not a bigger variant, it is MORE LINES: five pouches is two
+// pair lines and a single. That keeps the store at five variants instead of the
+// twenty-seven a variant-per-count model needs, and it is why the ceiling could
+// be raised to 24 without touching Shopify at all.
 
 /** What one pouch costs on its own. The RRP, and the real single-pouch price. */
 export const RRP_PENCE = 3500;
@@ -44,22 +45,52 @@ export const RRP_PENCE = 3500;
 /** Off every pouch after the first. The bundle discount. */
 export const BUNDLE_DISCOUNT_PENCE = 500;
 
+/** What a PAIR costs: two pouches in any mix, £5 off the second. */
+export const PAIR_PENCE = RRP_PENCE * 2 - BUNDLE_DISCOUNT_PENCE;
+
 /**
- * The most pouches one order can carry, across both products. Two for run 1:
- * a single or a pair, in any mix. Adjust on feedback.
+ * The most pouches one order can carry, across both products.
+ *
+ * Raised from 2 to 24 on 4 Sep 2026. A customer can now order any number, and
+ * the basket is BUILT OUT OF THE FIVE VARIANTS THAT EXIST rather than needing a
+ * variant per count: five pouches is two pair lines plus a single. That is why
+ * this needs no Shopify work at all, and why the price per pouch stops falling
+ * after the second (see ladderPence).
+ *
+ * 24 rather than no ceiling at all. It is far past any real order, but it stops
+ * one basket, or one crafted request, taking a whole run of about 253 pouches
+ * before anyone else reaches the shop. Phase 5 replaces it with real stock.
  */
-export const MAX_POUCHES = 2;
+export const MAX_POUCHES = 24;
 
 /** Undiscounted worth of `pouches` pouches: what they cost bought one at a time. */
 export function rrpPence(pouches: number): number {
   return RRP_PENCE * assertPouchCount(pouches);
 }
 
-/** What `pouches` pouches actually cost. £35 for one, £65 for a pair. */
+/**
+ * What `pouches` pouches actually cost, and it is the sum of the lines Shopify
+ * will really charge for, not a formula of its own.
+ *
+ * A basket is packed into as many PAIR variants as it will take plus at most
+ * one single, so the price is `£65 per pair, £35 for an odd one`:
+ *
+ *   1  £35      4  £130     7  £260
+ *   2  £65      5  £165     8  £295
+ *   3  £100     6  £195
+ *
+ * It used to be `RRP * n - BUNDLE_DISCOUNT * (n - 1)`, which kept taking £5 off
+ * every additional pouch and gave £95 at three. That formula cannot be honoured
+ * by a store selling fixed-price bundle variants: there is no three-pouch
+ * variant to sell at £95. Charging what the lines add up to is the only way the
+ * page and the checkout can never disagree, which is the same rule as the
+ * shipping rates. The discount therefore stops after the second pouch, which is
+ * a deliberate trade for needing no Shopify change at all.
+ */
 export function ladderPence(pouches: number): number {
   const n = assertPouchCount(pouches);
   if (n === 0) return 0;
-  return RRP_PENCE * n - BUNDLE_DISCOUNT_PENCE * (n - 1);
+  return PAIR_PENCE * Math.floor(n / 2) + RRP_PENCE * (n % 2);
 }
 
 /** The bundle discount earned at `pouches`: £0 on a single, £5 on a pair. */
@@ -74,9 +105,10 @@ export function perPouchPence(pouches: number): number {
 }
 
 /**
- * What adding one more pouch costs from a basket of `pouches`: £35 for the
- * first, £30 for the second. Callers must check `pouches < MAX_POUCHES` first;
- * there is no third pouch to price.
+ * What adding one more pouch costs from a basket of `pouches`. It alternates,
+ * because pouches are sold in pairs: £35 onto an even basket opens a new pair,
+ * £30 onto an odd one completes it. Callers must check `pouches < MAX_POUCHES`
+ * first.
  */
 export function nextPouchPence(pouches: number): number {
   const n = assertPouchCount(pouches);
@@ -120,9 +152,10 @@ function assertPouchCount(pouches: number): number {
 // Large Letter thickness before it goes on sale; two sachets have never been
 // weighed together and a parcel rate would eat the whole margin.
 //
-// A single pouch plus a sachet is exactly £40, the free-postage threshold, so
-// the Sample nudge pays for itself on every one-pouch basket. A pouch plus the
-// pair pack is £43 and ships free too.
+// A single pouch plus a sachet is £40 and a pouch plus the pair pack is £43.
+// Both used to clear the free-postage threshold exactly, which was the whole
+// argument for the Sample nudge. At the £50 threshold neither does: see the
+// table under SHIPPING below.
 
 /** One sachet, either product. */
 export const SAMPLE_PRICE_PENCE = 500;
@@ -144,18 +177,34 @@ export function samplePairPence(): number {
 // 3. Shipping
 // ---------------------------------------------------------------------------
 
+// SET TO MATCH THE LIVE SHOPIFY PROFILE, 4 Sep 2026. Both numbers were checked
+// against real Storefront delivery quotes rather than the admin screen: at £45
+// a basket is charged and at £50 it is not, and the rate under the threshold
+// quotes £4.99. The repo previously said £40 / £3.55, so every surface here was
+// quoting a customer a rate checkout would not honour.
 export const SHIPPING = {
   /** Orders at or over this (after discounts) ship free. */
-  freeOverPence: 4000,
+  freeOverPence: 5000,
   /** Royal Mail Tracked 48, charged under the free threshold. */
-  standardPence: 355,
+  standardPence: 499,
   /** Royal Mail Large Letter for a Sample on its own. Heldi absorbs this,
       so sample-only orders ship free. */
   sampleLetterPence: 275
 } as const;
 
-// Only a single pouch ever pays postage: a pair is £65 and stays above £40
-// even after the 25% founders code (£48.75).
+// WHAT THE £50 THRESHOLD CHANGES, and it is more than it looks. At £40 every
+// basket of two pouches cleared it however it was discounted. At £50 only these
+// ship free:
+//
+//   a pair at full price          £65.00   free
+//   a pair with a family code     £55.25   free
+//   a pair with a founders code   £48.75   PAYS POSTAGE
+//   one pouch plus a sachet       £40.00   PAYS POSTAGE
+//   one pouch plus the pair pack  £43.00   PAYS POSTAGE
+//
+// So the Sample nudge no longer pays for itself, and the founders code now
+// costs its holder £4.99 unless the welcome postage code rides with it. That
+// is the argument for handing every founders code a WELCOME alongside it.
 
 // ---------------------------------------------------------------------------
 // 4. Discount codes
@@ -272,6 +321,9 @@ export function presentsForPouches(pouches: number): {
   totes: number;
 } {
   const n = assertPouchCount(pouches);
+  // One set per order at ANY size: twelve pouches still earns one jar and one
+  // tote. This used to be true by construction because the ceiling was two;
+  // now it is true because it is written here, so do not make it per-pouch.
   return {
     jars: n >= 1 ? GIFT_CAPS.jars : 0,
     totes: n >= 2 ? GIFT_CAPS.totes : 0

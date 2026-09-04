@@ -16,6 +16,7 @@ import {
   RRP_PENCE,
   BUNDLE_DISCOUNT_PENCE,
   MAX_POUCHES,
+  PAIR_PENCE,
   SAMPLE_PRICE_PENCE,
   SAMPLE_PAIR_DISCOUNT_PENCE,
   SHIPPING,
@@ -71,16 +72,25 @@ function throws(label, fn) {
 console.log("\n== Parameters ==");
 check("RRP, one pouch", RRP_PENCE, 3500);
 check("bundle discount per extra pouch", BUNDLE_DISCOUNT_PENCE, 500);
-check("basket ceiling", MAX_POUCHES, 2);
+check("basket ceiling", MAX_POUCHES, 24);
 check("one sachet", SAMPLE_PRICE_PENCE, 500);
 check("pair pack discount", SAMPLE_PAIR_DISCOUNT_PENCE, 200);
 
 // --- The ladder -------------------------------------------------------------
 // The agreed rate card. Khana and Chai priced identically, counted together.
+// A basket is packed into pair variants plus at most one single, so the price
+// is £65 a pair and £35 for an odd one. The old `RRP*n - discount*(n-1)`
+// formula gave £95 at three, which no combination of the five variants Shopify
+// holds can actually charge.
 const CARD = [
-  //  n   RRP     price   saving  per pouch
+  //  n    RRP     price   saving  per pouch
   [1, 3500, 3500, 0, 3500],
-  [2, 7000, 6500, 500, 3250]
+  [2, 7000, 6500, 500, 3250],
+  [3, 10500, 10000, 500, 3333],
+  [4, 14000, 13000, 1000, 3250],
+  [5, 17500, 16500, 1000, 3300],
+  [6, 21000, 19500, 1500, 3250],
+  [24, 84000, 78000, 6000, 3250]
 ];
 
 console.log("\n== The ladder ==");
@@ -92,13 +102,25 @@ for (const [n, rrp, price, saving, perPouch] of CARD) {
 }
 check("empty basket is free", ladderPence(0), 0);
 check("first pouch costs RRP", nextPouchPence(0), 3500);
+// Adding one alternates, because pouches are sold in pairs: £30 completes a
+// pair, £35 opens the next one.
 for (let n = 1; n < MAX_POUCHES; n++) {
-  check(`pouch ${n + 1} costs RRP minus the bundle discount`, nextPouchPence(n), 3000);
+  const expected = n % 2 === 1 ? 3000 : 3500;
+  check(`pouch ${n + 1} costs ${expected === 3000 ? "£30" : "£35"}`, nextPouchPence(n), expected);
+}
+// The price must never be something the five Shopify variants cannot add up to.
+for (let n = 1; n <= MAX_POUCHES; n++) {
+  const pairs = Math.floor(n / 2);
+  const singles = n % 2;
+  check(
+    `${n} pouches is ${pairs} pair line(s) plus ${singles} single`,
+    ladderPence(n),
+    PAIR_PENCE * pairs + RRP_PENCE * singles
+  );
 }
 
 console.log("\n== The ceiling refuses, it does not clamp ==");
 throws(`${MAX_POUCHES + 1} pouches has no price`, () => ladderPence(MAX_POUCHES + 1));
-throws("a basket of six has no price", () => ladderPence(6));
 throws("a negative basket has no price", () => ladderPence(-1));
 throws("half a pouch has no price", () => ladderPence(1.5));
 throws(`no pouch after ${MAX_POUCHES}`, () => nextPouchPence(MAX_POUCHES));
@@ -110,12 +132,12 @@ check("founders rate", FOUNDERS.percent, 25);
 check("founders offered to the first N joiners", FOUNDERS.firstJoiners, 100);
 
 // Every step lands on a whole penny at both rates, so nothing rounds away.
-const FAMILY = [2975, 5525];
-const FOUNDERS_CARD = [2625, 4875];
+const FAMILY = { 1: 2975, 2: 5525, 3: 8500, 4: 11050 };
+const FOUNDERS_CARD = { 1: 2625, 2: 4875, 3: 7500, 4: 9750 };
 for (let n = 1; n <= MAX_POUCHES; n++) {
   const price = ladderPence(n);
-  check(`${n} at 15%`, price - giftingDiscountPence(price), FAMILY[n - 1]);
-  check(`${n} at 25%`, price - foundersDiscountPence(price), FOUNDERS_CARD[n - 1]);
+  if (FAMILY[n]) check(`${n} at 15%`, price - giftingDiscountPence(price), FAMILY[n]);
+  if (FOUNDERS_CARD[n]) check(`${n} at 25%`, price - foundersDiscountPence(price), FOUNDERS_CARD[n]);
   check(`${n} at 15% is a whole penny`, Number.isInteger(price * 0.85), true);
   check(`${n} at 25% is a whole penny`, Number.isInteger(price * 0.75), true);
 }
@@ -135,14 +157,41 @@ check("PEHLEAAP is not a live code", isProductDiscountCode("PEHLEAAP"), false);
 
 // --- Shipping ---------------------------------------------------------------
 console.log("\n== Shipping ==");
-check("free-postage threshold", SHIPPING.freeOverPence, 4000);
-check("Tracked 48", SHIPPING.standardPence, 355);
+// These two must equal the live Shopify shipping profile. Verified 4 Sep 2026
+// against real Storefront delivery quotes: £45 is charged, £50 is not.
+check("free-postage threshold", SHIPPING.freeOverPence, 5000);
+check("Tracked 48", SHIPPING.standardPence, 499);
 check("one pouch pays postage", ladderPence(1) < SHIPPING.freeOverPence, true);
-check("one pouch plus a Sample ships free", ladderPence(1) + SAMPLE_PRICE_PENCE >= SHIPPING.freeOverPence, true);
+
+// At the old £40 threshold a pouch plus a sachet cleared it exactly and every
+// pair cleared it however it was discounted. Neither is true at £50, and these
+// assert the new shape rather than the one we wish were true. If the threshold
+// moves back down, these are the lines that should fail first.
+check(
+  "one pouch plus a Sample now PAYS postage",
+  ladderPence(1) + SAMPLE_PRICE_PENCE < SHIPPING.freeOverPence,
+  true
+);
+check(
+  "one pouch plus the pair pack now PAYS postage",
+  ladderPence(1) + samplePairPence() < SHIPPING.freeOverPence,
+  true
+);
 for (let n = 2; n <= MAX_POUCHES; n++) {
-  const price = ladderPence(n);
-  const worstCase = price - foundersDiscountPence(price);
-  check(`${n} pouches ship free even at 25%`, worstCase >= SHIPPING.freeOverPence, true);
+  check(`${n} pouches at full price ship free`, ladderPence(n) >= SHIPPING.freeOverPence, true);
+  const family = ladderPence(n) - giftingDiscountPence(ladderPence(n));
+  check(`${n} pouches ship free at the family ${GIFTING.percent}%`, family >= SHIPPING.freeOverPence, true);
+}
+// The one that costs money, and the reason a founders code should be issued
+// with a WELCOME beside it: £48.75 falls under the £50 threshold.
+{
+  const price = ladderPence(2);
+  const founders = price - foundersDiscountPence(price);
+  check(
+    `a pair at the founders ${FOUNDERS.percent}% falls UNDER the threshold`,
+    founders < SHIPPING.freeOverPence,
+    true
+  );
 }
 
 // --- Presents ---------------------------------------------------------------
@@ -153,7 +202,8 @@ check("no pouches, no presents", JSON.stringify(presentsForPouches(0)), set(0, 0
 check("a single earns the jar", JSON.stringify(presentsForPouches(1)), set(1, 0));
 check("a pair earns the jar and the tote", JSON.stringify(presentsForPouches(2)), set(1, 1));
 check("presents never multiply past one set", presentsForPouches(2).jars, 1);
-throws("presents refuse a basket that cannot exist", () => presentsForPouches(3));
+check("a basket of twelve still earns ONE set", JSON.stringify(presentsForPouches(12)), set(1, 1));
+throws("presents refuse a basket that cannot exist", () => presentsForPouches(MAX_POUCHES + 1));
 
 // The retired jar/dabba path the cart still runs on must never give more than
 // the agreed set: the jar, and never the withdrawn dabba.
@@ -186,8 +236,7 @@ check("pair pack saving", samplePairRrpPence() - samplePairPence(), SAMPLE_PAIR_
 check("the pair beats two singles", samplePairPence() < SAMPLE_PRICE_PENCE * 2, true);
 check("a sachet alone is under the free-postage threshold", SAMPLE_PRICE_PENCE < SHIPPING.freeOverPence, true);
 check("the pair alone is under it too", samplePairPence() < SHIPPING.freeOverPence, true);
-check("a pouch plus a sachet ships free", ladderPence(1) + SAMPLE_PRICE_PENCE >= SHIPPING.freeOverPence, true);
-check("a pouch plus the pair ships free", ladderPence(1) + samplePairPence() >= SHIPPING.freeOverPence, true);
+// Asserted in the Shipping section above, where the £50 threshold is explained.
 check("the pair pack saves against its RRP", samplePairRrpPence() - samplePairPence(), 200);
 
 // One 30g fill, two serving counts, because the declared portions differ.
@@ -202,15 +251,15 @@ check("a Chai sachet is 3 mugs", Math.floor(SAMPLE_GRAMS / CHAI_SERVING_GRAMS), 
 // --- What can actually be bought --------------------------------------------
 // The ceiling and the two products together define the Shopify variant list.
 console.log("\n== The buyable set ==");
+// Five VARIANTS, not one per basket size. A basket bigger than a pair is more
+// of these lines, which is the whole reason the ceiling could be raised to
+// MAX_POUCHES without adding a single Shopify variant.
 const mixes = [];
-for (let khana = 0; khana <= MAX_POUCHES; khana++) {
-  for (let chai = 0; chai <= MAX_POUCHES; chai++) {
-    const n = khana + chai;
-    if (n < 1 || n > MAX_POUCHES) continue;
-    mixes.push({ sku: `HELDI-K${khana}C${chai}`, pouches: n, pence: ladderPence(n) });
-  }
+for (const [khana, chai] of [[1, 0], [0, 1], [2, 0], [0, 2], [1, 1]]) {
+  const n = khana + chai;
+  mixes.push({ sku: `HELDI-K${khana}C${chai}`, pouches: n, pence: ladderPence(n) });
 }
-check("five pouch things a customer can buy", mixes.length, 5);
+check("five pouch variants in the store", mixes.length, 5);
 check("pouch SKUs are unique", new Set(mixes.map((m) => m.sku)).size, 5);
 for (const m of mixes) console.log(`       ${m.sku}       ${m.pouches} pouch${m.pouches === 1 ? " " : "es"}  ${f(m.pence)}`);
 const samples = [

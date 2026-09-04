@@ -127,7 +127,19 @@ const TIER_IMAGES: Record<TierId, { url: string; altText: string }> = {
   double: { url: "/images/shop/khana-bundle-2.webp?v=6", altText: "Two Heldi Khana pouches with the engraved brass jar, its gold spoon and the cotton tote bag" },
   triple: { url: "/images/shop/khana-chai-pair.webp?v=2", altText: "One Heldi Khana pouch and one Heldi Chai pouch with the engraved brass jar, its gold spoon and the cotton tote bag" }
 };
-const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=4", altText: "Heldi Sample sachet" };
+// One shot per sachet SKU, all three on the same set as the pouch range
+// (GPT Image 2, 4 Sep 2026). Before this the Chai sachet and both pair SKUs
+// showed the navy Khana sachet, so a Chai sample looked like a Khana one in
+// the picker, the drawer and at checkout.
+const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=4", altText: "Heldi Khana sample sachet" };
+const CHAI_SAMPLE_IMAGE = {
+  url: "/images/shop/chai-sample.webp",
+  altText: "The terracotta Heldi Chai sample sachet beside a small pile of chai spice powder"
+};
+const SAMPLE_PAIR_IMAGE = {
+  url: "/images/shop/sample-pair.webp",
+  altText: "The navy Heldi Khana sample sachet and the terracotta Heldi Chai sample sachet side by side"
+};
 
 // Clean pouch-only shot for contents breakdowns (the gallery images show
 // the pouches with their jar and tote).
@@ -138,7 +150,30 @@ export const POUCH_THUMB = "/images/shop/pouch-solo.webp?v=4";
 // overwriting them would have served the unengraved jar and the withdrawn
 // dabba for a month.
 export const JAR_THUMB = "/images/shop/gift-jar-brass.webp";
-export const TOTE_THUMB = "/images/shop/gift-tote.webp";
+// ?v=2: reshot 4 Sep 2026 in place. The first solo tote carried an elephant
+// that was not the Heldi elephant, on a set of its own.
+//
+// HOW IT WAS MADE, because asking a model to draw the elephant does not work:
+// every attempt came back a plausible lookalike with the wrong trunk curl,
+// blanket and ornament. The shot is a BLANK tote generated on the range's set
+// (master `tote-blank-plate.png`) with `public/images/elephant-large-transparent.png`
+// composited onto the panel, multiply-blended so the weave and the light read
+// through. That file is the same master `compose_front_v8.py` builds the pouch
+// front from, so the tote and the pack now carry one drawing, not two.
+//
+// THE TOTE PRINTS THAT DRAWING AS AN OUTLINE, WHICH IS THE INVERSE OF THE
+// POUCH. On the pack the body is a solid ink mass with the ornament knocked out
+// in gold. On cotton the ornament lines ARE the ink and the body stays
+// unprinted, which is what the tote in `khana-bundle-2` and `khana-chai-pair`
+// already shows. So the recolour keeps the gold ornament as terracotta, drops
+// the navy body entirely, and synthesises the missing outer contour by eroding
+// the alpha silhouette. Print the pack's ink-body version here by mistake and
+// it reads as a different product.
+export const TOTE_THUMB = "/images/shop/gift-tote.webp?v=2";
+
+// The jar photographed with its spoon, at gallery size rather than thumb size.
+// Not wired to a line yet: the £0 jar variant uses the tight JAR_THUMB crop.
+export const JAR_SPOON_IMAGE = "/images/shop/gift-jar-brass-spoon.webp";
 /** @deprecated The dabba is withdrawn. Kept until the cart stops reading it. */
 export const DABBA_THUMB = TOTE_THUMB;
 export const SAMPLE_THUMB = "/images/shop/sample.webp?v=4";
@@ -502,9 +537,10 @@ export function pouchPenceForLines(
 //
 // A basket holds AT MOST ONE pouch line. Its variant encodes the whole order:
 // HELDI-K{khana}C{chai}, so two Khana and one Chai would be K2C1. Changing a
-// count swaps the variant rather than editing a quantity, which is why the cart
-// diff replaces the line instead of stepping it. Five variants exist, because
-// two pouches is the ceiling (lib/pricing.ts MAX_POUCHES).
+// Five variants, and only five: a single of either product and a pair in any
+// of the three mixes. A basket larger than a pair is MORE OF THESE LINES, not a
+// bigger variant, which is why the ceiling could go to 24 without adding a
+// single Shopify variant. See mixLinesForCounts below.
 //
 // Created in Shopify 4 Sep 2026, all DRAFT. Ids also recorded in
 // docs/two-product-cart-plan.md Phase 1.
@@ -609,14 +645,55 @@ export function pouchCounts(
   );
 }
 
-/** The one pouch line a (khana, chai) selection should become. Null for an
- *  empty or unbuyable selection, which the caller reads as "no pouch line". */
-export function mixLineForCounts(
+/**
+ * The pouch lines a (khana, chai) selection should become.
+ *
+ * The store sells five variants: a single of either product, and a pair in any
+ * of the three mixes. A larger basket is not a bigger variant, it is more of
+ * these: seven pouches is three pair lines and a single. So this packs the two
+ * counts into as many PAIRS as they will make plus at most one single, which is
+ * both the cheapest arrangement (every pair is £65 whatever its mix, so more
+ * pairs is always better) and the only one the store can actually charge for.
+ *
+ * Which pair variants get used follows from the parity of the two counts:
+ *   - an odd TOTAL leaves one single, and it must be whichever product has the
+ *     odd count, because the other is even by subtraction
+ *   - after that both counts are even, except that if BOTH were odd one K1C1
+ *     line takes one of each and evens them
+ *
+ * Returns [] for an empty or out-of-range selection, which callers read as
+ * "no pouch lines".
+ */
+export function mixLinesForCounts(
   khana: number,
   chai: number
-): CartLineInput | null {
-  const id = mixVariantIdFor(khana, chai);
-  return id ? { merchandiseId: id, quantity: 1 } : null;
+): CartLineInput[] {
+  if (!Number.isInteger(khana) || !Number.isInteger(chai)) return [];
+  if (khana < 0 || chai < 0) return [];
+  const pouches = khana + chai;
+  if (pouches < 1 || pouches > MAX_POUCHES) return [];
+
+  let k = khana;
+  let c = chai;
+  const lines: CartLineInput[] = [];
+  const push = (sku: string, quantity: number) => {
+    if (quantity <= 0) return;
+    const id = MIX_VARIANT_IDS[sku];
+    // A missing variant is a catalog error, not something to paper over: the
+    // caller gets fewer pouches than asked for and the clamp will notice.
+    if (id) lines.push({ merchandiseId: id, quantity });
+  };
+
+  // The odd one out, if there is one.
+  if (pouches % 2 === 1) {
+    if (k % 2 === 1) { push(mixSku(1, 0), 1); k -= 1; }
+    else { push(mixSku(0, 1), 1); c -= 1; }
+  }
+  // Both odd: one mixed pair evens them out.
+  if (k % 2 === 1 && c % 2 === 1) { push(mixSku(1, 1), 1); k -= 1; c -= 1; }
+  push(mixSku(2, 0), k / 2);
+  push(mixSku(0, 2), c / 2);
+  return lines;
 }
 
 /** The free lines a basket of `pouches` pouches earns: a jar with a single, a
@@ -647,6 +724,28 @@ export function pouchPenceForCounts(
 ): number {
   const { pouches } = pouchCounts(lines);
   return pouches >= 1 && pouches <= MAX_POUCHES ? ladderPence(pouches) : 0;
+}
+
+/** Sanity check used by the tests and the clamp: the lines a packing produces
+ *  really do add up to the counts that were asked for. */
+export function countsForLines(lines: CartLineInput[]): {
+  khana: number;
+  chai: number;
+} {
+  return lines.reduce(
+    (totals, line) => {
+      const sku = Object.keys(MIX_VARIANT_IDS).find(
+        (key) => MIX_VARIANT_IDS[key] === line.merchandiseId
+      );
+      const mix = parseMixSku(sku);
+      if (!mix) return totals;
+      return {
+        khana: totals.khana + mix.khana * line.quantity,
+        chai: totals.chai + mix.chai * line.quantity
+      };
+    },
+    { khana: 0, chai: 0 }
+  );
 }
 
 /** Basket badge count: pouches one by one, plus sachets. Gifts never count. */
@@ -726,7 +825,7 @@ const MIX_PRODUCTS: Product[] = [
     shortDescription: "A 30g sachet to try before you buy a pouch.",
     description:
       "A 30g sachet to try before you buy a pouch. Khana for the pot, Chai for the mug, or one of each.",
-    images: [SAMPLE_IMAGE],
+    images: [SAMPLE_PAIR_IMAGE, SAMPLE_IMAGE, CHAI_SAMPLE_IMAGE],
     tags: ["samples"],
     variants: [
       {
@@ -745,7 +844,7 @@ const MIX_PRODUCTS: Product[] = [
         price: penceToMoney(SAMPLE_PRICE_PENCE),
         compareAtPrice: null,
         availableForSale: true,
-        image: SAMPLE_IMAGE
+        image: CHAI_SAMPLE_IMAGE
       },
       {
         id: SAMPLE_VARIANT_IDS[SAMPLE_PAIR_SKU],
@@ -756,7 +855,7 @@ const MIX_PRODUCTS: Product[] = [
         // one that carries a compare-at.
         compareAtPrice: penceToMoney(SAMPLE_PRICE_PENCE * 2),
         availableForSale: true,
-        image: SAMPLE_IMAGE
+        image: SAMPLE_PAIR_IMAGE
       }
     ]
   },
@@ -767,7 +866,7 @@ const MIX_PRODUCTS: Product[] = [
     shortDescription: "Two sachets, free for the first hundred.",
     description:
       "Two 30g sachets, one Khana for the pot and one Chai for the mug, free for the first 100. Postage is on us too.",
-    images: [SAMPLE_IMAGE],
+    images: [SAMPLE_PAIR_IMAGE],
     tags: ["samples", "free-trial"],
     variants: [
       {
@@ -779,7 +878,7 @@ const MIX_PRODUCTS: Product[] = [
         // rather than showing a free thing worth nothing.
         compareAtPrice: penceToMoney(samplePairPence()),
         availableForSale: true,
-        image: SAMPLE_IMAGE
+        image: SAMPLE_PAIR_IMAGE
       }
     ]
   },

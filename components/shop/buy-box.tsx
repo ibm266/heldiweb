@@ -27,11 +27,13 @@ import {
 import type { IncludedItem, Product, ProductVariant } from "@/lib/commerce/types";
 import {
   FOUNDERS,
+  MAX_POUCHES,
   SHIPPING,
   TIER_ORDER,
   bundleSavingPence,
   isGiftingCode,
   ladderPence,
+  perPouchPence,
   rrpPence,
   type TierId
 } from "@/lib/pricing";
@@ -106,7 +108,11 @@ export function BuyBox({ product }: { product: Product }) {
     setImageOverride(null);
   }
 
-  function selectQty(qty: number) {
+  function selectQty(next: number) {
+    // Bounded here as well as on the buttons: ladderPence throws out of range
+    // rather than guessing, and a thrown price takes the whole page down.
+    const qty = Math.min(MAX_POUCHES, Math.max(1, next));
+    if (qty === pouchQty) return;
     setPouchQty(qty);
     setImageOverride(null);
     // The event name and its `tier` prop are load-bearing (PLAYBOOK §7): the
@@ -141,9 +147,10 @@ export function BuyBox({ product }: { product: Product }) {
   // and 1 are one and two pouches; anything beyond is the Sample.
   const annoPouches = shownIndex < 2 ? shownIndex + 1 : null;
 
-  // "Orders under £40 ship for £3.55." only applies to One pouch; every
-  // other selection clears the threshold or ships free anyway. Waitlist
-  // mode says why there is no price on the page instead.
+  // The rate and the threshold both come from SHIPPING, never typed: they were
+  // £3.55 / £40 until 4 Sep 2026, when they were corrected to match what
+  // Shopify actually charges. Waitlist mode says why there is no price on the
+  // page instead of quoting one.
   const shippingNote = !showPrices
     ? `Prices arrive when the shop opens. The waitlist hears first, and the first ${FOUNDERS.firstJoiners} on it get ${FOUNDERS.percent}% off.`
     : isPouch && ladderPence(pouchQty) < SHIPPING.freeOverPence
@@ -321,7 +328,10 @@ export function BuyBox({ product }: { product: Product }) {
         {isPouch ? (
           <>
             <p className="pdp__group-label">
-              HOW MANY: <strong>{pouchQty === 1 ? "ONE POUCH" : "TWO POUCHES"}</strong>
+              HOW MANY:{" "}
+              <strong>
+                {pouchQty === 1 ? "ONE POUCH" : `${pouchQty} POUCHES`}
+              </strong>
             </p>
             <div className="option-grid option-grid--pair">
               {[1, 2].map((qty) => {
@@ -375,6 +385,47 @@ export function BuyBox({ product }: { product: Product }) {
                   </label>
                 );
               })}
+            </div>
+
+            {/* The two cards above are the quick picks and carry the price
+                story; this is what makes any quantity reachable now that the
+                ceiling is MAX_POUCHES rather than a pair. Above two the cards
+                simply show as unselected, which is honest: the shopper is no
+                longer on either of them. */}
+            <div className="pdp__qty">
+              <span className="pdp__qty-label" id="pdp-qty-label">
+                Need more than two?
+              </span>
+              <div className="qty-stepper" role="group" aria-labelledby="pdp-qty-label">
+                <button
+                  type="button"
+                  onClick={() => selectQty(pouchQty - 1)}
+                  disabled={pouchQty <= 1}
+                  aria-label="One fewer pouch"
+                >
+                  −
+                </button>
+                <span aria-live="polite">{pouchQty}</span>
+                <button
+                  type="button"
+                  onClick={() => selectQty(pouchQty + 1)}
+                  disabled={pouchQty >= MAX_POUCHES}
+                  aria-label="One more pouch"
+                >
+                  +
+                </button>
+              </div>
+              {showPrices ? (
+                <span className="pdp__qty-price">
+                  {formatPence(ladderPence(pouchQty))}
+                  {pouchQty > 2 ? (
+                    <em>
+                      {" "}
+                      ({formatPence(perPouchPence(pouchQty))} a pouch)
+                    </em>
+                  ) : null}
+                </span>
+              ) : null}
             </div>
 
             <div className="pdp__includes">

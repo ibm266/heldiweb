@@ -10,7 +10,8 @@
     "brand-lint": "bash scripts/brand-lint.sh",
     "typecheck": "tsc --noEmit",
     "pricing-check": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/pricing-check.mjs",
-    "dev:mock": "NEXT_PUBLIC_COMMERCE_PROVIDER=mock NEXT_PUBLIC_COMMERCE_MODE=live next dev -p 3001"
+    "dev:mock": "NEXT_PUBLIC_COMMERCE_PROVIDER=mock NEXT_PUBLIC_COMMERCE_MODE=live next dev -p 3001",
+    "storefront-check": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/storefront-check.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.7",

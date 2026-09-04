@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { guard } from "@/lib/rate-limit";
+import { MAX_POUCHES } from "@/lib/pricing";
 import { ShopifyConfigError, ShopifyUserError } from "./client";
 
 // Every /api/cart route proxies to the Shopify Storefront API with our own
@@ -57,16 +58,20 @@ export async function cartResponse(
 // arrays. See docs/security.md.
 //
 // The numbers sit far above any basket the site can build and far below
-// anything that costs money. The largest real basket is one pouch line, a jar,
-// a tote and a sachet or two, and the largest real mutation touches three of
-// them at once.
+// anything that costs money. The largest real basket is a few pouch lines, a
+// jar, a tote and a sachet or two, and the largest real mutation touches three
+// of them at once.
 
 /** Line inputs, line updates or line ids in one request. */
 export const MAX_LINES = 10;
 
-/** Per line. The pouch line is always 1 (the mix SKU carries the count) and a
- *  present is capped at 1, so this only ever bites on sachets. */
-export const MAX_LINE_QUANTITY = 10;
+/**
+ * Per line. Raised from 10 with MAX_POUCHES on 4 Sep 2026: a basket is packed
+ * into pair variants, so the largest legitimate one is HELDI-K2C0 at quantity
+ * 12, and a cap of 10 refused a basket the storefront had just built. Tied to
+ * MAX_POUCHES so the two cannot drift apart again.
+ */
+export const MAX_LINE_QUANTITY = MAX_POUCHES;
 
 /** Attributes in one request. The checkout handoff writes three. */
 export const MAX_ATTRIBUTES = 10;

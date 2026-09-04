@@ -10,8 +10,11 @@
 // presentLinesForPouches), so adding them here as well would double them.
 //
 // The pouch model this enforces lives in lib/pricing.ts (MAX_POUCHES,
-// presentsForPouches) and lib/commerce/catalog.ts (the mix SKUs). One pouch
-// line, quantity one, represents the whole order: HELDI-K{khana}C{chai}.
+// presentsForPouches) and lib/commerce/catalog.ts (the mix SKUs). A basket is
+// packed into as many PAIR lines as it will make plus at most one single, out
+// of the five variants the store holds, so a big order is more lines rather
+// than a bigger variant. This file rewrites whatever it is given into that one
+// canonical arrangement, because it is the arrangement the site quotes.
 
 import { MAX_POUCHES, presentsForPouches } from "@/lib/pricing";
 import {
@@ -25,12 +28,13 @@ import {
   isDabbaGiftLine,
   isJarGiftLine,
   isToteGiftLine,
+  mixLinesForCounts,
   parseMixSku,
   pouchCounts
 } from "../catalog";
 import { CHAI_SELLABLE } from "../config";
-import type { Cart, CartLine } from "../types";
-import { removeLines, updateLines } from "./cart-actions";
+import type { Cart, CartLine, CartLineInput } from "../types";
+import { addLines, removeLines, updateLines } from "./cart-actions";
 
 /** The sachets, which sit outside the ladder: no ladder price, no presents,
  *  and they never count towards MAX_POUCHES. Matched by SKU with the variant
@@ -48,6 +52,15 @@ const SACHET_VARIANT_IDS: string[] = [
   FREE_PAIR_VARIANT_ID,
   ...Object.values(SAMPLE_VARIANT_IDS)
 ];
+
+/** The £0 trial pair, capped at one per basket. Matched by SKU with the GID as
+ *  a fallback, the same way every other line in this file is. */
+function isFreePairLine(line: Pick<CartLine, "merchandise">): boolean {
+  return (
+    line.merchandise.sku === FREE_PAIR_SKU ||
+    line.merchandise.id === FREE_PAIR_VARIANT_ID
+  );
+}
 
 function isSachetLine(line: Pick<CartLine, "merchandise">): boolean {
   const sku = line.merchandise.sku;
@@ -67,6 +80,9 @@ function isPresentLine(line: Pick<CartLine, "merchandise">): boolean {
 type Repairs = {
   updates: { id: string; quantity: number }[];
   removals: string[];
+  /** Only ever the canonical packing of pouches the cart ALREADY holds; never
+   *  presents, and never a pouch the shopper did not ask for. */
+  additions: CartLineInput[];
 };
 
 /**
@@ -76,10 +92,23 @@ type Repairs = {
 function pouchRepairs(lines: CartLine[]): Repairs {
   const updates: Repairs["updates"] = [];
   const removals: string[] = [];
-  const pouchLines: { line: CartLine; pouches: number }[] = [];
+  const additions: CartLineInput[] = [];
+  const pouchLines: { line: CartLine; khana: number; chai: number }[] = [];
 
   for (const line of lines) {
     if (isPresentLine(line)) continue; // counted against the pouches, below.
+
+    // The free trial pair is the one giveaway a basket can hold, and one is
+    // the whole offer: "free for the first hundred", one per person. The
+    // storefront's claim is idempotent and the drawer offers no way to add a
+    // second, but neither of those binds a hand-crafted request, and the
+    // variant is untracked in Shopify so inventory will not refuse a tenth
+    // either. This is the only thing that does.
+    if (isFreePairLine(line)) {
+      if (line.quantity !== 1) updates.push({ id: line.id, quantity: 1 });
+      continue;
+    }
+
     if (isSachetLine(line)) continue; // outside the ladder entirely.
 
     // Deliberately the same reader as pouchCounts and the drawer: a line whose
@@ -99,24 +128,59 @@ function pouchRepairs(lines: CartLine[]): Repairs {
       continue;
     }
 
-    pouchLines.push({ line, pouches: mix.pouches });
+    pouchLines.push({
+      line,
+      khana: mix.khana * line.quantity,
+      chai: mix.chai * line.quantity
+    });
   }
 
-  // One mix line IS the whole order, so a second one is a second order sharing
-  // the basket. Keep the larger, which is the one the shopper most recently
-  // asked for in every sequence the storefront can produce.
-  pouchLines.sort((a, b) => b.pouches - a.pouches);
-  const [kept, ...spare] = pouchLines;
-  for (const extra of spare) removals.push(extra.line.id);
+  // A basket is no longer one line. Since MAX_POUCHES was raised past a pair,
+  // a larger order is MORE lines out of the same five variants: seven pouches
+  // is three pair lines and a single. So the job here is not "keep one line",
+  // it is "make the lines say exactly what the counts say, in the one
+  // arrangement the site prices".
+  //
+  // WHY IT NORMALISES RATHER THAN JUST CAPPING. The site quotes ladderPence(n),
+  // which is the canonical packing's total. A cart holding three separate
+  // HELDI-K1C0 lines is also three pouches, but Shopify would charge £105 for
+  // it where the page says £100. Rewriting to the canonical packing is what
+  // keeps the page and the checkout from ever disagreeing, which is the same
+  // rule the shipping rates follow. mixLinesForCounts is deterministic, so a
+  // cart that is already canonical produces no repair at all and this is
+  // idempotent.
+  let khana = pouchLines.reduce((n, entry) => n + entry.khana, 0);
+  let chai = pouchLines.reduce((n, entry) => n + entry.chai, 0);
 
-  // Quantity is not a multiplier here. Quantity 5 on HELDI-K2C0 is ten
-  // pouches at the price of two, five sets of presents, and a count the
-  // ladder cannot price at all.
-  if (kept && kept.line.quantity !== 1) {
-    updates.push({ id: kept.line.id, quantity: 1 });
+  // Over the ceiling, take pouches off the larger count until it fits. Reached
+  // only by a crafted request; the storefront refuses out loud before it gets
+  // here (decision D8).
+  while (khana + chai > MAX_POUCHES) {
+    if (khana >= chai) khana -= 1;
+    else chai -= 1;
   }
 
-  return { updates, removals };
+  const target = mixLinesForCounts(khana, chai);
+  const byVariant = new Map<string, CartLine>();
+  for (const entry of pouchLines) {
+    // Two lines on one variant collapse into the first; the second is spare.
+    if (byVariant.has(entry.line.merchandise.id)) removals.push(entry.line.id);
+    else byVariant.set(entry.line.merchandise.id, entry.line);
+  }
+  const wanted = new Set(target.map((input) => input.merchandiseId));
+
+  for (const input of target) {
+    const existing = byVariant.get(input.merchandiseId);
+    if (!existing) additions.push(input);
+    else if (existing.quantity !== input.quantity) {
+      updates.push({ id: existing.id, quantity: input.quantity });
+    }
+  }
+  for (const [variantId, line] of byVariant) {
+    if (!wanted.has(variantId)) removals.push(line.id);
+  }
+
+  return { updates, removals, additions };
 }
 
 /** What the present lines should be reduced to, given the surviving pouches. */
@@ -124,6 +188,9 @@ function presentRepairs(lines: CartLine[], pouches: number): Repairs {
   const { jars, totes } = presentsForPouches(pouches);
   const updates: Repairs["updates"] = [];
   const removals: string[] = [];
+  // Presents are added by the storefront, never here: adding them would double
+  // them. This half only ever takes away.
+  const additions: CartLineInput[] = [];
 
   for (const line of lines) {
     if (!isPresentLine(line)) continue;
@@ -134,15 +201,20 @@ function presentRepairs(lines: CartLine[], pouches: number): Repairs {
     else if (line.quantity > cap) updates.push({ id: line.id, quantity: cap });
   }
 
-  return { updates, removals };
+  return { updates, removals, additions };
 }
 
 async function applyRepairs(cart: Cart, repairs: Repairs): Promise<Cart> {
-  const { updates, removals } = repairs;
-  if (updates.length === 0 && removals.length === 0) return cart;
+  const { updates, removals, additions } = repairs;
+  if (updates.length === 0 && removals.length === 0 && additions.length === 0) {
+    return cart;
+  }
   let next = cart;
-  if (updates.length > 0) next = await updateLines(cart.id, updates);
+  // Remove BEFORE adding, for the same reason cart-context does: it keeps the
+  // cart from momentarily holding two arrangements of the same pouches.
   if (removals.length > 0) next = await removeLines(cart.id, removals);
+  if (updates.length > 0) next = await updateLines(cart.id, updates);
+  if (additions.length > 0) next = await addLines(cart.id, additions);
   return next;
 }
 
@@ -172,8 +244,8 @@ export async function enforceCartPolicy(cart: Cart): Promise<Cart> {
 
   const { pouches } = pouchCounts(clamped.lines);
   if (pouches > MAX_POUCHES) {
-    // Unreachable by construction (parseMixSku refuses a SKU above the cap and
-    // the repairs above leave one line at quantity one), which is exactly why
+    // Unreachable by construction (pouchRepairs above trims the counts to the
+    // ceiling before it packs them), which is exactly why
     // it throws rather than clamping: if it ever fires, the model and the
     // catalog have drifted apart and no price on the page can be trusted.
     throw new Error("That basket holds more pouches than one order can carry.");

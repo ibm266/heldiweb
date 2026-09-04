@@ -10,7 +10,8 @@
 import { HOME_FAQS } from "@/components/home-faqs";
 import { SERVINGS_PER_POUCH } from "@/lib/commerce/catalog";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
-import { FOUNDERS } from "@/lib/pricing";
+import { FOUNDERS, SHIPPING } from "@/lib/pricing";
+import { formatPence } from "@/lib/commerce/money";
 import type { CommerceMode } from "@/lib/commerce/types";
 
 export type SiteFaq = {
@@ -178,7 +179,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
             {
               question: "How much is delivery?",
               answer:
-                "UK orders over £40 ship free. Under that, Royal Mail Tracked 48 is £3.55. The Sample on its own always ships free, we cover the stamp."
+                `UK orders over ${formatPence(SHIPPING.freeOverPence)} ship free. Under that, Royal Mail Tracked 48 is ${formatPence(SHIPPING.standardPence)}. A sachet on its own always ships free, we cover the stamp.`
             }
           ]
         : []),

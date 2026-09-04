@@ -13,7 +13,7 @@ import {
   FREE_PAIR_VARIANT_ID,
   isGiftLine,
   isMixLine,
-  mixLineForCounts,
+  mixLinesForCounts,
   pouchCounts,
   presentLinesForPouches
 } from "@/lib/commerce/catalog";
@@ -27,7 +27,8 @@ import {
   isGiftingCode,
   isProductDiscountCode,
   type GiftingAudience,
-  type GiftingMethod
+  type GiftingMethod,
+  WELCOME_POSTAGE
 } from "@/lib/pricing";
 
 /** What a basket holds, as the two numbers the pickers and the drawer edit. */
@@ -318,9 +319,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const currentByVariant = new Map(
         managedLines.map((line) => [line.merchandise.id, line])
       );
-      const mixLine = mixLineForCounts(khana, chai);
+      // A basket is now as many pair lines as it will make plus at most one
+      // single, so this is a LIST, not one line. The diff below works line by
+      // line against the variant id, which is what makes going from three
+      // pouches to four a quantity change on one line rather than a rebuild.
       const target = [
-        ...(mixLine ? [mixLine] : []),
+        ...mixLinesForCounts(khana, chai),
         ...presentLinesForPouches(khana + chai)
       ];
       const targetIds = new Set(target.map((input) => input.merchandiseId));
@@ -409,15 +413,23 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           : await provider.addLines(cartId, [
               { merchandiseId: FREE_PAIR_VARIANT_ID, quantity: 1 }
             ]);
-        // The code rides the same link so the shopper never types it. Applied
+        // The codes ride the same link so the shopper never types one. Applied
         // after the pair, so a dead or spent code still leaves them holding
         // the free pair rather than an empty basket and no explanation.
-        if (code) {
+        //
+        // WELCOME goes on unconditionally. The free pair is £0 and the trial
+        // sachets are not on a free shipping profile, so without it a thing
+        // the email calls free arrives with postage attached. It is a shipping
+        // discount, which is the one class that combines with a product code,
+        // so adding it here never blocks their personal code.
+        const codes = [WELCOME_POSTAGE.code, ...(code ? [code] : [])];
+        {
           next = await provider.updateDiscountCodes(cartId, [
             ...existingCodes.filter(
-              (entry) => entry.toUpperCase() !== code.toUpperCase()
+              (entry) =>
+                !codes.some((c) => c.toUpperCase() === entry.toUpperCase())
             ),
-            code
+            ...codes
           ]);
         }
         // Nothing to do means the basket already says what the link asked for.

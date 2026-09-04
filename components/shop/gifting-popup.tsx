@@ -10,12 +10,27 @@ import { GiftingCodePicker } from "./gifting-code-picker";
 // the same offer as the gifting band, condensed, with the who's-buying
 // picker. Renders above the cart drawer (which opens at the same time), so
 // body scroll locking is left to the drawer.
-export function GiftingPopup({ onClose }: { onClose: () => void }) {
+export function GiftingPopup({
+  onClose,
+  heading,
+  onSkip,
+  skipLabel
+}: {
+  onClose: () => void;
+  /** Override the headline when the popup is answering a different question,
+   *  e.g. the checkout prompt rather than the post-add nudge. */
+  heading?: string;
+  /** Shown as a plain text button under the picker. The checkout prompt uses
+   *  it to continue without a code: a popup that interrupts a paid checkout
+   *  must always have a visible way past it, or it is a dark pattern. */
+  onSkip?: () => void;
+  skipLabel?: string;
+}) {
   const panelRef = useRef<HTMLDivElement>(null);
   const { applyGifting } = useCart();
 
   useEffect(() => {
-    track("gifting_popup_shown");
+    track("gifting_popup_shown", { surface: onSkip ? "checkout" : "add_to_cart" });
     panelRef.current?.focus();
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") onClose();
@@ -50,7 +65,7 @@ export function GiftingPopup({ onClose }: { onClose: () => void }) {
           ×
         </button>
         <p className="eyebrow eyebrow--gold">IN THE FAMILY?</p>
-        <h2>We can&apos;t charge family full price.</h2>
+        <h2>{heading ?? "We can\u2019t charge family full price."}</h2>
         <p>
           The friends-and-family rate, for the mums, dads, aunties and
           uncles. Buying it for them, or are you one of them yourself? Pick
@@ -62,6 +77,18 @@ export function GiftingPopup({ onClose }: { onClose: () => void }) {
           One code per order, one use each. Applied at checkout. We
           don&apos;t check. We trust you :)
         </p>
+        {onSkip ? (
+          <button
+            type="button"
+            className="gifting-pop__skip"
+            onClick={() => {
+              track("gifting_popup_skipped");
+              onSkip();
+            }}
+          >
+            {skipLabel ?? "No thanks, carry on"}
+          </button>
+        ) : null}
       </div>
     </div>
   );

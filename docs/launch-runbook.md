@@ -105,6 +105,251 @@ verification. The Storefront API version is pinned in `client.ts`
 compare-at prices; a draft order with 4 pouches charges £110 (£80 + £30) before
 discounts and ships free.
 
+## Phase 1b: Discounts, shipping and the free-pair gate
+
+Step by step, in this order. After every step run:
+
+```
+npm run storefront-check
+```
+
+It reads the **live Storefront API**, not the admin screen, and prints a pass or
+fail per item. The admin screen lies by omission: a product can be ACTIVE and
+still invisible to the Storefront, and a variant can look stocked and still be
+untracked. Work until the script prints "The store matches lib/pricing.ts."
+
+Already passing as of 4 Sep 2026: all four products published to the Headless
+channel, eleven variants visible with images, inventory untracked on the eight
+paid variants, a real cart for a pair plus both presents totalling £65.00 with a
+working checkout URL, and the old tier product and masala dabba archived.
+
+---
+
+### Step 1. Rebuild the three family codes at 15%
+
+They exist at **10%**, scoped to two variants on the now-archived "Heldi Khana"
+product, so they discount nothing a customer can buy. The script reports
+`SHABASH exists but is NOT applicable to a pair`.
+
+**1.1** Discounts → find `ACHABETA`, `RISHTA`, `SHABASH` → delete all three.
+Deleting rather than editing, because the old ones carry a product scope that
+no longer exists and it is easier to see a clean one is right.
+
+**1.2** For each of the three names in turn, Discounts → Create discount →
+**Amount off products**:
+
+| Field | Set it to |
+|---|---|
+| Discount code | `ACHABETA` (then `RISHTA`, then `SHABASH`) |
+| Method | Discount code |
+| Value | **Percentage**, `15` |
+| Applies to | **Specific products** → **Heldi pouches** |
+| | Leave every variant of it ticked. Do NOT add Heldi samples, the free pair, the jar or the tote |
+| Minimum purchase requirements | **No minimum** |
+| Customer eligibility | All customers |
+| Maximum discount uses | tick **Limit to one use per customer** |
+| Combinations | tick **Shipping discounts**. Leave *Product discounts* and *Order discounts* unticked |
+| Active dates | Start today, no end date |
+
+The **Combinations** row is the one that is wrong today and the reason
+`WELCOME` could never ride alongside a family code.
+
+Three codes for one rate so the order data says who is buying: ACHABETA (kids
+sorting out their parents), RISHTA (buying for uncle and aunty), SHABASH (the
+aunties and uncles sorting themselves out). They are printed openly on the site
+and the checkout popup offers them, so treat them as public.
+
+**Check**: the script's family line should read
+`SHABASH takes 15% off: £55.25`.
+
+---
+
+### Step 2. Replace WELCOME with a free-shipping discount
+
+**The fixed £4.99 amount-off version is not right, and it fails in the one case
+it exists for.** Measured against the live store on 4 Sep 2026:
+
+| Basket | With the £4.99 amount-off WELCOME |
+|---|---|
+| Single pouch, £35 | total £39.99 → £35.00, postage still £4.99. Nets out by luck |
+| Pair, £65, already free postage | total £65.00 → **£60.01**. Gives away £4.99 of product margin on an order that had free postage anyway |
+| **The £0 free trial pair** | code reads **not applicable**, buyer is charged **£4.99**. The launch email says postage is on us, and this charges them |
+
+An amount-off discount reduces the goods, not the postage, so on a £0 order
+there is nothing for it to reduce. It can also push a basket back under the £50
+threshold and cost you the postage as well as the £4.99.
+
+**2.1** Discounts → delete the existing `WELCOME`.
+
+**2.2** Create discount → **Free shipping**:
+
+| Field | Set it to |
+|---|---|
+| Discount code | `WELCOME` |
+| Countries | United Kingdom |
+| Shipping rates | Apply to all rates (or exclude Express if you would rather not give that away) |
+| Minimum purchase requirements | **No minimum** |
+| Customer eligibility | All customers |
+| Maximum discount uses | tick **Limit to one use per customer** |
+| Combinations | tick **Product discounts** |
+| Active dates | Start today, no end date |
+
+Free shipping is its own discount class in Shopify, which is exactly why it is
+the one thing that stacks with a family or founders code. `isWelcomeCode` in
+`lib/pricing.ts` and the launch-email claim link both assume that.
+
+**Check**: the script's `WELCOME is applicable` line still passes, and a single
+pouch with WELCOME quotes **£0.00 postage** rather than £4.99 off the goods.
+
+---
+
+### Step 3. Arm the first-100 gate
+
+**This is the one with money attached.** The whole "free for the first hundred"
+mechanism is inventory-gated: there is no code and no cart rule, just one
+variant that closes itself when the hundredth goes. The script currently
+reports `Shopify allowed 250 free pairs: tracking is OFF`.
+
+On **`HELDI-SAMPLE-PAIR-FREE`** only (Products → Heldi sample pair, on us):
+
+1. Inventory → tick **Track quantity**
+2. **Untick** "Continue selling when out of stock"
+3. Set **Available: 100** at the shipping location
+
+It is the only variant in the store that should have tracking on, which is easy
+to get backwards while untracking the other eight.
+
+The site already caps the *basket* at one free pair: the drawer offers no "+"
+on that row, and `lib/commerce/shopify/cart-policy.ts` clamps the line to
+quantity 1 server side (verified: a crafted request for five came back as one).
+Nothing in the site limits how many *people* claim one. Only this does.
+
+**Check**: `Shopify refuses 250 free pairs, so the variant is tracked`.
+
+---
+
+### Step 4. Put the samples on £0 postage
+
+Right now a £5 sachet, the £8 pair pack and the **£0 free trial pair** are every
+one of them charged **£4.99**.
+
+**4.1** Settings → Shipping and delivery → Custom shipping rates → **Create new
+profile**, name it `Heldi samples`.
+
+**4.2** Add products to it: **Heldi samples** (all three variants) and **Heldi
+sample pair, on us**.
+
+**4.3** Under United Kingdom, remove any inherited rate and add one rate:
+name `Royal Mail Large Letter`, price **£0.00**, no conditions.
+
+Heldi absorbs the Large Letter (`SHIPPING.sampleLetterPence`, £2.75).
+
+#### What happens when a sachet is in a cart with a pouch
+
+Shopify works out a rate **per profile** and **adds them together**. A pouch
+sits in the General profile and a sachet in the Samples profile, so:
+
+| Basket | General profile | Samples profile | Charged |
+|---|---|---|---|
+| Sachet alone | not represented | £0.00 | **£0.00** |
+| One pouch | £4.99 | not represented | **£4.99** |
+| One pouch plus a sachet | £4.99 | £0.00 | **£4.99** |
+| A pair plus a sachet | £0.00 (over £50) | £0.00 | **£0.00** |
+
+So a sachet never *adds* postage to a basket that already has some, and never
+carries any of its own. That is the whole point of the separate profile.
+
+**One thing to watch, and the script tests it.** The General profile's
+"free over £50" condition is evaluated against the items *in that profile*, not
+the whole cart. So £45 of pouches plus £8 of samples is a £53 cart but only £45
+of General items, and may still be charged. If the script's
+`one pouch plus a sachet` line comes back at anything other than £4.99, that is
+what has happened.
+
+**Check**: the three sample lines in the script flip to £0.00, and
+`one pouch plus a sachet (£40.00) ships £4.99` still passes.
+
+---
+
+### Step 5. Two small ones
+
+**5.1** The jar variant has **no SKU**. Set it to `HELDI-JAR` (`GIFT_SKUS.jar`).
+The site matches gifts by variant GID first so nothing is broken today, but the
+Phase 5 orders webhook derives counts from `line_items[].sku` and will not see
+it.
+
+**5.2** The tote's compare-at is live at **£6.00**, which `lib/pricing.ts` says
+outright "IS PROVISIONAL and must not ship": a stated worth on a free item has
+to be defensible against a real retail price. Settle a figure or clear the
+compare-at.
+
+---
+
+### Step 6. The founders codes, at launch
+
+Not now: these are generated when the launch email goes out, one per person,
+prefix `SHUKRIYA-` (`FOUNDERS.friendPrefix`). Same shape as the family codes but
+**25%**, and **Maximum uses: 1 in total** rather than one per customer.
+
+Note the consequence of the £50 threshold: a pair at 25% is **£48.75**, which
+falls under it. **Every founders code should go out with `WELCOME` beside it**
+in the same email, or its holder pays £4.99 postage on the best basket they
+could build.
+
+---
+
+### Do heavier baskets need a higher postage rate?
+
+**Changed 4 Sep 2026: the two-pouch ceiling is gone.** `MAX_POUCHES` is now 24
+and a customer can order any number. This needed no Shopify change, because a
+big basket is not a bigger variant, it is **more lines out of the same five**:
+five pouches is two `HELDI-K2C0` lines plus one `HELDI-K1C0`, and Shopify
+charges what those add up to.
+
+The consequence for pricing is that the £5 bundle saving applies **per pair**
+rather than to every additional pouch. Verified against real carts:
+
+| Pouches | Lines | Charged |
+|---|---|---|
+| 1 | K1C0 | £35 |
+| 2 | K2C0 | £65 |
+| 3 | K2C0 + K1C0 | £100 |
+| 4 | K2C0 x2 | £130 |
+| 5 | K2C0 x2 + K1C0 | £165 |
+| 24 | K2C0 x12 | £780 |
+
+Three pouches is £100, not the £95 the old per-pouch formula gave. That is the
+deliberate trade for needing no Shopify work: there is no three-pouch variant
+that could be sold at £95.
+
+**Postage still needs no new rate.** Every basket of two or more is at least
+£65, which clears the £50 free-shipping threshold, so the only basket that ever
+pays postage is a single pouch. Heavier orders ship free already.
+
+**Worth doing anyway: set the variant weights.** They are still unset, and the
+free jar and tote add real weight to a parcel. If you ever add a weight-based
+rate, or a courier prices on weight, these are the numbers it would need:
+
+| Variant | Weight |
+|---|---|
+| `HELDI-K1C0`, `HELDI-K0C1` | 0.40 kg |
+| `HELDI-K2C0`, `HELDI-K0C2`, `HELDI-K1C1` | 0.80 kg |
+| the three sachets | 0.05 kg |
+| `HELDI-JAR` | 0.25 kg |
+| `HELDI-TOTE` | 0.15 kg |
+
+Estimates from the pack spec, not weighed. Weigh a filled parcel before
+relying on them, especially a twelve-pair order.
+
+### Shipping rates: the repo now matches Shopify
+
+Probed 4 Sep 2026: £35, £40, £43 and £45 baskets are all charged £4.99; £50 and
+above ship free. `lib/pricing.ts` said £3.55 and free over £40, so every surface
+reading it was quoting a rate checkout would not honour. It is now **£4.99 /
+free over £50** and `npm run pricing-check` asserts it. There is also an
+**Express £6.99** option in the profile that the site knows nothing about;
+harmless, but the drawer's estimate will never mention it.
+
 ## Phase 2: Storefront API access
 
 - [x] Get a **Storefront API access token** (public token, but treat it as

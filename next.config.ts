@@ -139,6 +139,19 @@ const nextConfig: NextConfig = {
       {
         pathname: "/images/pouch-badges/**"
       }
+    ],
+    // Cart lines carry whatever image Shopify holds for the variant, so with
+    // the real provider every drawer thumbnail is a cdn.shopify.com URL. Without
+    // this next/image throws "Invalid src prop" and the throw happens inside the
+    // drawer, which is mounted in the root layout: it takes the whole page down,
+    // not just the picture. It only started biting once the Shopify products got
+    // images (4 Sep 2026); before that the Storefront returned none.
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "cdn.shopify.com",
+        pathname: "/s/files/**"
+      }
     ]
   },
   async headers() {

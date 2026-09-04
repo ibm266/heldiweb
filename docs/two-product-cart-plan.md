@@ -102,8 +102,9 @@ From the Price Book and NEXT_STEPS §1c, 2 Sep 2026:
   Letter. **Open: weigh the pair pack.** Two sachets have never been weighed
   together, and if the pack fails the Large Letter thickness the parcel rate eats
   the margin. The Chai sachet is gated on the same NEXT_STEPS §1b gates as the
-  Chai pouch, and its shot already exists at
-  `public/images/originals/pre-webp/shop/chai-sample.png`.
+  Chai pouch. All three sachet shots ship as of 4 Sep 2026:
+  `public/images/shop/sample.webp`, `chai-sample.webp` and `sample-pair.webp`,
+  wired one per sample SKU in `lib/commerce/catalog.ts`.
 - **P5. Shopify shape.** One product, "Heldi pouches", 5 variants, prices from P1,
   inventory untracked on all of them. The site picks the variant from the two pouch
   counts. Reporting and stock come from the orders webhook, not Shopify analytics.

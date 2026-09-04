@@ -244,12 +244,22 @@ ladder, both buy boxes, the drawer, the schema and the check script all follow:
 ```
 RRP_PENCE             = 3500   one pouch, Khana or Chai, same price
 BUNDLE_DISCOUNT_PENCE =  500   off the second pouch
-MAX_POUCHES           =    2   a single or a pair, in any mix
+MAX_POUCHES           =   24   raised from 2 on 4 Sep; see below
 ```
 
-One pouch £35, a pair £65 against a £70 RRP. That gives exactly **five** things a
-customer can buy (1 Khana, 1 Chai, 2 Khana, 2 Chai, one of each), which is why
-Shopify has five pouch variants and not the twenty-seven an earlier plan assumed.
+One pouch £35, a pair £65 against a £70 RRP. Shopify holds exactly **five**
+pouch variants (1 Khana, 1 Chai, 2 Khana, 2 Chai, one of each), not the
+twenty-seven an earlier plan assumed.
+
+**The two-pouch ceiling was lifted on 4 September.** A customer can order any
+number up to 24, and it needed no Shopify change, because a large basket is not
+a bigger variant: it is **more lines out of the same five**. Five pouches is two
+`HELDI-K2C0` lines plus a `HELDI-K1C0`, and the cart is normalised to that one
+canonical packing by both `mixLinesForCounts` (storefront) and the server clamp,
+so the page and the checkout can never quote different totals. The price is
+therefore £65 a pair and £35 for an odd one: 3 is £100, not the £95 the old
+per-pouch formula gave. That is the deliberate trade for needing no Shopify
+work. Verified against real Shopify carts at 5, 14 and the 24 ceiling.
 
 **Samples:** a 30g sachet, £5 in Khana or Chai, £8 for the pair. 30g is 2 Khana meals
 at a 12g portion and 3 Chai mugs at 8g, derived and rounded down. That settled a fill

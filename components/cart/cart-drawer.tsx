@@ -28,13 +28,21 @@ import {
   SHIPPING,
   bundleSavingPence,
   ladderPence,
+  nextPouchPence,
   giftingAudienceForCode,
   isFoundersCode,
   isGiftingCode,
+  isProductDiscountCode,
   rrpPence
 } from "@/lib/pricing";
+import { GiftingPopup } from "@/components/shop/gifting-popup";
 import { useCart } from "./cart-context";
 import { FreeShippingMeter } from "./free-shipping-meter";
+
+// Offered once per session, when checkout is clicked on a basket carrying no
+// product discount. Anyone who has typed their own founders code, or already
+// taken the family rate, never sees it.
+const CHECKOUT_PROMPT_SEEN_KEY = "heldi_checkout_code_prompt_seen";
 
 // One discount per order — the reason the code field or the checkbox is
 // locked once the other has applied the gifting discount.
@@ -79,6 +87,9 @@ export function CartDrawer() {
   } = useCart();
   const panelRef = useRef<HTMLDivElement>(null);
   const [code, setCode] = useState("");
+  // Set when checkout was clicked on a basket with no product discount. Holds
+  // the checkout URL so "No thanks" can go straight on without a second click.
+  const [checkoutPrompt, setCheckoutPrompt] = useState<null | (() => void)>(null);
   const lastTrackedSavings = useRef<number | null>(null);
 
   const lines = cart?.lines ?? [];
@@ -409,8 +420,19 @@ export function CartDrawer() {
                       {pouchCount} {pouchCount === 1 ? "pouch" : "pouches"}
                     </p>
                     {pouchCount < MAX_POUCHES ? (
+                      // What one MORE pouch costs, from the ladder rather than
+                      // from arithmetic on the average. It alternates now that
+                      // baskets are packed into pairs: £30 completes a pair,
+                      // £35 opens the next one. The old line subtracted the
+                      // pair saving from the running average, which happened to
+                      // read £30 while a pair was the ceiling and read £28 at
+                      // five pouches.
                       <p className="cart-line__nudge">
-                        A second pouch is {formatPence(perPouchPence - bundleSavingPence(2))}, and the parcel ships free.
+                        {pouchCount === 1 ? "A second pouch" : "One more"} is{" "}
+                        {formatPence(nextPouchPence(pouchCount))}
+                        {pouchTotalPence >= SHIPPING.freeOverPence
+                          ? ", and the parcel still ships free."
+                          : "."}
                       </p>
                     ) : null}
                   </div>
@@ -428,6 +450,11 @@ export function CartDrawer() {
               {otherLines.map((line) => {
                 const lineImage =
                   line.merchandise.image ?? line.merchandise.product.images[0];
+                // One free trial pair per basket: the offer is one each for
+                // the first hundred, so there is no "+" on this row at all.
+                // The server clamp enforces the same cap for anything that
+                // does not come through this button.
+                const isFreePair = line.merchandise.sku === FREE_PAIR_SKU;
                 return (
                 <li className="cart-line" key={line.id}>
                   {lineImage ? (
@@ -455,8 +482,13 @@ export function CartDrawer() {
                       <button
                         type="button"
                         onClick={() => updateQuantity(line.id, line.quantity + 1)}
-                        disabled={isPending}
-                        aria-label={`Increase quantity of ${line.merchandise.product.title}`}
+                        disabled={isPending || isFreePair}
+                        aria-label={
+                          isFreePair
+                            ? "One free pair per order"
+                            : `Increase quantity of ${line.merchandise.product.title}`
+                        }
+                        title={isFreePair ? "One free pair per order." : undefined}
                       >
                         +
                       </button>
@@ -612,6 +644,29 @@ export function CartDrawer() {
                     const applied = appliedCodes
                       .filter((entry) => entry.applicable)
                       .map((entry) => entry.code);
+
+                    // Nobody should pay full price for want of knowing the
+                    // family rate exists. If the basket has no PRODUCT
+                    // discount on it, offer one before they pay, once per
+                    // session. A shipping code on its own (WELCOME) does not
+                    // count as having taken the offer, and a basket with
+                    // nothing discountable in it is not asked at all.
+                    const hasProductDiscount = applied.some(isProductDiscountCode);
+                    const promptSeen =
+                      window.sessionStorage.getItem(CHECKOUT_PROMPT_SEEN_KEY) === "1";
+                    if (!hasProductDiscount && !promptSeen && eligiblePence > 0) {
+                      window.sessionStorage.setItem(CHECKOUT_PROMPT_SEEN_KEY, "1");
+                      // `proceed` is what "No thanks" runs. It re-reads the
+                      // cart from the closure at click time, which is correct:
+                      // applying a code changes the cart, and in that case the
+                      // shopper lands back on the drawer to see the new total
+                      // rather than being pushed on with a stale one.
+                      setCheckoutPrompt(() => () => {
+                        setCheckoutPrompt(null);
+                        window.location.assign(cart.checkoutUrl);
+                      });
+                      return;
+                    }
                     const audience =
                       applied
                         .map((entry) => giftingAudienceForCode(entry))
@@ -650,6 +705,14 @@ export function CartDrawer() {
           </>
         )}
       </div>
+      {checkoutPrompt ? (
+        <GiftingPopup
+          heading="We can’t charge friends and family full price."
+          onClose={() => setCheckoutPrompt(null)}
+          onSkip={checkoutPrompt}
+          skipLabel="No thanks, take me to checkout"
+        />
+      ) : null}
     </div>
   );
 }
