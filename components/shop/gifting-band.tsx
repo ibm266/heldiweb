@@ -36,9 +36,9 @@ export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) 
         </p>
         <GiftingCodePicker defaultAudience="beta" surface="band" />
         <p className="gifting__small">
-          {GIFTING.percent}% off single pouches and 2-packs, whether
-          it&apos;s a gift or for your own kitchen. One code per order.
-          Applied at checkout.
+          {GIFTING.percent}% off however many pouches you take, whether
+          it&apos;s a gift or for your own kitchen. One code per order, one
+          use each. Applied at checkout.
         </p>
         {showShopCta ? (
           <Link className="button button--pill gifting__cta" href="/shop">

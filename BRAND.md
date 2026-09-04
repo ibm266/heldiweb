@@ -36,10 +36,13 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
   made with care, made for you. That is where the name comes from." (founder band,
   homepage; photo of Mihir with nani; signed "— Mihir, founder")
 - **Product today**: one *sellable* product, **Heldi Khana** (savoury blend, 300g
-  pouch, 25 servings), sold as three bundle tiers plus a £5 Sample (3 servings).
-  **Heldi Chai** (terracotta pouch, hot drinks, 8g spoonful) has a browsable page
-  at /shop/chai with no prices, no tiers and no basket: its formulation, weight
-  and price are all unsettled, so it is a waitlist surface rather than a second
+  pouch, 25 servings), still sold through the July bundle tiers plus a £5 Sample
+  until the rebuild ships. **Agreed 4 Sep 2026 and not yet on the page:** a single
+  pouch at the £35 RRP or a pair at £65, in any mix of the two products, plus a 30g
+  sachet at £5 each or £8 for one of each. **Heldi Chai** (terracotta pouch, hot
+  drinks, 8g spoonful) has a browsable page at /shop/chai with no prices and no
+  basket: its formulation is settled but the label, gluten result and stock are not,
+  so it is a waitlist surface rather than a second
   SKU. NEXT_STEPS.md §1b holds every open decision. There are no flavour SKUs.
 - **Stage**: pre-launch waitlist ("Launching autumn 2026" in the ticker), full storefront
   UI built behind a mock cart. CTAs switch on `COMMERCE_MODE` ("waitlist" | "live").
@@ -396,10 +399,10 @@ Change these files, and only these files, for their facts:
 
 | Fact | Source of truth | Notes |
 |---|---|---|
-| All prices, RRP vs launch, tier names/contents | `lib/pricing.ts` | Integer pence. Strikethrough RRP becomes the real price after launch. Mirror changes in Shopify admin once connected |
+| All prices, the ladder, the codes, the presents | `lib/pricing.ts` | Integer pence, six commented sections. Three parameters drive every pouch price: `RRP_PENCE` 3500, `BUNDLE_DISCOUNT_PENCE` 500, `MAX_POUCHES` 2. Run `npm run pricing-check` after any change. Shopify holds its own copy of every variant price, so mirror it there too |
 | Shipping thresholds and rates | `SHIPPING` in `lib/pricing.ts` | £40 free threshold, £3.55 Tracked 48, sample letter absorbed |
-| Gifting discount + codes | `GIFTING` in `lib/pricing.ts` | ACHABETA / RISHTA / SHABASH, 10%, single+double tiers only |
-| Servings per pouch / sample | `SERVINGS_PER_POUCH`, `SERVINGS_PER_SAMPLE` in `lib/commerce/catalog.ts` | 25 and 3; feeds every per-meal price |
+| Gifting discount + codes | `GIFTING`, `FOUNDERS`, `WELCOME_POSTAGE` in `lib/pricing.ts` | ACHABETA / RISHTA / SHABASH at 15% on any quantity; founders 25%; welcome free postage, the only code that combines with a product discount. Shopify still holds the old 10% codes: rebuild before live mode |
+| Servings per pouch / sachet | `SERVINGS_PER_POUCH`, `SAMPLE_GRAMS`, `SERVINGS_PER_SAMPLE`, `MUGS_PER_SAMPLE` in `lib/commerce/catalog.ts` | Pouch 25. Sachet fill 30g, confirmed 4 Sep 2026, giving 2 Khana meals at a 12g portion and 3 Chai mugs at 8g, both derived and rounded down. Feeds every per-meal price |
 | Formulation, nutrition table, amino profile | `components/shop/nutrition-data.ts` | `FORMULA` publishes the whey's 94% and names the rest without percentages (see §12). Real ratios: cumin 1.7, lecithin 1.5, coriander 1.25, salt 0.75, garam masala 0.5, chilli 0.2, turmeric 0.1. Protein 10.1g per 12g serving, 84.1g per 100g |
 | Precise protein per tbsp for maths | `PROTEIN_GRAMS_PER_TBSP` in `lib/reviews.ts` (10.1) | Keep in sync with nutrition-data |
 | Marketing grams per spoon (10) | `grams={10}` prop in `app/page.tsx` → homepage, stir gallery, menus | The rounded figure, see §5 |
@@ -478,7 +481,8 @@ list, for the next time:
 4. Blog posts repeating the 16g bowl maths (`grep -rl "16g" content/`).
 5. Grep terms: `10.1`, `10g`, `ten grams`, `16g`, `13g`, `20g` (near "tbsp").
 6. The serving gram itself is a separate sweep: `SERVING_GRAMS`, `SERVINGS_PER_POUCH`
-   (300 ÷ 12 = 25), the Sample fill (3 × 12 = 36g), and every "12g" in prose.
+   (300 ÷ 12 = 25), the sachet's servings (`SAMPLE_GRAMS` 30 ÷ 12 = 2, rounded
+   down, and 30 ÷ 8 = 3 for Chai), and every "12g" in prose.
    Moving the gram moves the whole per-serving column and the amino column with it.
 
 ### 11.3 Price / tier / discount change

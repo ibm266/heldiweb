@@ -7,6 +7,8 @@ import {
   packPouches,
   type TierId
 } from "@/lib/pricing";
+import { CHAI_SERVING_GRAMS } from "@/components/shop/chai-data";
+import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
 import { moneyToPence, penceToMoney } from "./money";
 import type {
   CartLine,
@@ -120,10 +122,24 @@ export const SAMPLE_THUMB = "/images/shop/sample.webp?v=4";
 
 // A 300g pouch at a 12g serving (see the nutrition declaration; the gram is
 // the declared portion and the heaped tablespoon is an approximation of it,
-// not the other way round) gives exactly 25 servings; the Sample holds 3,
-// which is a 36g fill and still unconfirmed in docs/go-live-checklist.md.
+// not the other way round) gives exactly 25 servings.
 export const SERVINGS_PER_POUCH = 25;
-export const SERVINGS_PER_SAMPLE = 3;
+
+// The sachet fill, confirmed 4 Sep 2026 at 30g for both products. One fill,
+// two different serving counts, because Khana's declared portion is 12g and
+// Chai's is 8g. Derived rather than typed so the two cannot drift, and rounded
+// DOWN: 30g is two and a half Khana portions, and the pack may only promise
+// what it can certainly deliver.
+//
+// 30g is the declared net quantity for both sachets and it must appear on the
+// pack. Chai's sachet is gated on the same blend sign-off as the Chai pouch.
+export const SAMPLE_GRAMS = 30;
+
+/** Khana sachet: 30g at a 12g portion. */
+export const SERVINGS_PER_SAMPLE = Math.floor(SAMPLE_GRAMS / SERVING_GRAMS);
+
+/** Chai sachet: 30g at an 8g portion. */
+export const MUGS_PER_SAMPLE = Math.floor(SAMPLE_GRAMS / CHAI_SERVING_GRAMS);
 
 const PRODUCTS: Product[] = [
   {

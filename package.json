@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "brand-lint": "bash scripts/brand-lint.sh",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "pricing-check": "node --experimental-strip-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/pricing-check.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.7",

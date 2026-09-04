@@ -54,13 +54,13 @@ export function GiftingPopup({ onClose }: { onClose: () => void }) {
         <p>
           The friends-and-family rate, for the mums, dads, aunties and
           uncles. Buying it for them, or are you one of them yourself? Pick
-          who you&apos;re buying for and take {GIFTING.percent}% off single
-          pouches and 2-packs.
+          who you&apos;re buying for and take {GIFTING.percent}% off, however
+          many pouches you take.
         </p>
         <GiftingCodePicker surface="popup" onApply={applyToBasket} />
         <p className="gifting__small">
-          One code per order. Applied at checkout. We don&apos;t check. We
-          trust you :)
+          One code per order, one use each. Applied at checkout. We
+          don&apos;t check. We trust you :)
         </p>
       </div>
     </div>
