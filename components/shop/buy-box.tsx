@@ -21,7 +21,7 @@ import {
   SHIPPING,
   TIERS,
   TIER_ORDER,
-  WAITLIST_OFFER,
+  FOUNDERS,
   isGiftingCode,
   tierSavingsPence,
   type TierId
@@ -127,7 +127,7 @@ export function BuyBox({ product }: { product: Product }) {
   // other selection clears the threshold or ships free anyway. Waitlist
   // mode says why there is no price on the page instead.
   const shippingNote = !showPrices
-    ? `Prices arrive when the shop opens. The waitlist hears first, with ${WAITLIST_OFFER.percent}% off the first order.`
+    ? `Prices arrive when the shop opens. The waitlist hears first, and the first ${FOUNDERS.firstJoiners} on it get ${FOUNDERS.percent}% off.`
     : isPouch && tierId === "single"
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
       : "Ships free.";

@@ -22,7 +22,7 @@ import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { WaysGallery } from "@/components/ways-gallery";
-import { WAITLIST_OFFER } from "@/lib/pricing";
+import { FOUNDERS } from "@/lib/pricing";
 
 type HeroAnimation = "split-flap" | "dissolve";
 type HeroLayout = "video" | "classic" | "reveal";
@@ -138,7 +138,7 @@ const FAQS = HOME_FAQS;
 // price or discount lines; live carries the price lines and drops the
 // date. The launch date lives here (BRAND.md §11.5).
 const TICKER_COPY_WAITLIST =
-  `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  WAITLIST GETS ${WAITLIST_OFFER.percent}% OFF AT LAUNCH  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
+  `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  FIRST ${FOUNDERS.firstJoiners} ON THE LIST GET ${FOUNDERS.percent}% OFF  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
 const TICKER_COPY_LIVE =
   "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
@@ -270,7 +270,8 @@ function HeroIncentive() {
   if (mode === "live") return null;
   return (
     <p className="hero-incentive">
-      {WAITLIST_OFFER.percent}% off your first order at launch.
+      {FOUNDERS.percent}% off at launch, for the first {FOUNDERS.firstJoiners} on
+      the list.
     </p>
   );
 }
@@ -1386,8 +1387,9 @@ export function HeldiHomepage({
             <h2>Be first to stir it in.</h2>
             <p>
               One email the day we <CopyHighlight>launch</CopyHighlight>, with{" "}
-              <CopyHighlight>{WAITLIST_OFFER.percent}% off</CopyHighlight> your
-              first order inside. Pot or mug, the waitlist hears first.
+              <CopyHighlight>{FOUNDERS.percent}% off</CopyHighlight> inside it for
+              the first {FOUNDERS.firstJoiners} on the list. Pot or mug, the
+              waitlist hears first.
             </p>
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
           </div>

@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { track } from "@/lib/analytics";
-import { WAITLIST_OFFER } from "@/lib/pricing";
+import { FOUNDERS } from "@/lib/pricing";
 import { ChaiAccordions } from "./chai-accordions";
 import {
   CHAI_ALLERGENS,
@@ -194,7 +194,7 @@ export function ChaiBuyBox() {
         <p className="pdp__promise">
           {mode === "live"
             ? "Chai is not in the shop yet. Khana is, and it is the same spoonful for the food rather than the drink."
-            : `Chai comes after Khana. The waitlist hears first, with ${WAITLIST_OFFER.percent}% off the first order.`}
+            : `Chai comes after Khana. The waitlist hears first, and the first ${FOUNDERS.firstJoiners} on it get ${FOUNDERS.percent}% off.`}
         </p>
 
         <StatutoryStatements

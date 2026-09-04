@@ -417,11 +417,12 @@ export function giftingEligiblePenceForLines(
   }, 0);
 }
 
-// The portion of a basket the waitlist launch code applies to: every pouch
-// tier at its launch price. Only the Sample is excluded. Wider than the
-// gifting discount above (single and pair only), so the two never share a
-// helper.
-export function waitlistEligiblePenceForLines(
+// The portion of a basket a founders code applies to: every pouch tier at its
+// launch price. Only the Sample is excluded. Wider than the gifting discount
+// above (single and pair only), so the two do not share a helper yet. Under
+// the agreed ladder both codes apply to every pouch, so Phase 2 collapses
+// giftingEligiblePenceForLines into this one.
+export function pouchPenceForLines(
   lines: Pick<CartLine, "quantity" | "merchandise">[]
 ): number {
   return lines.reduce((sum, line) => {

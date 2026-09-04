@@ -13,10 +13,11 @@
 // variants rather than through a discount app. A change here is half the job;
 // the other half is repricing the variants in Shopify. Never let them drift.
 //
-// SECTION 6 is the superseded July model (three fixed Khana tiers, a
-// struck-through launch price, 10% on single and pair, a 20% waitlist code).
-// It is still wired to the cart and the buy box and is removed phase by
-// phase. Do not add new callers. See docs/two-product-cart-plan.md.
+// SECTION 6 is the superseded July model (three fixed Khana tiers with a
+// struck-through launch price). It is still wired to the cart and the buy box
+// and is removed phase by phase. Do not add new callers. The 20% PEHLEAAP
+// promise that used to live there is gone entirely, as of 4 Sep 2026.
+// See docs/two-product-cart-plan.md.
 
 // ---------------------------------------------------------------------------
 // 1. The pouch ladder
@@ -368,23 +369,4 @@ export function packPouches(pouches: number): PouchPacking {
     double: remainder === 2 ? 1 : 0,
     single: remainder === 1 ? 1 : 0
   };
-}
-
-// SUPERSEDED by FOUNDERS above. The 20% first-order promise is withdrawn and
-// PEHLEAAP is never created, but eight surfaces still render this percentage
-// and the copy around them still describes the old offer. They are rewritten
-// together in the Phase 0 copy sweep; changing the number here alone would
-// make those surfaces say 25% while still promising the wrong terms.
-export const WAITLIST_OFFER = {
-  percent: 20,
-  code: "PEHLEAAP",
-  windowDays: 14
-} as const;
-
-export function isWaitlistCode(code: string): boolean {
-  return code.toUpperCase() === WAITLIST_OFFER.code;
-}
-
-export function waitlistDiscountPence(eligiblePence: number): number {
-  return Math.round((eligiblePence * WAITLIST_OFFER.percent) / 100);
 }

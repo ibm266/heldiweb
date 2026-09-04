@@ -1,13 +1,14 @@
 import {
   giftingDiscountPence,
   isGiftingCode,
-  isWaitlistCode,
-  waitlistDiscountPence
+  isFoundersCode,
+  isProductDiscountCode,
+  foundersDiscountPence
 } from "@/lib/pricing";
 import {
   findVariantById,
   giftingEligiblePenceForLines,
-  waitlistEligiblePenceForLines
+  pouchPenceForLines
 } from "./catalog";
 import { moneyToPence, penceToMoney } from "./money";
 import type { CommerceProvider } from "./provider";
@@ -91,25 +92,29 @@ function materialize(stored: StoredCart): Cart {
   );
 
   // The codes the mock recognises: the three gifting codes (ACHABETA /
-  // RISHTA / SHABASH) and the waitlist launch code (PEHLEAAP). Each is only
-  // applicable when the basket holds the portion it applies to — gifting to
-  // single/pair blocks, the waitlist code to any pouch tier — mirroring how
+  // RISHTA / SHABASH) and a founders code (SHUKRIYA-*). Each is only
+  // applicable when the basket holds the portion it applies to: gifting to
+  // single/pair blocks, a founders code to any pouch tier, mirroring how
   // Shopify will reject them on excluded-only baskets.
   const giftingEligiblePence = giftingEligiblePenceForLines(lines);
-  const waitlistEligiblePence = waitlistEligiblePenceForLines(lines);
+  const pouchPence = pouchPenceForLines(lines);
   const discountCodes: CartDiscountCode[] = stored.discountCodes.map((code) => ({
     code,
     applicable:
       (isGiftingCode(code) && giftingEligiblePence > 0) ||
-      (isWaitlistCode(code) && waitlistEligiblePence > 0)
+      (isFoundersCode(code) && pouchPence > 0)
   }));
 
-  // One discount per order, never stacked: apply the first applicable code
-  // only, computed on its own eligible portion.
-  const appliedCode = discountCodes.find((entry) => entry.applicable);
+  // One PRODUCT discount per order, never stacked: apply the first applicable
+  // code only, computed on its own eligible portion. The welcome code is a
+  // shipping discount and is the one thing that will combine with these; the
+  // mock does not price shipping yet, so it is not handled here.
+  const appliedCode = discountCodes.find(
+    (entry) => entry.applicable && isProductDiscountCode(entry.code)
+  );
   const discountPence = appliedCode
-    ? isWaitlistCode(appliedCode.code)
-      ? waitlistDiscountPence(waitlistEligiblePence)
+    ? isFoundersCode(appliedCode.code)
+      ? foundersDiscountPence(pouchPence)
       : giftingDiscountPence(giftingEligiblePence)
     : 0;
   const totalPence = subtotalPence - discountPence;
