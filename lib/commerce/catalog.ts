@@ -113,8 +113,8 @@ export function isGiftLine(line: Pick<CartLine, "merchandise">): boolean {
 // It goes when the tier model does.
 const TIER_IMAGES: Record<TierId, { url: string; altText: string }> = {
   single: { url: "/images/shop/khana-1.webp?v=5", altText: "A Heldi Khana pouch beside the engraved brass table jar and its gold spoon" },
-  double: { url: "/images/shop/khana-bundle-2.webp?v=5", altText: "Two Heldi Khana pouches with the engraved brass jar, its gold spoon and the cotton tote bag" },
-  triple: { url: "/images/shop/khana-chai-pair.webp?v=1", altText: "One Heldi Khana pouch and one Heldi Chai pouch with the engraved brass jar, its gold spoon and the cotton tote bag" }
+  double: { url: "/images/shop/khana-bundle-2.webp?v=6", altText: "Two Heldi Khana pouches with the engraved brass jar, its gold spoon and the cotton tote bag" },
+  triple: { url: "/images/shop/khana-chai-pair.webp?v=2", altText: "One Heldi Khana pouch and one Heldi Chai pouch with the engraved brass jar, its gold spoon and the cotton tote bag" }
 };
 const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=4", altText: "Heldi Sample sachet" };
 
