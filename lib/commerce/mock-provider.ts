@@ -7,8 +7,7 @@ import {
 } from "@/lib/pricing";
 import {
   findVariantById,
-  giftingEligiblePenceForLines,
-  pouchPenceForLines
+  pouchPenceForCounts,
 } from "./catalog";
 import { moneyToPence, penceToMoney } from "./money";
 import type { CommerceProvider } from "./provider";
@@ -91,18 +90,19 @@ function materialize(stored: StoredCart): Cart {
     0
   );
 
-  // The codes the mock recognises: the three gifting codes (ACHABETA /
-  // RISHTA / SHABASH) and a founders code (SHUKRIYA-*). Each is only
-  // applicable when the basket holds the portion it applies to: gifting to
-  // single/pair blocks, a founders code to any pouch tier, mirroring how
-  // Shopify will reject them on excluded-only baskets.
-  const giftingEligiblePence = giftingEligiblePenceForLines(lines);
-  const pouchPence = pouchPenceForLines(lines);
+  // The codes the mock recognises: the three family codes (ACHABETA / RISHTA
+  // / SHABASH) and a founders code (SHUKRIYA-*). Both classes now apply to
+  // the same portion, every pouch in the basket, so both read the same helper.
+  // They used to differ only because the old tiers discounted differently, and
+  // the gifting side still read the tier SKUs: against a mix SKU that returned
+  // zero, so a family code silently never applied to anything.
+  //
+  // Neither ever touches a sachet or a present, which is what makes a
+  // sachet-only basket correctly reject both.
+  const pouchPence = pouchPenceForCounts(lines);
   const discountCodes: CartDiscountCode[] = stored.discountCodes.map((code) => ({
     code,
-    applicable:
-      (isGiftingCode(code) && giftingEligiblePence > 0) ||
-      (isFoundersCode(code) && pouchPence > 0)
+    applicable: isProductDiscountCode(code) && pouchPence > 0
   }));
 
   // One PRODUCT discount per order, never stacked: apply the first applicable
@@ -115,7 +115,7 @@ function materialize(stored: StoredCart): Cart {
   const discountPence = appliedCode
     ? isFoundersCode(appliedCode.code)
       ? foundersDiscountPence(pouchPence)
-      : giftingDiscountPence(giftingEligiblePence)
+      : giftingDiscountPence(pouchPence)
     : 0;
   const totalPence = subtotalPence - discountPence;
 

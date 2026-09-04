@@ -25,6 +25,7 @@ import {
   GIFTING,
   MAX_POUCHES,
   isGiftingCode,
+  isProductDiscountCode,
   type GiftingAudience,
   type GiftingMethod
 } from "@/lib/pricing";
@@ -431,10 +432,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     (code: string) =>
       runMutation((cartId) => {
         const existing = cart?.discountCodes.map((entry) => entry.code) ?? [];
-        return getCommerceProvider().updateDiscountCodes(cartId, [
-          ...existing.filter((entry) => entry.toUpperCase() !== code.toUpperCase()),
-          code
-        ]);
+        // One product discount per order (P3). A new product code REPLACES any
+        // product code already on the cart rather than joining it. Without
+        // this both sat there reading "applied" while only the first actually
+        // discounted, so a shopper who typed a better code was shown it as
+        // accepted and still charged the old rate.
+        //
+        // A shipping code is a different class and survives: free postage is
+        // the one thing that combines with a product discount.
+        const keep = isProductDiscountCode(code)
+          ? existing.filter((entry) => !isProductDiscountCode(entry))
+          : existing.filter((entry) => entry.toUpperCase() !== code.toUpperCase());
+        return getCommerceProvider().updateDiscountCodes(cartId, [...keep, code]);
       }),
     [runMutation, cart?.discountCodes]
   );
@@ -443,8 +452,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     async (method: GiftingMethod, audience: GiftingAudience = "beta") => {
       const applied = await runMutation((cartId) => {
         const existing = cart?.discountCodes.map((entry) => entry.code) ?? [];
+        // Same rule from the checkbox side: it replaces whatever product code
+        // is there, including a founders code, so the two routes cannot leave
+        // the cart in a state the code field would refuse to create.
         return getCommerceProvider().updateDiscountCodes(cartId, [
-          ...existing.filter((entry) => !isGiftingCode(entry)),
+          ...existing.filter((entry) => !isProductDiscountCode(entry)),
           GIFTING.codes[audience]
         ]);
       });
