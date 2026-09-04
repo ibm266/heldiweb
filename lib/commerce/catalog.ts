@@ -105,19 +105,31 @@ export function isGiftLine(line: Pick<CartLine, "merchandise">): boolean {
 }
 
 // ?v= busts the Next image-optimizer cache when a shot is regenerated in place.
+// Reshot 4 Sep 2026 for the new line-up: the engraved brass jar and its gold
+// spoon replace the plain unengraved jar, the cotton tote replaces the masala
+// dabba, and no shot shows more than two pouches, because two is the ceiling.
+// The `triple` key survives only because TierId still has three members; it
+// now carries the mixed pair, which is a basket a customer can actually buy.
+// It goes when the tier model does.
 const TIER_IMAGES: Record<TierId, { url: string; altText: string }> = {
-  single: { url: "/images/shop/khana-1.webp?v=4", altText: "Heldi Khana pouch with its refillable gold table jar" },
-  double: { url: "/images/shop/khana-bundle-2.webp?v=4", altText: "Two Heldi Khana pouches with their refillable gold and silver table jars" },
-  triple: { url: "/images/shop/khana-bundle-3.webp?v=4", altText: "The full table bundle: three Heldi Khana pouches with refillable table jars and a masala dabba" }
+  single: { url: "/images/shop/khana-1.webp?v=5", altText: "A Heldi Khana pouch beside the engraved brass table jar and its gold spoon" },
+  double: { url: "/images/shop/khana-bundle-2.webp?v=5", altText: "Two Heldi Khana pouches with the engraved brass jar, its gold spoon and the cotton tote bag" },
+  triple: { url: "/images/shop/khana-chai-pair.webp?v=1", altText: "One Heldi Khana pouch and one Heldi Chai pouch with the engraved brass jar, its gold spoon and the cotton tote bag" }
 };
 const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=4", altText: "Heldi Sample sachet" };
 
 // Clean pouch-only shot for contents breakdowns (the gallery images show
-// the pouches with their jars and dabba).
+// the pouches with their jar and tote).
 export const POUCH_THUMB = "/images/shop/pouch-solo.webp?v=4";
 
-export const JAR_THUMB = "/images/shop/gift-jar-gold.webp";
-export const DABBA_THUMB = "/images/shop/gift-masala-dabba.webp";
+// New filenames rather than in-place swaps: neither of the old gift thumbs
+// carried a ?v=, and next.config.ts holds optimized images for 31 days, so
+// overwriting them would have served the unengraved jar and the withdrawn
+// dabba for a month.
+export const JAR_THUMB = "/images/shop/gift-jar-brass.webp";
+export const TOTE_THUMB = "/images/shop/gift-tote.webp";
+/** @deprecated The dabba is withdrawn. Kept until the cart stops reading it. */
+export const DABBA_THUMB = TOTE_THUMB;
 export const SAMPLE_THUMB = "/images/shop/sample.webp?v=4";
 
 // A 300g pouch at a 12g serving (see the nutrition declaration; the gram is

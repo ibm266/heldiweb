@@ -253,20 +253,20 @@ export type ChaiImage = { url: string; altText: string };
  *  Regenerate with a ?v= bump so the image optimizer drops the old one. */
 export const CHAI_IMAGES: ChaiImage[] = [
   {
-    url: "/images/shop/chai-1.webp?v=3",
-    altText: "The terracotta Heldi Chai pouch on a linen table with a refillable brass jar"
+    url: "/images/shop/chai-1.webp?v=4",
+    altText: "The terracotta Heldi Chai pouch beside the engraved brass table jar and its gold spoon"
   },
   {
     url: "/images/shop/chai-pouch-solo.webp?v=3",
     altText: "The Heldi Chai pouch on its own, front facing"
   },
   {
-    url: "/images/shop/chai-bundle-2.webp?v=3",
-    altText: "Two Heldi Chai pouches with brass and steel refillable jars"
+    url: "/images/shop/chai-bundle-2.webp?v=4",
+    altText: "Two Heldi Chai pouches with the engraved brass jar, its gold spoon and the cotton tote bag"
   },
   {
-    url: "/images/shop/chai-bundle-3.webp?v=3",
-    altText: "Three Heldi Chai pouches with refillable jars and an open masala dabba"
+    url: "/images/shop/khana-chai-pair.webp?v=1",
+    altText: "One Heldi Chai pouch and one Heldi Khana pouch with the engraved brass jar, its gold spoon and the cotton tote bag"
   }
 ];
 
