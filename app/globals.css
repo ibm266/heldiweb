@@ -6399,8 +6399,12 @@ a.living-card__tag:hover {
 }
 
 .qty-stepper button {
-  width: 1.5rem;
-  height: 1.5rem;
+  /* 44px, the accessibility bar's minimum tap target. It was 24px, which is
+     fine with a mouse and a miss on a phone, and the drawer now shows one of
+     these per product so it is the main thing a thumb has to hit. The visual
+     circle stays small; the hit area is what grew. */
+  width: 2.75rem;
+  height: 2.75rem;
   border: 0;
   border-radius: 999px;
   background: transparent;
