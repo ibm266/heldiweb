@@ -1,4 +1,5 @@
 import { getCart } from "@/lib/commerce/shopify/cart-actions";
+import { enforceCartPolicy } from "@/lib/commerce/shopify/cart-policy";
 import { badRequest, cartResponse } from "@/lib/commerce/shopify/route-helpers";
 import { checkRate, tooManyRequests } from "@/lib/rate-limit";
 
@@ -16,5 +17,16 @@ export async function GET(request: Request) {
 
   // An expired or unknown cart returns JSON null; the client provider then
   // starts a fresh cart (same contract as the mock provider).
-  return cartResponse(() => getCart(cartId));
+  //
+  // Clamped on the way out, which the other four routes already do on the way
+  // in. This was the hole: a cart left over cap by a half-finished swap, or by
+  // a crafted request whose repair failed, came back through here unclamped
+  // and hydrated straight into the drawer. The drawer prices pouches from the
+  // ladder, and the ladder REFUSES a count above the cap, so an unclamped read
+  // was a thrown RangeError in a component mounted in the root layout: not a
+  // broken basket, a broken site.
+  return cartResponse(async () => {
+    const cart = await getCart(cartId);
+    return cart ? await enforceCartPolicy(cart) : cart;
+  });
 }

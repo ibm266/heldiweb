@@ -9,7 +9,11 @@ import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { serializeJsonLd } from "@/lib/json-ld";
 import { getPublishedReviews } from "@/lib/reviews-store";
 import { SITE_URL } from "@/lib/site";
-import { SAMPLE_PRICE_PENCE, TIERS } from "@/lib/pricing";
+import {
+  MAX_POUCHES,
+  SAMPLE_PRICE_PENCE,
+  ladderPence
+} from "@/lib/pricing";
 
 export const metadata: Metadata = {
   title: "Heldi Khana · Heldi",
@@ -42,7 +46,10 @@ export default async function ShopPage() {
           offers: {
             "@type": "AggregateOffer",
             lowPrice: (SAMPLE_PRICE_PENCE / 100).toFixed(2),
-            highPrice: (TIERS.triple.launchPence / 100).toFixed(2),
+            // The dearest thing that can actually be bought, not the retired
+            // full-table launch price. Publishing £80 to Google advertised a
+            // basket the shop can no longer build.
+            highPrice: (ladderPence(MAX_POUCHES) / 100).toFixed(2),
             priceCurrency: "GBP",
             availability: "https://schema.org/InStock",
             url: `${SITE_URL}/shop/khana`

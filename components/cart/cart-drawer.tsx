@@ -27,6 +27,7 @@ import {
   SAMPLE_PRICE_PENCE,
   SHIPPING,
   bundleSavingPence,
+  ladderPence,
   giftingAudienceForCode,
   isFoundersCode,
   isGiftingCode,
@@ -96,11 +97,21 @@ export function CartDrawer() {
   const otherLines = lines.filter(
     (line) => !isMixLine(line) && !isGiftLine(line)
   );
-  const { khana, chai, pouches: pouchCount } = pouchCounts(lines);
-  const pouchTotalPence = mixLines.reduce(
-    (sum, line) => sum + moneyToPence(line.cost.totalAmount),
-    0
-  );
+  const { khana, chai, pouches: rawPouchCount } = pouchCounts(lines);
+  // Clamped before anything reads it. rrpPence and bundleSavingPence THROW
+  // above MAX_POUCHES, and everything here runs before the `mode !== "live"`
+  // early return in a component mounted in the root layout, so an over-cap
+  // basket would not break the drawer, it would break every page on the site.
+  // An over-cap basket is reachable: a failed swap can leave two pouch lines,
+  // and /api/cart/get is the one cart route with no clamp, so the next page
+  // load hydrates it straight in.
+  const pouchCount = Math.min(rawPouchCount, MAX_POUCHES);
+  // The ladder, not the line totals. Shopify allocates code discounts into
+  // line costs, so summing them would strike the RRP against an already
+  // discounted number and double-count the code: a pair with a founders code
+  // would read "£70 struck, £48.75" while the summary separately itemised
+  // the same £16.25 again.
+  const pouchTotalPence = pouchCount > 0 ? ladderPence(pouchCount) : 0;
   // RRP is what the same pouches cost bought one at a time. Shown struck
   // through from two pouches up, where there is a real saving; at one pouch
   // the RRP IS the price, so there is nothing to strike.
@@ -134,10 +145,14 @@ export function CartDrawer() {
   const freePairLine = lines.find(
     (line) => line.merchandise.sku === FREE_PAIR_SKU
   );
+  // cost.compareAtAmount is already a LINE TOTAL in both providers (the
+  // Shopify client multiplies compareAtAmountPerQuantity by quantity, and the
+  // mock does the same in buildLine). Multiplying by quantity again read
+  // minus £32 for two pairs, and minus £800 at the route's quantity cap.
   const freePairWorthPence = freePairLine
     ? moneyToPence(
         freePairLine.cost.compareAtAmount ?? { amount: "8.00", currencyCode: "GBP" }
-      ) * freePairLine.quantity
+      )
     : 0;
   const savingsPence = discountPence + giftWorthPence + freePairWorthPence;
   const discountCodeLabel =

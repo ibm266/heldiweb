@@ -1,6 +1,6 @@
 "use client";
 
-import { cartItemCount } from "@/lib/commerce/catalog";
+import { cartItemCountV2 } from "@/lib/commerce/catalog";
 import { useCart } from "./cart-context";
 
 export function CartIcon({ className = "" }: { className?: string }) {
@@ -10,7 +10,7 @@ export function CartIcon({ className = "" }: { className?: string }) {
 
   // Pouches count one by one (a full table is 3), matching the drawer's
   // pouch stepper rather than the underlying bundle lines.
-  const count = cartItemCount(cart?.lines ?? []);
+  const count = cartItemCountV2(cart?.lines ?? []);
 
   return (
     <button

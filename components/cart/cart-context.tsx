@@ -298,7 +298,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setNotice(OVER_CAP_NOTICE);
         return false;
       }
-      if (chai > 0 && !CHAI_SELLABLE) {
+      // Refuse an INCREASE in Chai, not the mere presence of it. A basket that
+      // already holds Chai (made while the flag was on, or healed by the
+      // server) must still be reducible; gating on `chai > 0` trapped the
+      // shopper, refusing even "remove the Khana" because the target still
+      // mentioned Chai.
+      const current = pouchCounts(cart?.lines ?? []);
+      if (!CHAI_SELLABLE && chai > current.chai) {
         setNotice(CHAI_NOT_YET_NOTICE);
         return false;
       }
@@ -340,15 +346,26 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return runMutation(async (cartId) => {
         const provider = getCommerceProvider();
         let next: Cart | null = null;
-        // Add the new mix variant BEFORE removing the old one. Changing a
-        // count swaps variants rather than editing a quantity, so one of the
-        // two orders is always momentarily wrong. This way a failed removal
-        // leaves two pouch lines, which the server-side clamp collapses on the
-        // next request; the other way round, a failed addition would empty the
-        // basket the shopper just built. Losing their order is worse.
+        // REMOVE the old mix variant BEFORE adding the new one. Changing a
+        // count swaps variants rather than editing a quantity, so the basket
+        // is momentarily wrong whichever order this runs in, and the two
+        // orders fail very differently.
+        //
+        // Adding first looked safer (a failed removal just leaves a spare
+        // line) until you follow it through the server clamp, which keeps the
+        // LARGER pouch line. On a down-step the add-lines request lands with
+        // both K2C0 and K1C0 present, the clamp keeps K2C0 and deletes the
+        // line the shopper just asked for, and the removals computed before
+        // the request then take K2C0 and the presents with it. The basket
+        // empties itself, silently, on every step down.
+        //
+        // Removing first means the clamp never sees two pouch lines. The cost
+        // is that a failed addition leaves the basket without its pouches,
+        // which is bad but VISIBLE: runMutation surfaces the error. A silent
+        // wrong answer is worse than a loud failure.
+        if (removals.length > 0) next = await provider.removeLines(cartId, removals);
         if (updates.length > 0) next = await provider.updateLines(cartId, updates);
         if (additions.length > 0) next = await provider.addLines(cartId, additions);
-        if (removals.length > 0) next = await provider.removeLines(cartId, removals);
         return next!;
       });
     },

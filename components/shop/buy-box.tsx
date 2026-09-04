@@ -7,7 +7,9 @@ import { useCart } from "@/components/cart/cart-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import {
   POUCH_THUMB,
+  SAMPLE_SKU,
   SAMPLE_VARIANT_ID,
+  SAMPLE_VARIANT_IDS,
   SERVINGS_PER_POUCH,
   SERVINGS_PER_SAMPLE,
   TIER_VARIANT_IDS,
@@ -16,7 +18,12 @@ import {
   includedItemsForPouches,
   mixSku
 } from "@/lib/commerce/catalog";
-import { formatMoney, formatPence, moneyToPence } from "@/lib/commerce/money";
+import {
+  formatMoney,
+  formatPence,
+  moneyToPence,
+  penceToMoney
+} from "@/lib/commerce/money";
 import type { IncludedItem, Product, ProductVariant } from "@/lib/commerce/types";
 import {
   FOUNDERS,
@@ -115,19 +122,24 @@ export function BuyBox({ product }: { product: Product }) {
   const shownIndex = imageOverride ?? autoImageIndex;
   const mainImage = product.images[shownIndex] ?? product.images[0];
 
-  const pouchSingle = displayPrice(tierVariants.get("single")!, 1);
+  // Pouch money comes from the LADDER, never from a variant. The tier
+  // variants are still in the store until launch day and are still priced at
+  // the retired July launch prices, so reading them here quoted £30 on the
+  // CTA for a pouch that now costs £35, and struck £35 through against it:
+  // exactly the fabricated former price the Rrp helper above exists to
+  // prevent. The variants survive only for the gallery and the Sample.
   const sampleSingle = displayPrice(sampleVariant, 1);
-  const selected = displayPrice(selectedVariant, 1);
+  const pouchPricePence = ladderPence(pouchQty);
+  const selectedCurrent = isPouch
+    ? penceToMoney(pouchPricePence)
+    : sampleSingle.current;
   const included: IncludedItem[] = isPouch
     ? includedItemsForPouches(pouchQty)
     : [];
 
-  // The price callout describes whichever image is on screen; prices always
-  // come from the catalog (launch price with the RRP struck).
-  const annoTier = shownIndex < 3 ? TIER_ORDER[shownIndex] : null;
-  const annoPrice = annoTier
-    ? displayPrice(tierVariants.get(annoTier)!, 1)
-    : sampleSingle;
+  // The price callout describes whichever image is on screen. Gallery slots 0
+  // and 1 are one and two pouches; anything beyond is the Sample.
+  const annoPouches = shownIndex < 2 ? shownIndex + 1 : null;
 
   // "Orders under £40 ship for £3.55." only applies to One pouch; every
   // other selection clears the threshold or ships free anyway. Waitlist
@@ -147,7 +159,10 @@ export function BuyBox({ product }: { product: Product }) {
     // false and the drawer says why, so the event below does not fire.
     const added = isPouch
       ? await addPouches({ khana: pouchQty })
-      : await addItem(selectedVariant.id, 1);
+      // The NEW samples product, not the sachet variant on "Heldi Khana":
+      // that product is archived on launch day and the add would start
+      // failing with a generic cart error.
+      : await addItem(SAMPLE_VARIANT_IDS[SAMPLE_SKU], 1);
 
     // Everything below is contingent on the write landing. Previously the
     // event fired before the mutation and the button flashed "Added"
@@ -161,7 +176,7 @@ export function BuyBox({ product }: { product: Product }) {
       ...(isPouch
         ? { tier: mixSku(pouchQty, 0), pouches_added: pouchQty, khana: pouchQty, chai: 0 }
         : {}),
-      value: (isPouch ? ladderPence(pouchQty) : moneyToPence(selected.current)) / 100,
+      value: (isPouch ? pouchPricePence : moneyToPence(sampleSingle.current)) / 100,
       currency: "GBP"
     });
     setJustAdded(true);
@@ -187,8 +202,16 @@ export function BuyBox({ product }: { product: Product }) {
           {showPrices ? (
             <div className="pdp__annos" aria-hidden="true">
               <span className="pdp__anno pdp__anno--price">
-                {annoPrice.compareAt ? <Rrp>{formatMoney(annoPrice.compareAt)}</Rrp> : null}
-                {formatMoney(annoPrice.current)}
+                {annoPouches !== null ? (
+                  <>
+                    {bundleSavingPence(annoPouches) > 0 ? (
+                      <Rrp>{formatPence(rrpPence(annoPouches))}</Rrp>
+                    ) : null}
+                    {formatPence(ladderPence(annoPouches))}
+                  </>
+                ) : (
+                  formatMoney(sampleSingle.current)
+                )}
               </span>
             </div>
           ) : null}
@@ -270,11 +293,10 @@ export function BuyBox({ product }: { product: Product }) {
             />
             <span className="option-card__name">300g pouch</span>
             <span className="option-card__meta">{SERVINGS_PER_POUCH} meals</span>
+            {/* One pouch is £35 and £35 is the RRP, so there is nothing to
+                strike. The saving lives on the two-pouch card below. */}
             {showPrices ? (
-              <span className="option-card__price">
-                {pouchSingle.compareAt ? <Rrp>{formatMoney(pouchSingle.compareAt)}</Rrp> : null}
-                {formatMoney(pouchSingle.current)}
-              </span>
+              <span className="option-card__price">{formatPence(ladderPence(1))}</span>
             ) : null}
           </label>
           <label className={`option-card option-card--slim${!isPouch ? " is-selected" : ""}`}>
@@ -382,7 +404,7 @@ export function BuyBox({ product }: { product: Product }) {
 
         {mode === "live" ? (
           <button type="button" className="pdp__cta" onClick={handleAdd} disabled={isPending}>
-            {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket — ${formatMoney(selected.current)}`}
+            {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket — ${formatMoney(selectedCurrent)}`}
           </button>
         ) : (
           <button type="button" className="pdp__cta" data-floating-cta-suppress onClick={() => openWaitlist("popup-shop")}>
