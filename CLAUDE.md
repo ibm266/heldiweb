@@ -39,8 +39,7 @@ Hard rules that are cheap to break by accident:
 - All prices/shipping/discounts come from `lib/pricing.ts` (integer pence); the
   formulation and nutrition figures from `components/shop/nutrition-data.ts`.
   Those are Khana's. Heldi Chai has its own facts in
-  `components/shop/chai-data.ts` and deliberately publishes no nutrition table
-  yet; BRAND.md §11.7 says what Chai must not repeat from Khana, and
+  `components/shop/chai-data.ts`, including a nutrition table since 3 Sep; BRAND.md §11.7 says what Chai must not repeat from Khana, and
   NEXT_STEPS.md §1b holds the open decisions.
 - The only permitted health claims are protein's three register entries, used verbatim:
   "Protein contributes to a growth in muscle mass." / "...to the maintenance of muscle
@@ -67,6 +66,9 @@ Hard rules that are cheap to break by accident:
 
 Tooling and structure:
 
+- `npm run pricing-check` asserts the agreed rate card against `lib/pricing.ts`,
+  and the Shopify variant coverage behind it. Run it after touching any price,
+  percentage, cap or present count.
 - `npm run brand-lint` checks the greppable brand rules (em dashes, banned words,
   literal black, raw `<img>`, hard-coded prices, asset budgets). Run it before
   finishing any copy/asset change; errors must be fixed, warnings reviewed.

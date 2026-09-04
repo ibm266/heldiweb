@@ -1,7 +1,8 @@
 # Heldi handover: what everything is, and what is current
 
-**Written 3 September 2026.** Read this first if you are picking Heldi up on a new
-machine, in a new session, or with a different model. It is the map. It does not
+**Written 3 September 2026. Substantially updated 4 September.** Read this first if
+you are picking Heldi up on a new machine, in a new session, or with a different
+model. Section 7 is what changed on the 4th and is where to start. It is the map. It does not
 repeat what the other documents already say; it tells you which document to open
 and which file owns which fact.
 
@@ -23,6 +24,17 @@ The recipe and the nutrition declaration were **settled on 3 September 2026** ag
 a real certificate of analysis. Before that date almost every figure in both repos
 was wrong in the same specific way. Section 5 explains how, and it is the single most
 useful thing in this file.
+
+**Chai is in run 1**, decided 4 September. That closed the top gate in NEXT_STEPS §1b
+and contradicts two HeldiPM records that still park it: `context/product-gates.md:17`
+("Chai spices not ordered this run") and `data/project-status.json`, which still names
+a two-SKU Khana and Dahi launch. The spices have to be ordered, and both records need
+correcting.
+
+**The commercial model was settled and largely built on 4 September.** Prices,
+discounts, presents, the sample range, four Shopify products and a working two-product
+basket. Section 7 has the detail; section 7b has the six things that still need a
+human.
 
 ---
 
@@ -53,8 +65,11 @@ Facts, in heldiweb:
 | Khana formulation, nutrition, amino acids | `components/shop/nutrition-data.ts` |
 | Chai formulation, nutrition, amino acids | `components/shop/chai-data.ts` |
 | The calculator that generates both tables | `scripts/nutrition-calc.mjs` |
-| Prices, shipping, discounts (integer pence) | `lib/pricing.ts` |
-| Servings per pouch and per sample | `lib/commerce/catalog.ts` |
+| Prices, shipping, discounts, presents (integer pence) | `lib/pricing.ts` |
+| The rate card, asserted | `npm run pricing-check` (`scripts/pricing-check.mjs`) |
+| Shopify variant GIDs, and the admin jobs still outstanding | `docs/two-product-cart-plan.md` Phase 1 |
+| Servings per pouch and per sachet, and the mix SKU model | `lib/commerce/catalog.ts` |
+| Whether Chai can be added to a basket | `CHAI_SELLABLE` in `lib/commerce/config.ts` |
 | Protein per tablespoon for review maths | `PROTEIN_GRAMS_PER_TBSP` in `lib/reviews.ts` |
 
 Rules and process, in heldiweb:
@@ -216,44 +231,107 @@ house wording is "recommended daily intake".
 
 ---
 
-## 7. Current state, 3 September 2026
+## 7. What happened on 4 September, and where the build stands
 
-**heldiweb**, branch `chai-product-page`, three commits today:
+Nineteen commits on `chai-product-page`, **none of them pushed**. The whole day is
+still only on this Mac.
 
-- `e9fe313` read the whey certificate properly and solved the serving for ten grams
-- `dfba38c` fixed the checklist items the formulation change left stale
-- `da49d69` gave Chai its own section on Inside the pouch, and explained lecithin
+### 7a. The commercial model, settled and built
 
-Uncommitted: `docs/brand/guidelines-print.html` and `docs/two-product-cart-plan.md`,
-both untracked and pre-existing.
+Three numbers in `lib/pricing.ts` now define every pouch price. Change one and the
+ladder, both buy boxes, the drawer, the schema and the check script all follow:
 
-**HeldiPM**, branch `pouch-round15-new-formulation`, one commit today:
-
-- `53cda9e` put the settled recipe and declaration into the pack copy sources
-
-Uncommitted and **needing your review before committing**: `docs/back-prompt-master.md`
-and `lib/design-generation/{compliance.ts,prompt-builder.ts}` received large automated
-rewrites whose figures are right but whose surrounding editorialising is contested.
-`context/insert-card-copy.md` and `context/insert-card-front-prompt.md` are your own
-earlier work, untouched.
-
-**The print files were regenerated on 3 Sep at 18:00** and carry the settled
-declaration. The previous set is archived at
-`design/pouch-v2/print/archive/pre-round15-2026-09-03/`.
-
-To rebuild them after changing a source, from `design/pouch-v2/`:
-
-```bash
-python3 -c "import sys; sys.path.insert(0,'.'); import compose_back_v8 as cb; cb.compose(stem='print/heldi-khana-5x6-BACK', copy=cb.COPY, sku='khana'); cb.compose(stem='print/heldi-chai-5x6-BACK', copy=cb.COPY_CHAI, sku='chai')"
+```
+RRP_PENCE             = 3500   one pouch, Khana or Chai, same price
+BUNDLE_DISCOUNT_PENCE =  500   off the second pouch
+MAX_POUCHES           =    2   a single or a pair, in any mix
 ```
 
-```bash
-python3 -c "import sys; sys.path.insert(0,'.'); import compose_front_v8 as cf; cf.compose(stem='print/heldi-khana-5x6-FRONT', sku='khana'); cf.compose(stem='print/heldi-chai-5x6-FRONT', sku='chai')"
-```
+One pouch £35, a pair £65 against a £70 RRP. That gives exactly **five** things a
+customer can buy (1 Khana, 1 Chai, 2 Khana, 2 Chai, one of each), which is why
+Shopify has five pouch variants and not the twenty-seven an earlier plan assumed.
 
-Each writes an sRGB PNG, a CMYK TIFF and a DeviceCMYK PDF at 5.125 x 6.250 inches.
-Watch the printed `comp_xh_mm`: it must stay at or above 1.0, which is the legibility
-floor. The typesetter raises rather than clipping, so a genuine overflow fails loudly.
+**Samples:** a 30g sachet, £5 in Khana or Chai, £8 for the pair. 30g is 2 Khana meals
+at a 12g portion and 3 Chai mugs at 8g, derived and rounded down. That settled a fill
+the go-live checklist had been carrying as an open question in three places.
+
+**A free trial pair**, `HELDI-SAMPLE-PAIR-FREE`, £0 with an £8 compare-at, for the
+first 100. It is gated by INVENTORY, not by code: that one variant is tracked and
+stocked at 100 and closes itself. It is the only variant in the store that should
+have tracking on, which is the opposite of every other one.
+
+**Presents:** one set per order. A jar with a single, a jar and a tote with a pair.
+Never two jars. The masala dabba is withdrawn.
+
+**Codes:** family ACHABETA / RISHTA / SHABASH at 15% on any quantity; founders at 25%,
+one code per person; welcome free postage, the only thing that combines with a product
+discount. `PEHLEAAP` and the 20% promise are gone from the codebase entirely.
+
+**RRP is shown.** From two pouches up the page strikes the RRP through beside the
+price and names the saving. This reverses P2 of the plan, and the reason it is
+allowed where the old launch price was not: £35 is a price a single pouch genuinely
+sells at, so the comparison is real rather than a reference to a price nobody was
+charged. That is the line the DMCC draws.
+
+### 7b. What is built in code
+
+- **Phase 0 done.** The 20% promise is gone from all eight surfaces.
+- **Phase 2 done.** The mix model lives at the foot of `lib/commerce/catalog.ts`,
+  added BESIDE the old tier model rather than replacing it, so the build stayed green
+  throughout. The tier half goes when its last caller does.
+- **Phase 3 done and verified working.** A basket holds at most one pouch line whose
+  variant encodes both counts (`HELDI-K{khana}C{chai}`). The drawer shows one row per
+  product with its own stepper, a group price line, and the presents beneath. The
+  server clamp is `lib/commerce/shopify/cart-policy.ts`, wired into all four mutating
+  routes and the GET route.
+- **The launch email deep link.** `?claim=pair&code=XXX` lands on a basket with the
+  free pair in it and the code applied, and strips both params from the URL.
+- **Phase 4 partly done.** The Khana buy box offers one or two pouches priced from the
+  ladder. The Chai buy box still has no add-to-basket path, because Chai cannot be
+  sold yet.
+- **Phase 5 not started.** Stock, the orders webhook and `/api/stock`.
+
+### 7c. What is in Shopify
+
+Four products, all **DRAFT**: Heldi pouches (5 variants), Heldi samples (3), Heldi
+sample pair on us (1), Heldi tote bag (1). **Every GID is recorded in
+`docs/two-product-cart-plan.md` Phase 1 and nowhere else.** Read them from there
+rather than re-querying.
+
+Product images are exported and named by SKU in
+`public/images/originals/shopify-upload/` (gitignored). The MCP server has no media
+tool, so uploading them is a manual job.
+
+### 7d. Photography, reshot
+
+The jar in every shot on the site was a jar Heldi was never going to ship: no
+engraving, no spoon. The correct one is HeldiPM `design/merch/12-table-jar-brass.png`.
+Everything was reshot on GPT Image 2 against it, plus the new tote. Retired outright:
+both three-pouch shots, the dabba thumb, and the old jar thumb.
+
+Two lessons worth keeping. **Hand the model the actual artwork, not a description of
+it**: describing the wordmark produced an upright serif every time; uploading
+`public/images/heldi-wordmark.png` produced the real italic lockup immediately. And
+**read the print front before guessing at pack colour**: Khana is gold on navy, Chai
+is CREAM on terracotta, and they are meant to differ. I got that backwards twice.
+
+### 7e. The testing, and what it found
+
+Verified through the real UI on `npm run dev:mock` (live mode, mock provider, port
+3001). That is the only way to exercise the cart without a connected store.
+
+Functional testing found two silent money bugs: a family code that never applied to
+anything, and two product codes sitting on a cart at once with only one discounting.
+
+An adversarial review of the diff then found eight more, and **none of them were
+visible in the mock**, because the mock has no server clamp. Two would have broken the
+site: every step down silently emptied the basket, and an over-cap basket threw in a
+component mounted in the root layout, taking down every page. A third quoted £30 on
+the CTA for a pouch that costs £35, with £35 struck through against it, which is
+exactly the fabricated former price the code's own comment says the DMCC forbids.
+
+**The lesson for whoever picks this up: mock-mode green is not proof.** The clamp has
+still never run against a real Shopify cart.
 
 ---
 
@@ -286,11 +364,71 @@ Not print-blocking but commercially larger:
 7. **Shopify cannot take an order today.** No shipping rates, Payments in test mode,
    no business bank account, policies not pasted in.
 
+### Added 4 September: the admin work that blocks the checkout test
+
+None of these can be done by the MCP server, and every one of them independently
+stops a Storefront `cartCreate` from working. Until they are done the server-side
+clamp cannot be exercised at all, which is where the review found the subtle bugs.
+
+8. **Untrack inventory on the 8 paid variants.** A tracked-but-unstocked variant is
+   silently refused by the Storefront API, so this failure looks like a code bug. It
+   is the likeliest reason launch day appears broken.
+9. **`HELDI-SAMPLE-PAIR-FREE`: tracking ON, 100 units.** The only variant that should
+   have it on, which is easy to get backwards while doing item 8.
+10. **Publish all four products to the Headless channel** the Storefront token uses.
+    A draft can only be carted on a channel it is published to.
+11. **Both sample products onto the Sample shipping profile**, or a £0 pair still
+    charges £3.55 postage.
+12. **Rebuild the three family codes at 15%**, any quantity, once per customer,
+    combining with shipping discounts only. They are still the July 10% on single and
+    pair, and `GIFTING.percent` in the repo now says 15. Every surface reading it is
+    live-mode gated, so nothing is visibly wrong today, but the two must agree before
+    the mode flips.
+13. **Product images**, from `public/images/originals/shopify-upload/`, named by SKU.
+
+### Added 4 September: decisions still open
+
+- **The tote's stated worth.** `EXTRA_VALUE_PENCE.tote` is £6, a placeholder. It is a
+  stated worth on a free item, so it has to be defensible against a real retail price.
+- **Weigh the sample pair pack** against the Royal Mail Large Letter limit. Two
+  sachets have never been weighed together, and a parcel rate eats the whole £8.
+- **Chai's remaining gates**: printed label, finished-product gluten result, physical
+  stock. `CHAI_SELLABLE` stays false until all three land. Note it is inlined at build
+  time, so flipping it needs a redeploy with the build cache cleared.
+- **Klaviyo template `VnY8iQ`** still promises 20% off and £30 pouches. Both false.
+- **The launch email needs the claim link format**: `heldi.co.uk/?claim=pair&code=THEIR-CODE`.
+
 **Decided, so do not reopen:** no finished-product lab analysis for the first run.
 The calculation is the declaration, which FIC Art 31(4)(b) permits in its own right.
 What protects it is the tolerance: for protein above 40 g/100g the band is plus or
 minus 8g, so a declared 84.1 survives an analysed result from about 76 to 92. The
 certificate must live in the product technical file as the evidence behind it.
+
+---
+
+## 8b. Where to pick the build up
+
+In order, and the first is not optional:
+
+1. **Do the admin work in section 8, items 8 to 13.** Then run the verification matrix
+   in `docs/two-product-cart-plan.md` §8 against the real store. Expect to find bugs
+   the mock could not show: the clamp has never run against a real cart.
+2. **Finish Phase 4.** The shared buy box, so the Chai page has an add-to-basket path
+   behind `CHAI_SELLABLE`, and the "add the other pouch" row.
+3. **Phase 5.** The orders webhook writing to Supabase, `/api/stock`, and the pickers
+   reading real stock. The migration is pasted by hand in the dashboard: the heldi-dev
+   database is shared with another app, so `db push` and `migration repair` are banned.
+4. **Phase 6.** Docs, and the mirrors: `CLAUDE.md`, `AGENTS.md`,
+   `.cursor/rules/heldi-system.mdc` and `PLAYBOOK.md` all state the finishing gate
+   verbatim and none of them mention `npm run pricing-check` yet.
+
+Two things to know before touching the cart:
+
+- **Run `npm run dev:mock`** (live mode, mock provider, port 3001). Waitlist mode
+  renders no cart at all, and the normal dev server points at Shopify, where the draft
+  products do not resolve.
+- **The finishing gate is now four commands**: `npm run pricing-check`,
+  `npm run typecheck`, `npm run brand-lint`, `npm run build`.
 
 ---
 

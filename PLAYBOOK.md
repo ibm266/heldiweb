@@ -9,7 +9,7 @@ code disagree, the code wins; fix this file in the same change.
 **The finishing gate for every change** (memorise this, it closes every recipe):
 
 ```
-npm run brand-lint && npm run typecheck && npm run build
+npm run pricing-check && npm run brand-lint && npm run typecheck && npm run build
 ```
 
 then view the change in the browser **at a phone width AND a wide width** (see §1.6),
