@@ -102,6 +102,7 @@ Nothing here is needed for the page as it stands. It is the list of what the
 
 ### Shopify
 
+- [x] **Three DRAFT products created 4 Sep 2026.** "Heldi pouches" (5 mix variants), "Heldi samples" (3 sachets) and "Heldi sample pair, on us" (the £0 first-100 trial). All GIDs are recorded in [docs/two-product-cart-plan.md](docs/two-product-cart-plan.md) Phase 1 and exist nowhere else. **Five admin jobs still block the checkout test**, all listed there: untrack inventory on the 8 paid variants, set the free pair to tracked at 100, publish all three to the Headless channel, put the samples on the Sample shipping profile, and add weights and images
 - [ ] Create the **Heldi Chai** product with variants mirroring whatever `lib/pricing.ts` ends up carrying, SKUs in the `HELDI-CHAI-*` shape, and the images from `public/images/shop/chai-*.webp`. Then replace the placeholder GIDs the same way Khana's were on 16 Jul 2026
 - [ ] Two **archived** Chai products still sit in the store from the pre-bundle catalogue: `heldi-for-chai` at £20 and `heldi-chai-tadka-sample` at £4 (the archived trio SKUs alongside them are not Chai-specific). Leave them archived or delete them, but do not reuse their GIDs: they are on the old one-variant model
 - [ ] Add Chai to the shipping profile and the VAT setting alongside Khana

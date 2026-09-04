@@ -248,6 +248,62 @@ product is built DRAFT beside it.
    plus both gifts (Tracked 48 £3.55 under £40, free at £40 and over); the Sample
    profile is unchanged. With the ladder, only a single pouch ever pays postage.
 
+### Built 4 Sep 2026, and the GIDs Phase 2 needs
+
+Three products created DRAFT via the heldi-shopify MCP. Nothing else in the
+store was touched, and no discount was created. **These ids exist nowhere else:
+copy them into `lib/commerce/catalog.ts` in Phase 2 rather than re-querying.**
+
+```ts
+export const MIX_PRODUCT_ID = "gid://shopify/Product/15876757979519";      // "Heldi pouches"
+export const MIX_VARIANT_IDS: Record<string, string> = {
+  "HELDI-K1C0": "gid://shopify/ProductVariant/58361529893247", // 1 Khana, £35
+  "HELDI-K0C1": "gid://shopify/ProductVariant/58361529926015", // 1 Chai, £35
+  "HELDI-K2C0": "gid://shopify/ProductVariant/58361529958783", // 2 Khana, £65
+  "HELDI-K0C2": "gid://shopify/ProductVariant/58361529991551", // 2 Chai, £65
+  "HELDI-K1C1": "gid://shopify/ProductVariant/58361530024319"  // 1 of each, £65
+};
+
+export const SAMPLE_PRODUCT_ID = "gid://shopify/Product/15876758110591";   // "Heldi samples"
+export const SAMPLE_VARIANT_IDS: Record<string, string> = {
+  "HELDI-SAMPLE":      "gid://shopify/ProductVariant/58361530188159", // Khana 30g, £5
+  "HELDI-SAMPLE-CHAI": "gid://shopify/ProductVariant/58361530220927", // Chai 30g, £5
+  "HELDI-SAMPLE-PAIR": "gid://shopify/ProductVariant/58361530253695"  // one of each, £8
+};
+
+// "Heldi sample pair, on us": the free-trial SKU, one per person, first 100.
+export const FREE_PAIR_PRODUCT_ID = "gid://shopify/Product/15876777116031";
+export const FREE_PAIR_VARIANT_ID = "gid://shopify/ProductVariant/58361566790015";
+// SKU HELDI-SAMPLE-PAIR-FREE, £0.00, compare-at £8.00
+```
+
+**`HELDI-SAMPLE` now exists twice in the store**, on the new samples product and
+still on the old "Heldi Khana" Sample variant `57986783150463`. Shopify allowed
+it. Nothing keying off the SKU string can tell them apart until "Heldi Khana" is
+archived on launch day (§9 step 2). Do not add a third.
+
+Also note `SAMPLE_VARIANT_ID` at `lib/commerce/catalog.ts:46` still points at the
+old Khana Sample variant. Phase 2 repoints it.
+
+**The free pair is inventory-gated, not code-gated.** "First 100" is enforced by
+setting that one variant to tracked with 100 units; it sells out on its own and
+needs no discount code and no cart rule. It is the ONLY variant in the store that
+should have inventory tracking on.
+
+### Still needed in Shopify admin (the MCP cannot do these)
+
+Every one of these blocks the Phase 1 checkpoint below:
+
+1. **Untrack inventory** on the 8 pouch and sample variants. If tracking is on,
+   the Storefront API refuses to add them to a cart. This is the single most
+   likely reason the checkpoint fails.
+2. **Set the free pair to tracked, 100 units.**
+3. **Publish all three products to the Headless channel** the Storefront token
+   uses. A draft product can only be carted on a channel it is published to.
+4. **Shipping profiles:** "Heldi pouches" on the general profile; both samples
+   products on the Sample profile, or a £0 sample pair still charges £3.55.
+5. Variant weights, and product images.
+
 Checkpoint: a Storefront `cartCreate` with `HELDI-K1C0` + jar returns £35 and
 £0.00 with no userErrors; `HELDI-K1C1` + jar + tote returns £65; `SHABASH` on
 `K1C0` gives £29.75 and the welcome code on top leaves `discountCodes` with both
