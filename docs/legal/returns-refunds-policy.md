@@ -26,7 +26,7 @@ Please include your order number.
   using your original payment method.
 - We may reduce the refund if the value of the goods has been diminished by
   handling beyond what is necessary to inspect them.
-- Included items (jars, masala dabba) that came with a returned order must
+- Included items (the jar, the tote bag) that came with a returned order must
   be returned with it, or we may deduct their value from the refund.
 
 ## Damaged, faulty or wrong items

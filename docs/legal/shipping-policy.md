@@ -29,5 +29,5 @@ for what happens if an order is late or lost.
 
 ## Included items
 
-Items included with bundles (jars, masala dabba) ship in the same parcel as
+Items included with an order (the jar, the tote bag) ship in the same parcel as
 your pouches.

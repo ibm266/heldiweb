@@ -46,7 +46,7 @@ If we discover an obvious pricing error before dispatch we will contact you
 to reconfirm or cancel with a full refund.
 
 Promotions (launch prices, bundle prices, gifting discount codes, included
-items such as jars or the masala dabba) apply only while advertised, cannot
+items such as the jar or the tote bag) apply only while advertised, cannot
 be exchanged for cash, and one discount per order unless stated otherwise.
 
 ## 5. Delivery
