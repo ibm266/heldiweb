@@ -11,6 +11,7 @@
 // the real TypeScript source through Node's type stripping. It cannot drift
 // from the site, because it imports exactly what the site imports.
 
+import { readFileSync } from "node:fs";
 import {
   RRP_PENCE,
   BUNDLE_DISCOUNT_PENCE,
@@ -221,12 +222,35 @@ check("three sample things a customer can buy", samples.length, 3);
 for (const m of samples) console.log(`       ${m.sku.padEnd(18)} sachet     ${f(m.pence)}`);
 check("eight sellable things in total", mixes.length + samples.length, 8);
 
+// --- Shopify variant coverage -----------------------------------------------
+// lib/commerce/catalog.ts resolves through the "@/" alias, which this script
+// cannot import, so the GID map is read as text. That still catches the failure
+// that matters: a mix a customer can pick with no variant behind it.
+console.log("\n== Shopify variant coverage ==");
+const catalogSrc = readFileSync(new URL("../lib/commerce/catalog.ts", import.meta.url), "utf8");
+const gidFor = (sku) => {
+  const m = new RegExp(`"${sku}":\\s*"(gid://shopify/ProductVariant/\\d+)"`).exec(catalogSrc);
+  return m ? m[1] : null;
+};
+let missing = 0;
+for (const m of mixes) {
+  const gid = gidFor(m.sku);
+  if (!gid) missing++;
+  check(`${m.sku} has a variant id`, gid !== null, true);
+}
+for (const sku of ["HELDI-SAMPLE", "HELDI-SAMPLE-CHAI", "HELDI-SAMPLE-PAIR"]) {
+  check(`${sku} has a variant id`, gidFor(sku) !== null, true);
+}
+const gids = [...catalogSrc.matchAll(/gid:\/\/shopify\/ProductVariant\/(\d+)/g)].map((m) => m[1]);
+check("no variant id is reused", new Set(gids).size, gids.length);
+if (missing > 0) console.log(`       ${missing} mix(es) a customer can pick with nothing behind them`);
+
 // --- Result -----------------------------------------------------------------
 console.log("");
 if (failures > 0) {
   console.log(`FAILED: ${failures} assertion${failures === 1 ? "" : "s"} disagree with the agreed rate card.`);
-  console.log("If a parameter changed on purpose, update this script, BRAND.md §11.3,");
-  console.log("the Price Book, and the 27 Shopify variant prices in the same commit.");
+  console.log("If a parameter changed on purpose, update this script, BRAND.md §10,");
+  console.log("the Price Book, and the Shopify variant prices in the same commit.");
   process.exit(1);
 }
 console.log("The rate card matches lib/pricing.ts.");

@@ -1,13 +1,17 @@
 import {
   EXTRA_VALUE_PENCE,
+  MAX_POUCHES,
   SAMPLE_PRICE_PENCE,
   TIERS,
   TIER_ORDER,
   giftCountsForPouches,
+  ladderPence,
   packPouches,
+  presentsForPouches,
+  samplePairPence,
   type TierId
 } from "@/lib/pricing";
-import { CHAI_SERVING_GRAMS } from "@/components/shop/chai-data";
+import { CHAI_IMAGES, CHAI_SERVING_GRAMS } from "@/components/shop/chai-data";
 import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
 import { moneyToPence, penceToMoney } from "./money";
 import type {
@@ -440,5 +444,200 @@ export function pouchPenceForLines(
   return lines.reduce((sum, line) => {
     const tier = tierForSku(line.merchandise.sku);
     return tier ? sum + TIERS[tier].launchPence * line.quantity : sum;
+  }, 0);
+}
+
+// ---------------------------------------------------------------------------
+// The mix model
+// ---------------------------------------------------------------------------
+// Added 4 Sep 2026 beside the tier model above rather than replacing it, so the
+// build stays green while the cart, the drawer and the buy box move over one at
+// a time. Nothing here is wired up yet. When the last caller of tierForSku /
+// packPouches / linesForPouchCount is gone, everything above the divider goes
+// with it.
+//
+// A basket holds AT MOST ONE pouch line. Its variant encodes the whole order:
+// HELDI-K{khana}C{chai}, so two Khana and one Chai would be K2C1. Changing a
+// count swaps the variant rather than editing a quantity, which is why the cart
+// diff replaces the line instead of stepping it. Five variants exist, because
+// two pouches is the ceiling (lib/pricing.ts MAX_POUCHES).
+//
+// Created in Shopify 4 Sep 2026, all DRAFT. Ids also recorded in
+// docs/two-product-cart-plan.md Phase 1.
+
+export const MIX_PRODUCT_ID = "gid://shopify/Product/15876757979519";
+
+/** Mix SKU to variant GID. The five things a customer can buy. */
+export const MIX_VARIANT_IDS: Record<string, string> = {
+  "HELDI-K1C0": "gid://shopify/ProductVariant/58361529893247",
+  "HELDI-K0C1": "gid://shopify/ProductVariant/58361529926015",
+  "HELDI-K2C0": "gid://shopify/ProductVariant/58361529958783",
+  "HELDI-K0C2": "gid://shopify/ProductVariant/58361529991551",
+  "HELDI-K1C1": "gid://shopify/ProductVariant/58361530024319"
+};
+
+export const SAMPLE_PRODUCT_ID = "gid://shopify/Product/15876758110591";
+export const SAMPLE_CHAI_SKU = "HELDI-SAMPLE-CHAI";
+export const SAMPLE_PAIR_SKU = "HELDI-SAMPLE-PAIR";
+
+/** Sachet SKU to variant GID. SAMPLE_SKU above keeps its old string on purpose:
+ *  the orders webhook keys off it. Note it now exists on TWO products until the
+ *  old "Heldi Khana" is archived on launch day. */
+export const SAMPLE_VARIANT_IDS: Record<string, string> = {
+  "HELDI-SAMPLE": "gid://shopify/ProductVariant/58361530188159",
+  "HELDI-SAMPLE-CHAI": "gid://shopify/ProductVariant/58361530220927",
+  "HELDI-SAMPLE-PAIR": "gid://shopify/ProductVariant/58361530253695"
+};
+
+// The free trial pair. Gated by INVENTORY, not by code: that variant is the one
+// item in the store with tracking ON, stocked at 100, so it closes itself when
+// the hundredth is claimed. No discount code, no cart rule, nothing to expire.
+export const FREE_PAIR_PRODUCT_ID = "gid://shopify/Product/15876777116031";
+export const FREE_PAIR_VARIANT_ID = "gid://shopify/ProductVariant/58361566790015";
+export const FREE_PAIR_SKU = "HELDI-SAMPLE-PAIR-FREE";
+
+export const TOTE_PRODUCT_ID = "gid://shopify/Product/15876954128767";
+export const TOTE_VARIANT_ID = "gid://shopify/ProductVariant/58362101268863";
+export const TOTE_SKU = "HELDI-TOTE";
+
+export function isToteGiftLine(line: Pick<CartLine, "merchandise">): boolean {
+  return (
+    line.merchandise.id === TOTE_VARIANT_ID || line.merchandise.sku === TOTE_SKU
+  );
+}
+
+/** `HELDI-K2C1` for two Khana and one Chai. */
+export function mixSku(khana: number, chai: number): string {
+  return `HELDI-K${khana}C${chai}`;
+}
+
+/** The counts back out of a SKU, or null if it is not one of ours. Deliberately
+ *  strict: an unknown or out-of-range SKU returns null rather than a guess, so a
+ *  hand-crafted cart line cannot inflate a pouch count. */
+export function parseMixSku(
+  sku: string | null | undefined
+): { khana: number; chai: number; pouches: number } | null {
+  if (!sku) return null;
+  const match = /^HELDI-K(\d+)C(\d+)$/.exec(sku);
+  if (!match) return null;
+  const khana = Number(match[1]);
+  const chai = Number(match[2]);
+  const pouches = khana + chai;
+  if (pouches < 1 || pouches > MAX_POUCHES) return null;
+  return { khana, chai, pouches };
+}
+
+export function isMixSku(sku: string | null | undefined): boolean {
+  return parseMixSku(sku) !== null;
+}
+
+/** The variant a (khana, chai) selection maps to, or null if it is not buyable. */
+export function mixVariantIdFor(khana: number, chai: number): string | null {
+  return MIX_VARIANT_IDS[mixSku(khana, chai)] ?? null;
+}
+
+/** True for the single pouch line of a basket. Matches by GID first, SKU as a
+ *  fallback, mirroring isGiftLine. */
+export function isMixLine(line: Pick<CartLine, "merchandise">): boolean {
+  return (
+    Object.values(MIX_VARIANT_IDS).includes(line.merchandise.id) ||
+    isMixSku(line.merchandise.sku)
+  );
+}
+
+/** What a basket actually holds. Multiplies by line quantity so a cart mutated
+ *  outside the site reports the truth rather than what it should have been; the
+ *  server-side clamp is what refuses it. */
+export function pouchCounts(
+  lines: Pick<CartLine, "quantity" | "merchandise">[]
+): { khana: number; chai: number; pouches: number } {
+  return lines.reduce(
+    (totals, line) => {
+      const mix = parseMixSku(line.merchandise.sku);
+      if (!mix) return totals;
+      return {
+        khana: totals.khana + mix.khana * line.quantity,
+        chai: totals.chai + mix.chai * line.quantity,
+        pouches: totals.pouches + mix.pouches * line.quantity
+      };
+    },
+    { khana: 0, chai: 0, pouches: 0 }
+  );
+}
+
+/** The one pouch line a (khana, chai) selection should become. Null for an
+ *  empty or unbuyable selection, which the caller reads as "no pouch line". */
+export function mixLineForCounts(
+  khana: number,
+  chai: number
+): CartLineInput | null {
+  const id = mixVariantIdFor(khana, chai);
+  return id ? { merchandiseId: id, quantity: 1 } : null;
+}
+
+/** The free lines a basket of `pouches` pouches earns: a jar with a single, a
+ *  jar and a tote with a pair. One set per order, never per pouch. */
+export function presentLinesForPouches(pouches: number): CartLineInput[] {
+  if (pouches < 1 || pouches > MAX_POUCHES) return [];
+  const { jars, totes } = presentsForPouches(pouches);
+  const lines: CartLineInput[] = [];
+  if (jars > 0) lines.push({ merchandiseId: JAR_VARIANT_ID, quantity: jars });
+  if (totes > 0) lines.push({ merchandiseId: TOTE_VARIANT_ID, quantity: totes });
+  return lines;
+}
+
+/** Gallery shot for a selection: the product's own shot when the basket is all
+ *  one thing, the mixed pair when it is one of each. */
+export function imageForCounts(khana: number, chai: number): ProductImage {
+  if (khana > 0 && chai > 0) return TIER_IMAGES.triple;
+  if (chai > 0) return CHAI_IMAGES[chai >= 2 ? 2 : 0];
+  return TIER_IMAGES[khana >= 2 ? "double" : "single"];
+}
+
+/** Every pouch in a basket at its ladder price. Both product discount classes
+ *  key off this; the Sample and the free gifts are excluded. Replaces the split
+ *  between giftingEligiblePenceForLines and pouchPenceForLines, which existed
+ *  only because the old tiers discounted differently. */
+export function pouchPenceForCounts(
+  lines: Pick<CartLine, "quantity" | "merchandise">[]
+): number {
+  const { pouches } = pouchCounts(lines);
+  return pouches >= 1 && pouches <= MAX_POUCHES ? ladderPence(pouches) : 0;
+}
+
+/** Basket badge count: pouches one by one, plus sachets. Gifts never count. */
+export function cartItemCountV2(
+  lines: Pick<CartLine, "quantity" | "merchandise">[]
+): number {
+  const { pouches } = pouchCounts(lines);
+  const sachets = lines.reduce((sum, line) => {
+    const sku = line.merchandise.sku;
+    if (!sku) return sum;
+    const isSachet =
+      sku === SAMPLE_SKU ||
+      sku === SAMPLE_CHAI_SKU ||
+      sku === SAMPLE_PAIR_SKU ||
+      sku === FREE_PAIR_SKU;
+    return isSachet ? sum + line.quantity : sum;
+  }, 0);
+  return pouches + sachets;
+}
+
+/** What a sachet line costs, by SKU. */
+export function samplePenceForSku(sku: string): number {
+  if (sku === FREE_PAIR_SKU) return 0;
+  if (sku === SAMPLE_PAIR_SKU) return samplePairPence();
+  if (sku === SAMPLE_SKU || sku === SAMPLE_CHAI_SKU) return SAMPLE_PRICE_PENCE;
+  return 0;
+}
+
+/** Worth of the free items in a basket, for the drawer's "You're saving" row. */
+export function presentWorthForLines(
+  lines: Pick<CartLine, "quantity" | "merchandise">[]
+): number {
+  return lines.reduce((sum, line) => {
+    if (isJarGiftLine(line)) return sum + EXTRA_VALUE_PENCE.jar * line.quantity;
+    if (isToteGiftLine(line)) return sum + EXTRA_VALUE_PENCE.tote * line.quantity;
+    return sum;
   }, 0);
 }

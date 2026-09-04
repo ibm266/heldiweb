@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8" />
+<title>Heldi brand guidelines</title>
+<!--
+  PRINT SOURCE for docs/brand/heldi-brand-guidelines.pdf.
+  Companion to BRAND.md (the authority) and specimen.html (the live component board).
+  Regenerate the PDF with:
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless \
+      --disable-gpu --no-pdf-header-footer --virtual-time-budget=20000 \
+      --print-to-pdf=docs/brand/heldi-brand-guidelines.pdf \
+      docs/brand/guidelines-print.html
+  Image paths resolve against ../../public/images/, so print from the repo root.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Gelasio:ital,wght@0,400;0,500;0,600;1,400&family=Rozha+One&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --gold: #eda31d;
+    --ink: #011246;
+    --ink-rgb: 1 18 70;
+    --cream: #f8f0de;
+    --terracotta: #a8432b;
+    --brown: #4a4238;
+    --muted: #8a8378;
+    --dark-muted: #b5ad9f;
+    --warm-dark: #2c2418;
+    --display: "Rozha One", Georgia, serif;
+    --body: "Gelasio", Georgia, serif;
+  }
+
+  @page { size: A4; margin: 0; }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ddd;
+    font-family: var(--body);
+    color: var(--ink);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    position: relative;
+    width: 210mm;
+    height: 297mm;
+    padding: 17mm 16mm 15mm;
+    margin: 0 auto;
+    background: var(--cream);
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .page--ink { background: var(--ink); color: var(--cream); }
+  .page--gold { background: var(--gold); color: var(--ink); }
+
+  /* ---------- running furniture ---------- */
+  .runner {
+    position: absolute;
+    left: 16mm; right: 16mm; bottom: 9mm;
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 7.5pt; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted);
+    border-top: 1.5px solid rgb(var(--ink-rgb) / 18%);
+    padding-top: 3mm;
+  }
+  .page--ink .runner { color: var(--dark-muted); border-top-color: rgb(255 255 255 / 22%); }
+
+  .eyebrow {
+    margin: 0 0 3mm;
+    font-size: 8.5pt; font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--terracotta);
+  }
+  .page--ink .eyebrow { color: var(--gold); }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; }
+  h2 { font-size: 27pt; line-height: 1.08; margin: 0 0 4mm; }
+  h3 { font-size: 14pt; line-height: 1.15; margin: 0 0 2mm; }
+
+  p { margin: 0 0 3.5mm; font-size: 10pt; line-height: 1.55; color: var(--brown); }
+  .page--ink p { color: var(--dark-muted); }
+  .lede { max-width: 145mm; font-size: 10.5pt; }
+  strong { font-weight: 600; color: var(--ink); }
+  .page--ink strong { color: var(--cream); }
+  em { font-style: italic; }
+  code, .mono {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.82em; letter-spacing: 0;
+  }
+
+  .rule-double { height: 7px; border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); margin: 5mm 0; }
+
+  /* ---------- cover ---------- */
+  .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; }
+  .cover__logo { width: 92mm; }
+  .cover__pron { font-family: var(--body); font-style: italic; font-size: 11pt; color: var(--warm-dark); margin: 4mm 0 0; }
+  .cover h1 { font-size: 46pt; line-height: 1.05; color: var(--ink); margin: 12mm 0 3mm; }
+  .cover__sub { font-size: 12pt; color: var(--warm-dark); letter-spacing: 0.02em; margin: 0; }
+  .cover__elephant { position: absolute; bottom: 20mm; width: 46mm; opacity: 0.92; }
+  .cover__elephant--left { left: 9mm; transform: scaleX(-1); }
+  .cover__elephant--right { right: 9mm; }
+  .cover__meta {
+    position: absolute; left: 16mm; right: 16mm; bottom: 12mm;
+    display: flex; justify-content: space-between;
+    font-size: 8.5pt; letter-spacing: 0.2em; text-transform: uppercase; color: var(--warm-dark);
+  }
+
+  /* ---------- swatches ---------- */
+  .swatch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
+  .swatch {
+    border: 3px solid var(--ink); border-radius: 14px; overflow: hidden;
+    box-shadow: 5px 5px 0 var(--ink); background: #fff;
+  }
+  .swatch__chip { height: 26mm; border-bottom: 3px solid var(--ink); display: flex; align-items: flex-end; padding: 2.5mm 3mm; }
+  .swatch__chip span { font-family: var(--display); font-size: 11pt; }
+  .swatch__body { padding: 3mm 3.5mm 3.5mm; }
+  .swatch__token { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 8pt; color: var(--ink); font-weight: 600; }
+  .swatch__hex { font-family: var(--display); font-size: 13pt; letter-spacing: 0.02em; display: block; margin: 0.5mm 0 1.5mm; }
+  .swatch__use { font-size: 8.5pt; line-height: 1.4; color: var(--brown); margin: 0; }
+
+  /* ---------- tables ---------- */
+  table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+  th, td { text-align: left; padding: 2.4mm 2.5mm; border-bottom: 1.5px solid rgb(var(--ink-rgb) / 16%); vertical-align: top; line-height: 1.4; }
+  th { font-size: 8pt; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; color: var(--terracotta); border-bottom: 2.5px solid var(--ink); }
+  td.num { font-family: var(--display); font-size: 12pt; white-space: nowrap; }
+  table.tight td, table.tight th { padding: 1.9mm 2.5mm; }
+  table.tight td { font-size: 8.6pt; }
+  .pass { color: #1d6b3a; font-weight: 600; }
+  .warn { color: var(--terracotta); font-weight: 600; }
+
+  /* ---------- misc blocks ---------- */
+  .note {
+    border: 3px solid var(--ink); border-radius: 16px; background: #fff;
+    box-shadow: 6px 6px 0 var(--ink); padding: 5mm 5.5mm; margin: 5mm 0 0;
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note h3 { color: var(--ink); }
+
+  .band { border: 3px solid var(--ink); border-radius: 12px; overflow: hidden; }
+  .band > div { padding: 5mm 5.5mm; }
+  .band__cream { background: var(--cream); }
+  .band__ink { background: var(--ink); color: var(--cream); }
+  .band__gold { background: var(--gold); }
+  .band .label { font-size: 8pt; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin: 0 0 1.5mm; }
+  .band .demo-h { font-family: var(--display); font-size: 16pt; line-height: 1.1; margin: 0 0 1.5mm; }
+  .band .demo-p { font-size: 9pt; line-height: 1.5; margin: 0; }
+  .band__cream .label, .band__gold .label { color: var(--terracotta); }
+  .band__ink .label { color: var(--gold); }
+  .band__cream .demo-p { color: var(--brown); }
+  .band__gold .demo-p { color: var(--warm-dark); }
+  .band__ink .demo-p { color: var(--dark-muted); }
+  .band__ink .demo-h { color: var(--cream); }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .cols--wide { grid-template-columns: 1.15fr 0.85fr; }
+
+  /* type specimen */
+  .specimen { border-bottom: 2.5px solid var(--ink); padding-bottom: 4mm; margin-bottom: 4mm; }
+  .specimen__glyphs { font-family: var(--display); font-size: 40pt; line-height: 1.05; margin: 0 0 2mm; color: var(--ink); }
+  .specimen__glyphs--body { font-family: var(--body); font-size: 26pt; }
+  .specimen__meta { font-size: 9pt; color: var(--brown); margin: 0; line-height: 1.5; }
+
+  /* shape demos */
+  .demo-row { display: flex; flex-wrap: wrap; gap: 6mm; align-items: flex-start; margin: 0 0 5mm; }
+  .sticker { background: var(--cream); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 var(--ink); padding: 4mm 5mm; }
+  .sticker--white { background: #fff; border-radius: 20px; box-shadow: 8px 8px 0 var(--ink); }
+  .menu-card { background: var(--cream); border: 3px solid var(--ink); border-radius: 18px; box-shadow: 6px 6px 0 rgb(237 163 29 / 90%); padding: 4mm 5mm; width: 78mm; }
+  .menu-card--gold { background: var(--gold); box-shadow: 6px 6px 0 rgb(248 240 222 / 85%); }
+  .menu-row { display: flex; align-items: baseline; gap: 2mm; font-size: 9.5pt; margin-top: 2.5mm; }
+  .menu-row .leader { flex: 1; border-bottom: 1.5px dotted rgb(var(--ink-rgb) / 45%); transform: translateY(-2px); }
+  .gram { font-family: var(--display); font-size: 10pt; border: 2px solid var(--ink); border-radius: 999px; padding: 0.4mm 2.4mm; background: #fff; }
+  .gram--on { background: var(--gold); }
+  .menu-card--gold .gram--on { background: var(--ink); color: var(--gold); }
+
+  .pill { display: inline-block; border: 2px solid var(--ink); border-radius: 999px; background: #fff; padding: 1.5mm 4mm; font-size: 9pt; box-shadow: 4px 4px 0 var(--ink); }
+  .pill--active { background: var(--ink); color: var(--gold); }
+  .pill--plain { box-shadow: none; border-width: 1.5px; border-color: rgb(var(--ink-rgb) / 32%); }
+  .coin { width: 14mm; height: 14mm; border: 3px solid var(--ink); border-radius: 999px; background: #fff; display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 9.5pt; }
+  .coin--gold { background: var(--ink); color: var(--gold); }
+  .ticket { display: inline-block; border: 2px solid var(--ink); border-left: 3px dotted var(--ink); border-radius: 4px 16px 16px 4px; background: var(--gold); font-family: var(--display); font-size: 11pt; letter-spacing: 0.12em; padding: 1.5mm 4mm; }
+
+  .btn { display: inline-block; border: 0; background: var(--ink); color: var(--gold); font-family: var(--body); font-weight: 600; font-size: 9.5pt; padding: 2mm 5mm; border-radius: 999px; }
+  .btn--square { border-radius: 8px; }
+  .btn--hover { background: var(--terracotta); color: var(--cream); }
+  .btn--outline { background: transparent; border: 2px solid var(--ink); color: var(--ink); }
+  .btn--outline-hover { background: var(--ink); color: var(--gold); border: 2px solid var(--ink); }
+  .btn--ghost { background: transparent; color: var(--ink); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.2em; padding-left: 0; padding-right: 0; }
+  .btn--focus { outline: 3px solid #fff; outline-offset: 3px; }
+
+  ul { margin: 0 0 3.5mm; padding-left: 5mm; font-size: 9.5pt; line-height: 1.55; color: var(--brown); }
+  li { margin-bottom: 1.5mm; }
+  .page--ink ul { color: var(--dark-muted); }
+
+  .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .do-dont h3 { font-size: 12pt; }
+  .do-dont .do { color: #1d6b3a; }
+  .do-dont .dont { color: var(--terracotta); }
+
+  .toc { font-size: 10pt; }
+  .toc li { margin-bottom: 2mm; color: var(--brown); }
+  .toc strong { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<!-- ============ 1. COVER ============ -->
+<section class="page page--gold">
+  <div class="cover">
+    <img class="cover__logo" src="../../public/images/heldi-wordmark.png" alt="Heldi" />
+    <p class="cover__pron">/hel-dee/, <em>adj.</em> how my nani says &ldquo;healthy.&rdquo;</p>
+    <h1>Brand<br />guidelines</h1>
+    <p class="cover__sub">Colour, type and the shape language</p>
+  </div>
+  <img class="cover__elephant cover__elephant--left" src="../../public/images/elephant-large-transparent.png" alt="" />
+  <img class="cover__elephant cover__elephant--right" src="../../public/images/elephant-large-transparent.png" alt="" />
+  <div class="cover__meta">
+    <span>They shake, we stir</span>
+    <span>Version 1 &middot; August 2026</span>
+  </div>
+</section>
+
+<!-- ============ 2. IN ONE BREATH ============ -->
+<section class="page">
+  <p class="eyebrow">The brand in one breath</p>
+  <h2>Desi protein for Indian food.</h2>
+  <p class="lede"><strong>Heldi is a whey protein isolate blend that disappears into dal, curry, sabzi
+  and raita</strong>, so the meals a UK desi family already cooks quietly carry more protein.
+  No shaker, no new habits, no separate &ldquo;healthy&rdquo; cooking.</p>
+
+  <div class="rule-double"></div>
+
+  <div class="cols">
+    <div>
+      <h3>Name</h3>
+      <p>/hel-dee/, <em>adj.</em> how my nani says &ldquo;healthy.&rdquo; The founder&rsquo;s nani&rsquo;s
+      pronunciation, adopted as the brand. This line runs verbatim on the hero and the pack.</p>
+      <h3>Slogan</h3>
+      <p><strong>They shake, we stir.</strong> A Bond allusion, and it is locked: ticker, footer,
+      meta description, Organization schema.</p>
+      <h3>Tagline family</h3>
+      <p>&ldquo;The same food, just a little Heldier.&rdquo; &middot; &ldquo;Bringing something new to
+      the table.&rdquo; &middot; &ldquo;Same recipes. Same taste. More protein.&rdquo;</p>
+    </div>
+    <div>
+      <h3>Who we are talking to</h3>
+      <p>UK desi households, roughly 20 to 60, cooking Indian food at home. Second-generation
+      buyers sorting out their parents, and the parents, aunties and uncles themselves. Always
+      British English, always UK reference points.</p>
+      <h3>What this document is</h3>
+      <p>The visual half of the brand: colour, type, shape, motion and imagery, plus a short
+      voice reminder. It is a snapshot for sharing.</p>
+      <p><strong>The authority is <code>BRAND.md</code> in the repo</strong>, and the live component
+      board is <code>docs/brand/specimen.html</code>, which links the production stylesheet. If those
+      two disagree with this PDF, they win.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <h3>The five pillars, in one line each</h3>
+    <ul style="margin-bottom:0">
+      <li><strong>Radical honesty about food numbers.</strong> We concede the point before we sell.</li>
+      <li><strong>Food first, supplements second.</strong> The part of milk that has always been there.</li>
+      <li><strong>The family table.</strong> One pot, everyone eats, nobody cooks twice.</li>
+      <li><strong>Desi pride without the stigma.</strong> Not gym-boy, not wellness.</li>
+      <li><strong>Proof over promise.</strong> Grams, labels and paper trails.</li>
+    </ul>
+  </div>
+
+  <div class="runner"><span>Heldi brand guidelines</span><span>02</span></div>
+</section>
+
+<!-- ============ 3. PALETTE ============ -->
+<section class="page">
+  <p class="eyebrow">Colour &middot; 3.1 the palette</p>
+  <h2>Nine colours. Ink does the talking.</h2>
+  <p class="lede">Every one of these is a CSS custom property in <code>app/globals.css</code>. Use the token,
+  not the hex, in code. Marigold and cream carry the warmth, ink carries the structure: every border,
+  every hard shadow and every wordmark is ink.</p>
+
+  <div class="swatch-grid">
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#eda31d"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">--gold</div>
+        <span class="swatch__hex">#EDA31D</span>
+        <p class="swatch__use">Marigold. Hero and gold sections, brand chip, accents on ink.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#011246"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">--ink</div>
+        <span class="swatch__hex">#011246</span>
+        <p class="swatch__use">Text, dark sections, every border and hard shadow, the wordmark.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#f8f0de"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">--cream</div>
+        <span class="swatch__hex">#F8F0DE</span>
+        <p class="swatch__use">Light sections, card backgrounds, text on ink.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#a8432b"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">--terracotta</div>
+        <span class="swatch__hex">#A8432B</span>
+        <p class="swatch__use">Eyebrows, stats, active accents, every hover state.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#4a4238"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">--brown</div>
+        <span class="swatch__hex">#4A4238</span>
+        <p class="swatch__use">Body copy on cream and on gold.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#8a8378"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">--muted</div>
+        <span class="swatch__hex">#8A8378</span>
+        <p class="swatch__use">Footer secondary, story notes. Never small body copy.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#b5ad9f"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">--dark-muted</div>
+        <span class="swatch__hex">#B5AD9F</span>
+        <p class="swatch__use">Body copy on ink sections.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#2c2418"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">warm dark</div>
+        <span class="swatch__hex">#2C2418</span>
+        <p class="swatch__use">Hero sublines on marigold. Warmer than ink at small sizes.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch__chip" style="background:#ffffff"></div>
+      <div class="swatch__body">
+        <div class="swatch__token">white</div>
+        <span class="swatch__hex">#FFFFFF</span>
+        <p class="swatch__use">Nav card, sticker cards, pills, the focus ring.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <h3>Never <span class="mono">#000</span></h3>
+    <p>Anything black in a supplied or generated asset gets recoloured to ink before it ships.
+    Marigold, cream, metallics and white stay exactly as they are. The recoloured set lives in
+    <code>public/images/variants/ink-blue/</code>. Jar lids are the one place a gradient is allowed,
+    and only in imagery: gold <span class="mono">#F6D47C &rarr; #C98F1B</span>, silver
+    <span class="mono">#F4F4F4 &rarr; #9AA0A6</span>.</p>
+  </div>
+
+  <div class="runner"><span>Colour</span><span>03</span></div>
+</section>
+
+<!-- ============ 4. SECTION SCHEMES ============ -->
+<section class="page">
+  <p class="eyebrow">Colour &middot; 3.2 the three schemes</p>
+  <h2>Cream, ink, gold. Repeat.</h2>
+  <p class="lede">Colour is applied by the section, never by the element. Pages alternate down the
+  scroll so no two neighbours share a background, and where two colours meet they are separated by a
+  3px ink top border or the signature double rule.</p>
+
+  <div class="band">
+    <div class="band__cream">
+      <p class="label">Cream &middot; the default</p>
+      <p class="demo-h">Cook like always.</p>
+      <p class="demo-p">Body copy sits in brown on cream. Cards go white or cream with a 3px ink
+      border. This is where most explaining happens.</p>
+    </div>
+    <div class="band__ink">
+      <p class="label">Ink &middot; the pause</p>
+      <p class="demo-h">Here is a normal day, weighed honestly.</p>
+      <p class="demo-p">Headings in cream, body in dark muted, accents and numbers in marigold.
+      Used for the truth beats and the closing call to action.</p>
+    </div>
+    <div class="band__gold">
+      <p class="label">Marigold &middot; the welcome</p>
+      <p class="demo-h">They shake, we stir.</p>
+      <p class="demo-p">Ink headings, warm dark sublines. The hero and the joyful moments.
+      Terracotta is not legible here, so it never carries text on gold.</p>
+    </div>
+  </div>
+
+  <div class="rule-double"></div>
+
+  <div class="cols">
+    <div>
+      <h3>The double rule</h3>
+      <p>7px tall, <code>border-block: 3px solid var(--ink)</code>. It is the brand&rsquo;s punctuation
+      mark between two coloured bands. The lighter alternative is a single 3px ink top border.</p>
+      <h3>Rhythm</h3>
+      <p>Vertical padding <code>clamp(3.5rem, 8vw, 6rem)</code>. Content maxes at 1152px, FAQ at 860px,
+      story prose at 640px.</p>
+    </div>
+    <div>
+      <h3>Two layouts, always</h3>
+      <p>Every surface ships a deliberate mobile layout (up to 899px) and a deliberate wide layout
+      (900px and up), sharing one DOM and sized with <code>clamp()</code> between them. Structure
+      changes at that single breakpoint and nowhere else.</p>
+      <p><strong>&ldquo;The same thing but narrower&rdquo; is not a mobile design.</strong> Check 375px
+      and 1280px before calling anything finished.</p>
+    </div>
+  </div>
+
+  <div class="runner"><span>Colour</span><span>04</span></div>
+</section>
+
+<!-- ============ 5. CONTRAST ============ -->
+<section class="page">
+  <p class="eyebrow">Colour &middot; 3.3 pairings and contrast</p>
+  <h2>Which colour may sit on which.</h2>
+  <p class="lede">Measured contrast ratios for the pairings that actually appear on the site. AA needs
+  4.5:1 for body copy and 3:1 for large text, meaning 24px, or 18.66px when bold.</p>
+
+  <table>
+    <thead>
+      <tr><th style="width:38%">Foreground on background</th><th style="width:14%">Ratio</th><th style="width:20%">Verdict</th><th>Where it is used</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Ink on cream</td><td class="num">15.7</td><td class="pass">AAA</td><td>All body and headings on cream</td></tr>
+      <tr><td>Ink on white</td><td class="num">17.9</td><td class="pass">AAA</td><td>Cards, pills, nav</td></tr>
+      <tr><td>Ink on marigold</td><td class="num">8.4</td><td class="pass">AAA</td><td>Hero headings, gold sections</td></tr>
+      <tr><td>Cream on ink</td><td class="num">15.7</td><td class="pass">AAA</td><td>Headings on ink sections</td></tr>
+      <tr><td>Marigold on ink</td><td class="num">8.4</td><td class="pass">AAA</td><td>Accents, numerals, button text</td></tr>
+      <tr><td>Dark muted on ink</td><td class="num">8.0</td><td class="pass">AAA</td><td>Body copy on ink sections</td></tr>
+      <tr><td>Brown on cream</td><td class="num">8.7</td><td class="pass">AAA</td><td>Body copy on cream</td></tr>
+      <tr><td>Warm dark on marigold</td><td class="num">7.2</td><td class="pass">AAA</td><td>Hero sublines</td></tr>
+      <tr><td>Terracotta on white</td><td class="num">6.0</td><td class="pass">AA</td><td>Eyebrows, stats, hover on cards</td></tr>
+      <tr><td>Terracotta on cream</td><td class="num">5.3</td><td class="pass">AA</td><td>Eyebrows, active accents</td></tr>
+      <tr><td>Brown on marigold</td><td class="num">4.6</td><td class="pass">AA</td><td>Body copy on gold, only just</td></tr>
+      <tr><td>Muted on cream</td><td class="num">3.3</td><td class="warn">Large only</td><td>Footer secondary, story notes</td></tr>
+      <tr><td>Terracotta on marigold</td><td class="num">2.8</td><td class="warn">Never for text</td><td>Decorative fills only</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cols" style="margin-top:6mm">
+    <div class="note" style="margin-top:0">
+      <h3>Two rules that fall out of the table</h3>
+      <p><strong>Terracotta never carries text on marigold.</strong> On a gold section, a hover state
+      swaps the background rather than the text colour.</p>
+      <p><strong>Muted is for large or secondary text only.</strong> If a line in muted has to be read,
+      it goes brown.</p>
+    </div>
+    <div class="note" style="margin-top:0">
+      <h3>The focus ring is white on purpose</h3>
+      <p><code>outline: 3px solid #fff; outline-offset: 3px</code>, and terracotta on inputs and option
+      cards. Ink and gold sections both need the white ring to show a keyboard user where they are.
+      Do not restyle it away.</p>
+    </div>
+  </div>
+
+  <div class="runner"><span>Colour</span><span>05</span></div>
+</section>
+
+<!-- ============ 6. TYPE ============ -->
+<section class="page">
+  <p class="eyebrow">Type</p>
+  <h2>Rozha One speaks. Gelasio explains.</h2>
+
+  <div class="specimen">
+    <p class="specimen__glyphs">One pouch, 25 servings, 10g</p>
+    <p class="specimen__meta"><strong>Rozha One, weight 400 only.</strong> The Indian-inflected editorial
+    serif that makes numbers feel like a menu. It sets h1 and h2, menu card titles, stat numerals, gram
+    pills, the FAQ plus and minus glyphs and the gifting code chip. There is no second weight: if it
+    needs to feel heavier, it needs to be bigger.</p>
+  </div>
+
+  <div class="specimen">
+    <p class="specimen__glyphs specimen__glyphs--body">Same recipes. Same taste. More protein.</p>
+    <p class="specimen__meta"><strong>Gelasio 400, 500, 600 and italic</strong>, fallback Georgia.
+    Everything else, including nav, buttons and interface. <em>Italic is reserved</em> for the
+    pronunciation line, captions, the founder quote, story notes and the hero subline.</p>
+  </div>
+
+  <div class="note" style="margin-top:0">
+    <h3>No sans-serif anywhere</h3>
+    <p>Site, email, pack, deck or ad: two families only. A sans-serif slipping into a marketing asset
+    is the fastest way to make Heldi look like every other supplement brand.</p>
+  </div>
+
+  <table style="margin-top:6mm">
+    <thead><tr><th style="width:30%">Role</th><th style="width:40%">Size</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td>H2</td><td class="mono">clamp(2rem, 4.5vw, 3rem)</td><td>Line height 1.1, Rozha One</td></tr>
+      <tr><td>Body</td><td class="mono">1rem to 1.125rem</td><td>Line height 1.55 to 1.65, Gelasio</td></tr>
+      <tr><td>Eyebrow</td><td class="mono">0.875rem</td><td>Weight 600, letter-spacing 0.22em, uppercase</td></tr>
+      <tr><td>Ticker</td><td class="mono">0.875rem</td><td>Letter-spacing 0.24em, uppercase</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note" style="margin-top:6mm">
+    <h3>Where italic is allowed</h3>
+    <p style="margin-bottom:2mm"><em>/hel-dee/, adj. how my nani says &ldquo;healthy.&rdquo;</em>
+    &nbsp;the pronunciation line</p>
+    <p style="margin-bottom:2mm"><em>My nani never said healthy. She said heldi.</em>
+    &nbsp;the founder quote</p>
+    <p style="margin-bottom:0"><em>Six powders. One kitchen. A few ruined dinners.</em>
+    &nbsp;a story note</p>
+  </div>
+
+  <div class="runner"><span>Type</span><span>06</span></div>
+</section>
+
+<!-- ============ 7. SHAPE ============ -->
+<section class="page">
+  <p class="eyebrow">Shape language</p>
+  <h2>Hard offset shadows. Never blur.</h2>
+  <p class="lede">The signature is an ink-bordered rounded card sitting on a solid offset shadow, as if
+  it were a sticker on a menu. Every shadow is a flat colour at a fixed offset. A blurred shadow
+  anywhere on a Heldi surface is a bug.</p>
+
+  <div class="demo-row">
+    <div class="sticker" style="width:72mm">
+      <h3>Sticker card</h3>
+      <p style="margin:0;font-size:9pt">Cream, 3px ink border, 18px radius, shadow
+      <span class="mono">6px 6px 0 ink</span>.</p>
+    </div>
+    <div class="sticker sticker--white" style="width:72mm">
+      <h3>Showcase card</h3>
+      <p style="margin:0;font-size:9pt">White, 20px radius, shadow
+      <span class="mono">8px 8px 0 ink</span>. Hero and product.</p>
+    </div>
+  </div>
+
+  <div class="demo-row">
+    <div class="menu-card">
+      <h3 style="font-size:13pt">The Weeknight Dinner</h3>
+      <div class="menu-row"><span>Dal</span><span class="leader"></span><span class="gram gram--on">18g</span></div>
+      <div class="menu-row"><span>Rice</span><span class="leader"></span><span class="gram">4g</span></div>
+      <p style="font-size:8pt;margin:3mm 0 0;color:var(--brown)">Cream scheme: gold shadow.</p>
+    </div>
+    <div class="menu-card menu-card--gold">
+      <h3 style="font-size:13pt">The Saturday Lunch</h3>
+      <div class="menu-row"><span>Kadhi</span><span class="leader"></span><span class="gram gram--on">16g</span></div>
+      <div class="menu-row"><span>Raita</span><span class="leader"></span><span class="gram">6g</span></div>
+      <p style="font-size:8pt;margin:3mm 0 0;color:var(--warm-dark)">Marigold scheme: cream shadow.</p>
+    </div>
+  </div>
+
+  <div class="demo-row" style="align-items:center;gap:5mm">
+    <span class="pill">Pill</span>
+    <span class="pill pill--active">Active</span>
+    <span class="pill pill--plain">Attribute pill</span>
+    <span class="coin">Met</span>
+    <span class="coin coin--gold">Lys</span>
+    <span class="ticket">AUNTIE20</span>
+  </div>
+
+  <p style="font-size:9pt">Leader dots connect dish names to gram counts on every menu-style card, and
+  gram values sit in Rozha One pills that fill gold on a cream card, or ink on a marigold card, when the
+  dish is Heldi-boosted. Compliance surfaces are the exception to all of this: nutrition and legal tables
+  use plain rules and no shadows, because sober is the point.</p>
+
+  <table class="tight" style="margin-top:4mm">
+    <thead><tr><th style="width:34%">Component</th><th>Recipe</th></tr></thead>
+    <tbody>
+      <tr><td>Pill-link</td><td>White, 2px ink, 999px, <span class="mono">3px 3px 0 ink</span>. Hover lifts 2px and fills gold. Dark variant is gold on ink.</td></tr>
+      <tr><td>Truth chip</td><td>Cream, 2px ink, 999px, <span class="mono">3px 3px 0 ink</span>. Active state fills ink with gold text.</td></tr>
+      <tr><td>Amino coin</td><td>54px circle, 3px ink border, white. The &ldquo;gold&rdquo; state fills ink with gold text and scales 1.06.</td></tr>
+      <tr><td>Option card (PDP)</td><td>White, 2px ink, 16px radius. Selected fills gold and gains <span class="mono">4px 4px 0 ink</span>.</td></tr>
+      <tr><td>Gifting code chip</td><td>Tear-off ticket: 2px ink border with a 3px dotted left edge, radius <span class="mono">4px 16px 16px 4px</span>, gold, Rozha One, letter-spaced.</td></tr>
+      <tr><td>Story menu card</td><td>White, 3px ink, 20px, <span class="mono">8px 8px 0 ink</span>, 2px dashed separators, dotted leaders, gold gap band.</td></tr>
+      <tr><td>Dashed frame</td><td><span class="mono">2px dashed var(--gold)</span>, 24px radius. The playful one.</td></tr>
+      <tr><td>Floating nav</td><td>White card, 12px radius, <span class="mono">5px 5px 0 ink</span>, gold brand chip with mirrored elephants flanking the wordmark.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="runner"><span>Shape</span><span>07</span></div>
+</section>
+
+<!-- ============ 8. BUTTONS + MOTION ============ -->
+<section class="page">
+  <p class="eyebrow">Buttons and motion</p>
+  <h2>Ink fill, gold text, terracotta on hover.</h2>
+
+  <table>
+    <thead><tr><th style="width:26%">Variant</th><th style="width:37%">Rest</th><th>Hover</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Solid</td>
+        <td><span class="btn">Join the waitlist</span></td>
+        <td><span class="btn btn--hover">Join the waitlist</span></td>
+      </tr>
+      <tr>
+        <td>Square</td>
+        <td><span class="btn btn--square">Add to bag</span></td>
+        <td><span class="btn btn--square btn--hover">Add to bag</span></td>
+      </tr>
+      <tr>
+        <td>Outline</td>
+        <td><span class="btn btn--outline">Read the truth</span></td>
+        <td><span class="btn btn--outline-hover">Read the truth</span></td>
+      </tr>
+      <tr>
+        <td>Ghost</td>
+        <td><span class="btn btn--ghost">See the label</span></td>
+        <td><span class="btn btn--ghost" style="color:var(--terracotta)">See the label</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:4mm">Solid buttons are ink with gold text at weight 600, pill radius by default and
+  8px when square. Hover fills terracotta, turns the text cream and lifts the button 2px. Nothing scales,
+  nothing bounces.</p>
+
+  <div class="rule-double"></div>
+
+  <div class="cols cols--wide">
+    <div>
+      <h3>Motion</h3>
+      <ul>
+        <li>House easing <code>cubic-bezier(0.23, 1, 0.32, 1)</code>, 340 to 640ms, always translate plus
+        fade.</li>
+        <li>Canon effects: the 30s linear ticker marquee, the dissolve-in text that evokes powder in
+        liquid (opacity, blur and translate at 55ms per letter), the hero elephant curtain, the spoonful
+        burst in the stir gallery, and the 2px hover lift.</li>
+        <li><strong>Every animation respects <code>prefers-reduced-motion</code>.</strong> The codebase
+        already pauses video, skips the curtain and disables smooth scroll. Match that bar or do not ship
+        the animation.</li>
+      </ul>
+      <h3>Elephant and wordmark</h3>
+      <ul>
+        <li>Decorated Indian elephant line illustration, always ink, always ornamental. It flanks the
+        hero, brackets the final call to action and sits mirrored in the nav chip.</li>
+        <li>No faces, no speech, no mascot behaviour. One motif, reused.</li>
+        <li>The HELDI wordmark is a supplied PNG with a slight forward lean. Never redraw it. On ink it
+        turns gold through the <code>.heldi-logo--on-dark</code> filter.</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6mm">
+      <div style="background:var(--ink);border-radius:12px;padding:6mm 5mm;width:100%;text-align:center">
+        <img src="../../public/images/heldi-wordmark.png" alt="Heldi" style="width:44mm;filter:brightness(0) saturate(100%) invert(72%) sepia(67%) saturate(638%) hue-rotate(1deg) brightness(98%) contrast(92%)" />
+        <p style="font-size:8pt;color:var(--dark-muted);margin:3mm 0 0">On ink: gold</p>
+      </div>
+      <div style="background:#fff;border:3px solid var(--ink);border-radius:12px;box-shadow:5px 5px 0 var(--ink);padding:5mm;width:100%;text-align:center">
+        <img src="../../public/images/heldi-wordmark.png" alt="Heldi" style="width:44mm" />
+        <p style="font-size:8pt;color:var(--brown);margin:3mm 0 0">On cream or white: ink</p>
+      </div>
+      <div style="background:var(--gold);border-radius:8px;padding:3mm 4mm;width:100%;text-align:center">
+        <img src="../../public/images/heldi-nav-lockup.png" alt="Heldi nav lockup" style="width:100%;max-width:52mm" />
+      </div>
+      <p style="font-size:8pt;color:var(--brown);margin:-3mm 0 0;text-align:center">Nav brand chip: mirrored elephants flanking the wordmark</p>
+      <img src="../../public/images/elephant-large-transparent.png" alt="" style="width:29mm" />
+    </div>
+  </div>
+
+  <div class="runner"><span>Buttons and motion</span><span>08</span></div>
+</section>
+
+<!-- ============ 9. IMAGERY ============ -->
+<section class="page">
+  <p class="eyebrow">Photography and illustration</p>
+  <h2>Real kitchens, warm light, recognisable food.</h2>
+
+  <div class="cols cols--wide">
+    <div>
+      <div class="do-dont" style="grid-template-columns:1fr">
+        <div>
+          <h3 class="do">Do</h3>
+          <ul>
+            <li>Real UK desi home kitchens, shared meals, hands serving.</li>
+            <li>Warm colour grade toward marigold and cream.</li>
+            <li>Natural light or warm tungsten.</li>
+            <li>Recognisable dishes: dal, kadhi, raita, chaat.</li>
+          </ul>
+          <h3 class="dont">Do not</h3>
+          <ul>
+            <li>Shaker bottles, gym settings, scoops on grey seamless.</li>
+            <li>Cold blue grading.</li>
+            <li>&ldquo;Exotic India&rdquo; stock tropes.</li>
+            <li>Faces on the elephant, or the elephant behaving like a mascot.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note" style="margin-top:2mm">
+        <h3>Division of labour</h3>
+        <p>Illustration is always ink line art and covers elephants, icons and infographics.
+        Photography covers food, pouch and family. The two do not swap jobs.</p>
+        <p>Current product shots are AI-generated placeholders waiting on real photography, tracked in
+        <code>NEXT_STEPS.md</code>.</p>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <div class="sticker sticker--white" style="padding:4mm">
+        <img src="../../public/images/pouch.png" alt="Heldi Khana pouch" style="width:100%;max-width:56mm" />
+      </div>
+      <p style="font-size:8pt;color:var(--muted);margin-top:4mm">Heldi Khana, 300g, 25 servings</p>
+    </div>
+  </div>
+
+  <div class="rule-double"></div>
+
+  <p class="eyebrow" style="margin-top:5mm">Assets</p>
+  <h3>Budgets are part of the design</h3>
+  <p style="margin-bottom:0">Raw <code>&lt;img&gt;</code> is banned: everything goes through
+  <code>next/image</code> with a <code>sizes</code> attribute. Video mounts on demand with
+  <code>preload="none"</code> and a poster, the hero curtain being the single exception. The encoding
+  recipes live in BRAND.md &sect;15, and the <code>add-asset</code> skill carries them into any new asset.</p>
+
+  <table class="tight" style="margin-top:3mm">
+    <thead><tr><th style="width:30%">Asset</th><th style="width:26%">Ceiling</th><th>Also true</th></tr></thead>
+    <tbody>
+      <tr><td>Photo or illustration</td><td>400KB</td><td>No more than 2&times; its largest rendered size. WebP for photos, PNG only for crisp alpha line art.</td></tr>
+      <tr><td>Video</td><td>1MB per second played, 8MB per file</td><td>No audio stream on anything muted or autoplaying.</td></tr>
+      <tr><td>First load, home</td><td>4MB</td><td>The intro film is most of it.</td></tr>
+      <tr><td>First load, shop</td><td>3MB</td><td>Thumbnails go through <code>next/image</code> with accurate <code>sizes</code>.</td></tr>
+      <tr><td>Fonts</td><td>Two families, latin subsets</td><td>Via next/font only. New weights need justifying first.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="runner"><span>Imagery</span><span>09</span></div>
+</section>
+
+<!-- ============ 10. VOICE + NON-NEGOTIABLES ============ -->
+<section class="page page--ink">
+  <p class="eyebrow">Voice, in short</p>
+  <h2 style="color:var(--cream)">Two registers. Never mixed inside one section.</h2>
+
+  <div class="cols" style="margin-top:5mm">
+    <div>
+      <h3 style="color:var(--gold)">Voice A, the honest expert</h3>
+      <p>Plain, precise, quietly warm. Explains numbers without condescension, concedes points against
+      itself, cites sources. No jokes inside medical, nutrition or compliance copy.</p>
+      <p><strong>Owns:</strong> the truth page, health and diet FAQs, the nutrition accordion, legal,
+      anything a GP might read.</p>
+    </div>
+    <div>
+      <h3 style="color:var(--gold)">Voice B, the desi underdog</h3>
+      <p>Warm, proud, slightly cheeky, family first. First person plural, jokes about aunties and
+      shakers, allusions to desi pop culture.</p>
+      <p><strong>Owns:</strong> hero, ticker, gifting, cart microcopy, stir gallery captions, the founder
+      band, social copy.</p>
+    </div>
+  </div>
+
+  <p>Both share one spine: short declarative sentences, concrete nouns (dal, kadhi, spoonful, pot), and
+  zero wellness jargon.</p>
+
+  <div style="border:3px solid var(--gold);border-radius:16px;padding:5mm 5.5mm;margin-top:5mm">
+    <h3 style="color:var(--gold)">The rules that are cheap to break by accident</h3>
+    <ul style="margin-bottom:0">
+      <li><strong>No em dashes in copy, ever.</strong> Restructure the sentence. The only exception is the
+      attribution dash in the founder signature.</li>
+      <li><strong>The word &ldquo;dose&rdquo; is banned.</strong> Say &ldquo;how much&rdquo;, a serving, or
+      a spoonful.</li>
+      <li><strong>Only three health claims exist</strong>, used verbatim from the GB register: protein
+      contributes to a growth in muscle mass, to the maintenance of muscle mass, and to the maintenance of
+      normal bones. Paraphrasing one is a compliance breach, not a style choice.</li>
+      <li><strong>One pop-culture easter egg per surface</strong>, allusion rather than quotation.</li>
+      <li><strong>Prices, shipping and discounts come from <code>lib/pricing.ts</code></strong>, in integer
+      pence. Formulation and nutrition figures come from
+      <code>components/shop/nutrition-data.ts</code>. Nothing is retyped by hand.</li>
+      <li><strong>British English throughout:</strong> whilst, flavour, colour, litre.</li>
+    </ul>
+  </div>
+
+  <p style="margin-top:6mm;font-size:9pt">Full detail, including the change-impact map that lists every
+  surface repeating each product fact, is in <code>BRAND.md</code>. Build conventions, the responsive
+  contract and the accessibility bar are in <code>PLAYBOOK.md</code>.</p>
+
+  <p style="font-family:var(--display);font-size:26pt;color:var(--gold);text-align:center;margin:16mm 0 0">They shake, we stir.</p>
+
+  <div class="runner"><span>Heldi brand guidelines</span><span>10</span></div>
+</section>
+
+</body>
+</html>
