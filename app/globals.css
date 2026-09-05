@@ -7880,6 +7880,65 @@ a.living-card__tag:hover {
   }
 }
 
+/* Type-your-own-code row in the discount popup. The picker offers the family
+   rate; this is how someone holding a better code (a founders 25%) uses it
+   instead, since only one product discount applies per basket. */
+.gifting-pop__own {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(247, 241, 228, 0.25);
+}
+
+.gifting-pop__own label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--cream);
+  opacity: 0.85;
+}
+
+.gifting-pop__own-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gifting-pop__own-row input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--cream);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.gifting-pop__own-row input::placeholder {
+  color: rgba(247, 241, 228, 0.5);
+  text-transform: none;
+}
+
+.gifting-pop__own-row button {
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  border: 2px solid var(--cream);
+  border-radius: 8px;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.gifting-pop__own-row button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 /* The way past the checkout prompt. Deliberately quiet next to the code
    picker, but a full-width 44px target so it is never the harder tap. */
 .gifting-pop__skip {

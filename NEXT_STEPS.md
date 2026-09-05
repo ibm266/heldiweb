@@ -14,6 +14,68 @@ monitoring, and the launch-day order of operations with a rollback). When they
 disagree, the runbook wins on mechanics and the checklist wins on whether you
 are allowed to launch at all.
 
+## 0. Open right now, 5 September 2026
+
+The shortest list. Everything here blocks launch, and nothing here is code:
+the site side is built and merged to main. Run `npm run storefront-check` after
+each Shopify change; it reads the live Storefront API and prints a pass or fail
+per item. Full click-by-click detail is
+[docs/launch-runbook.md](docs/launch-runbook.md) Phase 1b.
+
+**Shopify, in order:**
+
+- [ ] **Rebuild the three family codes at 15%.** They are still the July 10%,
+  scoped to two variants on the archived "Heldi Khana" product, so they discount
+  nothing a customer can buy. Critically, tick **Combinations: shipping
+  discounts**, which is off today and is why `WELCOME` can never stack.
+- [ ] **Recreate `WELCOME` as a FREE SHIPPING discount.** It currently exists as
+  a fixed £4.99 amount off, which was measured against the live store and fails:
+  it takes £4.99 off the goods rather than the postage, hands £4.99 of margin
+  away on a pair that already ships free, and on the £0 trial pair it reads *not
+  applicable* while the buyer is still charged £4.99. That is the one basket the
+  launch email exists for.
+- [ ] **Arm the first-100 gate.** `HELDI-SAMPLE-PAIR-FREE` needs tracking ON,
+  "continue selling" OFF, 100 units. Shopify accepted a request for **250**
+  today, so the whole first-hundred mechanism currently does nothing. The site
+  caps the basket at one free pair; only inventory caps how many people claim.
+- [ ] **Put the samples on a £0 shipping profile.** A £5 sachet, the £8 pair and
+  the £0 trial pair are all charged £4.99 right now, which contradicts "postage
+  is on us" in the launch email.
+- [ ] Set the jar variant's SKU to `HELDI-JAR`; it is null, and the Phase 5
+  orders webhook keys on SKU.
+- [ ] Settle or clear the tote's £6 compare-at. `lib/pricing.ts` says it "IS
+  PROVISIONAL and must not ship".
+- [ ] Set the variant weights (runbook Phase 1b has an estimated table). Not
+  blocking, since every basket over one pouch clears the £50 threshold, but the
+  free jar and tote add real weight and the estimates have never been weighed.
+
+**Klaviyo** (drafts written 4 Sep, nothing sent; templates `VnY8iQ` welcome,
+`XGbTBU` first hundred, `YqrsCh` the rest, plus two Draft campaigns):
+
+- [ ] **Build the two segments.** Both campaigns currently target the whole
+  Waitlist list. The first-hundred split needs a segment on `joined_at` order,
+  and the two campaigns must exclude each other or people get both.
+- [ ] **Generate the founders codes and write them to profiles.** The launch
+  link merges `{{ person.founders_code }}`, and nothing writes that property
+  yet, so today the link would go out as `&code=`.
+- [ ] **The free trial pair contains a Chai sachet**, so it cannot ship until
+  Chai's gates clear (printed label, finished-product gluten result, stock).
+  Same gate as the Chai pouch, §1b. The first-hundred email waits on this.
+- [ ] Rewrite the `heldi-email-writer` skill. Its facts are a 20 July snapshot
+  and every commercial figure in it is now wrong: tiers, gifting rate, gifts,
+  shipping, and it has never heard of the founders codes, `WELCOME` or the free
+  trial pair.
+
+**Settled 4 and 5 September, do not reopen:**
+
+- Postage is **£4.99, free over £50**, matching Shopify. The repo said £3.55 and
+  £40 and was quoting a rate checkout would not honour.
+- A pair at the founders 25% is £48.75, which now falls **under** the threshold,
+  so every founders code should be issued with a `WELCOME` beside it.
+- **The two-pouch ceiling is gone.** `MAX_POUCHES` is 24 and a basket is packed
+  into pair variants plus at most one single, so it needed no Shopify change.
+  The saving lands per pair: three pouches is £100, not £95.
+
 ## 1. Connect Shopify (makes "buy" real)
 
 The whole storefront UI is built and runs on a mock cart. To take money,

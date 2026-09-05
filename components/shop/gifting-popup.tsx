@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
-import { GIFTING, type GiftingAudience } from "@/lib/pricing";
+import {
+  GIFTING,
+  giftingAudienceForCode,
+  type GiftingAudience
+} from "@/lib/pricing";
 import { GiftingCodePicker } from "./gifting-code-picker";
 
 // Family-discount popup shown right after something lands in the basket:
@@ -27,7 +31,8 @@ export function GiftingPopup({
   skipLabel?: string;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
-  const { applyGifting } = useCart();
+  const [ownCode, setOwnCode] = useState("");
+  const { applyGifting, applyDiscount, isPending } = useCart();
 
   useEffect(() => {
     track("gifting_popup_shown", { surface: onSkip ? "checkout" : "add_to_cart" });
@@ -43,6 +48,27 @@ export function GiftingPopup({
     track("gifting_discount_applied", { method: "popup", audience });
     await applyGifting("code", audience);
     onClose();
+  }
+
+  // The way out for someone holding a better code than the one being offered.
+  // A founders code is 25% against the family 15%, and only one product
+  // discount applies per basket, so a popup that ONLY offered the family rate
+  // would talk a founder into the worse of the two.
+  async function applyOwnCode(event: React.FormEvent) {
+    event.preventDefault();
+    const trimmed = ownCode.trim();
+    if (!trimmed) return;
+    // A family code typed by hand still goes through applyGifting, so the
+    // audience is recorded the same way as picking the card would have.
+    const audience = giftingAudienceForCode(trimmed);
+    const applied = audience
+      ? await applyGifting("code", audience)
+      : await applyDiscount(trimmed);
+    track("gifting_own_code_applied", { applied });
+    setOwnCode("");
+    // Only close on success. A rejected code should leave the popup up, or the
+    // shopper never learns it did not take; the drawer shows why.
+    if (applied) onClose();
   }
 
   return (
@@ -77,6 +103,28 @@ export function GiftingPopup({
           One code per order, one use each. Applied at checkout. We
           don&apos;t check. We trust you :)
         </p>
+        <form className="gifting-pop__own" onSubmit={applyOwnCode}>
+          <label htmlFor="gifting-own-code">
+            Already have a code? Put it in here instead.
+          </label>
+          <div className="gifting-pop__own-row">
+            <input
+              id="gifting-own-code"
+              type="text"
+              name="discount-code"
+              autoComplete="off"
+              autoCapitalize="characters"
+              spellCheck={false}
+              placeholder="Your code"
+              value={ownCode}
+              onChange={(event) => setOwnCode(event.target.value)}
+            />
+            <button type="submit" disabled={isPending || ownCode.trim() === ""}>
+              Apply
+            </button>
+          </div>
+        </form>
+
         {onSkip ? (
           <button
             type="button"
