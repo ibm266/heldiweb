@@ -822,6 +822,7 @@ The working tree is deliberately two-layered: a small tracked app plus large
 | `content/heldi-living/` | yes | Blog: one HTML body per post + `posts.json` index (slug, title, description, date). New post = both |
 | `docs/legal/` | yes | Legal markdown sources, rendered at `/legal/*` via `lib/legal.ts` |
 | `docs/brand/` | yes | `specimen.html`, the visual brand board (opens standalone; links the real `app/globals.css`) |
+| `docs/email/` | yes | Klaviyo email templates, hand-written table HTML. The master; Klaviyo holds a copy. Each file's header comment names its flow and template IDs and how to push a change back |
 | `scripts/` | partly | `brand-lint.sh` is tracked; the screenshot capture tool is gitignored |
 | `.claude/skills/` | yes | Project skills (`add-section`, `new-post`): plain-markdown task recipes usable by any agent |
 | `AGENTS.md` + `.cursor/rules/` | yes | Cross-tool mirrors of CLAUDE.md and the skills for Cursor/Codex/etc.; update together with CLAUDE.md |
