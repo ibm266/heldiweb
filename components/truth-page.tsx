@@ -64,7 +64,7 @@ const FOODS: {
 const FIXES = [
   { name: "+ A bowl of dahi", grams: 8 },
   { name: "+ Paneer in the sabzi", grams: 12 },
-  { name: "+ 2 tbsp Heldi", grams: 20 }
+  { name: "+ 1 tbsp Heldi Khana", grams: 10 }
 ];
 
 function Meter({
@@ -127,7 +127,7 @@ export function TruthPage() {
       (total, fix, index) => total + (fixed[index] ? fix.grams : 0),
       0
     );
-  const fixDone = fixTotal >= TARGET;
+  const fixDone = fixed.every(Boolean);
 
   const food = FOODS[foodIndex];
 
@@ -149,12 +149,15 @@ export function TruthPage() {
 
           <div className="truth-bowls">
             <div className="truth-bowl truth-bowl--myth">
-              <span className="truth-bowl__name">Roughly 75g dry lentils</span>
+              <span className="truth-bowl__name">
+                What the internet calls one bowl
+              </span>
               <span className="truth-bowl__grams truth-bowl__grams--struck">
                 18g
               </span>
               <span className="truth-bowl__note">
-                valid dry figure, not one 80g cooked bowl
+                18g belongs to roughly 75g dry lentils, which cooks into more
+                than one 80g bowl
               </span>
             </div>
             <div className="truth-bowl truth-bowl--real">
@@ -354,9 +357,9 @@ export function TruthPage() {
               <span className="powder__grams">90g</span>
               <span className="powder__per">protein per 100g</span>
               <span className="powder__note">
-                All nine essential amino acids. 98% lactose-free, with far
-                less lactose than concentrate. Made to disappear into the
-                dish.
+                All nine essential amino acids. Whey isolate contains far less
+                lactose than concentrate; Heldi Khana is 98% lactose-free.
+                Made to disappear into the dish.
               </span>
             </div>
 
@@ -443,9 +446,9 @@ export function TruthPage() {
           </div>
 
           <p className="truth-whey__nonveg">
-            In a meat-based meal, the same spoonful can be stirred into chicken
-            curry, mutton curry or butter chicken. It adds 10g of protein on
-            top of the protein already in the dish.
+            In a meat-based meal, one spoonful of Heldi Khana can be stirred
+            into chicken curry, mutton curry or butter chicken. It adds 10g of
+            protein on top of the protein already in the dish.
           </p>
         </div>
       </section>
@@ -455,8 +458,8 @@ export function TruthPage() {
           <p className="eyebrow eyebrow--gold">CLOSE THE GAP</p>
           <h2>How to get more protein as an Indian vegetarian.</h2>
           <p className="truth-block__lede">
-            This example adds dahi first, paneer second and Heldi last. Tap
-            each one to update the day.
+            This example adds dahi first, paneer second and Heldi Khana last.
+            Tap each one to update the day.
           </p>
 
           <div className="truth-fix__chips">
@@ -483,7 +486,7 @@ export function TruthPage() {
 
           <p className="truth-day__verdict" aria-live="polite">
             {fixDone
-              ? "This example day now reaches the 75g target."
+              ? "This example day is closer to the 75g target."
               : " "}
           </p>
 

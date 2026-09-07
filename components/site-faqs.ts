@@ -49,12 +49,12 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Does cooking destroy the protein?",
         answer:
-          "No. Heat changes a protein's shape, a process called denaturing, and digestion changes it too. The amino acids remain. Stir Heldi in once the pot is off the heat and has cooled a little, because a rolling boil can make milk protein clump."
+          "No. Heat changes a protein's shape, a process called denaturing, and digestion changes it too. The amino acids remain. Stir Heldi Khana in once the pot is off the heat and has cooled a little, because a rolling boil can make milk protein clump."
       },
       {
         question: "How do I add more protein to Indian food?",
         answer:
-          "Start with the food already on the table. Use dahi and paneer more often, and make dal thicker rather than soupy so each bowl contains more dal. Eggs and chicken add protein in non-vegetarian homes. If there is still a gap, a 12g serving of Heldi, about one heaped tablespoon, adds 10.1g of protein to a gravy, dal or yoghurt dish."
+          "Start with the food already on the table. Use dahi and paneer more often, and make dal thicker rather than soupy so each bowl contains more dal. Eggs and chicken add protein in non-vegetarian homes. If there is still a gap, a 12g serving of Heldi Khana, about one heaped tablespoon, adds 10.1g of protein to a gravy, dal or yoghurt dish."
       },
       {
         question: "When is the best time to eat protein?",
@@ -69,7 +69,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How much protein does one spoonful add?",
         answer:
-          "A 12g serving, about one heaped tablespoon, provides 10.1g of protein with all nine essential amino acids. A bowl of dal has around 6g on its own, so the same bowl contains about 16g after Heldi is added."
+          "For Heldi Khana, a 12g serving, about one heaped tablespoon, provides 10.1g of protein with all nine essential amino acids. A bowl of dal has around 6g on its own, so the same bowl contains about 16g after Khana is added. Heldi Chai is different: an 8g serving, about one level tablespoon, provides 5.1g of protein, marketed as 5g per mug."
       },
       pick(HOME_FAQS, "Do I need more protein?"),
       pick(TRUTH_FAQS, "How much protein is in a bowl of dal?"),
@@ -94,7 +94,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Is Heldi vegan?",
         answer:
-          "No. Whey comes from milk, so Heldi is suitable for lacto-vegetarians but is not vegan. Heldi Khana contains milk (whey)."
+          "No. Both Heldi Khana and Heldi Chai contain milk, so they are suitable for lacto-vegetarians but are not vegan. Khana contains whey; Chai contains whey and milk protein concentrate."
       },
       pick(HOME_FAQS, "Is Heldi halal?"),
       pick(HOME_FAQS, "I am lactose intolerant. Can I have Heldi?"),
@@ -134,7 +134,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
         question:
           "Can I use Heldi with a GLP-1 medicine like Ozempic, Wegovy or Mounjaro?",
         answer:
-          "Heldi is a food supplement, not a medicine. It contains whey protein from milk, with no stimulants or sweeteners. That does not establish whether it is suitable alongside a prescription medicine. Ask your prescriber, GP or dietitian first, and show them the ingredients list and nutrition table."
+          "Heldi Khana and Heldi Chai are food supplements, not medicines, and both contain milk. Khana has no sweeteners; Chai contains coconut sugar. Those facts do not establish whether either product is suitable alongside a prescription medicine. Ask your prescriber, GP or dietitian first, and show them the specific ingredients list and nutrition table."
       },
       {
         question: "Why does protein matter when taking a GLP-1 medicine?",
@@ -144,12 +144,12 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How can Heldi fit into smaller portions?",
         answer:
-          "Half a bowl of dal contains about 3g of protein. Stirring in one heaped tablespoon of Heldi takes that portion past 13g, without requiring a full second portion or a separate drink. Whether that is appropriate for you is a question for the clinician supporting your GLP-1 treatment."
+          "Half a bowl of dal contains about 3g of protein. One spoonful of Heldi Khana adds 10g, taking that portion to about 13g without requiring a full second portion or a separate drink. Heldi Chai is a hot-drink blend with a separate 8g level-tablespoon serving and a 5g-per-mug marketing figure, so this bowl calculation does not apply to it. Whether either product is appropriate for you is a question for the clinician supporting your GLP-1 treatment."
       },
       {
         question: "What does this mean for Indian food on a GLP-1?",
         answer:
-          "A typical home-cooked vegetarian day delivers 35 to 45g of protein at full appetite. If every portion becomes smaller, that total can fall to 20g or less. Guidance often uses 1.2 to 1.6g per kilo of body weight, but a GP or dietitian should set a personal target for someone taking a prescription medicine. If they advise prioritising protein, familiar options include eating the highest-protein part of the meal first or stirring Heldi into dal, kadhi or raita."
+          "A typical home-cooked vegetarian day delivers 35 to 45g of protein at full appetite. If every portion becomes smaller, that total can fall to 20g or less. Guidance often uses 1.2 to 1.6g per kilo of body weight, but a GP or dietitian should set a personal target for someone taking a prescription medicine. If they advise prioritising protein, familiar options include eating the highest-protein part of the meal first or stirring Heldi Khana into dal, kadhi or raita."
       }
     ]
   },
@@ -165,7 +165,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Where do the ingredients come from?",
         answer:
-          "The whey protein isolate comes from Arla, the farmer-owned dairy cooperative, and every incoming batch has a supplier certificate of analysis. That certificate covers the whey ingredient; it is not finished-product analysis or product certification. The single spices come from the British spice house Spice Entice. The garam masala comes from Buy Whole Foods Online because it is a blend, and the sunflower lecithin comes from the UK supplier Special Ingredients. Heldi is blended and packed in England.",
+          "The whey protein isolate comes from Arla, the farmer-owned dairy cooperative, and every incoming batch has a supplier certificate of analysis. That certificate covers the whey ingredient; it is not finished-product analysis or product certification. The single spices come from the British spice house Spice Entice. The garam masala comes from Buy Whole Foods Online because it is a blend, and the sunflower lecithin comes from the UK supplier Special Ingredients. Heldi Khana is blended and packed in England.",
         more: { href: "/inside-the-pouch", label: "Read where it all comes from" }
       }
     ]
@@ -206,7 +206,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How long does a pouch keep?",
         answer:
-          `Every pouch has an 18-month best-before date printed on the base. After opening, reseal it after each use, store it somewhere cool and dry, and use it within 3 months for the best taste and texture. Keep wet spoons out of the pouch. A 300g pouch provides about ${SERVINGS_PER_POUCH} meals, so many kitchens will finish it within that period.`
+          `This answer is for Heldi Khana. Each pouch has an 18-month best-before date printed on the base. After opening, reseal it after each use, store it somewhere cool and dry, and use it within 3 months for the best taste and texture. Keep wet spoons out of the pouch. A 300g pouch provides about ${SERVINGS_PER_POUCH} meals, so many kitchens will finish it within that period. Heldi Chai has a different pouch and no published shelf-life figure yet.`
       },
       // Only makes sense before launch; live mode drops it.
       ...(mode === "waitlist"

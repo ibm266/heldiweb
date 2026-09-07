@@ -17,12 +17,12 @@ export const TRUTH_FAQS = [
   {
     question: "How do I get more protein as an Indian vegetarian?",
     answer:
-      "Start with familiar foods. Add dahi or paneer to more meals and make dal thicker rather than more watery. If there is still a gap, stir Heldi into a gravy, dal or yoghurt dish. One spoonful adds 10g of protein without requiring a different meal."
+      "Start with familiar foods. Add dahi or paneer to more meals and make dal thicker rather than more watery. If there is still a gap, stir Heldi Khana into a gravy, dal or yoghurt dish. One spoonful adds 10g of protein without requiring a different meal."
   },
   {
     question: "Is whey protein vegetarian?",
     answer:
-      "Yes. Whey comes from cow's milk and contains no meat, so it is suitable for lacto-vegetarians. It is not vegan. Heldi Khana uses whey protein isolate that is 98% lactose-free, but it still contains milk and the lactose figure does not determine an individual's tolerance."
+      "Yes. Whey comes from cow's milk and contains no meat, so both Heldi Khana and Heldi Chai are suitable for lacto-vegetarians. Neither is vegan, and both contain milk. Heldi Khana is 98% lactose-free, but that figure does not determine an individual's tolerance. Heldi Chai has a different milk-protein blend and no published lactose-free claim."
   },
   {
     question: "How do I use Heldi?",
