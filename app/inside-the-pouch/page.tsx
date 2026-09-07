@@ -8,7 +8,7 @@ import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 export const metadata: Metadata = {
   title: "Inside the pouch · Heldi",
   description:
-    "The full Heldi Khana and Heldi Chai ingredient lists, with named suppliers, the Arla whey certificate, and where each pouch is blended and packed.",
+    "The full Heldi Khana and Heldi Chai ingredient lists, documented sources where available, the Arla whey certificate, and where each pouch is blended and packed.",
   alternates: { canonical: "/inside-the-pouch" }
 };
 
@@ -27,8 +27,8 @@ export default function InsideThePouchPage() {
             Khana has eight ingredients and Chai has nine. The lists below
             are the settled recipes, set out in{" "}
             <CopyHighlight>the order each label must carry</CopyHighlight>.
-            We name the suppliers and explain which documents support the
-            figures.
+            Where a source is documented, we name it and show the paper trail
+            behind the figures.
           </p>
         </div>
       </section>
@@ -42,7 +42,7 @@ export default function InsideThePouchPage() {
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">THE WHEY</p>
-          <h2>Arla whey, read on an as-is basis.</h2>
+          <h2>What the whey certificate actually says.</h2>
           <p>
             Whey protein isolate makes up 94% of Khana, and the same ingredient
             also appears in Chai. Ours comes from{" "}
@@ -187,14 +187,14 @@ export default function InsideThePouchPage() {
             <CopyHighlight>milk protein concentrate</CopyHighlight>. Both whey
             and milk protein concentrate contribute to Chai&apos;s protein,
             with whey supplying most of it. Milk protein concentrate is mostly
-            casein and gives liquid more body. It was chosen additionally{" "}
-            <CopyHighlight>for creaminess</CopyHighlight>.
+            casein and gives liquid more body, so it was also chosen{" "}
+            <CopyHighlight>for the creaminess it brings</CopyHighlight>.
           </p>
           <p>
             Chai also contains <CopyHighlight>coconut sugar</CopyHighlight>, so
             it never carries Khana&apos;s &ldquo;no added sugar&rdquo; wording.
             Coconut sugar provides the sweetness in the formula, and its 10%
-            share is printed in the ingredient list.
+            share is declared in the ingredient list.
           </p>
           <p>
             Then the masala:{" "}
@@ -261,9 +261,9 @@ export default function InsideThePouchPage() {
             the people making it and inspect it there.
           </p>
           <p>
-            That proximity supports the same approach as this page: named
-            suppliers, batch records and{" "}
-            <CopyHighlight>details that you can check</CopyHighlight>.
+            That proximity supports the same approach as this page: documented
+            sources where available, batch records and{" "}
+            <CopyHighlight>a paper trail that you can check</CopyHighlight>.
           </p>
         </div>
       </section>
@@ -272,8 +272,9 @@ export default function InsideThePouchPage() {
         <div className="final-cta-copy">
           <h2>The full list is here.</h2>
           <p>
-            Eight ingredients in Khana and nine in Chai, with their suppliers
-            and calculation basis set out above.
+            Eight ingredients in Khana and nine in Chai. Documented sources
+            are named where available, and the calculation basis is set out
+            above.
           </p>
           <WaitlistOrShopCta />
         </div>
