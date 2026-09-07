@@ -1,67 +1,67 @@
 export const HOME_FAQS = [
   {
-    question: "Why do I need more protein?",
+    question: "Do I need more protein?",
     answer:
-      "Protein contributes to the maintenance of muscle mass, which declines gradually from your 30s onward. A typical home-cooked vegetarian day delivers 35 to 45g, while an active adult needs 75g or more. That gap, eaten daily for decades, is what Heldi closes."
+      "You may not. Protein contributes to the maintenance of muscle mass. Muscle mass tends to decline gradually from your 30s onwards. A typical home-cooked vegetarian day delivers 35 to 45g, while the target used here for an active adult is 75g or more. These are broad examples. Your own intake and needs depend on what you eat, your body size and your level of activity."
   },
   {
     question: "Is whey protein vegetarian?",
     answer:
-      "Yes, and it is made without animal rennet. Whey is the pale liquid left when milk curdles, the same one you see when paneer is made at home. We simply filter it to concentrate the protein and gently dry it into a fine powder. Nothing added, just the part of milk that has always been there."
+      "Yes. Whey is the pale liquid separated from milk during cheese or paneer making. The whey used in Heldi is made without animal rennet, then filtered to concentrate the protein and dried into a fine powder. It is suitable for lacto-vegetarians, but it is not vegan."
   },
   {
     question: "Is Heldi halal?",
     answer:
-      "Heldi contains no meat, no alcohol and no animal rennet. The whey is a dairy ingredient, the same family as milk and paneer. We do not yet hold a formal halal certificate. If certification matters to your table, email info@heldi.co.uk and we will tell you exactly where things stand."
+      "Heldi contains no meat, alcohol or animal rennet. Its whey is a dairy ingredient, in the same family as milk and paneer. Heldi does not yet hold formal halal certification. If certification matters to you, email info@heldi.co.uk and we will give you the current position plainly."
   },
   {
     question: "I am lactose intolerant. Can I have Heldi?",
     answer:
-      "Usually, yes. Heldi uses whey protein isolate, filtered to 98% lactose-free. A spoonful carries barely any lactose, roughly 0.3g, far less than traditional whey concentrate and a fraction of what is in a glass of milk. Most lactose-intolerant people handle that amount without trouble. A confirmed dairy allergy is different: Heldi contains milk, so it is not for you."
+      "Lactose intolerance varies from person to person. Heldi Khana uses whey protein isolate that is 98% lactose-free. A spoonful contains roughly 0.3g of lactose, far less than traditional whey concentrate and a fraction of the amount in a glass of milk. That figure cannot predict how an individual will respond, so ask your GP or dietitian if you are unsure. A confirmed milk allergy is different: Khana contains milk (whey) and is not suitable for someone with that allergy."
   },
   {
     question: "Why not just drink a protein shake?",
     answer:
-      "You can, if you like them. Most of our parents don't. Heldi hits the same protein number through the meals you were going to eat anyway. Same dal, same raita, ten more grams per bowl. Nothing new to swallow, nothing to give up."
+      "A protein shake is one option. Heldi is for people who would rather add protein to food they already eat, such as dal or raita. One spoonful adds 10g of protein to the dish, without requiring a separate drink."
   },
   {
     question: "Will my food taste different?",
     answer:
-      "No. The spices are designed to disappear into the dish, not sit on top of the flavour. Heldi blends clean into what you already cook. No chalky film, no protein-shake aftertaste."
+      "Heldi Khana is designed to blend into savoury dishes rather than sit on top of their flavour. In the intended amount, its spices settle into dal, curry and raita without the chalky film or sweet aftertaste associated with many protein powders. The result will still depend on the dish and how much you add."
   },
   {
     question: "How do I use it?",
     answer:
-      "Once the pot is done cooking and has cooled a little, stir the powder straight into the full dal, curry or raita and mix it through. Or leave the jar on the table and let each person add as much as they like to their own bowl. One to two spoonfuls per dish is the sweet spot."
+      "Once the pot has finished cooking and cooled a little, stir the powder into the dal, curry or raita and mix it through. You can add it to the full pot or let each person stir it into their own bowl. Use one to two spoonfuls per dish, depending on the amount of food."
   },
   {
     question: "Can I use it in dishes that are not on the pouch?",
     answer:
-      "Yes. Anything with a gravy, a dal or a yoghurt base works, sambar, kadhi, korma, bhindi in gravy, even a chaat with dahi on top. Non-veg pots too: chicken curry, keema and egg bhurji all take a spoonful for an extra protein boost. If a spoon can stir it, Heldi can disappear into it."
+      "Yes. Heldi Khana is made for dishes with a gravy, dal or yoghurt base, including sambar, kadhi, korma, bhindi in gravy and chaat with dahi. It can also be stirred into chicken curry, keema or egg bhurji. Let the food cool a little first, then mix the spoonful through evenly."
   },
   {
     question: "Is there a Heldi for chai?",
     answer:
-      "Yes. Heldi Chai is a whey and casein blend with real chai spices, made to stir into chai, tea, coffee and hot chocolate once the cup is off the boil. Contains milk (whey and casein). It is still in development, so it has a page but no price yet, and the waitlist hears first when it is ready. Khana, the savoury blend, is the one for the pot."
+      "Yes. Heldi Chai is a whey protein and milk protein concentrate blend with real chai spices. It is made for chai, tea, coffee and hot chocolate, stirred in once the cup is off the boil. Contains milk (whey and milk protein concentrate). It is still in development, so it has a page but no price yet, and the waitlist will hear first when it is ready. Khana is the savoury blend for the pot."
   },
   {
     question: "Can I put Khana in my chai?",
     answer:
-      "Best not. Khana is the savoury blend, made with warm spices for dal, curry, sabzi and raita, and a mug of chai would taste of exactly that. Heldi Chai is the one for hot drinks: whey and casein with cardamom, ginger, cinnamon and clove, stirred in once the cup is off the boil. Contains milk."
+      "Khana is the savoury blend, made with warm spices for dal, curry, sabzi and raita, so it is not intended for chai. Heldi Chai is the blend for hot drinks: whey protein and milk protein concentrate with cardamom, ginger, cinnamon and clove, stirred in once the cup is off the boil. Contains milk."
   },
   {
-    question: "Is it safe for kids?",
+    question: "Can children have Heldi?",
     answer:
-      "Yes. Whey is a part of milk, the same protein kids already get from dahi and paneer, and protein is part of every balanced diet. Nothing artificial, no sweeteners, no caffeine. If the family pot gets a spoonful, everyone eats from it. Growing kids get what they need from normal meals, so there is no need to add extra to their bowls."
+      "Heldi contains whey from milk, with no sweeteners or caffeine. Adding it to a family pot means every person at the table shares it. Growing children usually get the protein they need from ordinary meals, so there may be no reason to add a food supplement to their bowl. Ask a GP or dietitian who knows the child before doing so."
   },
   {
-    question: "Is it safe for parents and grandparents?",
+    question: "Can older adults have Heldi?",
     answer:
-      "Heldi is designed for the whole table. Protein contributes to the maintenance of muscle mass, and the isolate is 98% lactose-free, 100% vegetarian and free from added sugar, preservatives and gluten."
+      "Heldi is designed to be shared at the table. Protein contributes to the maintenance of muscle mass. Heldi Khana is 98% lactose-free, 100% vegetarian and free from added sugar, preservatives and gluten. It contains milk. Those facts do not establish whether it suits one person, so anyone with a medical condition or a prescribed diet should show the label to their GP or dietitian."
   },
   {
-    question: "I have diabetes. Is it OK for me?",
+    question: "Can I use Heldi if I have diabetes?",
     answer:
-      "Heldi is almost entirely protein: no added sugar and under 1g of carbohydrate per spoonful. We cannot give medical advice, so if you manage diabetes, show the label to your GP or dietitian. It fits in the palm of a hand, take it with you."
+      "Heldi Khana has no added sugar and contains under 1g of carbohydrate per spoonful. Those figures do not determine whether it fits an individual's diabetes care. Show the ingredients and nutrition label to your GP or dietitian before adding it to your meals."
   }
 ];

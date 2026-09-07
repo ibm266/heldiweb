@@ -2,36 +2,36 @@ export const TRUTH_FAQS = [
   {
     question: "How much protein is in a bowl of dal?",
     answer:
-      "About 5 to 7g for a standard 80g cooked serving. Bigger bowls reach 9 or 10g. The 18g+ figures online describe dry weight, which nobody eats in one sitting."
+      "A standard 80g cooked serving contains about 5 to 7g of protein. Bigger bowls can reach 9 or 10g. Figures of 18g or more usually refer to lentils weighed dry, before cooking changes the weight of the portion."
   },
   {
     question: "Is dal a complete protein?",
     answer:
-      "Not on its own. Dal is low in methionine, one of the nine essential amino acids. Pairing it with rice or roti covers the full set, but the combined meal is still modest in total protein."
+      "Dal contains all nine essential amino acids, but is relatively low in methionine. Rice or roti complements that amino acid profile. The pairing improves the balance of the meal, while its total amount of protein remains modest."
   },
   {
     question: "How much protein do I need a day?",
     answer:
-      "Active adults and adults over 50 benefit from roughly 1.2 to 1.6g per kilo of body weight per day. For a 65kg person, that is 78 to 104g. Most home-cooked vegetarian days land well under half of that."
+      "The range used here for active adults and adults over 50 is roughly 1.2 to 1.6g per kilo of body weight per day. For a 65kg person, that is 78 to 104g. Many home-cooked vegetarian days sit well below that range. Individual needs vary, so ask a GP or dietitian if you need a personal target."
   },
   {
     question: "How do I get more protein as an Indian vegetarian?",
     answer:
-      "Add dahi or paneer to more meals, thicken your dal, and stir a clean whey isolate like Heldi straight into gravies, dals and yoghurt dishes. One spoonful adds 10g without changing the recipe."
+      "Start with familiar foods. Add dahi or paneer to more meals and make dal thicker rather than more watery. If there is still a gap, stir Heldi into a gravy, dal or yoghurt dish. One spoonful adds 10g of protein without requiring a different meal."
   },
   {
     question: "Is whey protein vegetarian?",
     answer:
-      "Yes. Whey comes from cow's milk, the same family as paneer and dahi, and contains no meat. It suits lacto-vegetarians, and Heldi's isolate is 98% lactose-free, so a spoonful sits lightly with sensitive stomachs. It is not vegan."
+      "Yes. Whey comes from cow's milk and contains no meat, so it is suitable for lacto-vegetarians. It is not vegan. Heldi Khana uses whey protein isolate that is 98% lactose-free, but it still contains milk and the lactose figure does not determine an individual's tolerance."
   },
   {
     question: "How do I use Heldi?",
     answer:
-      "Stir a spoonful straight into the pot once it has cooled a little: dal, curry, kadhi, sambar, raita, chai, anything with a gravy or a yoghurt base. If a spoon can stir it, Heldi can disappear into it. One spoonful adds about 10g of protein without changing the recipe, and it works whether you are vegetarian or not."
+      "For Heldi Khana, let the cooked food cool a little, then stir a spoonful into dal, curry, kadhi, sambar, raita or another gravy or yoghurt-based dish. One spoonful adds about 10g of protein, and Khana can also be used in meat dishes. Heldi Chai is the separate blend for chai and other hot drinks; stir it in once the cup is off the boil."
   },
   {
-    question: "What is the best protein source for vegetarians?",
+    question: "How does whey isolate compare with other vegetarian proteins?",
     answer:
-      "Per 100g, whey protein isolate leads with around 90g of complete protein, ahead of paneer at about 18g and cooked dal at about 6g. It carries all nine essential amino acids at full strength, which no single plant source manages."
+      "Per 100g, whey protein isolate provides around 90g of protein, compared with about 18g in paneer and about 6g in cooked dal. Whey isolate contains all nine essential amino acids. Some plant foods also contain all nine, but the amount of protein and the amino acid profile vary by food and portion."
   }
 ];

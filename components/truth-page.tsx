@@ -37,27 +37,27 @@ const FOODS: {
   {
     name: "Dal",
     states: AMINOS.map((amino) => (amino === "Met" ? "low" : "small")),
-    caption: "Dal fields all nine, but methionine barely turns up."
+    caption: "Dal contains all nine, but is relatively low in methionine."
   },
   {
     name: "Rice",
     states: AMINOS.map((amino) => (amino === "Lys" ? "low" : "small")),
-    caption: "Rice turns up short on lysine."
+    caption: "Rice is relatively low in lysine."
   },
   {
     name: "Dal chawal",
     states: AMINOS.map(() => "small"),
-    caption: "Together they complete the team. They just turn up small."
+    caption: "Together, dal and rice complement each other. The portion is still modest in protein."
   },
   {
     name: "Paneer",
     states: AMINOS.map(() => "full"),
-    caption: "Paneer brings a complete team."
+    caption: "Paneer provides all nine essential amino acids."
   },
   {
     name: "Whey",
     states: AMINOS.map(() => "gold"),
-    caption: "Whey: all nine, full size. That is why it works."
+    caption: "Whey provides all nine in a strong amino acid profile."
   }
 ];
 
@@ -138,25 +138,26 @@ export function TruthPage() {
           <p className="eyebrow">THE HONEST TRUTH</p>
           <h1>How much protein is in dal, really?</h1>
           <p>
-            A cooked bowl of dal has <CopyHighlight>5 to 7g</CopyHighlight> of
-            protein, not the 18g the internet claims. Those figures weigh the
-            lentils dry. A full day of home-cooked vegetarian food lands
-            around 35 to 45g. An active adult needs{" "}
+            A standard cooked bowl of dal has{" "}
+            <CopyHighlight>5 to 7g</CopyHighlight> of protein. The 18g figures
+            commonly quoted online usually refer to lentils weighed dry,
+            before cooking. A full day of home-cooked vegetarian food often
+            lands around 35 to 45g. The target used here for an active adult is{" "}
             <CopyHighlight>75g or more</CopyHighlight>.
           </p>
 
           <div className="truth-bowls">
             <div className="truth-bowl truth-bowl--myth">
-              <span className="truth-bowl__name">Internet dal</span>
+              <span className="truth-bowl__name">Dry lentils</span>
               <span className="truth-bowl__grams truth-bowl__grams--struck">
                 18g
               </span>
-              <span className="truth-bowl__note">weighed dry</span>
+              <span className="truth-bowl__note">counted before cooking</span>
             </div>
             <div className="truth-bowl truth-bowl--real">
-              <span className="truth-bowl__name">Your dal</span>
+              <span className="truth-bowl__name">Cooked dal</span>
               <span className="truth-bowl__grams">6g</span>
-              <span className="truth-bowl__note">the bowl you actually eat</span>
+              <span className="truth-bowl__note">a standard bowl at the table</span>
             </div>
           </div>
 
@@ -171,8 +172,8 @@ export function TruthPage() {
           <p className="eyebrow eyebrow--gold">YOUR DAY ON A PLATE</p>
           <h2>How much protein is in a vegetarian Indian day?</h2>
           <p className="truth-block__lede">
-            Here is a normal day, weighed honestly. Tap each meal to add it
-            up.
+            This example uses ordinary cooked portions. Tap each meal to see
+            how the day adds up.
           </p>
 
           <div className="truth-day__cards">
@@ -206,7 +207,7 @@ export function TruthPage() {
 
           <p className="truth-day__verdict" aria-live="polite">
             {dayDone
-              ? `The gap: ${TARGET - DAY_TOTAL}g. Every single day.`
+              ? `This example day is ${TARGET - DAY_TOTAL}g below the target used here.`
               : " "}
           </p>
         </div>
@@ -214,14 +215,15 @@ export function TruthPage() {
 
       <section className="section section--gold section--bordered truth-team">
         <div className="truth-block">
-          <p className="eyebrow">THE FULL TEAM</p>
+          <p className="eyebrow">THE AMINO ACID PROFILE</p>
           <h2>Is dal a complete protein?</h2>
           <p>
-            Not on its own. Protein is a team of nine essential amino acids,
-            and your body needs all nine at once. Legumes run low on one
-            player, grains run low on another. Dal chawal pairs them, which is
-            genuinely clever, but pairing fixes quality, not quantity. You are
-            still eating 6g servings toward a 75g day.
+            Dal contains all nine essential amino acids, but is relatively low
+            in methionine. Rice is relatively low in lysine. Eating them
+            together improves the balance of the meal&apos;s amino acid
+            profile, but it does not increase the grams of protein already on
+            the plate. A standard bowl of dal still provides around 6g towards
+            the 75g target used in this example.
           </p>
           <p className="truth-block__lede">
             Tap a food to reveal its amino acid line-up.
@@ -270,21 +272,21 @@ export function TruthPage() {
 
       <section className="section section--cream truth-decades">
         <div className="truth-block">
-          <p className="eyebrow">THE LONG GAME</p>
-          <h2>What does a protein gap do over decades?</h2>
+          <p className="eyebrow">PROTEIN OVER TIME</p>
+          <h2>Why does protein matter as we get older?</h2>
           <p>
-            Adults lose muscle gradually from their 30s onward, and research
-            shows South Asians carry less muscle to begin with. Enough protein
-            and staying active slow the slide. Invisible at 30. At 75, it is
-            the difference between{" "}
-            <CopyHighlight>carrying your own shopping</CopyHighlight>, or not.
+            Muscle mass tends to decline gradually from your 30s onwards, and
+            research finds that South Asian adults carry less muscle on
+            average to begin with. A gradual change can be easy to miss at 30
+            and still matter at 75, in something as ordinary as{" "}
+            <CopyHighlight>carrying your own shopping</CopyHighlight>.
           </p>
 
           <svg
             className="truth-chart"
             viewBox="0 0 560 300"
             role="img"
-            aria-label="Line chart: muscle mass from age 35 to 85. The low protein and low activity line falls steeply. The enough protein and staying active line falls gently."
+            aria-label="Illustrative line chart of muscle mass from age 35 to 85. The low protein and low activity line falls steeply. The enough protein and staying active line falls more gently. This is not an individual prediction."
           >
             <line x1="50" y1="20" x2="50" y2="250" stroke="#011246" strokeWidth="3" />
             <line x1="50" y1="250" x2="540" y2="250" stroke="#011246" strokeWidth="3" />
@@ -318,20 +320,23 @@ export function TruthPage() {
           </svg>
 
           <p className="truth-decades__claim">
-            Protein contributes to the maintenance of muscle mass, as part of a
-            varied and balanced diet and a healthy lifestyle.
+            Protein contributes to the maintenance of muscle mass. This
+            applies as part of a varied and balanced diet and a healthy
+            lifestyle.
           </p>
         </div>
       </section>
 
       <section className="section section--gold section--bordered truth-whey">
         <div className="truth-block">
-          <p className="eyebrow">THE GOLD STANDARD</p>
-          <h2>What is the best protein source for vegetarians?</h2>
+          <p className="eyebrow">COMPARE THE SOURCES</p>
+          <h2>How does whey isolate compare with other vegetarian proteins?</h2>
           <p>
-            <CopyHighlight>Whey protein isolate</CopyHighlight>. It is vegetarian,
-            made from milk like paneer and dahi, and it is whey with the extra
-            filtering done. Every other powder gives something up.
+            <CopyHighlight>Whey protein isolate</CopyHighlight> is a
+            concentrated vegetarian source. It comes from milk, like paneer
+            and dahi, and is filtered further than whey concentrate. The
+            options below differ in protein content, amino acid profile and
+            how they behave in food.
           </p>
 
           <div className="powder-stack">
@@ -346,8 +351,9 @@ export function TruthPage() {
               <span className="powder__grams">90g</span>
               <span className="powder__per">protein per 100g</span>
               <span className="powder__note">
-                All nine aminos, full strength. 98% lactose-free, far
-                less lactose than concentrate. Disappears into the dish.
+                All nine essential amino acids. 98% lactose-free, with far
+                less lactose than concentrate. Made to disappear into the
+                dish.
               </span>
             </div>
 
@@ -364,7 +370,9 @@ export function TruthPage() {
                 <span className="powder__name">Whey concentrate</span>
                 <span className="powder__grams">75g</span>
                 <span className="powder__per">protein per 100g</span>
-                <span className="powder__note">More lactose, less protein.</span>
+                <span className="powder__note">
+                  More lactose and less protein than isolate.
+                </span>
               </div>
               <div className="powder">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -387,7 +395,9 @@ export function TruthPage() {
                 <span className="powder__name">Casein</span>
                 <span className="powder__grams">78g</span>
                 <span className="powder__per">protein per 100g</span>
-                <span className="powder__note">Slow, thickens the pot.</span>
+                <span className="powder__note">
+                  Tends to thicken the pot.
+                </span>
               </div>
               <div className="powder">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -409,7 +419,9 @@ export function TruthPage() {
                 <span className="powder__name">Soy isolate</span>
                 <span className="powder__grams">88g</span>
                 <span className="powder__per">protein per 100g</span>
-                <span className="powder__note">Beany aftertaste to hide.</span>
+                <span className="powder__note">
+                  Can bring a noticeable beany taste.
+                </span>
               </div>
               <div className="powder">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -420,15 +432,17 @@ export function TruthPage() {
                 <span className="powder__name">Pea protein</span>
                 <span className="powder__grams">78g</span>
                 <span className="powder__per">protein per 100g</span>
-                <span className="powder__note">One amino acid runs short.</span>
+                <span className="powder__note">
+                  Relatively low in one essential amino acid.
+                </span>
               </div>
             </div>
           </div>
 
           <p className="truth-whey__nonveg">
-            Not a vegetarian? Heldi still earns its place. The same spoonful
-            stirs into chicken curry, mutton curry or butter chicken for an
-            extra 10g, on top of whatever the meat brings.
+            In a meat-based meal, the same spoonful can be stirred into chicken
+            curry, mutton curry or butter chicken. It adds 10g of protein on
+            top of the protein already in the dish.
           </p>
         </div>
       </section>
@@ -438,7 +452,8 @@ export function TruthPage() {
           <p className="eyebrow eyebrow--gold">CLOSE THE GAP</p>
           <h2>How to get more protein as an Indian vegetarian.</h2>
           <p className="truth-block__lede">
-            The honest answers, in order. Tap them onto your day.
+            This example adds dahi first, paneer second and Heldi last. Tap
+            each one to update the day.
           </p>
 
           <div className="truth-fix__chips">
@@ -461,11 +476,11 @@ export function TruthPage() {
             ))}
           </div>
 
-          <Meter value={fixTotal} label="Your day, fixed" />
+          <Meter value={fixTotal} label="Updated day total" />
 
           <p className="truth-day__verdict" aria-live="polite">
             {fixDone
-              ? "That is the table sorted. No shaker in sight."
+              ? "This example day now reaches the 75g target."
               : " "}
           </p>
 
@@ -477,7 +492,7 @@ export function TruthPage() {
 
       <section className="section section--cream section--bordered" id="faq">
         <div className="faq">
-          <h2 className="centered">Questions people actually ask.</h2>
+          <h2 className="centered">Questions people ask.</h2>
           <div className="faq-list">
             {TRUTH_FAQS.map((faq, index) => {
               const open = faqOpen === index;
@@ -507,10 +522,10 @@ export function TruthPage() {
             </a>
           </p>
           <p className="truth-sources">
-            Figures from NHS guidance, the British Nutrition Foundation and
-            McCance and Widdowson&apos;s Composition of Foods. Heldi is a food
-            supplement. Food supplements are not a substitute for a varied and
-            balanced diet and a healthy lifestyle.
+            Figures are drawn from NHS guidance, the British Nutrition
+            Foundation and McCance and Widdowson&apos;s Composition of Foods.
+            Heldi is a food supplement. Food supplements are not a substitute
+            for a varied and balanced diet and a healthy lifestyle.
           </p>
         </div>
       </section>

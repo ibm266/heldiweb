@@ -10,7 +10,7 @@ import { StatutoryStatements } from "@/components/shop/statutory-statements";
 export const metadata: Metadata = {
   title: "FAQ · Heldi",
   description:
-    "Straight answers to everything people ask about Heldi: how to use it, the protein numbers, vegetarian and halal questions, using it alongside GLP-1 medicines, what is in the pouch, and delivery.",
+    "Plain answers about using Heldi, protein portions, vegetarian and halal questions, GLP-1 medicines, ingredients, orders and delivery.",
   alternates: { canonical: "/faq" }
 };
 
@@ -40,12 +40,12 @@ export default function FaqPage() {
       <section className="section section--cream story-hero" data-nav-hero>
         <div className="story-hero__inner">
           <p className="eyebrow">FAQ</p>
-          <h1 className="story-hero__title">Questions, answered honestly.</h1>
+          <h1 className="story-hero__title">Questions, answered plainly.</h1>
           <p className="story-hero__lede">
-            Everything people ask us about Heldi, in one place. If yours is
-            not here, email{" "}
+            We have gathered the questions people ask us most. If yours is not
+            here, email{" "}
             <a href="mailto:info@heldi.co.uk">info@heldi.co.uk</a> and a human
-            will answer. Usually the founder, usually quickly.
+            will answer. At the moment, that is usually the founder.
           </p>
         </div>
       </section>
