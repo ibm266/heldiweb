@@ -2,12 +2,13 @@ import { OG_CONTENT_TYPE, OG_SIZE, heldiOgImage } from "@/components/og/card";
 
 export const size = OG_SIZE;
 export const contentType = OG_CONTENT_TYPE;
-export const alt = "Inside the pouch: eight ingredients, nothing to hide.";
+export const alt =
+  "Inside the pouch share card about Heldi ingredients, suppliers and nutrition sources.";
 
 export default function Image() {
   return heldiOgImage({
     eyebrow: "Inside the pouch",
-    title: "Eight ingredients. Nothing to hide.",
-    sub: "Short label. Long paper trail."
+    title: "Inside each pouch.",
+    sub: "The lists, suppliers and paperwork behind both pouches."
   });
 }

@@ -53,8 +53,8 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
           <p className="eyebrow">HELDI LIVING</p>
           <h1 className="living-index__title">Heldi Living</h1>
           <p className="living-index__lede">
-            Honest writing on protein and desi cooking. What we wish more people
-            knew about the food we already love.
+            Pull up a chair. These are the protein questions our families ask,
+            the numbers we check twice and the recipes worth passing around.
           </p>
         </div>
         <div className="living-tags" role="toolbar" aria-label="Filter by topic">
@@ -84,7 +84,7 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
               onClick={() => setUserExpanded((open) => !open)}
               aria-expanded={tagsExpanded}
             >
-              {tagsExpanded ? "Hide" : "See more"}
+              {tagsExpanded ? "Fewer topics" : "More topics"}
             </button>
           ) : null}
         </div>
@@ -130,7 +130,7 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
                 <Link href={`/heldi-living/${post.slug}`}>{post.title}</Link>
               </h2>
 
-              <p className="living-card__lede">In short</p>
+              <p className="living-card__lede">What you need to know</p>
               <ul className="living-card__summary">
                 {post.summary.map((point) => (
                   <li key={point}>{point}</li>
@@ -138,7 +138,7 @@ export function HeldiLivingFeed({ posts, tags }: HeldiLivingFeedProps) {
               </ul>
 
               <Link className="pill-link" href={`/heldi-living/${post.slug}`}>
-                Read more
+                Read the full piece
               </Link>
             </div>
           </article>
