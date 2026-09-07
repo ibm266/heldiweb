@@ -245,17 +245,18 @@ function HeroLines({ variant }: { variant: "copy" | "foot" }) {
   return (
     <div className={`hero-reveal-lines hero-reveal-lines--${variant}`}>
       <p className="hero-reveal-claim">
-        Made for the food your family already loves.
+        Developed by Indian home cooks in Indian family kitchens.
       </p>
       <p className="hero-reveal-claim__support">
-        We made Khana for the pot, with{" "}
+        Khana stirs straight into home-cooked dal, curry, sabzi and raita,
+        adding{" "}
         <strong>
-          <span className="hero-reveal-claim__grams">10g of protein</span> a
-          spoonful
+          <span className="hero-reveal-claim__grams">10g of protein</span> per
+          serving
         </strong>
-        , and Chai for the mug, with <strong>5g</strong>. Your recipes stay
-        yours. Stir it in, serve as usual, and wait for precisely nobody to
-        mention it.
+        . Chai adds <strong>5g per serving</strong> to chai, tea, coffee or hot
+        chocolate. Both were made for the food and drinks your family already
+        loves.
       </p>
     </div>
   );
@@ -794,8 +795,8 @@ function HeroReveal({
               <div className="hero-reveal-showcase__copy">
                 <h1 className="hero-reveal-lede">
                   <span className="hero-reveal-lede__prefix">
-                    <span className="hero-reveal-lede__prefix-line">Desi </span>
-                    <span className="hero-reveal-lede__prefix-line">protein </span>
+                    <span className="hero-reveal-lede__prefix-line">Protein </span>
+                    <span className="hero-reveal-lede__prefix-line">powder </span>
                     <span className="hero-reveal-lede__prefix-line">for</span>
                   </span>
                   <span className="word-board">
