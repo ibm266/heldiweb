@@ -12,18 +12,18 @@ const AUDIENCES: {
 }[] = [
   {
     label: "FOR YOU",
-    title: "Tired of forcing down another shake?",
+    title: "When another shake is simply not happening.",
     points: [
-      <>Stir into two or three dishes and add <CopyHighlight>20-30g</CopyHighlight> in one meal.</>,
-      <>Zero change to the food you love.</>
+      <>Stir Heldi into two or three dishes and add <CopyHighlight>20-30g</CopyHighlight> of protein to one meal.</>,
+      <>You still get the dal, raita and rice you were looking forward to.</>
     ]
   },
   {
     label: "FOR THE FAMILY",
-    title: "One pouch feeds every appetite at the table.",
+    title: "There are enough opinions at the table already.",
     points: [
-      <><CopyHighlight>Disappears into</CopyHighlight> the dal, the curry, the raita everyone already eats.</>,
-      <>No separate “healthy” cooking. Ever.</>
+      <>Khana joins the <CopyHighlight>dal, curry or raita</CopyHighlight> before everyone helps themselves.</>,
+      <>You cook dinner once, which is quite enough.</>
     ]
   },
   {
@@ -31,7 +31,7 @@ const AUDIENCES: {
     title: "For all the plans still on the list.",
     points: [
       <>Protein contributes to the maintenance of muscle mass.</>,
-      <>Not a single <CopyHighlight>recipe changes</CopyHighlight>. Not even the evening chai.</>
+      <>Their familiar dal and <CopyHighlight>evening chai</CopyHighlight> stay firmly on the menu.</>
     ]
   }
 ];

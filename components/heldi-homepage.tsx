@@ -1204,11 +1204,11 @@ export function HeldiHomepage({
       <section className="section section--cream" id="pouch">
         <div className="pouch-section">
           <div className="pouch-section__copy">
-            <h2>Food you love. Nutrients you need.</h2>
+            <h2>Made for the dinner already cooking.</h2>
             <p>
-              Khana <CopyHighlight>vanishes clean</CopyHighlight> into every
-              gravy, dal and yoghurt base. Chai does the same in the mug. No
-              chalk, no aftertaste.
+              Khana <CopyHighlight>vanishes clean</CopyHighlight> into gravy,
+              dal and yoghurt bases once they are off the heat. No chalk, no
+              aftertaste. Chai has its own place: the mug.
             </p>
           </div>
           <PouchStats grams={grams} className="pouch-section__stats" />
@@ -1239,9 +1239,9 @@ export function HeldiHomepage({
           <p className="eyebrow">THE HONEST TRUTH</p>
           <h2>That 18g figure? It&apos;s for dry dal.</h2>
           <p>
-            So the bowl you actually eat lands closer to 6g. Protein
-            contributes to the maintenance of muscle mass, and that matters
-            more every year past 30. Here is the{" "}
+            So the bowl you actually eat lands closer to 6g. We counted the
+            cooked bowl because that is the one you put on the table. Protein
+            contributes to the maintenance of muscle mass. Here is the{" "}
             <CopyHighlight>honest fix</CopyHighlight>.
           </p>
           <PouchEquation />
@@ -1271,9 +1271,9 @@ export function HeldiHomepage({
       <section className="section section--gold section--bordered" id="audience">
         <div className="content">
           <h2 className="centered audience-heading">
-            Built for you.{" "}
+            Every appetite at the table.{" "}
             <span className="audience-heading__line2">
-              Made for the whole family.
+              Even the one who said they weren&apos;t hungry.
             </span>
           </h2>
           <AudienceGallery />
@@ -1356,12 +1356,12 @@ export function HeldiHomepage({
             <p className="eyebrow eyebrow--gold">WITH EVERY ORDER</p>
             <h2>A jar for the table. On us.</h2>
             <p>
-              Every pouch order ships with a refillable jar for the{" "}
+              Every pouch order comes with a refillable jar for the{" "}
               <CopyHighlight>dinner table</CopyHighlight>. Not the cupboard.
-              Right there <CopyHighlight>beside the dal</CopyHighlight>, where
-              everyone can reach for it. It comes in gold, and only gold. We
-              did look at silver, for about four minutes, and then we
-              remembered whose table it was going on.
+              Keep it <CopyHighlight>beside the dal</CopyHighlight> so everyone
+              can reach for a spoonful. It comes in gold, and only gold. We
+              considered silver for about four minutes, then remembered whose
+              table the jar was going on.
             </p>
           </div>
           <div className="jar-card">

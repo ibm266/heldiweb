@@ -32,7 +32,7 @@ const RANGE: RangeProduct[] = [
     id: "khana",
     tag: "FOR THE POT",
     title: "Heldi Khana",
-    line: "Dal, curry, sabzi, raita. Stirred into the pot once it is off the heat.",
+    line: "Dal, curry, sabzi, raita. Stir Khana in once the pot is off the heat, then carry on serving.",
     image: {
       // Cropped from the /shop gallery shot; masters in the gitignored
       // public/images/originals/pre-webp/shop/.
@@ -45,7 +45,7 @@ const RANGE: RangeProduct[] = [
     id: "chai",
     tag: "FOR THE MUG",
     title: "Heldi Chai",
-    line: "Chai, tea, coffee, hot chocolate. Stirred into the mug once it is off the boil.",
+    line: "Chai, tea, coffee, hot chocolate. Stir Chai in once the drink is off the boil. The biscuits can take it from here.",
     image: {
       src: "/images/range/chai.webp?v=4",
       alt: "The terracotta Heldi Chai pouch on a linen table"
@@ -61,12 +61,12 @@ const RANGE: RangeProduct[] = [
 function cardCopy(id: RangeProduct["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
-      ? { note: "In the shop now.", cta: "Shop Khana" }
-      : { note: "The first one out of the kitchen.", cta: "Meet Khana" };
+      ? { note: "Khana is in the shop now.", cta: "Shop Khana" }
+      : { note: "Khana will be the first pouch out of our kitchen.", cta: "Meet Khana" };
   }
   return mode === "live"
-    ? { note: "Still on the stove. Not in the shop yet.", cta: "Meet Chai" }
-    : { note: "Still on the stove. The waitlist hears first.", cta: "Meet Chai" };
+    ? { note: "We are still finishing Chai, so it is not in the shop yet.", cta: "Meet Chai" }
+    : { note: "We are still finishing Chai. We will tell the waitlist first.", cta: "Meet Chai" };
 }
 
 export function RangeSection() {
@@ -79,9 +79,9 @@ export function RangeSection() {
           <p className="eyebrow">TWO POUCHES</p>
           <h2>One for the pot. One for the mug.</h2>
           <p className="range__lede">
-            Khana goes into the food. Chai goes into the drink. A spoonful
-            each, same rule:{" "}
-            <CopyHighlight>nobody at the table can tell</CopyHighlight>.
+            Reach for Khana once dinner is cooked, and for Chai once the drink
+            is off the boil. Your{" "}
+            <CopyHighlight>usual recipes do the rest</CopyHighlight>.
           </p>
         </div>
 

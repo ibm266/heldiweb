@@ -78,12 +78,11 @@ export function WaysGallery() {
     <div className="ways-gallery">
       <header className="ways-gallery__header">
         <p className="eyebrow">HOW IT WORKS</p>
-        <h2>It&apos;s as easy as 1, 2, 3.</h2>
+        <h2>When does Heldi go in?</h2>
         <p className="ways-gallery__lede">
-          Once the pouch is open, you can{" "}
-          <CopyHighlight>stop shaking and start stirring</CopyHighlight>. These
-          are the ways Heldi works best, pot and mug, and every one of them is
-          just three steps.
+          Pick what you are making and follow the three pictures. The cooking
+          pot, cold bowl, family table and mug by the kettle each get{" "}
+          <CopyHighlight>their own method</CopyHighlight>.
         </p>
       </header>
 

@@ -287,13 +287,13 @@ export function ComparisonSection() {
         <header className="vs__header">
           <p className="eyebrow eyebrow--gold">HELDI VS THE SHAKER</p>
           <h2>
-            Reasons to stop shaking and{" "}
-            <CopyHighlight>start stirring</CopyHighlight>
+            The shaker can stay in the cupboard.{" "}
+            <CopyHighlight>Keep the spoon by the pot.</CopyHighlight>
           </h2>
           <p className="vs__lede">
-            The first protein made with spices and flavours Indians actually
-            like. Shakes were never developed for the desi palate, here are a
-            few more reasons to give Heldi a try.
+            We made Heldi for the way our families eat: a pot on the hob, a mug
+            by the kettle and one spoon to wash afterwards. The scorecard shows
+            where it fits.
           </p>
         </header>
 

@@ -405,12 +405,11 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
     <div className="menu-gallery">
       <header className="menu-gallery__header">
         <p className="eyebrow eyebrow--gold">PUT IT ON THE TABLE</p>
-        <h2>Lunch and dinner menus.</h2>
+        <h2>Here is what a whole table looks like.</h2>
         <p className="menu-gallery__lede">
-          <strong>Five ways to lay the table.</strong> Gold dishes are{" "}
-          <CopyHighlight>boosted with Heldi</CopyHighlight>,{" "}
-          <strong>counted for a couple.</strong> Chai to finish, counted
-          too.
+          <strong>We counted all five menus for a couple.</strong> The{" "}
+          <CopyHighlight>gold dishes</CopyHighlight> show where Heldi joins the
+          meal, <strong>including the chai at the end.</strong>
         </p>
       </header>
 
