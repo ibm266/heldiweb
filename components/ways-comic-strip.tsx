@@ -25,8 +25,8 @@ export type ComicStrip = {
 export type Serving = string | { start: string; upto: string };
 
 export const SERVING_LADDER_LABELS = {
-  start: "Light hand",
-  upto: "Heavy hand"
+  start: "Start with",
+  upto: "Work up to"
 } as const;
 
 type WaysComicStripProps = {

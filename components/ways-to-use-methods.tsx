@@ -30,15 +30,16 @@ export const METHODS: Method[] = [
     ground: "ink",
     intro: (
       <>
-        A heaped tablespoon adds 10g of protein. The only trick is the
-        spread: <CopyHighlight>sprinkle it all around the surface</CopyHighlight>,
-        not one heap in the middle, then stir. The pot will deny everything.
+        A heaped tablespoon adds 10g of protein. Finish cooking and take the
+        pot off the boil. Then{" "}
+        <CopyHighlight>scatter Heldi across the whole surface</CopyHighlight>{" "}
+        so it wets evenly when you stir.
       </>
     ),
     steps: [
-      <>Cook your dal, curry or sabzi like always, then take the pot off the boil.</>,
-      <>Sprinkle a heaped tablespoon per person all around the surface.</>,
-      <>Stir until it disappears, about ten seconds, and serve.</>
+      <>Finish cooking your dal, curry or sabzi, then take the pot off the boil.</>,
+      <>Scatter a heaped tablespoon per person across the surface.</>,
+      <>Stir through for about ten seconds, check for dry pockets, and serve.</>
     ],
     serving: { start: "1 tsp per person", upto: "1 heaped tbsp per person" },
     strip: {
@@ -47,7 +48,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "In the pot",
-      captions: ["Cook like always.", "Heat off.", "Stir one in.\nGone."],
+      captions: ["Finish\ncooking.", "Take it off\nthe boil.", "Scatter and\nstir."],
       anchors: [18, 48, 80],
       alt: "Engraved brass pot in the Heldi pouch style, shown three times: cooking over a flame, off the heat with its lid set aside, and with a bangled hand stirring in a spoonful."
     }
@@ -60,26 +61,26 @@ export const METHODS: Method[] = [
     ground: "cream",
     intro: (
       <>
-        The same moves as the pot, minus the waiting: dahi is already cool,
-        so there is <CopyHighlight>no cooling-off period</CopyHighlight>. A
-        teaspoon does its bit in your own bowl; a tablespoon suits a raita
-        made for the table. Stir it smooth and it is gone.
+        Dahi is already cool, so you can add Heldi as soon as the bowl is
+        ready. Use a teaspoon in your own bowl or a tablespoon in a shared
+        raita. <CopyHighlight>Sprinkle across the top first</CopyHighlight>,
+        then stir through the middle and around the edge.
       </>
     ),
     steps: [
-      <>Spoon out your dahi or mix your raita like always.</>,
-      <>Sprinkle a teaspoon to a tablespoon across the bowl.</>,
-      <>Stir until smooth. Cold bowls take it the fastest.</>
+      <>Spoon out your dahi or finish mixing the raita.</>,
+      <>Sprinkle a teaspoon to a tablespoon evenly across the bowl.</>,
+      <>Stir through the middle and around the edge until smooth.</>
     ],
     serving: { start: "1 tsp per person", upto: "1 tbsp per person" },
-    note: "Yes, those are the same steps as the pot. That is rather the point.",
+    note: "For a thick raita, add it in two passes and stir between them.",
     strip: {
       video: "/videos/ways-to-use/dahi-strip.mp4",
       poster: "/images/ways-to-use/dahi-strip.webp",
       width: 1920,
       height: 1080,
       label: "In the bowl",
-      captions: ["Dahi like\nalways.", "Sprinkle\nacross.", "Stir until\nsmooth."],
+      captions: ["Ready the\nbowl.", "Sprinkle\nevenly.", "Stir until\nsmooth."],
       anchors: [21, 50, 80],
       alt: "Engraved metal bowls of dahi in the Heldi pouch style, shown three times: a full bowl with a spoon resting beside it, a bangled hand sprinkling a spoonful across the surface, and another hand stirring it smooth with a spoon."
     }
@@ -92,26 +93,27 @@ export const METHODS: Method[] = [
     ground: "ink",
     intro: (
       <>
-        Because that is where the food is. Set it in the middle, next to the
-        achaar, and <CopyHighlight>everyone sorts their own plate</CopyHighlight>:
-        a tablespoon in papa&apos;s dal, a teaspoon in nani&apos;s raita, and
-        nobody&apos;s dinner is anybody else&apos;s business.
+        Set the jar beside the achaar and let each person choose their amount.
+        A tablespoon can go into papa&apos;s dal and a teaspoon into
+        nani&apos;s raita.{" "}
+        <CopyHighlight>Everyone stirs their own bowl</CopyHighlight>, then
+        passes the jar along.
       </>
     ),
     steps: [
-      <>Put the jar in the middle of the table. Not the cupboard.</>,
+      <>Put the jar in the middle of the table, within everyone&apos;s reach.</>,
       <>Everyone adds their own. Start with a teaspoon, work up to a heaped tablespoon.</>,
       <>Stir it into your bowl and pass the jar along.</>
     ],
     serving: { start: "1 tsp each", upto: "1 heaped tbsp each" },
-    note: "This is the job the jar was made for.",
+    note: "This is why the jar belongs between the dishes.",
     strip: {
       video: "/videos/ways-to-use/table-strip.mp4",
       poster: "/images/ways-to-use/table-strip.webp",
       width: 1920,
       height: 1080,
       label: "On the table",
-      captions: ["Fill\nthe jar.", "Park it by\nthe achaar.", "Everyone adds\ntheir own."],
+      captions: ["Fill the\njar.", "Set it by\nthe achaar.", "Stir your\nown bowl."],
       anchors: [20, 50, 80],
       alt: "Engraved table jar in the Heldi pouch style, shown three times: a plain pouch pouring powder into the open jar, the closed jar parked beside a little achaar pot, and two bangled hands lifting spoonfuls toward their own bowls."
     }
@@ -124,18 +126,19 @@ export const METHODS: Method[] = [
     ground: "cream",
     intro: (
       <>
-        Beautifully. A takeaway curry is still a curry: hot, saucy and very
-        stir-able. Plate up your own portion, sprinkle, stir, enjoy.{" "}
+        For a korma or another takeaway curry, work with one portion at a time.
+        Plate it before adding Heldi so you can spread the powder evenly and
+        stir right to the bottom.{" "}
         <CopyHighlight>
-          What happens between you and your korma stays between you and your
-          korma.
+          Add it whilst the curry is still hot
         </CopyHighlight>
+        , then eat as soon as it is mixed through.
       </>
     ),
     steps: [
-      <>Order like always. Friday is Friday.</>,
-      <>Plate up your portion and sprinkle a tablespoon over it whilst it&apos;s hot.</>,
-      <>Stir, serve, enjoy.</>
+      <>Order the curry you want. Friday is Friday. Plate up your portion.</>,
+      <>Sprinkle a tablespoon evenly over it whilst it is still hot.</>,
+      <>Stir right to the bottom of the bowl, then eat.</>
     ],
     serving: "1 tbsp per portion",
     strip: {
@@ -144,7 +147,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "The takeaway",
-      captions: ["Order like always.", "Sprinkle over it.", "Stir and enjoy."],
+      captions: ["Plate your\nportion.", "Sprinkle\nevenly.", "Stir to the\nbottom."],
       anchors: [20, 50, 77],
       alt: "Engraved takeaway curry in the Heldi pouch style, shown three times: a steaming foil container, a plated bowl with a bangled hand sprinkling a spoonful over it, and another hand stirring the bowl smooth."
     }
@@ -157,17 +160,16 @@ export const METHODS: Method[] = [
     ground: "ink",
     intro: (
       <>
-        Half the freezers in this country hold a dabba of somebody&apos;s
-        mum&apos;s dal. Heldi goes in at the end of its journey, not the
-        beginning: defrost, heat it through, take it off the heat, and stir
-        in a spoonful just before you eat.{" "}
+        If there is a dabba of your mum&apos;s dal in the freezer, reheat it
+        fully before you reach for Heldi. Take it off the heat, wait for the
+        steam to settle, then stir in a spoonful just before serving.{" "}
         <CopyHighlight>The recipe stays hers.</CopyHighlight>
       </>
     ),
     steps: [
-      <>Defrost and heat it through like always.</>,
-      <>Off the heat. Give it a minute to stop steaming.</>,
-      <>Stir in a spoonful just before serving. Aunty never needs to know.</>
+      <>Defrost the food and heat it all the way through.</>,
+      <>Take it off the heat and give it a minute to stop steaming.</>,
+      <>Stir in a spoonful just before serving.</>
     ],
     serving: "1 tbsp per portion",
     strip: {
@@ -176,7 +178,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "Home away from home",
-      captions: ["Defrost.", "Heat it up.", "Then Heldi."],
+      captions: ["Defrost\nfully.", "Heat it\nthrough.", "Rest, then\nstir."],
       anchors: [19, 49, 77],
       alt: "Engraved leftovers in the Heldi pouch style, shown three times: a frosted freezer tub of dal, a brass pot reheating over a flame, and a bangled hand stirring in a spoonful off the heat."
     }
@@ -189,12 +191,12 @@ export const METHODS: Method[] = [
     ground: "cream",
     intro: (
       <>
-        The one method where Heldi goes in before the cooking. Mix it into
-        the dry atta first so it spreads evenly, then{" "}
+        Mix Heldi through the dry atta before adding any water. This spreads
+        it evenly through the dough. Then{" "}
         <CopyHighlight>knead with cold water</CopyHighlight>. Cold matters:
-        warm water turns whey clumpy, cold keeps the dough smooth. The dough
-        drinks a little more water than plain atta, so add a splash extra if
-        it feels tight, and let it rest before rolling.
+        warm water can make the whey clump. The dough takes a little more
+        water than plain atta, so add an extra splash if it feels tight and
+        rest it before rolling.
       </>
     ),
     steps: [
@@ -203,14 +205,14 @@ export const METHODS: Method[] = [
       <>Roll and cook like always on a medium tawa. Protein browns a touch faster, so watch the first one.</>
     ],
     serving: "1 to 2 tbsp per cup of atta",
-    note: "Same soft rotis. Just carrying more.",
+    note: "Watch the first roti. If it browns quickly, turn the tawa down a little.",
     strip: {
       video: "/videos/ways-to-use/roti-strip.mp4",
       poster: "/images/ways-to-use/roti-strip.webp",
       width: 1920,
       height: 1080,
       label: "In the atta",
-      captions: ["Into the atta.", "Knead and rest.", "Roll and cook."],
+      captions: ["Mix through\ndry atta.", "Knead cold.\nRest 15 min.", "Roll. Cook\non medium."],
       anchors: [19, 51, 80],
       alt: "Engraved roti-making in the Heldi pouch style, shown three times: a pouch pouring Heldi into a plate of atta flour, two bangled hands kneading the dough, and a roti puffing up on a tawa over a flame."
     }
@@ -223,27 +225,26 @@ export const METHODS: Method[] = [
     ground: "ink",
     intro: (
       <>
-        This one is Heldi Chai, not Khana: a whey and casein blend with real
-        chai spices, made for the mug rather than the pot. The rule is the
-        pot&apos;s rule: <CopyHighlight>off the boil first</CopyHighlight>,
-        then stir. Whey does not enjoy a rolling boil, and neither does the
-        taste.
+        Use Heldi Chai here. It combines whey protein isolate, milk protein
+        concentrate and chai spices for the mug. Finish brewing, then{" "}
+        <CopyHighlight>take the drink off the boil</CopyHighlight> before you
+        stir in a level tablespoon.
       </>
     ),
     steps: [
       <>Brew your chai the way you always make it. Tea, coffee and hot chocolate count too.</>,
       <>Take it off the boil and add your milk, so it is hot rather than boiling.</>,
-      <>Stir in a level tablespoon just before you drink. Gone in a few turns of the spoon.</>
+      <>Stir in a level tablespoon just before you drink, until the mug is smooth.</>
     ],
-    serving: "1 level tbsp a mug",
-    note: "A level tablespoon (8g) adds 5g of protein, calculated from the recipe; the figure from analysis of the finished blend follows.",
+    serving: "1 level tbsp per mug",
+    note: "This guide rounds the calculated 5.1g per 8g serving down to 5g. The figures come from the recipe and supplier data, not finished-product analysis.",
     strip: {
       video: "/videos/ways-to-use/mug-strip.mp4",
       poster: "/images/ways-to-use/mug-strip.webp",
       width: 1920,
       height: 1080,
       label: "In the mug",
-      captions: ["Brew like always.", "Off the boil.", "Stir one in.\nGone."],
+      captions: ["Finish\nbrewing.", "Take it off\nthe boil.", "Stir until\nsmooth."],
       anchors: [18, 50, 82],
       alt: "Engraved brass chai pan and tumbler in the Heldi pouch style, shown three times: brewing over a flame, off the heat beside a steaming cup, and with a bangled hand stirring a spoonful into the cup."
     }

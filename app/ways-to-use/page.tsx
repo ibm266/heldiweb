@@ -11,7 +11,7 @@ import {
 export const metadata: Metadata = {
   title: "Ways to use · Heldi",
   description:
-    "Dal, dahi, takeaway, rotis, the jar in the middle of the table, and the chai after. Every way to stir Heldi in, three steps each. Ek, do, protein.",
+    "Practical timings and amounts for stirring Heldi into dal, curry, dahi, raita, takeaway, rotis and chai.",
   alternates: { canonical: "/ways-to-use" }
 };
 
@@ -26,16 +26,15 @@ export default function WaysToUsePage() {
         <div className="story-hero__inner">
           <p className="eyebrow">WAYS TO USE</p>
           <h1 className="story-hero__title">
-            We won&apos;t tell you how to run your kitchen.
+            Here is what worked in our kitchen.
           </h1>
           <p className="story-hero__lede">
-            Nobody tells a desi cook what to do at their own stove, and we are
-            not about to start. But once the jar is open, you can{" "}
-            <CopyHighlight>stop shaking and start stirring</CopyHighlight>.
-            These are the ways Heldi works best, and every one of them takes{" "}
-            <CopyHighlight>the same three steps</CopyHighlight>.
+            You know how to make the food. These guides cover the Heldi part:{" "}
+            <CopyHighlight>when to add it, where to sprinkle it and how much to use</CopyHighlight>.
+            Pick the dish in front of you, follow the three steps, and{" "}
+            <CopyHighlight>keep the recipe yours</CopyHighlight>.
           </p>
-          <p className="story-hero__easy">It&apos;s as easy as 1, 2, 3.</p>
+          <p className="story-hero__easy">Start with what you are cooking.</p>
           <nav className="ways-jump" aria-label="Jump to a way to use Heldi">
             {METHODS.map((method) => (
               <a key={method.id} className="truth-chip" href={`#${method.id}`}>
@@ -51,14 +50,14 @@ export default function WaysToUsePage() {
       <section className="section section--gold story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">THE FIRST RULE</p>
-          <h2>Start with a teaspoon.</h2>
+          <h2>Start with a teaspoon, then taste.</h2>
           <p>
-            The heaped tablespoon is the recommended serving: 10g of protein,
-            gone without a trace. But it is a serving,{" "}
-            <CopyHighlight>not an entry exam</CopyHighlight>. A teaspoon still
-            adds around 3g, and 3g in the raita beats 0g in the cupboard.
-            Start small, taste, and work up. Nobody at the table will know
-            either way.
+            A heaped tablespoon is the recommended serving and adds 10g of
+            protein. For your first bowl,{" "}
+            <CopyHighlight>begin with a teaspoon</CopyHighlight>, which adds
+            around 3g. Sprinkle it across the food, stir well and taste. You
+            can use more next time, or work up to the full serving in the same
+            bowl.
           </p>
         </div>
       </section>
@@ -132,8 +131,8 @@ export default function WaysToUsePage() {
 
       <section className="final-cta section--bordered">
         <div className="final-cta-copy">
-          <h2>Bring it to the table.</h2>
-          <p>Every dish on this page stays exactly the same. That is the whole trick.</p>
+          <h2>Keep the guide beside the stove.</h2>
+          <p>Start small, add Heldi at the right moment, and keep cooking your food.</p>
           <WaitlistOrShopCta />
         </div>
       </section>

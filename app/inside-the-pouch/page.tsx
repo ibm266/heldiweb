@@ -8,7 +8,7 @@ import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 export const metadata: Metadata = {
   title: "Inside the pouch · Heldi",
   description:
-    "Whey protein isolate from Arla, spices from Spice Entice and Buy Whole Foods Online, sunflower lecithin from Special Ingredients. Blended and packed in England. Every ingredient in Heldi Khana and Heldi Chai, and what each one is doing.",
+    "The full Heldi Khana and Heldi Chai ingredient lists, with named suppliers, the Arla whey certificate, and where each pouch is blended and packed.",
   alternates: { canonical: "/inside-the-pouch" }
 };
 
@@ -21,13 +21,14 @@ export default function InsideThePouchPage() {
         <div className="story-hero__inner">
           <p className="eyebrow">INSIDE THE POUCH</p>
           <h1 className="story-hero__title">
-            Every ingredient. Nothing to hide.
+            The ingredients, in label order.
           </h1>
           <p className="story-hero__lede">
-            Khana is eight ingredients, Chai is nine, and{" "}
-            <CopyHighlight>most of them are spices you already cook with.</CopyHighlight>{" "}
-            Here is every one of them, where it came from, and the paperwork
-            that follows it in.
+            Khana has eight ingredients and Chai has nine. The lists below
+            follow the order printed on each label,{" "}
+            <CopyHighlight>from the milk proteins through every spice</CopyHighlight>.
+            We also name the suppliers and explain which documents support
+            the figures.
           </p>
         </div>
       </section>
@@ -41,31 +42,29 @@ export default function InsideThePouchPage() {
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">THE WHEY</p>
-          <h2>It starts with milk, from people who know milk.</h2>
+          <h2>Arla whey, read on an as-is basis.</h2>
           <p>
-            About 94% of every pouch is whey protein isolate, and ours comes
-            from <CopyHighlight>Arla</CopyHighlight>, the farmer-owned dairy
-            cooperative behind some of the most trusted dairy in Europe. Whey
-            is the part of milk your nani strains off when she makes paneer.
-            Arla filters it until it is{" "}
-            <CopyHighlight>close to 90% protein</CopyHighlight>, gently dries
-            it, and sends it to us with its test results attached. The
-            certificate for our batch says 92.66%, but that figure is measured
-            with the water taken out; as the powder actually arrives it is
-            88.83%, and that is the number every calculation on this site
-            uses.
+            Whey protein isolate makes up 94% of Khana, and the same ingredient
+            also appears in Chai. Ours comes from{" "}
+            <CopyHighlight>Arla</CopyHighlight>, a farmer-owned dairy
+            cooperative. Whey is the liquid separated from milk when paneer is
+            made. Arla filters and dries it, then supplies a certificate of
+            analysis with the batch. Certificate 0000672935 reports{" "}
+            <CopyHighlight>92.66% protein in dry matter</CopyHighlight> at
+            4.13% moisture. On the as-is basis used for the product
+            calculations, the whey is 88.83% protein.
           </p>
           <p>
-            It is made <CopyHighlight>without animal rennet</CopyHighlight>,
-            which keeps it fully vegetarian. No meat, no gelatine, no alcohol,
-            nothing hiding behind a technical name. We do not yet hold a formal
-            halal certificate; if that matters to your table, email{" "}
+            Arla makes it <CopyHighlight>without animal rennet</CopyHighlight>,
+            so it is suitable for vegetarians. It contains no meat, gelatine or
+            alcohol. We do not yet hold a formal halal certificate. If that
+            matters to your table, email{" "}
             info@heldi.co.uk and we will tell you exactly where things stand.
           </p>
           <div className="story-menu-card">
             <h3 className="story-menu-card__title">The batch report</h3>
             <p className="story-menu-card__subtitle">
-              batch FF25466001, tested before it gets near a kitchen
+              Arla whey ingredient, batch FF25466001
             </p>
             <ul className="story-menu-card__list">
               <li className="story-menu-card__item">
@@ -96,10 +95,15 @@ export default function InsideThePouchPage() {
             </ul>
           </div>
           <p>
-            Every batch of whey arrives with a certificate of analysis like
-            this one: protein content, purity, and a full safety screen,
-            checked before it comes anywhere near a pot.{" "}
-            <CopyHighlight>Desi households check marks. So do we.</CopyHighlight>
+            Every whey batch arrives with a certificate of analysis. The
+            report above records the protein, fat, lactose, moisture and safety
+            screen for the incoming Arla ingredient. It is not an analysis of
+            a finished Heldi pouch.{" "}
+            <CopyHighlight>
+              The finished nutrition values are calculated from the recipe and
+              supplier data
+            </CopyHighlight>
+            .
           </p>
         </div>
       </section>
@@ -113,13 +117,13 @@ export default function InsideThePouchPage() {
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">THE OTHER SEVEN</p>
-          <h2>Ingredients with a name and an address.</h2>
+          <h2>Khana, in label order.</h2>
           <p>
             Khana in full, most to least:{" "}
             <CopyHighlight>{FORMULA}</CopyHighlight>. Only the whey carries a
-            percentage. The order is the order, largest first, because that is
-            what a label has to show; the exact spice ratios are the recipe,
-            and those we keep.
+            percentage. Food labels list ingredients in descending order by
+            weight, so that is the order shown here. The exact spice ratios are
+            part of the recipe and are not published.
           </p>
           <p>
             The single spices come from{" "}
@@ -135,7 +139,7 @@ export default function InsideThePouchPage() {
             <CopyHighlight>
               cumin, coriander, Kashmiri chilli and turmeric
             </CopyHighlight>
-            , there to help the blend settle into the dishes you already make.
+            , which form the single-spice part of the savoury blend.
             The <CopyHighlight>garam masala</CopyHighlight> is a blend rather
             than a single spice, so it has its own supplier:{" "}
             <CopyHighlight>Buy Whole Foods Online</CopyHighlight>, also in the
@@ -143,73 +147,62 @@ export default function InsideThePouchPage() {
           </p>
           <p>
             The <CopyHighlight>sunflower lecithin</CopyHighlight> comes from
-            Special Ingredients, a UK supplier, and it is the only word on the
-            label that sounds like chemistry. It is not. Lecithin is a fat that
-            occurs <CopyHighlight>naturally in seeds</CopyHighlight>, and in egg
-            yolk, which is the whole reason mayonnaise holds together instead
-            of splitting into oil and vinegar. Ours is separated out when
-            sunflower seeds are pressed for their oil. Nothing is synthesised
-            to make it.
+            Special Ingredients, a UK supplier. Lecithin is a fat that occurs{" "}
+            <CopyHighlight>naturally in seeds</CopyHighlight> and egg yolk.
+            Ours is separated during sunflower oil processing rather than
+            synthesised.
           </p>
           <p>
-            What it does is simple. It is the reason a spoonful sinks into the
-            pot and vanishes, instead of sitting on the surface in lumps that
-            never wet through. We use sunflower rather than soya because soya
-            is one of the fourteen allergens a label has to declare, and this
-            way that is one fewer thing for you to read.
+            Sunflower lecithin helps the powder wet and disperse through the
+            pot instead of remaining as dry lumps on the surface. We use
+            sunflower rather than soya because soya is one of the fourteen
+            allergens that must be declared. This leaves soya out of the
+            formula and out of the allergen statement.
           </p>
           <p>
-            There is <CopyHighlight>fine sea salt</CopyHighlight> too. Just
-            enough to keep it tasting like food rather than a supplement.
+            <CopyHighlight>Fine sea salt</CopyHighlight> completes the Khana
+            ingredient list and forms part of the savoury spice blend.
           </p>
         </div>
       </section>
 
       <section className="section section--gold section--bordered story-pull">
-        <p className="story-pull__line">A mug is not a pot.</p>
+        <p className="story-pull__line">The mug needs its own formula.</p>
       </section>
 
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">THE CHAI POUCH</p>
-          <h2>Nine ingredients, and two of them are new.</h2>
+          <h2>Chai, in label order.</h2>
           <p>
             Chai in full, most to least:{" "}
             <CopyHighlight>{CHAI_FORMULA}</CopyHighlight>. Same Arla whey, same
-            sunflower lecithin, same rule about keeping the spice ratios to
-            ourselves. Two things are new, and both are there because a drink
-            has to behave like a drink.
+            sunflower lecithin and the same descending-weight rule. Milk
+            protein concentrate and coconut sugar do not appear in Khana. Chai
+            also has its own five-spice masala.
           </p>
           <p>
-            The first is a{" "}
-            <CopyHighlight>second milk protein</CopyHighlight>. Whey on its own
-            is thin in liquid. It dissolves, it delivers the protein, and it
-            leaves you with something closer to spiced water than to chai. So
-            the chai carries milk protein concentrate alongside it, which is
-            mostly casein, the part of milk that gives milk its body. Casein is
-            the reason a glass of milk feels like something in the mouth and a
-            glass of water does not. It is in there{" "}
-            <CopyHighlight>for creaminess</CopyHighlight>, and for nothing
-            else.
+            The second milk protein is{" "}
+            <CopyHighlight>milk protein concentrate</CopyHighlight>. Whey on
+            its own produces a thinner drink. Milk protein concentrate is
+            mostly casein and gives liquid more body. It is included{" "}
+            <CopyHighlight>for creaminess</CopyHighlight>, rather than to set
+            the protein figure.
           </p>
           <p>
-            The second is <CopyHighlight>coconut sugar</CopyHighlight>, and it
-            is the reason Chai never borrows Khana&apos;s &ldquo;no added
-            sugar&rdquo;. A mug of spiced protein with no sweetness in it at all
-            is a drink you finish once, politely, and never make again. There is
-            enough to make it worth drinking and no more, and the amount is
-            printed on the label rather than left for you to guess at.
+            Chai also contains <CopyHighlight>coconut sugar</CopyHighlight>, so
+            it never carries Khana&apos;s &ldquo;no added sugar&rdquo; wording.
+            Coconut sugar provides the sweetness in the formula, and its 10%
+            share is printed in the ingredient list.
           </p>
           <p>
             Then the masala:{" "}
             <CopyHighlight>
               ginger, cardamom, Ceylon cinnamon, black pepper and clove
             </CopyHighlight>
-            , in the order they appear on the label. Ginger leads, which is why
-            the first thing you taste is warmth rather than sweetness. The
-            cinnamon is Ceylon rather than cassia, the softer and sweeter of the
-            two. The black pepper is not a typo; chai without it loses its
-            edge.
+            , in descending order by weight. Ginger is the largest spice in the
+            formula. The cinnamon is Ceylon rather than cassia, and the black
+            pepper is an intentional part of the masala.
           </p>
           <div className="story-menu-card">
             <h3 className="story-menu-card__title">What each one is doing</h3>
@@ -230,7 +223,7 @@ export default function InsideThePouchPage() {
               <li className="story-menu-card__item">
                 <span>Coconut sugar</span>
                 <span className="story-menu-card__dots" aria-hidden="true" />
-                <span>just enough sweetness</span>
+                <span>the sweetness</span>
               </li>
               <li className="story-menu-card__item">
                 <span>Ginger, cardamom, cinnamon, pepper, clove</span>
@@ -249,8 +242,8 @@ export default function InsideThePouchPage() {
             <CopyHighlight>
               contains milk (whey and milk protein concentrate)
             </CopyHighlight>{" "}
-            where Khana names the whey alone. Same rule as everything else on
-            this page. If it is in there, it is on the label.
+            where Khana names whey alone. Each statement follows the milk
+            ingredients in that product.
           </p>
         </div>
       </section>
@@ -262,23 +255,24 @@ export default function InsideThePouchPage() {
           <p>
             Every pouch of Heldi is{" "}
             <CopyHighlight>blended in England and packed in England</CopyHighlight>
-            , in small batches. Short supply lines, and a founder who can
-            drive to where his product is made. If something ever looks off,
-            we do not wait for a report from an ocean away. We go and look.
+            , in small batches. The founder can drive to the blending and
+            packing site. If something looks wrong, we can speak directly to
+            the people making it and inspect it there.
           </p>
           <p>
-            That is also why this page exists. When you make things close to
-            home, <CopyHighlight>showing your working is easy</CopyHighlight>.
+            That proximity supports the same approach as this page: named
+            suppliers, batch records and{" "}
+            <CopyHighlight>details that you can check</CopyHighlight>.
           </p>
         </div>
       </section>
 
       <section className="final-cta section--bordered story-final">
         <div className="final-cta-copy">
-          <h2>Read the label out loud.</h2>
+          <h2>The full list is here.</h2>
           <p>
-            Eight ingredients in the khana, nine in the chai, and nothing in
-            either that you need to look up.
+            Eight ingredients in Khana and nine in Chai, shown in the same
+            order as their labels.
           </p>
           <WaitlistOrShopCta />
         </div>
