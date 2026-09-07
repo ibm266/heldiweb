@@ -1207,8 +1207,8 @@ export function HeldiHomepage({
             <h2>Made for the dinner already cooking.</h2>
             <p>
               Khana <CopyHighlight>vanishes clean</CopyHighlight> into gravy,
-              dal and yoghurt bases once they are off the heat. No chalk, no
-              aftertaste. Chai has its own place: the mug.
+              dal and yoghurt bases. No chalk, no aftertaste. Chai has its own
+              place: the mug.
             </p>
           </div>
           <PouchStats grams={grams} className="pouch-section__stats" />
@@ -1360,8 +1360,8 @@ export function HeldiHomepage({
               <CopyHighlight>dinner table</CopyHighlight>. Not the cupboard.
               Keep it <CopyHighlight>beside the dal</CopyHighlight> so everyone
               can reach for a spoonful. It comes in gold, and only gold. We
-              considered silver for about four minutes, then remembered whose
-              table the jar was going on.
+              considered silver for about four minutes, then remembered our
+              families would have the final say.
             </p>
           </div>
           <div className="jar-card">

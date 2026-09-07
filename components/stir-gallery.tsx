@@ -68,7 +68,7 @@ const DISHES: Dish[] = [
 ];
 
 const CHAI_CAPTIONS = [
-  "Not one comment at the table.",
+  "Pass the biscuits. This one is ready.",
   "The evening chai carried on as usual.",
   "Papa had a second cup. We will take that."
 ];

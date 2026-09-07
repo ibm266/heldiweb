@@ -32,7 +32,7 @@ const RANGE: RangeProduct[] = [
     id: "khana",
     tag: "FOR THE POT",
     title: "Heldi Khana",
-    line: "Dal, curry, sabzi, raita. Stir Khana in once the pot is off the heat, then carry on serving.",
+    line: "Khana belongs with the dal, curry, sabzi and raita already in your week.",
     image: {
       // Cropped from the /shop gallery shot; masters in the gitignored
       // public/images/originals/pre-webp/shop/.
@@ -45,7 +45,7 @@ const RANGE: RangeProduct[] = [
     id: "chai",
     tag: "FOR THE MUG",
     title: "Heldi Chai",
-    line: "Chai, tea, coffee, hot chocolate. Stir Chai in once the drink is off the boil. The biscuits can take it from here.",
+    line: "Chai covers the mugs: chai, tea, coffee and hot chocolate. The biscuits can take it from here.",
     image: {
       src: "/images/range/chai.webp?v=4",
       alt: "The terracotta Heldi Chai pouch on a linen table"
@@ -79,9 +79,10 @@ export function RangeSection() {
           <p className="eyebrow">TWO POUCHES</p>
           <h2>One for the pot. One for the mug.</h2>
           <p className="range__lede">
-            Reach for Khana once dinner is cooked, and for Chai once the drink
-            is off the boil. Your{" "}
-            <CopyHighlight>usual recipes do the rest</CopyHighlight>.
+            Pick the pouch that matches what your family is making:{" "}
+            <CopyHighlight>
+              Khana for food, Chai for drinks
+            </CopyHighlight>.
           </p>
         </div>
 

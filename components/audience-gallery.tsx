@@ -23,7 +23,7 @@ const AUDIENCES: {
     title: "There are enough opinions at the table already.",
     points: [
       <>Khana joins the <CopyHighlight>dal, curry or raita</CopyHighlight> before everyone helps themselves.</>,
-      <>You cook dinner once, which is quite enough.</>
+      <>You do not have to cook a separate “healthy” dinner for anyone.</>
     ]
   },
   {

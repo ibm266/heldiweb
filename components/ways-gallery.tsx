@@ -80,9 +80,9 @@ export function WaysGallery() {
         <p className="eyebrow">HOW IT WORKS</p>
         <h2>When does Heldi go in?</h2>
         <p className="ways-gallery__lede">
-          Pick what you are making and follow the three pictures. The cooking
-          pot, cold bowl, family table and mug by the kettle each get{" "}
-          <CopyHighlight>their own method</CopyHighlight>.
+          Pick what you are making. Each card gives you the{" "}
+          <CopyHighlight>three useful steps</CopyHighlight>, whether you have a
+          cooking pot, a cold bowl, the family table or a mug by the kettle.
         </p>
       </header>
 

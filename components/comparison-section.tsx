@@ -292,8 +292,8 @@ export function ComparisonSection() {
           </h2>
           <p className="vs__lede">
             We made Heldi for the way our families eat: a pot on the hob, a mug
-            by the kettle and one spoon to wash afterwards. The scorecard shows
-            where it fits.
+            by the kettle and no separate shake waiting afterwards. The
+            scorecard shows where it fits.
           </p>
         </header>
 
