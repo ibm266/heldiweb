@@ -70,8 +70,8 @@ export default async function ShopPage() {
       <ReviewsSection
         id="reviews"
         tone="gold"
-        heading="Stirred, served, reviewed."
-        lede="Each card pairs the review with its dish and spoon count. Clips made in the Heldi kitchen are labelled."
+        heading="How it went at their table."
+        lede="Each card pairs the review with its dish and spoon count. Clips made in the Heldi kitchen are labelled, so you can tell them apart from customer ones."
         submitCta
         reviews={publishedReviews.length ? publishedReviews : undefined}
       />

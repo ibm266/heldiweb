@@ -262,7 +262,8 @@ export function ReviewGallery({
       </div>
 
       <p className="review-gallery__sample-note">
-        Sample reviews shown until the first real ones arrive.
+        Sample reviews, only here so you can see the layout. Real ones will
+        replace them.
       </p>
     </div>
   );

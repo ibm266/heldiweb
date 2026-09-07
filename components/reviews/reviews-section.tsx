@@ -24,11 +24,11 @@ export function ReviewsSection({
   id = "reviews",
   tone = "cream",
   eyebrow = "FROM REAL TABLES",
-  heading = "Stirred in. Tasted. Reviewed.",
+  heading = "How it went at their table.",
   lede = (
     <>
       Every review comes with a photo or a video and a spoon count, so you can
-      see exactly how much protein made it into the bowl.
+      see how it landed in a real bowl.
     </>
   ),
   showLeaderboard = false,
@@ -59,7 +59,7 @@ export function ReviewsSection({
         {submitCta ? (
           <p className="reviews__submit-cta">
             <Link className="pill-link" href="/review">
-              Stirred one in already? Leave a review &#8594;
+              Cooked with it already? Tell us how it went &#8594;
             </Link>
           </p>
         ) : null}

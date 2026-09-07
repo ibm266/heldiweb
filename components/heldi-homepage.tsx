@@ -1287,7 +1287,7 @@ export function HeldiHomepage({
         id="reviews"
         tone="cream"
         eyebrow="THEY STIRRED. THEY TOLD US."
-        heading="Proof, straight from the pot."
+        heading="How it went at their table."
         showLeaderboard
       />
 

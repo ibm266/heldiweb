@@ -18,9 +18,9 @@ export function ReviewLeaderboard() {
         <p className="eyebrow">THE IPL</p>
         <h3>The Indian Protein League.</h3>
         <p>
-          Most protein stirred into one pot. Every review asks for your spoon
-          count. One heaped tablespoon is {PROTEIN_GRAMS_PER_TBSP}g of protein,
-          and the league table does the rest.
+          Who stirred the most protein into one shared pot. Every review asks
+          for a spoon count. One heaped tablespoon is{" "}
+          {PROTEIN_GRAMS_PER_TBSP}g of protein, and the table does the rest.
         </p>
       </header>
 

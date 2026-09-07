@@ -90,24 +90,33 @@ Every section of the site leans on at least one of these. New surfaces should to
 
 Heldi speaks in two registers. Never blend them inside one section.
 
+The shared register, underneath both, is the **family kitchen voice**: one family
+speaking naturally to another. Write as Indian home cooks who made this in Indian
+family kitchens, for the food already on the table. Be conversational, specific, and
+gently funny. Use "we" and "you" where it sounds like a person. Vary sentence length.
+Do not stack generated slogan patterns ("X, not Y", "two X, one rule", three clipped
+sentences in a row, the same disappear/nobody-noticed payoff on every scroll). Each
+section should add a new scene, reason, or piece of proof.
+
 **Voice A, the honest expert.** Plain, precise, quietly warm. Explains numbers without
 condescension, concedes points against itself ("Dal chawal pairs them, which is
 genuinely clever, but pairing fixes quality, not quantity"), cites sources, uses the
 authorised health claim verbatim. No jokes inside medical, nutrition or compliance
-copy. This voice owns: /truth, FAQ answers about health and diet, nutrition accordion,
-GLP-1 group, legal, anything a GP might read.
+copy. Warmth here comes from clarity, not punchlines. This voice owns: /truth, FAQ
+answers about health and diet, nutrition accordion, GLP-1 group, legal, anything a
+GP might read.
 
 **Voice B, the desi underdog.** Warm, proud, slightly cheeky, family-first. First
 person plural, jokes about aunties and shakers, allusions to desi pop culture. This
 voice owns: hero, ticker, gifting, cart microcopy, stir gallery captions, founder band,
 review placeholders, social-facing copy.
 
-Both voices share the same spine: short declarative sentences, concrete nouns (dal,
-kadhi, spoonful, pot), and zero wellness jargon.
+Both voices share the same spine: concrete nouns (dal, kadhi, spoonful, pot), family
+scenes rather than category-speak, and zero wellness jargon.
 
 | Surface | Voice | Example from the live site |
 |---|---|---|
-| Hero + ticker | B | "THEY SHAKE, WE STIR • AUNTIES & UNCLES PAY LESS" |
+| Hero + ticker | B | "Developed by Indian home cooks in Indian family kitchens." / "THEY SHAKE, WE STIR" |
 | How it works | A with B warmth | "Cook like always." / "Stir in a spoonful." |
 | Truth page prose | A | "Here is a normal day, weighed honestly." |
 | Truth page garnish | B (one line only) | "Bade bade bowls mein, chhoti chhoti proteins." |
@@ -123,9 +132,10 @@ kadhi, spoonful, pot), and zero wellness jargon.
 - **No em dashes in copy, ever.** Restructure the sentence instead (commas, colons,
   full stops). The single sanctioned dash is the attribution dash before a signature
   ("— Mihir, founder"). Grep any new file for `—` and `&mdash;` before finishing.
-- **Full stops as rhythm.** The brand loves short sentences landing hard: "No shaking.
-  No blending. More protein." / "Gold when the table is set for guests." Prefer three
-  short sentences to one long one in headlines and ledes.
+- **Rhythm, not a template.** Short sentences still land well ("No shaking. No
+  blending. More protein." / "Gold when the table is set for guests."), but do not
+  force every headline into three clipped beats. Mix a longer, spoken sentence with a
+  shorter one. If two neighbouring sections use the same cadence, rewrite one.
 - **The authorised claims, verbatim, and nothing stronger.** Protein has exactly three
   entries on the UK register (retained Regulation 432/2012), and all three are open to
   Heldi because the condition of use is only that the food is at least a *source of
@@ -180,9 +190,11 @@ kadhi, spoonful, pot), and zero wellness jargon.
 ## §6 The humour playbook
 
 Rules first: **one easter egg per surface, allusion not quotation.** The joke must
-still read as plain English to someone who misses the reference. Humour is banned in
-nutrition tables, medical answers, allergen and statutory text, and legal pages.
-Never joke about a protected characteristic, a health condition, or someone's body.
+still read as plain English to someone who misses the reference. Keep the strongest
+existing family-authority and deadpan lines; do not mint a new gag in every section.
+Humour is observational, not a slogan generator. Humour is banned in nutrition
+tables, medical answers, allergen and statutory text, and legal pages. Never joke
+about a protected characteristic, a health condition, or someone's body.
 
 The six named patterns, with canon examples:
 
