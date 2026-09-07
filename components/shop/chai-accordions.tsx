@@ -77,9 +77,10 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         </p>
         <p>
           These figures are calculated from the recipe, using the whey
-          certificate of analysis and the milk protein concentrate
-          specification in the way the labelling rules allow. They are the
-          basis of Chai&apos;s nutrition declaration.{" "}
+          certificate of analysis and typical published composition values
+          for MPC85 in the way the labelling rules allow. Bacarel&apos;s own
+          supplier specification is still outstanding. These calculations
+          are the basis of Chai&apos;s nutrition declaration.{" "}
           <a href="/truth">Read the honest truth about protein</a>.
         </p>
       </>
@@ -102,9 +103,9 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
           <strong>contains milk</strong>, as whey and casein, so it is not
           suitable. <strong>Lactose intolerance?</strong> Chai contains about{" "}
           {CHAI_LACTOSE_PER_100G}g of lactose per 100g, or 0.18g in a mug. That
-          figure is calculated from the whey certificate and milk protein
-          concentrate specification, not from a finished-product test, so we
-          do not call Chai lactose-free.
+          figure is calculated from the whey certificate and typical published
+          composition values for MPC85, not from a finished-product test, so
+          we do not call Chai lactose-free.
         </p>
         <p>
           <strong>Watching sugar?</strong> Chai contains{" "}
