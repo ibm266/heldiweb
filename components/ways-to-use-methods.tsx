@@ -62,14 +62,16 @@ export const METHODS: Method[] = [
     intro: (
       <>
         Dahi is already cool, so you can add Heldi as soon as the bowl is
-        ready. Use a teaspoon in your own bowl or a tablespoon in a shared
-        raita. <CopyHighlight>Sprinkle across the top first</CopyHighlight>,
-        then stir through the middle and around the edge.
+        ready. Start with a teaspoon per person, whether it is going into one
+        bowl or a shared raita. For a shared bowl, total the spoonfuls for
+        everyone eating.{" "}
+        <CopyHighlight>Work up to a tablespoon per person</CopyHighlight>,
+        adding it in passes and stirring between them.
       </>
     ),
     steps: [
       <>Spoon out your dahi or finish mixing the raita.</>,
-      <>Sprinkle a teaspoon to a tablespoon evenly across the bowl.</>,
+      <>Measure one teaspoon per person to start, up to one tablespoon per person.</>,
       <>Stir through the middle and around the edge until smooth.</>
     ],
     serving: { start: "1 tsp per person", upto: "1 tbsp per person" },
@@ -232,8 +234,8 @@ export const METHODS: Method[] = [
       </>
     ),
     steps: [
-      <>Brew your chai the way you always make it. Tea, coffee and hot chocolate count too.</>,
-      <>Take it off the boil and add your milk, so it is hot rather than boiling.</>,
+      <>Make your chai the way you usually do. Tea, coffee and hot chocolate count too.</>,
+      <>When the drink is ready, take it off the heat if needed and let it come off the boil. If you add milk at the end, add it now.</>,
       <>Stir in a level tablespoon just before you drink, until the mug is smooth.</>
     ],
     serving: "1 level tbsp per mug",

@@ -21,14 +21,14 @@ export default function InsideThePouchPage() {
         <div className="story-hero__inner">
           <p className="eyebrow">INSIDE THE POUCH</p>
           <h1 className="story-hero__title">
-            The ingredients, in label order.
+            What goes into each pouch.
           </h1>
           <p className="story-hero__lede">
             Khana has eight ingredients and Chai has nine. The lists below
-            follow the order printed on each label,{" "}
-            <CopyHighlight>from the milk proteins through every spice</CopyHighlight>.
-            We also name the suppliers and explain which documents support
-            the figures.
+            are the settled recipes, set out in{" "}
+            <CopyHighlight>the order each label must carry</CopyHighlight>.
+            We name the suppliers and explain which documents support the
+            figures.
           </p>
         </div>
       </section>
@@ -50,9 +50,11 @@ export default function InsideThePouchPage() {
             cooperative. Whey is the liquid separated from milk when paneer is
             made. Arla filters and dries it, then supplies a certificate of
             analysis with the batch. Certificate 0000672935 reports{" "}
-            <CopyHighlight>92.66% protein in dry matter</CopyHighlight> at
-            4.13% moisture. On the as-is basis used for the product
-            calculations, the whey is 88.83% protein.
+            <CopyHighlight>92.66% protein in dry matter</CopyHighlight>{" "}
+            at 4.13% moisture. &ldquo;Protein in dry matter&rdquo; excludes
+            that moisture from the calculation. The as-is figure includes
+            the moisture in the powder as supplied, so the whey is 88.83%
+            protein on that basis.
           </p>
           <p>
             Arla makes it <CopyHighlight>without animal rennet</CopyHighlight>,
@@ -117,13 +119,13 @@ export default function InsideThePouchPage() {
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">THE OTHER SEVEN</p>
-          <h2>Khana, in label order.</h2>
+          <h2>The eight ingredients in Khana.</h2>
           <p>
             Khana in full, most to least:{" "}
             <CopyHighlight>{FORMULA}</CopyHighlight>. Only the whey carries a
             percentage. Food labels list ingredients in descending order by
-            weight, so that is the order shown here. The exact spice ratios are
-            part of the recipe and are not published.
+            weight, and both lists on this page follow that rule. The exact
+            spice ratios are part of the recipe and are not published.
           </p>
           <p>
             The single spices come from{" "}
@@ -173,21 +175,20 @@ export default function InsideThePouchPage() {
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">THE CHAI POUCH</p>
-          <h2>Chai, in label order.</h2>
+          <h2>The nine ingredients in Chai.</h2>
           <p>
             Chai in full, most to least:{" "}
             <CopyHighlight>{CHAI_FORMULA}</CopyHighlight>. Same Arla whey, same
-            sunflower lecithin and the same descending-weight rule. Milk
-            protein concentrate and coconut sugar do not appear in Khana. Chai
-            also has its own five-spice masala.
+            sunflower lecithin. Milk protein concentrate and coconut sugar do
+            not appear in Khana. Chai also has its own five-spice masala.
           </p>
           <p>
             The second milk protein is{" "}
-            <CopyHighlight>milk protein concentrate</CopyHighlight>. Whey on
-            its own produces a thinner drink. Milk protein concentrate is
-            mostly casein and gives liquid more body. It is included{" "}
-            <CopyHighlight>for creaminess</CopyHighlight>, rather than to set
-            the protein figure.
+            <CopyHighlight>milk protein concentrate</CopyHighlight>. Both whey
+            and milk protein concentrate contribute to Chai&apos;s protein,
+            with whey supplying most of it. Milk protein concentrate is mostly
+            casein and gives liquid more body. It was chosen additionally{" "}
+            <CopyHighlight>for creaminess</CopyHighlight>.
           </p>
           <p>
             Chai also contains <CopyHighlight>coconut sugar</CopyHighlight>, so
@@ -200,9 +201,9 @@ export default function InsideThePouchPage() {
             <CopyHighlight>
               ginger, cardamom, Ceylon cinnamon, black pepper and clove
             </CopyHighlight>
-            , in descending order by weight. Ginger is the largest spice in the
-            formula. The cinnamon is Ceylon rather than cassia, and the black
-            pepper is an intentional part of the masala.
+            . Ginger is the largest spice in the formula. The cinnamon is
+            Ceylon rather than cassia, and the black pepper is an intentional
+            part of the masala.
           </p>
           <div className="story-menu-card">
             <h3 className="story-menu-card__title">What each one is doing</h3>
@@ -213,12 +214,12 @@ export default function InsideThePouchPage() {
               <li className="story-menu-card__item">
                 <span>Whey protein isolate</span>
                 <span className="story-menu-card__dots" aria-hidden="true" />
-                <span>the protein</span>
+                <span>most of the protein</span>
               </li>
               <li className="story-menu-card__item">
                 <span>Milk protein concentrate</span>
                 <span className="story-menu-card__dots" aria-hidden="true" />
-                <span>the creaminess</span>
+                <span>protein and creaminess</span>
               </li>
               <li className="story-menu-card__item">
                 <span>Coconut sugar</span>
@@ -271,8 +272,8 @@ export default function InsideThePouchPage() {
         <div className="final-cta-copy">
           <h2>The full list is here.</h2>
           <p>
-            Eight ingredients in Khana and nine in Chai, shown in the same
-            order as their labels.
+            Eight ingredients in Khana and nine in Chai, with their suppliers
+            and calculation basis set out above.
           </p>
           <WaitlistOrShopCta />
         </div>

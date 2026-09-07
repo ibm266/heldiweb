@@ -64,7 +64,7 @@ export default function OurStoryPage() {
           <p>
             I&apos;m Mihir. I grew up in a vegetarian house on dal, sabzi,
             raita and chai. When training became a big part of my life, I
-            started paying attention to protein. A normal dinner came to 20g.
+            started paying attention to protein. That dinner came to 20g.
             I was aiming for 30g, and{" "}
             <CopyHighlight>I did not want to give up the food I loved</CopyHighlight>.
           </p>
