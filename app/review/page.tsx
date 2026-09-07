@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 };
 
 const NEXT_STEPS = [
-  "Your submission enters our review queue. Your email and order number stay off the site.",
-  "We read the review and check any order number before a verified badge can be shown.",
-  "If we publish it, we use only the details covered by your consent. Critical feedback is considered alongside praise."
+  "Your review joins our queue, where straight feedback matters just as much as praise. Your email and order number stay off the site.",
+  "If you include an order number, our team checks it by hand before choosing whether to add a verified badge.",
+  "If we publish your review, it may include the details named in your consent: your review, star rating, dish, spoon count, name, town or city, and any photo or video you add."
 ];
 
 export default function ReviewPage() {

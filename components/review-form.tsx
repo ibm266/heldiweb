@@ -395,8 +395,8 @@ export function ReviewForm() {
             onChange={(event) => setName(event.target.value)}
           />
           <p className="review-field__hint">
-            If the review is published, this name appears exactly as typed. A
-            first name and initial are enough.
+            If the review is published, we use the name you provide. A first
+            name and initial are enough.
           </p>
         </div>
         <div className="review-field">
@@ -452,8 +452,8 @@ export function ReviewForm() {
             onChange={(event) => setOrderNumber(event.target.value)}
           />
           <p className="review-field__hint">
-            Find it in your confirmation email. If you add one, we check it
-            before showing a verified badge.
+            Find it in your confirmation email. If you add one, our team checks
+            it by hand before choosing whether to apply a verified badge.
           </p>
         </div>
       </div>
@@ -479,8 +479,9 @@ export function ReviewForm() {
           onChange={(event) => setConsent(event.target.checked)}
         />
         <span>
-          I give Heldi permission to publish my review, name, star rating, town
-          or city, and any photo or video I add. (required)
+          I give Heldi permission to publish my review, name, star rating, dish,
+          tablespoon count, town or city, and any photo or video I add.
+          (required)
         </span>
       </label>
 
