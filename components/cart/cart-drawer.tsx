@@ -46,7 +46,8 @@ const CHECKOUT_PROMPT_SEEN_KEY = "heldi_checkout_code_prompt_seen";
 
 // One discount per order — the reason the code field or the checkbox is
 // locked once the other has applied the gifting discount.
-const ONE_DISCOUNT_HINT = "Already sorted. One discount per order.";
+const ONE_DISCOUNT_HINT =
+  "One discount per order. Your current discount stays applied.";
 // Shown when the basket holds only excluded items (triple blocks, samples).
 const BEST_PRICE_HINT = "This one's already our best price.";
 
@@ -291,9 +292,9 @@ export function CartDrawer() {
     lastCode && isGiftingCode(lastCode.code) && pouchCount > 0
       ? BEST_PRICE_HINT
       : codeIsOurs && pouchCount === 0
-        ? `${lastCode.code} is saved. It comes off as soon as there is a pouch in the basket.`
+        ? `${lastCode.code} is saved. Add a pouch and it will apply automatically.`
         : lastCode
-          ? `“${lastCode.code}” isn’t a valid code`
+          ? `“${lastCode.code}” doesn’t work. Check the code and try again.`
           : null;
 
   return (
@@ -428,10 +429,10 @@ export function CartDrawer() {
                       // read £30 while a pair was the ceiling and read £28 at
                       // five pouches.
                       <p className="cart-line__nudge">
-                        {pouchCount === 1 ? "A second pouch" : "One more"} is{" "}
+                        {pouchCount === 1 ? "A second pouch" : "Another pouch"} costs{" "}
                         {formatPence(nextPouchPence(pouchCount))}
                         {pouchTotalPence >= SHIPPING.freeOverPence
-                          ? ", and the parcel still ships free."
+                          ? ". Shipping is recalculated after discounts."
                           : "."}
                       </p>
                     ) : null}
@@ -531,9 +532,9 @@ export function CartDrawer() {
                 onChange={(event) => toggleGiftingCheckbox(event.target.checked)}
               />
               <label htmlFor="gifting-checkbox">
-                This one&apos;s for the parents. Aunties and uncles count
-                too, even when you&apos;re buying for yourself.{" "}
-                {GIFTING.percent}% off, from our family to yours.
+                Apply the {GIFTING.percent}% friends-and-family rate. It covers
+                a gift for parents, aunties or uncles, or a pouch for your own
+                kitchen.
               </label>
               {checkboxHint ? (
                 <p className="cart-gifting__hint">{checkboxHint}</p>
@@ -595,13 +596,13 @@ export function CartDrawer() {
               ) : null}
               {giftWorthPence > 0 ? (
                 <p className="cart-drawer__saving-line">
-                  <span>Free gifts</span>
+                  <span>Gifts included</span>
                   <span>{"−"}{formatPence(giftWorthPence)}</span>
                 </p>
               ) : null}
               {savingsPence > 0 ? (
                 <p className="cart-drawer__savings-row">
-                  <span>You&apos;re saving</span>
+                  <span>Total saved</span>
                   <strong>{formatPence(savingsPence)}</strong>
                 </p>
               ) : null}
@@ -611,7 +612,7 @@ export function CartDrawer() {
               </p>
               {showSampleNudge ? (
                 <p className="cart-drawer__nudge">
-                  Add a Sample and shipping&apos;s on us
+                  Add a Sample for free UK shipping.
                 </p>
               ) : null}
               <p className="cart-drawer__total-row">
@@ -707,7 +708,7 @@ export function CartDrawer() {
       </div>
       {checkoutPrompt ? (
         <GiftingPopup
-          heading="We can’t charge friends and family full price."
+          heading="The friends-and-family rate is still available."
           onClose={() => setCheckoutPrompt(null)}
           onSkip={checkoutPrompt}
           skipLabel="No thanks, take me to checkout"

@@ -6,8 +6,8 @@ import { GIFTING, type GiftingAudience } from "@/lib/pricing";
 
 const OPTIONS: { audience: GiftingAudience; label: string }[] = [
   { audience: "beta", label: "I'm buying for my parents" },
-  { audience: "rishta", label: "I'm buying for uncle and aunty" },
-  { audience: "elder", label: "I'm the auntie or uncle" }
+  { audience: "rishta", label: "I'm buying for an auntie and uncle" },
+  { audience: "elder", label: "I'm an auntie or uncle" }
 ];
 
 const COPIED_LABELS: Record<GiftingAudience, string> = {
@@ -100,7 +100,7 @@ export function GiftingCodePicker({
               className="gifting-picker__apply"
               onClick={() => onApply(audience)}
             >
-              Or apply it straight to your basket
+              Apply this code to your basket
             </button>
           ) : null}
         </>

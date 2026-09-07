@@ -15,8 +15,8 @@ export function FreeShippingMeter({ cart }: { cart: Cart }) {
     <div className="shipping-meter" aria-live="polite">
       <p className="shipping-meter__label">
         {unlocked
-          ? "You’ve unlocked free UK shipping"
-          : `${formatPence(thresholdPence - totalPence)} away from free UK shipping`}
+          ? "Your order now ships free in the UK."
+          : `Add ${formatPence(thresholdPence - totalPence)} more for free UK shipping.`}
       </p>
       <div
         className="shipping-meter__track"
@@ -24,7 +24,7 @@ export function FreeShippingMeter({ cart }: { cart: Cart }) {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(progress)}
-        aria-label="Progress towards free shipping"
+        aria-label="Progress towards free UK shipping"
       >
         <div
           className={`shipping-meter__fill${unlocked ? " shipping-meter__fill--full" : ""}`}

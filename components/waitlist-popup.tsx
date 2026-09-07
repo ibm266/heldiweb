@@ -146,9 +146,9 @@ function WaitlistPopupPanel({
           Be first to stir it in.
         </h2>
         <p className="waitlist-pop__lede">
-          One email the day we launch, with {FOUNDERS.percent}% off inside it
-          for the first {FOUNDERS.firstJoiners} on the list. The waitlist eats
-          first. And drinks first.
+          Join the list and we&apos;ll email you when we launch. The first{" "}
+          {FOUNDERS.firstJoiners} people to join get {FOUNDERS.percent}% off
+          at launch.
         </p>
         <WaitlistForm
           joined={joined}

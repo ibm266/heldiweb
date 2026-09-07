@@ -93,10 +93,9 @@ export function GiftingPopup({
         <p className="eyebrow eyebrow--gold">IN THE FAMILY?</p>
         <h2>{heading ?? "We can\u2019t charge family full price."}</h2>
         <p>
-          The friends-and-family rate, for the mums, dads, aunties and
-          uncles. Buying it for them, or are you one of them yourself? Pick
-          who you&apos;re buying for and take {GIFTING.percent}% off, however
-          many pouches you take.
+          Choose who you&apos;re buying for and take {GIFTING.percent}% off
+          every pouch in the order. The rate works for a gift or your own
+          kitchen.
         </p>
         <GiftingCodePicker surface="popup" onApply={applyToBasket} />
         <p className="gifting__small">
@@ -105,7 +104,7 @@ export function GiftingPopup({
         </p>
         <form className="gifting-pop__own" onSubmit={applyOwnCode}>
           <label htmlFor="gifting-own-code">
-            Already have a code? Put it in here instead.
+            Already have a code? Use it instead.
           </label>
           <div className="gifting-pop__own-row">
             <input

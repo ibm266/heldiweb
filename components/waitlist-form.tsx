@@ -81,8 +81,9 @@ export function WaitlistForm({
   if (joined) {
     return (
       <p className="waitlist-success" role="status">
-        You&apos;re on the list. The first {FOUNDERS.firstJoiners} on it get{" "}
-        {FOUNDERS.percent}% off at launch. Tell your mum we said hi.
+        You&apos;re on the list. If you&apos;re one of the first{" "}
+        {FOUNDERS.firstJoiners}, you&apos;ll find {FOUNDERS.percent}% off in
+        your launch email. Tell your mum we said hi.
       </p>
     );
   }
@@ -141,7 +142,7 @@ export function WaitlistForm({
           </p>
           {status === "error" ? (
             <p className="waitlist-error" role="alert">
-              That did not go through. Give it one more try.
+              We couldn&apos;t add you to the list. Try again in a moment.
             </p>
           ) : null}
         </>

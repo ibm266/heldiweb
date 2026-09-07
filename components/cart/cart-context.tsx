@@ -42,15 +42,15 @@ const GIFTING_METHOD_KEY = "heldi_gifting_method";
 // between a 502 and a 429, so it says what happened, what to do, and where to
 // go if it keeps happening, rather than naming a status code.
 const CART_ERROR =
-  "That did not go through. Give it another go in a moment, and email info@heldi.co.uk if it keeps happening.";
+  "We couldn’t update your basket. Try again in a moment. If it still won’t work, email info@heldi.co.uk.";
 
 // A refusal is not a failure. Asking for a third pouch, or for Chai before it
 // is on sale, means the basket is already right and nothing was written. Those
 // get their own channel so the drawer can say so quietly, instead of the red
 // "that did not go through" that belongs to a dropped request.
-const OVER_CAP_NOTICE = `Two pouches is the most one order can carry. Email us if you want more.`;
+const OVER_CAP_NOTICE = `This basket can hold up to ${MAX_POUCHES} pouches. For a larger order, email info@heldi.co.uk.`;
 const CHAI_NOT_YET_NOTICE =
-  "Chai is not on sale yet. Join the list and you will hear the day it is.";
+  "Heldi Chai is not on sale yet. Please choose Heldi Khana for now.";
 
 type CartContextValue = {
   cart: Cart | null;

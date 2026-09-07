@@ -26,9 +26,8 @@ export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) 
           <CopyHighlight>never hear the end of it.</CopyHighlight>
         </h2>
         <p>
-          It&apos;s the friends-and-family rate, for the mums, dads, aunties
-          and uncles. Buying it for them, or are you one of them yourself?
-          Pick who you&apos;re buying for and take {GIFTING.percent}% off.
+          Choose who you&apos;re buying for, then copy their code for{" "}
+          {GIFTING.percent}% off every pouch in the order.
         </p>
         <p>
           We can&apos;t check, and we&apos;re not asking the aunty WhatsApp
@@ -36,9 +35,8 @@ export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) 
         </p>
         <GiftingCodePicker defaultAudience="beta" surface="band" />
         <p className="gifting__small">
-          {GIFTING.percent}% off however many pouches you take, whether
-          it&apos;s a gift or for your own kitchen. One code per order, one
-          use each. Applied at checkout.
+          For a gift or your own kitchen. One code per order, one use each.
+          Applied at checkout.
         </p>
         {showShopCta ? (
           <Link className="button button--pill gifting__cta" href="/shop">
