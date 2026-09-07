@@ -79,7 +79,7 @@ export function ReviewForm() {
     if (!(file.type in REVIEW_MEDIA_TYPES)) {
       setMedia(null);
       setMediaError(
-        "That file type will not work here. JPG, PNG, WebP, HEIC, MP4, MOV or WebM."
+        "We cannot upload that file type. Choose a JPG, PNG, WebP, HEIC, MP4, MOV or WebM file."
       );
       event.target.value = "";
       return;
@@ -87,7 +87,7 @@ export function ReviewForm() {
     if (file.size > REVIEW_LIMITS.mediaMaxBytes) {
       setMedia(null);
       setMediaError(
-        `That one is ${megabytes(file.size)}. The limit is ${MEDIA_MAX_LABEL}; a shorter clip works.`
+        `This file is ${megabytes(file.size)}. The limit is ${MEDIA_MAX_LABEL}. Choose a smaller photo or shorter video.`
       );
       event.target.value = "";
       return;
@@ -101,11 +101,13 @@ export function ReviewForm() {
     if (sendState === "uploading" || sendState === "sending") return;
 
     if (rating === 0) {
-      setFormError("Stars first. Everything else hangs off them.");
+      setFormError("Choose a star rating from 1 to 5.");
       return;
     }
     if (tbsp === null) {
-      setFormError("Tell us the spoon count; the leaderboard runs on it.");
+      setFormError(
+        "Choose how many heaped tablespoons you stirred into the dish."
+      );
       return;
     }
     setFormError(null);
@@ -172,12 +174,18 @@ export function ReviewForm() {
     const happy = rating >= 4;
     return (
       <div className="review-form-card review-form-card--success" role="status">
-        <p className="eyebrow">{happy ? "RECEIVED" : "RECEIVED, AND READ"}</p>
-        <h2>{happy ? "Shabash. That made our week." : "Taken seriously."}</h2>
+        <p className="eyebrow">
+          {happy ? "REVIEW RECEIVED" : "STRAIGHT FEEDBACK RECEIVED"}
+        </p>
+        <h2>
+          {happy
+            ? "Thank you for telling us."
+            : "Thank you for being straight with us."}
+        </h2>
         <p>
           {happy
-            ? "We match every review to a real order before it goes up, so give us a day or two. If you added a photo or video, the wall of bowls awaits."
-            : "The founder reads every one of these, usually the same evening. If something was wrong with your order, keep an eye on your inbox: we will put it right."}
+            ? "Your review is in our queue. We read every submission and check any order details before deciding whether to publish it."
+            : "Your review is in our queue. Critical feedback is read alongside every other submission, and we check any order details before deciding whether to publish it."}
         </p>
         <Link className="pill-link" href="/shop">
           Back to the shop &#8594;
@@ -189,7 +197,7 @@ export function ReviewForm() {
   return (
     <form className="review-form-card review-form" onSubmit={onSubmit}>
       <fieldset className="review-field">
-        <legend className="review-field__label">Stars first</legend>
+        <legend className="review-field__label">Star rating (required)</legend>
         <div className="review-stars">
           {[1, 2, 3, 4, 5].map((value) => (
             <label
@@ -214,7 +222,7 @@ export function ReviewForm() {
         </div>
         <p className="review-stars__caption" aria-live="polite">
           {rating === 0
-            ? "Tap a star. We publish fives and ones alike."
+            ? "Choose the rating that matches your experience."
             : STAR_CAPTIONS[rating]}
         </p>
       </fieldset>
@@ -222,12 +230,14 @@ export function ReviewForm() {
       {branch ? (
         <fieldset className="review-field">
           <legend className="review-field__label">
-            {branch === "wrong" ? "What went wrong?" : "What earned it?"}
+            {branch === "wrong" ? "What did not work?" : "What worked well?"}
           </legend>
           <div
             className="review-chips"
             role="group"
-            aria-label={branch === "wrong" ? "What went wrong" : "What earned it"}
+            aria-label={
+              branch === "wrong" ? "What did not work" : "What worked well"
+            }
           >
             {branchChips.map((chip) => {
               const selected = branchSelection.includes(chip.value);
@@ -246,15 +256,15 @@ export function ReviewForm() {
           </div>
           <p className="review-field__hint">
             {branch === "wrong"
-              ? "Tap everything that applies. This is the part we act on."
-              : "Tap everything that applies. We keep score."}
+              ? "Choose any problems that fit, or leave them blank."
+              : "Choose any that fit, or leave them blank."}
           </p>
         </fieldset>
       ) : null}
 
       <div className="review-field">
         <label className="review-field__label" htmlFor="review-dish">
-          What did it go into?
+          What did you stir it into? (required)
         </label>
         <input
           id="review-dish"
@@ -262,7 +272,7 @@ export function ReviewForm() {
           list="review-dish-options"
           required
           maxLength={REVIEW_LIMITS.dishMax}
-          placeholder="dal tadka, kadhi, Sunday rajma"
+          placeholder="For example: dal tadka, kadhi or Sunday rajma"
           autoComplete="off"
           value={dish}
           onChange={(event) => setDish(event.target.value)}
@@ -276,12 +286,12 @@ export function ReviewForm() {
 
       <fieldset className="review-field">
         <legend className="review-field__label">
-          Heaped tablespoons stirred in
+          How many heaped tablespoons did you use? (required)
         </legend>
         <div
           className="review-chips"
           role="radiogroup"
-          aria-label="Heaped tablespoons stirred in"
+          aria-label="Number of heaped tablespoons stirred in"
         >
           {TBSP_OPTIONS.map((option) => (
             <button
@@ -299,16 +309,16 @@ export function ReviewForm() {
         </div>
         <p className="review-field__hint" aria-live="polite">
           {tbsp === null
-            ? "Heaped, not level. We know the difference."
-            : `That is +${reviewProteinGrams(tbsp)}g protein into the pot${
-                tbsp === 4 ? ", at least" : ""
+            ? "Count heaped tablespoons, not level ones."
+            : `That adds ${reviewProteinGrams(tbsp)}g of protein to the whole dish${
+                tbsp === 4 ? " or more" : ""
               }.`}
         </p>
       </fieldset>
 
       <div className="review-field">
         <label className="review-field__label" htmlFor="review-text">
-          Say it like you would at the table
+          Tell us what happened (required)
         </label>
         <textarea
           id="review-text"
@@ -318,8 +328,8 @@ export function ReviewForm() {
           rows={4}
           placeholder={
             branch === "wrong"
-              ? "Straight talk. What happened, and when?"
-              : "Who ate it? Did anyone notice? Would nani approve?"
+              ? "What went wrong? What did you notice, and when?"
+              : "What worked, what did not, and did anyone notice a difference?"
           }
           value={text}
           onChange={(event) => setText(event.target.value)}
@@ -328,7 +338,7 @@ export function ReviewForm() {
 
       <div className="review-field">
         <span className="review-field__label" id="review-media-label">
-          Photo or video of the bowl
+          Photo or video of the dish (optional)
         </span>
         <label className={`review-upload${media ? " has-file" : ""}`}>
           <input
@@ -340,7 +350,9 @@ export function ReviewForm() {
             onChange={onMediaChange}
           />
           <span aria-hidden="true">
-            {media ? `${media.name} · ${megabytes(media.size)}` : "Tap to add one"}
+            {media
+              ? `${media.name} · ${megabytes(media.size)}`
+              : "Choose a photo or video"}
           </span>
         </label>
         {media ? (
@@ -352,7 +364,7 @@ export function ReviewForm() {
               setMediaError(null);
             }}
           >
-            Remove it
+            Remove file
           </button>
         ) : null}
         {mediaError ? (
@@ -361,16 +373,16 @@ export function ReviewForm() {
           </p>
         ) : null}
         <p className="review-field__hint" id="review-media-hint">
-          Pics or it didn&apos;t simmer. Reviews with a photo or video go up on
-          the wall; words alone still count, they just stay off the gallery.
-          Keep it under {MEDIA_MAX_LABEL}, so a short clip rather than a long one.
+          Your written review is enough. You can also add one JPG, PNG, WebP,
+          HEIC, MP4, MOV or WebM file up to {MEDIA_MAX_LABEL}. If we publish
+          your review, we may publish this file with it.
         </p>
       </div>
 
       <div className="review-form__pair">
         <div className="review-field">
           <label className="review-field__label" htmlFor="review-name">
-            Your name
+            Your name (required)
           </label>
           <input
             id="review-name"
@@ -383,7 +395,8 @@ export function ReviewForm() {
             onChange={(event) => setName(event.target.value)}
           />
           <p className="review-field__hint">
-            First name and an initial is plenty. Printed exactly as typed.
+            If the review is published, this name appears exactly as typed. A
+            first name and initial are enough.
           </p>
         </div>
         <div className="review-field">
@@ -399,14 +412,16 @@ export function ReviewForm() {
             value={location}
             onChange={(event) => setLocation(event.target.value)}
           />
-          <p className="review-field__hint">We are not coming for dinner.</p>
+          <p className="review-field__hint">
+            If the review is published, this may appear beside your name.
+          </p>
         </div>
       </div>
 
       <div className="review-form__pair">
         <div className="review-field">
           <label className="review-field__label" htmlFor="review-email">
-            Email
+            Email (required)
           </label>
           <input
             id="review-email"
@@ -419,7 +434,8 @@ export function ReviewForm() {
             onChange={(event) => setEmail(event.target.value)}
           />
           <p className="review-field__hint">
-            Never published. Used to match your order and to reply.
+            We do not publish this. We use it to check your order and, if
+            needed, contact you about your review.
           </p>
         </div>
         <div className="review-field">
@@ -436,7 +452,8 @@ export function ReviewForm() {
             onChange={(event) => setOrderNumber(event.target.value)}
           />
           <p className="review-field__hint">
-            On your confirmation email. Earns the verified badge.
+            Find it in your confirmation email. If you add one, we check it
+            before showing a verified badge.
           </p>
         </div>
       </div>
@@ -461,7 +478,10 @@ export function ReviewForm() {
           checked={consent}
           onChange={(event) => setConsent(event.target.checked)}
         />
-        <span>Happy for Heldi to publish this review, name, stars and all.</span>
+        <span>
+          I give Heldi permission to publish my review, name, star rating, town
+          or city, and any photo or video I add. (required)
+        </span>
       </label>
 
       {formError ? (
@@ -471,8 +491,8 @@ export function ReviewForm() {
       ) : null}
       {sendState === "failed" ? (
         <p className="review-field__error" role="alert">
-          That did not go through. Try again in a minute, or email
-          info@heldi.co.uk and say it there. The founder answers.
+          We could not submit your review. Please try again. If it still does
+          not work, email info@heldi.co.uk with your feedback.
         </p>
       ) : null}
 
@@ -482,16 +502,17 @@ export function ReviewForm() {
         disabled={sendState === "uploading" || sendState === "sending"}
       >
         {sendState === "uploading"
-          ? "Sending the bowl…"
+          ? "Uploading your photo or video…"
           : sendState === "sending"
-            ? "Sending…"
-            : "Send the review"}
+            ? "Submitting review…"
+            : "Submit review"}
       </button>
 
       <p className="review-form__legal">
-        We publish genuine reviews, good and bad, once we have matched them to
-        an order. We never pay for praise, and we never edit beyond trimming a
-        surname. Your email stays private.
+        Every submission is reviewed before publication. Critical reviews are
+        welcome. We do not publish your email or order number. Your consent
+        lets us publish the details listed above, but does not guarantee
+        publication.
       </p>
     </form>
   );
