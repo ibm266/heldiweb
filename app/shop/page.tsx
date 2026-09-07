@@ -46,12 +46,15 @@ export default function ShopPage() {
       <section className="section section--cream story-hero shop-front" data-nav-hero>
         <div className="story-hero__inner">
           <p className="eyebrow">TWO POUCHES</p>
-          <h1 className="story-hero__title">Start with what you make most.</h1>
+          <h1 className="story-hero__title">
+            Pick the pouch that fits your kitchen.
+          </h1>
           <p className="story-hero__lede">
-            If dinner is already on the stove, start with Khana. If your day
-            is measured in mugs, meet Chai.{" "}
-            <CopyHighlight>Choose by the next recipe</CopyHighlight>, then see
-            exactly what goes in and when to stir.
+            Start with the routine your family repeats most:{" "}
+            <CopyHighlight>
+              a shared dinner pot, or the mug you make every day.
+            </CopyHighlight>{" "}
+            Each page explains what goes in and when to stir.
           </p>
         </div>
         <PouchPicker />
@@ -62,7 +65,7 @@ export default function ShopPage() {
       <section className="section section--gold story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">WHICH ONE?</p>
-          <h2>What is usually on the stove?</h2>
+          <h2>Will you use Heldi in a pot or a mug?</h2>
           <p>
             <CopyHighlight>Khana</CopyHighlight> is the savoury one: whey
             protein isolate with warm spices for dal, curry, sabzi and raita.
@@ -86,7 +89,7 @@ export default function ShopPage() {
 
       <section className="final-cta section--bordered story-final">
         <div className="final-cta-copy">
-          <h2>Choose from the next thing you are making.</h2>
+          <h2>Start with the pouch your family will use first.</h2>
           <WaitlistOrShopCta />
         </div>
       </section>

@@ -167,7 +167,7 @@ export function ChaiBuyBox() {
             </span>
           </div>
           <p className="pdp__includes-note">
-            One mug uses a {CHAI_SERVING_GRAMS}g serving, about one{" "}
+            One mug uses an {CHAI_SERVING_GRAMS}g serving, about one{" "}
             {CHAI_SERVING_SPOON}, and adds {CHAI_PROTEIN_MARKETING_GRAMS}g of
             protein. Use it in{" "}
             {CHAI_DRINKS.slice(0, -1).join(", ").toLowerCase()} and{" "}

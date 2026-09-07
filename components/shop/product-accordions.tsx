@@ -112,8 +112,8 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         </table>
         <p className="nutri-footnote">{RI_FOOTNOTE}</p>
         <p>
-          A spoonful contains <strong>0.13g of salt</strong>. That is about 2%
-          of an adult&apos;s daily reference intake.
+          A spoonful contains <strong>0.14g of salt</strong>. That is 2.4% of
+          an adult&apos;s daily reference intake.
         </p>
         <p>
           Open <strong>Nutrition &amp; amino acids</strong> near the top of the

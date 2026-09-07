@@ -50,9 +50,10 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
       <>
         <p>
           Make your chai as usual. Take it <strong>off the boil</strong>, add
-          your milk, then stir in a <strong>{CHAI_SERVING_GRAMS}g serving</strong>,
-          about one {CHAI_SERVING_SPOON}, just before drinking. Keep the spoon
-          level, and keep the powder out of the rolling boil.
+          your milk, then stir in an{" "}
+          <strong>{CHAI_SERVING_GRAMS}g serving</strong>, about one{" "}
+          {CHAI_SERVING_SPOON}, just before drinking. Keep the spoon level, and
+          keep the powder out of the rolling boil.
         </p>
         <p>
           Use that end-of-mug step for tea, coffee, hot chocolate and warm
@@ -66,7 +67,7 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     answer: (
       <>
         <p>
-          A <strong>{CHAI_SERVING_GRAMS}g serving</strong>, about one{" "}
+          An <strong>{CHAI_SERVING_GRAMS}g serving</strong>, about one{" "}
           {CHAI_SERVING_SPOON}, contains{" "}
           <strong>{CHAI_PROTEIN_PER_SERVING_GRAMS}g of protein</strong>. The
           blend contains {CHAI_PROTEIN_PER_100G}g per 100g. On the front of the
@@ -76,9 +77,9 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         </p>
         <p>
           These figures are calculated from the recipe, using the whey
-          certificate of analysis and the casein specification in the way the
-          labelling rules allow. Analysis of the finished blend replaces them
-          here and on the pouch before Chai is sold.{" "}
+          certificate of analysis and the milk protein concentrate
+          specification in the way the labelling rules allow. They are the
+          basis of Chai&apos;s nutrition declaration.{" "}
           <a href="/truth">Read the honest truth about protein</a>.
         </p>
       </>
@@ -100,10 +101,10 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
           <strong>Dairy allergy?</strong> Heldi Chai{" "}
           <strong>contains milk</strong>, as whey and casein, so it is not
           suitable. <strong>Lactose intolerance?</strong> Chai contains about{" "}
-          {CHAI_LACTOSE_PER_100G}g of lactose per 100g, or 0.1g in a mug. That
-          figure is calculated from the whey certificate and casein
-          specification, not from a finished-product test, so we do not call
-          Chai lactose-free.
+          {CHAI_LACTOSE_PER_100G}g of lactose per 100g, or 0.18g in a mug. That
+          figure is calculated from the whey certificate and milk protein
+          concentrate specification, not from a finished-product test, so we
+          do not call Chai lactose-free.
         </p>
         <p>
           <strong>Watching sugar?</strong> Chai contains{" "}
@@ -143,11 +144,11 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         <p className="nutri-footnote">{CHAI_RI_FOOTNOTE}</p>
         <p>
           A {CHAI_POUCH_GRAMS}g pouch makes about {CHAI_MUGS_PER_POUCH} mugs
-          at a {CHAI_SERVING_GRAMS}g serving, about one {CHAI_SERVING_SPOON},
+          at an {CHAI_SERVING_GRAMS}g serving, about one {CHAI_SERVING_SPOON},
           per mug. Open <strong>Nutrition &amp; amino acids</strong> near the
-          top of the page for the full amino acid profile. Every figure is
-          calculated from the recipe; analysis of the finished blend replaces
-          it before Chai goes on sale.
+          top of the page for the full amino acid profile. The figures are
+          calculated from the recipe on the same basis as the nutrition
+          declaration.
         </p>
       </>
     )

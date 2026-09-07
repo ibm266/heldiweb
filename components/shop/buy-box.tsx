@@ -394,7 +394,7 @@ export function BuyBox({ product }: { product: Product }) {
                 longer on either of them. */}
             <div className="pdp__qty">
               <span className="pdp__qty-label" id="pdp-qty-label">
-                Cooking for a bigger table?
+                Select more than two pouches:
               </span>
               <div className="qty-stepper" role="group" aria-labelledby="pdp-qty-label">
                 <button
@@ -475,8 +475,9 @@ export function BuyBox({ product }: { product: Product }) {
 
         <div className="pdp__desc">
           <p>
-            <strong>Made for the pot you already cook.</strong> Heldi Khana is
-            a high-protein whey isolate blend with warm spices. Once your{" "}
+            <strong>Made for the food already in your pot.</strong> Heldi
+            Khana is a high-protein whey isolate blend with warm spices. Once
+            your{" "}
             <strong>dal, curry, sabzi or raita</strong> is off the heat, stir a
             spoonful through the shared pot or add it to your own bowl. Your
             recipe stays in charge. <strong>High in protein.</strong> Protein
