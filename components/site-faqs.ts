@@ -109,7 +109,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Will protein make me bulky?",
         answer:
-          "Protein intake alone does not determine visible muscle size. Across whey protein trials in women, the average lean mass gain was 0.37kg, less than 1% of body composition. Larger visible changes also depend on sustained, deliberate training over time.",
+          "Protein intake alone does not determine visible muscle size. Across whey protein trials in women, the average lean mass gain was 0.37kg, less than 1% of total lean mass. Larger visible changes also depend on sustained, deliberate training over time.",
         more: {
           href: "/heldi-living/will-i-get-bulky-if-i-have-too-much-protein",
           label: "Read the full piece on the bulky myth"
@@ -118,7 +118,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Is too much protein bad for my kidneys?",
         answer:
-          "Reviews of controlled trials in adults with healthy kidney function have not identified harm from higher protein intakes at sensible levels. That evidence is not a safety guarantee and does not apply to someone who already has kidney disease, where a doctor sets the protein target. Speak to your GP or renal dietitian before changing your intake."
+          "Reviews of controlled trials comparing higher-protein with lower-protein diets in adults with healthy kidney function have not found impaired kidney function over the periods studied. Those trials do not establish a universally safe amount or lifetime safety. They also do not apply to someone who already has kidney disease, where a doctor sets the protein target. Speak to your GP or renal dietitian before changing your intake."
       },
       {
         question: "Is whey protein ultra-processed?",
@@ -179,7 +179,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
             {
               question: "How much is delivery?",
               answer:
-                `UK orders over ${formatPence(SHIPPING.freeOverPence)} ship free. Below that amount, Royal Mail Tracked 48 costs ${formatPence(SHIPPING.standardPence)}. A sachet ordered on its own also ships free.`
+                `UK orders at or over ${formatPence(SHIPPING.freeOverPence)} ship free. Below that amount, Royal Mail Tracked 48 costs ${formatPence(SHIPPING.standardPence)}. A sachet ordered on its own also ships free.`
             }
           ]
         : []),

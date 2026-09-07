@@ -138,21 +138,24 @@ export function TruthPage() {
           <p className="eyebrow">THE HONEST TRUTH</p>
           <h1>How much protein is in dal, really?</h1>
           <p>
-            A standard cooked bowl of dal has{" "}
+            A standard 80g cooked bowl of dal has{" "}
             <CopyHighlight>5 to 7g</CopyHighlight> of protein. The 18g figures
-            commonly quoted online usually refer to lentils weighed dry,
-            before cooking. A full day of home-cooked vegetarian food often
+            commonly quoted online can be valid for roughly 75g of lentils
+            weighed dry, but that amount cooks into substantially more than
+            one standard bowl. A full day of home-cooked vegetarian food often
             lands around 35 to 45g. The target used here for an active adult is{" "}
             <CopyHighlight>75g or more</CopyHighlight>.
           </p>
 
           <div className="truth-bowls">
             <div className="truth-bowl truth-bowl--myth">
-              <span className="truth-bowl__name">Dry lentils</span>
+              <span className="truth-bowl__name">Roughly 75g dry lentils</span>
               <span className="truth-bowl__grams truth-bowl__grams--struck">
                 18g
               </span>
-              <span className="truth-bowl__note">counted before cooking</span>
+              <span className="truth-bowl__note">
+                valid dry figure, not one 80g cooked bowl
+              </span>
             </div>
             <div className="truth-bowl truth-bowl--real">
               <span className="truth-bowl__name">Cooked dal</span>

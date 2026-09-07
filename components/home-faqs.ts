@@ -32,7 +32,7 @@ export const HOME_FAQS = [
   {
     question: "How do I use it?",
     answer:
-      "Once the pot has finished cooking and cooled a little, stir the powder into the dal, curry or raita and mix it through. You can add it to the full pot or let each person stir it into their own bowl. Use one to two spoonfuls per dish, depending on the amount of food."
+      "Once the food has finished cooking and cooled a little, stir Heldi Khana through evenly. For one person's bowl, use one spoonful. The recommended daily portion is 12g, about one heaped tablespoon; do not exceed it. For a shared pot, allow one spoonful for each person eating it, then mix the pot thoroughly so the powder is shared across those portions."
   },
   {
     question: "Can I use it in dishes that are not on the pouch?",
@@ -57,11 +57,11 @@ export const HOME_FAQS = [
   {
     question: "Can older adults have Heldi?",
     answer:
-      "Heldi is designed to be shared at the table. Protein contributes to the maintenance of muscle mass. Heldi Khana is 98% lactose-free, 100% vegetarian and free from added sugar, preservatives and gluten. It contains milk. Those facts do not establish whether it suits one person, so anyone with a medical condition or a prescribed diet should show the label to their GP or dietitian."
+      "Heldi is designed to be shared at the table. Protein contributes to the maintenance of muscle mass. Heldi Khana is 98% lactose-free and 100% vegetarian. It has no added sugar; it contains naturally occurring sugars. It is free from preservatives and gluten, and it contains milk. Those facts do not establish whether it suits one person, so anyone with a medical condition or a prescribed diet should show the label to their GP or dietitian."
   },
   {
     question: "Can I use Heldi if I have diabetes?",
     answer:
-      "Heldi Khana has no added sugar and contains under 1g of carbohydrate per spoonful. Those figures do not determine whether it fits an individual's diabetes care. Show the ingredients and nutrition label to your GP or dietitian before adding it to your meals."
+      "Heldi Khana has no added sugar; it contains naturally occurring sugars. It contains under 1g of carbohydrate per spoonful. Those figures do not determine whether it fits an individual's diabetes care. Show the ingredients and nutrition label to your GP or dietitian before adding it to your meals."
   }
 ];

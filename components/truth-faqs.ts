@@ -2,7 +2,7 @@ export const TRUTH_FAQS = [
   {
     question: "How much protein is in a bowl of dal?",
     answer:
-      "A standard 80g cooked serving contains about 5 to 7g of protein. Bigger bowls can reach 9 or 10g. Figures of 18g or more usually refer to lentils weighed dry, before cooking changes the weight of the portion."
+      "A standard 80g cooked serving contains about 5 to 7g of protein. Bigger bowls can reach 9 or 10g. Roughly 75g of dry lentils can provide around 18g, but that dry amount cooks into substantially more than one standard bowl."
   },
   {
     question: "Is dal a complete protein?",
