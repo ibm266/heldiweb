@@ -123,15 +123,15 @@ export function isGiftLine(line: Pick<CartLine, "merchandise">): boolean {
 // now carries the mixed pair, which is a basket a customer can actually buy.
 // It goes when the tier model does.
 const TIER_IMAGES: Record<TierId, { url: string; altText: string }> = {
-  single: { url: "/images/shop/khana-1.webp?v=5", altText: "A Heldi Khana pouch beside the engraved brass table jar and its gold spoon" },
-  double: { url: "/images/shop/khana-bundle-2.webp?v=6", altText: "Two Heldi Khana pouches with the engraved brass jar, its gold spoon and the cotton tote bag" },
-  triple: { url: "/images/shop/khana-chai-pair.webp?v=2", altText: "One Heldi Khana pouch and one Heldi Chai pouch with the engraved brass jar, its gold spoon and the cotton tote bag" }
+  single: { url: "/images/shop/khana-1.webp?v=5", altText: "Navy Heldi Khana pouch beside an engraved brass table jar and gold spoon" },
+  double: { url: "/images/shop/khana-bundle-2.webp?v=6", altText: "Two navy Heldi Khana pouches with an engraved brass jar, gold spoon and cotton tote bag" },
+  triple: { url: "/images/shop/khana-chai-pair.webp?v=2", altText: "Navy Heldi Khana and terracotta Heldi Chai pouches with an engraved brass jar, gold spoon and cotton tote bag" }
 };
 // One shot per sachet SKU, all three on the same set as the pouch range
 // (GPT Image 2, 4 Sep 2026). Before this the Chai sachet and both pair SKUs
 // showed the navy Khana sachet, so a Chai sample looked like a Khana one in
 // the picker, the drawer and at checkout.
-const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=4", altText: "Heldi Khana sample sachet" };
+const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=4", altText: "Navy Heldi Khana 30g sample sachet" };
 const CHAI_SAMPLE_IMAGE = {
   url: "/images/shop/chai-sample.webp",
   altText: "The terracotta Heldi Chai sample sachet beside a small pile of chai spice powder"
@@ -204,9 +204,9 @@ const PRODUCTS: Product[] = [
     id: "gid://shopify/Product/15790466957695",
     handle: "khana",
     title: "Heldi Khana",
-    shortDescription: "Protein that disappears into dal, curry and raita.",
+    shortDescription: "A spoonful for dal, curry, sabzi and raita.",
     description:
-      "One pouch for the whole table. Heldi Khana is a high-protein blend made to disappear into the food you already cook. Stir it into dal, curry, sabzi or raita and the taste stays exactly where your family left it. High in protein. Protein contributes to the maintenance of muscle mass. Contains milk (whey).",
+      "Heldi Khana is a high-protein whey isolate blend with warm spices for dal, curry, sabzi and raita. Stir it through the shared pot once it is off the heat, or add it to your own bowl at the table. High in protein. Protein contributes to the maintenance of muscle mass. Contains milk (whey).",
     images: [
       TIER_IMAGES.single,
       TIER_IMAGES.double,

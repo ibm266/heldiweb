@@ -7,7 +7,8 @@ import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Heldi Chai · Heldi",
-  description: "Protein that disappears into your chai.",
+  description:
+    "A high-protein whey and casein blend with chai spices and coconut sugar for chai, tea, coffee and hot chocolate.",
   alternates: { canonical: "/shop/chai" }
 };
 
@@ -29,7 +30,7 @@ export default function ChaiPage() {
     "@type": "Product",
     name: "Heldi Chai",
     description:
-      "A high-protein whey and casein blend with real chai spices, made to stir into chai, tea, coffee and hot chocolate. Contains milk.",
+      "Heldi Chai blends whey and casein with cardamom, ginger, cinnamon, clove and coconut sugar for chai, tea, coffee and hot chocolate. Contains milk.",
     image: CHAI_IMAGES.map((image) => `${SITE_URL}${image.url}`),
     brand: { "@type": "Brand", name: "Heldi" }
   };

@@ -19,14 +19,13 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     question: "What's inside",
     answer: (
       <p>
-        Whey protein, the part of milk that&apos;s always been on your table,
-        blended to disappear into home cooking. <strong>All natural</strong>,{" "}
-        <strong>no added sugar</strong>, gluten free, vegetarian and 98%
-        lactose-free. <strong>Contains milk (whey).</strong> Blended and
-        packed in England.{" "}
+        Whey protein isolate comes from milk. Six of the eight ingredients are
+        spices already familiar to a family kitchen, blended for savoury food.{" "}
+        <strong>All natural</strong>, <strong>no added sugar</strong>, gluten
+        free, vegetarian and 98% lactose-free.{" "}
+        <strong>Contains milk (whey).</strong> Blended and packed in England.{" "}
         <a href="/inside-the-pouch">See where every ingredient comes from</a>,
-        or <a href="/our-story">read our story</a> for why we built it this
-        way.
+        or <a href="/our-story">read why it started in our kitchen</a>.
       </p>
     )
   },
@@ -34,12 +33,12 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     question: "How to use it",
     answer: (
       <p>
-        Cook like always. Stir a spoonful into the pot{" "}
-        <strong>while it&apos;s cooling</strong>, or into your bowl at the
-        table. Same dal, same curry, same raita, with a{" "}
-        <strong>protein boost</strong>.{" "}
-        <a href="/ways-to-use">See every way to use it</a>, from dahi to
-        rotis to Friday&apos;s takeaway.
+        Finish cooking first. Take the pot off the heat, then stir in a
+        spoonful <strong>while the food is cooling</strong>. For one person,
+        add it to the bowl at the table instead. Use it with dal, curry, sabzi,
+        raita or dahi, without rewriting the family recipe.{" "}
+        <a href="/ways-to-use">See every way to use it</a>, including rotis
+        and Friday&apos;s takeaway.
       </p>
     )
   },
@@ -47,11 +46,12 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     question: "The protein numbers",
     answer: (
       <p>
-        A <strong>12g serving</strong>, about one heaped tablespoon, adds{" "}
-        <strong>10.1g of protein</strong> to a bowl; the blend itself is{" "}
-        <strong>84.1g protein per 100g</strong>. A bowl of dal has around 6g on
-        its own, so with Heldi that&apos;s <strong>16g in the same bowl</strong>,
-        same taste. Protein contributes to the maintenance of muscle mass.{" "}
+        A <strong>12g serving</strong>, about one heaped tablespoon, contains{" "}
+        <strong>10.1g of protein</strong>. The blend contains{" "}
+        <strong>84.1g protein per 100g</strong>. A cooked bowl of dal has
+        around 6g on its own; adding Heldi brings it to{" "}
+        <strong>16g in the same bowl</strong>. Protein contributes to the
+        maintenance of muscle mass.{" "}
         <a href="/truth">Read the honest truth about protein</a>.
       </p>
     )
@@ -68,15 +68,16 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
           your table, email <a href="mailto:info@heldi.co.uk">info@heldi.co.uk</a>.
         </p>
         <p>
-          <strong>Lactose intolerant?</strong> Usually fine. A spoonful carries
-          roughly <strong>0.3g of lactose</strong>, a fraction of a glass of
-          milk. A confirmed <strong>dairy allergy</strong> is different: Heldi{" "}
-          <strong>contains milk (whey)</strong>, so it is not for you.
+          <strong>Lactose intolerant?</strong> A spoonful contains roughly{" "}
+          <strong>0.3g of lactose</strong>, a fraction of the amount in a glass
+          of milk. Tolerance varies from person to person. A confirmed{" "}
+          <strong>dairy allergy</strong> is different: Heldi{" "}
+          <strong>contains milk (whey)</strong>, so it is not suitable.
         </p>
         <p>
-          <strong>Diabetes?</strong>{" "}No added sugar and under 1g of
-          carbohydrate a spoonful; we can&apos;t give medical advice, so show
-          the label to your GP or dietitian. More on{" "}
+          <strong>Diabetes?</strong> Khana has no added sugar and contains
+          under 1g of carbohydrate per spoonful. We can&apos;t give medical
+          advice, so show the label to your GP or dietitian. More on{" "}
           <a href="/faq">kids, pregnancy and kidneys in the full FAQ</a>.
         </p>
       </>
@@ -111,12 +112,12 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         </table>
         <p className="nutri-footnote">{RI_FOOTNOTE}</p>
         <p>
-          A spoonful adds just <strong>0.13g of salt</strong>, about 2% of an
-          adult&apos;s daily guideline, so it stays friendly to low-salt plates.
+          A spoonful contains <strong>0.13g of salt</strong>. That is about 2%
+          of an adult&apos;s daily reference intake.
         </p>
         <p>
-          The full <strong>amino acid profile</strong> is in the nutrition
-          popup at the top of this page. Heldi is a{" "}
+          Open <strong>Nutrition &amp; amino acids</strong> near the top of the
+          page for the full amino acid profile. Heldi is a{" "}
           <strong>complete protein</strong>.
         </p>
       </>
@@ -139,21 +140,19 @@ function ShippingAnswer() {
           <strong>Free UK shipping</strong> on orders over{" "}
           {formatPence(SHIPPING.freeOverPence)}. Otherwise{" "}
           <strong>Royal Mail Tracked 48</strong> at{" "}
-          {formatPence(SHIPPING.standardPence)}. The Sample ships free.
-          Sent by us, packed with care.
+          {formatPence(SHIPPING.standardPence)}. The Sample ships free. We
+          pack each order and send it by Royal Mail.
         </p>
       ) : (
         <p>
-          <strong>UK delivery</strong> by <strong>Royal Mail Tracked 48</strong>,
-          sent by us, packed with care. Rates are confirmed when the shop
-          opens.
+          We send UK orders by <strong>Royal Mail Tracked 48</strong>. The
+          rates will appear here when the shop opens.
         </p>
       )}
       <p>
         Every pouch has an <strong>18-month best-before</strong> on the base.
-        Once open, reseal it, keep it cool and dry, and use within{" "}
-        <strong>3 months</strong> for the best taste. Never dip a wet spoon
-        in.
+        After opening, reseal it and keep it cool and dry. Use it within{" "}
+        <strong>3 months</strong> for the best taste, and keep the spoon dry.
       </p>
     </>
   );

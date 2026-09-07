@@ -39,7 +39,7 @@ const POUCHES: Pouch[] = [
     tag: "FOR THE POT",
     title: "Heldi Khana",
     legalName: "Whey protein isolate blend with warm spices. Food supplement.",
-    line: "Dal, curry, sabzi, raita. A heaped tablespoon stirred into the pot once it is off the heat, and nobody at the table can tell.",
+    line: "For dal, curry, sabzi and raita. Stir a heaped tablespoon through the shared pot once it is off the heat, or add it to your own bowl.",
     image: {
       src: "/images/range/khana.webp?v=5",
       alt: "The navy Heldi Khana pouch on a linen table"
@@ -58,7 +58,7 @@ const POUCHES: Pouch[] = [
     title: "Heldi Chai",
     legalName:
       "Whey protein and casein blend with chai spices and coconut sugar. Food supplement.",
-    line: "Chai, tea, coffee, hot chocolate. A level tablespoon stirred into the mug once it is off the boil, and the cup still tastes like your cup.",
+    line: "For chai, tea, coffee and hot chocolate. Make the mug as usual, take it off the boil, then stir in a level tablespoon before drinking.",
     image: {
       src: "/images/range/chai.webp?v=4",
       alt: "The terracotta Heldi Chai pouch on a linen table"
@@ -74,12 +74,12 @@ const POUCHES: Pouch[] = [
 function status(id: Pouch["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
-      ? { note: "In the shop now.", cta: "Shop Khana" }
-      : { note: "First to the table. On sale at launch.", cta: "See Khana" };
+      ? { note: "Ready for the next pot.", cta: "Shop Khana" }
+      : { note: "Khana is the pouch launching first.", cta: "See Khana" };
   }
   return mode === "live"
-    ? { note: "Still on the stove. Not in the shop yet, no price yet.", cta: "See Chai" }
-    : { note: "Still on the stove. No price yet; the waitlist hears first.", cta: "See Chai" };
+    ? { note: "Read the method now. Chai is not on sale yet.", cta: "See Chai" }
+    : { note: "Read the method now. The waitlist hears when Chai is ready.", cta: "See Chai" };
 }
 
 export function PouchPicker() {

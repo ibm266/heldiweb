@@ -14,7 +14,7 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Shop · Heldi",
   description:
-    "Two pouches. Khana for the pot, Chai for the mug. Pick the one your kitchen needs first.",
+    "Choose Heldi Khana for shared pots, or meet Heldi Chai for hot drinks. Two pouches for two everyday kitchen routines.",
   alternates: { canonical: "/shop" }
 };
 
@@ -46,11 +46,12 @@ export default function ShopPage() {
       <section className="section section--cream story-hero shop-front" data-nav-hero>
         <div className="story-hero__inner">
           <p className="eyebrow">TWO POUCHES</p>
-          <h1 className="story-hero__title">Pick your pouch.</h1>
+          <h1 className="story-hero__title">Start with what you make most.</h1>
           <p className="story-hero__lede">
-            Khana goes into the food. Chai goes into the drink. A spoonful
-            each, same rule:{" "}
-            <CopyHighlight>nobody at the table can tell</CopyHighlight>.
+            If dinner is already on the stove, start with Khana. If your day
+            is measured in mugs, meet Chai.{" "}
+            <CopyHighlight>Choose by the next recipe</CopyHighlight>, then see
+            exactly what goes in and when to stir.
           </p>
         </div>
         <PouchPicker />
@@ -61,19 +62,20 @@ export default function ShopPage() {
       <section className="section section--gold story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">WHICH ONE?</p>
-          <h2>The pot or the mug.</h2>
+          <h2>What is usually on the stove?</h2>
           <p>
             <CopyHighlight>Khana</CopyHighlight> is the savoury one: whey
-            protein isolate with warm spices, made to vanish into dal, curry,
-            sabzi and raita once the pot is off the heat. It is the pouch on
-            sale first.
+            protein isolate with warm spices for dal, curry, sabzi and raita.
+            Finish cooking, take the pot off the heat, then stir it through the
+            shared pot or add it to your own bowl. Khana is the pouch on sale
+            first.
           </p>
           <p>
-            <CopyHighlight>Chai</CopyHighlight> is the one for hot drinks:
-            whey and casein with cardamom, ginger, cinnamon and clove, a
-            little coconut sugar, stirred into chai, tea, coffee or hot
-            chocolate once the cup is off the boil. It is still in
-            development, so it has a page and no price yet.
+            <CopyHighlight>Chai</CopyHighlight> belongs beside the mugs. It
+            brings whey and casein together with cardamom, ginger, cinnamon,
+            clove and a little coconut sugar for chai, tea, coffee or hot
+            chocolate. Its page shows the method and label facts, but there is
+            no price until it is ready for the shop.
           </p>
           <p className="story-note">
             Both contain milk. Both are vegetarian. Both are food
@@ -84,7 +86,7 @@ export default function ShopPage() {
 
       <section className="final-cta section--bordered story-final">
         <div className="final-cta-copy">
-          <h2>Pot or mug, the waitlist hears first.</h2>
+          <h2>Choose from the next thing you are making.</h2>
           <WaitlistOrShopCta />
         </div>
       </section>

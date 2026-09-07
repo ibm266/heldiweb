@@ -152,10 +152,10 @@ export function BuyBox({ product }: { product: Product }) {
   // Shopify actually charges. Waitlist mode says why there is no price on the
   // page instead of quoting one.
   const shippingNote = !showPrices
-    ? `Prices arrive when the shop opens. The waitlist hears first, and the first ${FOUNDERS.firstJoiners} on it get ${FOUNDERS.percent}% off.`
+    ? `We will put the prices here when the shop opens. Join the waitlist to hear first; the first ${FOUNDERS.firstJoiners} people on it get ${FOUNDERS.percent}% off.`
     : isPouch && ladderPence(pouchQty) < SHIPPING.freeOverPence
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
-      : "Ships free.";
+      : "UK shipping is free.";
 
   async function handleAdd() {
     const giftingApplied = (cart?.discountCodes ?? []).some(
@@ -394,7 +394,7 @@ export function BuyBox({ product }: { product: Product }) {
                 longer on either of them. */}
             <div className="pdp__qty">
               <span className="pdp__qty-label" id="pdp-qty-label">
-                Need more than two?
+                Cooking for a bigger table?
               </span>
               <div className="qty-stepper" role="group" aria-labelledby="pdp-qty-label">
                 <button
@@ -455,7 +455,7 @@ export function BuyBox({ product }: { product: Product }) {
 
         {mode === "live" ? (
           <button type="button" className="pdp__cta" onClick={handleAdd} disabled={isPending}>
-            {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket — ${formatMoney(selectedCurrent)}`}
+            {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket · ${formatMoney(selectedCurrent)}`}
           </button>
         ) : (
           <button type="button" className="pdp__cta" data-floating-cta-suppress onClick={() => openWaitlist("popup-shop")}>
@@ -475,15 +475,15 @@ export function BuyBox({ product }: { product: Product }) {
 
         <div className="pdp__desc">
           <p>
-            <strong>One pouch for the whole table.</strong> Heldi Khana is a
-            high-protein blend made to disappear into the food you already
-            cook. Stir it into <strong>dal, curry, sabzi or raita</strong> and
-            the taste stays exactly where your family left it.{" "}
-            <strong>High in protein</strong>, and protein contributes to the
-            maintenance of muscle mass. Contains <strong>milk</strong> (whey).
-            New to Heldi? <a href="/truth">Start with the honest truth about protein</a>.
-            Making chai rather than dal? <a href="/shop/chai">Meet Heldi Chai</a>,
-            the blend for the mug.
+            <strong>Made for the pot you already cook.</strong> Heldi Khana is
+            a high-protein whey isolate blend with warm spices. Once your{" "}
+            <strong>dal, curry, sabzi or raita</strong> is off the heat, stir a
+            spoonful through the shared pot or add it to your own bowl. Your
+            recipe stays in charge. <strong>High in protein.</strong> Protein
+            contributes to the maintenance of muscle mass. Contains{" "}
+            <strong>milk</strong> (whey). If you want the numbers before the
+            pouch, <a href="/truth">start with the honest truth about protein</a>.
+            For the mugs in your family, <a href="/shop/chai">meet Heldi Chai</a>.
           </p>
         </div>
 

@@ -17,7 +17,8 @@ import {
 
 export const metadata: Metadata = {
   title: "Heldi Khana · Heldi",
-  description: "Protein that disappears into dal, curry and raita.",
+  description:
+    "A high-protein whey isolate blend with warm spices for dal, curry, sabzi and raita. Stir it in once the pot is off the heat.",
   alternates: { canonical: "/shop/khana" }
 };
 
@@ -69,8 +70,8 @@ export default async function ShopPage() {
       <ReviewsSection
         id="reviews"
         tone="gold"
-        heading="Stirred, tasted, reviewed."
-        lede="Bowls from kitchens like yours. Some clips are ours, the rest arrive with the reviews, spoon count and all."
+        heading="Stirred, served, written down."
+        lede="Every card keeps the dish and spoon count beside the words. Clips made in the Heldi kitchen are labelled."
         submitCta
         reviews={publishedReviews.length ? publishedReviews : undefined}
       />

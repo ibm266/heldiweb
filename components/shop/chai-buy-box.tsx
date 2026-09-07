@@ -92,7 +92,9 @@ export function ChaiBuyBox() {
             It also discharges the "food supplement" designation at the top of
             the page rather than only in the block at the bottom. */}
         <p className="pdp__legal-name">{CHAI_LEGAL_NAME}</p>
-        <p className="pdp__lede">Protein that disappears into your chai.</p>
+        <p className="pdp__lede">
+          A level spoonful for the mug you make every day.
+        </p>
 
         <button
           type="button"
@@ -123,7 +125,7 @@ export function ChaiBuyBox() {
         </ul>
 
         <p className="pdp__group-label">
-          HOW IT GOES IN: <strong>THREE STEPS</strong>
+          THE MUG ROUTINE: <strong>THREE STEPS</strong>
         </p>
         {/* role="list" because list-style:none drops list semantics in
             Safari/VoiceOver. No step numbers: the pack has none either, the
@@ -165,8 +167,9 @@ export function ChaiBuyBox() {
             </span>
           </div>
           <p className="pdp__includes-note">
-            One {CHAI_SERVING_SPOON} ({CHAI_SERVING_GRAMS}g) a mug,{" "}
-            {CHAI_PROTEIN_MARKETING_GRAMS}g of protein. Good in{" "}
+            One mug uses a {CHAI_SERVING_GRAMS}g serving, about one{" "}
+            {CHAI_SERVING_SPOON}, and adds {CHAI_PROTEIN_MARKETING_GRAMS}g of
+            protein. Use it in{" "}
             {CHAI_DRINKS.slice(0, -1).join(", ").toLowerCase()} and{" "}
             {CHAI_DRINKS[CHAI_DRINKS.length - 1].toLowerCase()}.
           </p>
@@ -193,8 +196,8 @@ export function ChaiBuyBox() {
 
         <p className="pdp__promise">
           {mode === "live"
-            ? "Chai is not in the shop yet. Khana is, and it is the same spoonful for the food rather than the drink."
-            : `Chai comes after Khana. The waitlist hears first, and the first ${FOUNDERS.firstJoiners} on it get ${FOUNDERS.percent}% off.`}
+            ? "Chai is not on sale yet. Khana is ready for dal, curry, sabzi and raita."
+            : `We are finishing Chai before we sell it. Join the waitlist to hear when it is ready; the first ${FOUNDERS.firstJoiners} people on the list get ${FOUNDERS.percent}% off.`}
         </p>
 
         <StatutoryStatements
@@ -206,18 +209,18 @@ export function ChaiBuyBox() {
 
         <div className="pdp__desc">
           <p>
-            <strong>One spoonful, stirred in at the end.</strong> Heldi Chai
-            is a high-protein blend made for the hot drinks you already make.
-            Stir it into <strong>chai, tea, coffee or hot chocolate</strong>{" "}
-            once the pot is off the boil, and the cup still tastes like your
-            cup: no chalk, no aftertaste, no shaker on the draining board.{" "}
-            <strong>High in protein</strong>: {CHAI_PROTEIN_MARKETING_GRAMS}g
-            in every mug, and protein contributes to the
-            maintenance of muscle mass. Contains{" "}
-            <strong>milk</strong> (whey and casein). New to Heldi?{" "}
-            <a href="/truth">Start with the honest truth about protein</a>, or{" "}
-            <a href="/shop">meet Khana</a>, the blend for the food rather than
-            the drink.
+            <strong>Keep making your usual mug.</strong> Heldi Chai is a
+            high-protein whey and casein blend with cardamom, ginger, cinnamon,
+            clove and a little coconut sugar. Take your{" "}
+            <strong>chai, tea, coffee or hot chocolate</strong> off the boil,
+            then stir in a level spoonful before drinking. No chalk, no
+            aftertaste, no shaker on the draining board.{" "}
+            <strong>High in protein.</strong> Each mug adds{" "}
+            {CHAI_PROTEIN_MARKETING_GRAMS}g of protein. Protein contributes to
+            the maintenance of muscle mass. Contains <strong>milk</strong>{" "}
+            (whey and casein). For the numbers behind the pouch,{" "}
+            <a href="/truth">read the honest truth about protein</a>. If dinner
+            is on the stove, <a href="/shop">meet Khana</a>.
           </p>
         </div>
 
