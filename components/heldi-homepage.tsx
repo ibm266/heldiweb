@@ -245,17 +245,17 @@ function HeroLines({ variant }: { variant: "copy" | "foot" }) {
   return (
     <div className={`hero-reveal-lines hero-reveal-lines--${variant}`}>
       <p className="hero-reveal-claim">
-        Protein that behaves like an ingredient, not a supplement.
+        Made for the food your family already loves.
       </p>
       <p className="hero-reveal-claim__support">
-        Two pouches, one rule. Khana goes into the pot with all the other
-        spices,{" "}
+        We made Khana for the pot, with{" "}
         <strong>
           <span className="hero-reveal-claim__grams">10g of protein</span> a
           spoonful
         </strong>
-        . Chai goes into the mug, <strong>5g a spoonful</strong>. Nobody at
-        the table can tell.
+        , and Chai for the mug, with <strong>5g</strong>. Your recipes stay
+        yours. Stir it in, serve as usual, and wait for precisely nobody to
+        mention it.
       </p>
     </div>
   );
@@ -794,8 +794,8 @@ function HeroReveal({
               <div className="hero-reveal-showcase__copy">
                 <h1 className="hero-reveal-lede">
                   <span className="hero-reveal-lede__prefix">
-                    <span className="hero-reveal-lede__prefix-line">Protein </span>
-                    <span className="hero-reveal-lede__prefix-line">Powder </span>
+                    <span className="hero-reveal-lede__prefix-line">Desi </span>
+                    <span className="hero-reveal-lede__prefix-line">protein </span>
                     <span className="hero-reveal-lede__prefix-line">for</span>
                   </span>
                   <span className="word-board">
