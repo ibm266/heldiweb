@@ -30,13 +30,12 @@ export function GiftingBand({ showShopCta = false }: { showShopCta?: boolean }) 
           {GIFTING.percent}% off every pouch in the order.
         </p>
         <p>
-          We can&apos;t check, and we&apos;re not asking the aunty WhatsApp
-          group. We trust you :)
+          Use it for a family gift or for your own kitchen. Parents, aunties
+          and uncles all count.
         </p>
         <GiftingCodePicker defaultAudience="beta" surface="band" />
         <p className="gifting__small">
-          For a gift or your own kitchen. One code per order, one use each.
-          Applied at checkout.
+          One code per order, one use each. Applied at checkout.
         </p>
         {showShopCta ? (
           <Link className="button button--pill gifting__cta" href="/shop">

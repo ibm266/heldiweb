@@ -294,7 +294,7 @@ export function CartDrawer() {
       : codeIsOurs && pouchCount === 0
         ? `${lastCode.code} is saved. Add a pouch and it will apply automatically.`
         : lastCode
-          ? `“${lastCode.code}” doesn’t work. Check the code and try again.`
+          ? `${lastCode.code} doesn’t work. Check the code and try again.`
           : null;
 
   return (
@@ -429,8 +429,9 @@ export function CartDrawer() {
                       // read £30 while a pair was the ceiling and read £28 at
                       // five pouches.
                       <p className="cart-line__nudge">
-                        {pouchCount === 1 ? "A second pouch" : "Another pouch"} costs{" "}
-                        {formatPence(nextPouchPence(pouchCount))}
+                        Before discounts,{" "}
+                        {pouchCount === 1 ? "a second pouch" : "another pouch"} adds{" "}
+                        {formatPence(nextPouchPence(pouchCount))} to your total
                         {pouchTotalPence >= SHIPPING.freeOverPence
                           ? ". Shipping is recalculated after discounts."
                           : "."}
