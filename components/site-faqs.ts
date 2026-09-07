@@ -144,7 +144,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How can Heldi fit into smaller portions?",
         answer:
-          "Half a bowl of dal contains about 3g of protein. One spoonful of Heldi Khana adds 10g, taking that portion to about 13g without requiring a full second portion or a separate drink. Heldi Chai is a hot-drink blend with a separate 8g level-tablespoon serving and a 5g-per-mug marketing figure, so this bowl calculation does not apply to it. Whether either product is appropriate for you is a question for the clinician supporting your GLP-1 treatment."
+          "Half a bowl of dal contains about 3g of protein. One spoonful of Heldi Khana adds 10g, taking that portion to about 13g without requiring a full second portion or a separate drink. Heldi Chai is a hot-drink blend with a separate 8g serving, about one level tablespoon, and a 5g-per-mug marketing figure, so this bowl calculation does not apply to it. Whether either product is appropriate for you is a question for the clinician supporting your GLP-1 treatment."
       },
       {
         question: "What does this mean for Indian food on a GLP-1?",

@@ -156,8 +156,8 @@ export function TruthPage() {
                 18g
               </span>
               <span className="truth-bowl__note">
-                18g belongs to roughly 75g dry lentils, which cooks into more
-                than one 80g bowl
+                18g belongs to roughly 75g of dry lentils. That amount cooks
+                into more than one 80g bowl
               </span>
             </div>
             <div className="truth-bowl truth-bowl--real">
