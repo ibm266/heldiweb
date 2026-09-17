@@ -11,7 +11,11 @@ import {
 } from "react";
 import { useCart } from "@/components/cart/cart-context";
 import { WaitlistForm } from "@/components/waitlist-form";
-import { FOUNDERS } from "@/lib/pricing";
+import {
+  useWaitlistOffer,
+  WaitlistPairsOpenContext
+} from "@/components/waitlist-offer-context";
+import { WAITLIST_HEADLINE } from "@/lib/waitlist-offer";
 
 // Site-wide "join the waitlist" popup. A visitor can open it from anywhere
 // (a page CTA, the shop buy box, the floating button, the nav) instead of
@@ -22,6 +26,12 @@ import { FOUNDERS } from "@/lib/pricing";
 // `placement` is threaded through to the WaitlistForm and recorded on the
 // load-bearing waitlist_signup event, so opens from different surfaces stay
 // distinguishable without a new event name.
+//
+// The provider is also where the waitlist offer's state enters the client. The
+// root layout tells it whether the free sample pairs are still open
+// (lib/waitlist-count.ts); it publishes that through WaitlistPairsOpenContext,
+// and every surface that states the offer reads its line from
+// useWaitlistOffer() rather than typing one (BRAND.md §11.9).
 
 type WaitlistPopupValue = {
   open: (placement: string) => void;
@@ -39,7 +49,13 @@ export function useWaitlistPopup(): WaitlistPopupValue {
   return value;
 }
 
-export function WaitlistPopupProvider({ children }: { children: React.ReactNode }) {
+export function WaitlistPopupProvider({
+  children,
+  pairsOpen = true
+}: {
+  children: React.ReactNode;
+  pairsOpen?: boolean;
+}) {
   const { mode } = useCart();
   const [isOpen, setIsOpen] = useState(false);
   const [placement, setPlacement] = useState("popup");
@@ -61,17 +77,19 @@ export function WaitlistPopupProvider({ children }: { children: React.ReactNode 
   const value = useMemo(() => ({ open, close, isOpen }), [open, close, isOpen]);
 
   return (
-    <WaitlistPopupContext.Provider value={value}>
-      {children}
-      {isOpen && mode !== "live" ? (
-        <WaitlistPopupPanel
-          placement={placement}
-          joined={joined}
-          onJoin={() => setJoined(true)}
-          onClose={close}
-        />
-      ) : null}
-    </WaitlistPopupContext.Provider>
+    <WaitlistPairsOpenContext.Provider value={pairsOpen}>
+      <WaitlistPopupContext.Provider value={value}>
+        {children}
+        {isOpen && mode !== "live" ? (
+          <WaitlistPopupPanel
+            placement={placement}
+            joined={joined}
+            onJoin={() => setJoined(true)}
+            onClose={close}
+          />
+        ) : null}
+      </WaitlistPopupContext.Provider>
+    </WaitlistPairsOpenContext.Provider>
   );
 }
 
@@ -87,6 +105,7 @@ function WaitlistPopupPanel({
   onClose: () => void;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const offer = useWaitlistOffer();
 
   useEffect(() => {
     // Land focus on the email field so the visitor can type straight away,
@@ -143,13 +162,9 @@ function WaitlistPopupPanel({
           ×
         </button>
         <h2 className="waitlist-pop__title" id="waitlist-pop-title">
-          Be first to stir it in.
+          {WAITLIST_HEADLINE}
         </h2>
-        <p className="waitlist-pop__lede">
-          Join the list and we&apos;ll email you when we launch. The first{" "}
-          {FOUNDERS.firstJoiners} people to join get {FOUNDERS.percent}% off
-          at launch.
-        </p>
+        <p className="waitlist-pop__lede">{offer.paragraph}</p>
         <WaitlistForm
           joined={joined}
           onJoin={onJoin}

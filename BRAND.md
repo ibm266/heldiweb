@@ -243,11 +243,13 @@ The six named patterns, with canon examples:
   founder quote, story notes).
 - **CTA canon**: primary "Join waitlist" (waitlist mode) or "Shop now" (live), decided
   by `COMMERCE_MODE`, never hard-coded per surface; secondary "How it works" (outline);
-  closing "Be first to stir it in." with "One email the day we launch, with 20% off
-  your first order inside."; waitlist success: "You're on the list, 20% off saved for
-  launch day. Tell your mum we said hi." The 20% is the waitlist launch offer
-  (`WAITLIST_OFFER`, §11.3); every surface interpolates the percent, never a hard-coded
-  number or the code string.
+  closing "Be first to stir it in." followed by the waitlist offer paragraph; waitlist
+  success: "You're on the list. One email, the day we launch, with 15% off your first
+  order inside. If you're one of the first 100, your free sample pair is in there too.
+  Tell your mum we said hi." Those lines, and every other statement of the waitlist
+  offer, come from `lib/waitlist-offer.ts` (client surfaces read them through
+  `useWaitlistOffer()`). §11.9 owns the offer. No surface types the offer, a number in
+  it, or a code string.
 - **Pill-links** end with a spaced arrow: "Read the full truth →".
 - **FAQ style**: question = what a person actually types; answer = 2 to 5 sentences,
   direct first sentence, no marketing pivot until the facts are done, optional
@@ -411,9 +413,10 @@ Change these files, and only these files, for their facts:
 
 | Fact | Source of truth | Notes |
 |---|---|---|
-| All prices, the ladder, the codes, the presents | `lib/pricing.ts` | Integer pence, six commented sections. Three parameters drive every pouch price: `RRP_PENCE` 3500, `BUNDLE_DISCOUNT_PENCE` 500, `MAX_POUCHES` 2. Run `npm run pricing-check` after any change. Shopify holds its own copy of every variant price, so mirror it there too |
-| Shipping thresholds and rates | `SHIPPING` in `lib/pricing.ts` | £40 free threshold, £3.55 Tracked 48, sample letter absorbed |
-| Gifting discount + codes | `GIFTING`, `FOUNDERS`, `WELCOME_POSTAGE` in `lib/pricing.ts` | ACHABETA / RISHTA / SHABASH at 15% on any quantity; founders 25%; welcome free postage, the only code that combines with a product discount. Shopify still holds the old 10% codes: rebuild before live mode |
+| All prices, the ladder, the codes, the presents | `lib/pricing.ts` | Integer pence, six commented sections. Three parameters drive every pouch price: `RRP_PENCE` 3500, `BUNDLE_DISCOUNT_PENCE` 500, `MAX_POUCHES` 24. Run `npm run pricing-check` after any change. Shopify holds its own copy of every variant price, so mirror it there too |
+| Shipping thresholds and rates | `SHIPPING` in `lib/pricing.ts` | £50 free threshold, £4.99 Tracked 48 (both set to match the live Shopify profile, 4 Sep 2026), sample letter absorbed |
+| Gifting discount + codes | `GIFTING`, `FOUNDERS`, `WELCOME_POSTAGE` in `lib/pricing.ts` | ACHABETA / RISHTA / SHABASH at 15% on any quantity; founders 25% for **close friends only** (not the waitlist, since 17 Sep 2026); welcome free postage, the only code that combines with a product discount. As of 17 Sep 2026 Shopify holds none of the family codes at all, and `WELCOME` is a fixed amount off rather than free shipping: rebuild both before live mode |
+| **The waitlist offer** | §11.9 of this file owns the offer. `WAITLIST_OFFER` in `lib/pricing.ts` holds its one number (the first 100); the 15% is `GIFTING.percent`; the words are `lib/waitlist-offer.ts` | First to know, a free sample pair for the first 100 with Heldi paying the postage, 15% off the first order. Never typed into a component, an email or a doc: every surface takes its line from the wording file or copies it from §11.9 |
 | Pack ink: what colour prints on each pouch | HeldiPM `design/pouch-v2/print/heldi-*-FRONT-sRGB.png` | **Khana is metallic gold on navy. Chai is CREAM on terracotta**, with gold only on "adj.", "healthy.", the 5g and the strapline, and a cream line-drawing elephant. The two packs are deliberately different; do not make Chai gold to "match". Chai's strapline is HIGH-PROTEIN SPICE BLEND, not "protein powder" |
 | The presents, and what they look like | `presentsForPouches` in `lib/pricing.ts`; `JAR_THUMB` / `TOTE_THUMB` in `lib/commerce/catalog.ts` | One set per order: a jar with a single, a jar and a tote with a pair. The jar is brushed brass with the italic HELDI lockup etched dark into the front and a gold spoon engraved along the handle. The tote is undyed cotton with a terracotta line-drawing elephant, no wordmark. The masala dabba is withdrawn |
 | Servings per pouch / sachet | `SERVINGS_PER_POUCH`, `SAMPLE_GRAMS`, `SERVINGS_PER_SAMPLE`, `MUGS_PER_SAMPLE` in `lib/commerce/catalog.ts` | Pouch 25. Sachet fill 30g, confirmed 4 Sep 2026, giving 2 Khana meals at a 12g portion and 3 Chai mugs at 8g, both derived and rounded down. Feeds every per-meal price |
@@ -504,7 +507,12 @@ list, for the next time:
 1. `lib/pricing.ts` only, then mirror in Shopify admin (NEXT_STEPS.md §1).
 2. Known hard-coded exception to keep in sync: the delivery FAQ answer in
    `site-faqs.ts` says "over £40 ship free… £3.55", and `docs/legal/shipping-policy.md`
-   repeats the rates. Update both or rewrite them to render from `SHIPPING`.
+   repeats the rates. Update both or rewrite them to render from `SHIPPING`. A third
+   hand-typed copy arrived on 17 Sep 2026: `docs/email/launch-everyone-else.html`
+   states the pouch price, the pair price, the free-postage threshold and the rate
+   below it, because an email cannot import `lib/pricing.ts`. Its header comment
+   lists each figure against its constant; change them together, then push the
+   email to Klaviyo.
    (Both are live-mode surfaces: the FAQ question and the shipping-policy page
    are hidden while `COMMERCE_MODE` is `waitlist`, see §11.5.)
 3. Tier names ("One pouch", "The pair", "The full table") flow from pricing.ts, but
@@ -522,17 +530,10 @@ list, for the next time:
    A tier is only pouches/RRP/launch price — it carries **no** jars/dabbas field;
    gift counts always come from `giftCountsForPouches`, so the full table ships
    2 jars, not 3. Don't reintroduce per-tier gift fields (they drift).
-6. Waitlist launch offer (`WAITLIST_OFFER` in `lib/pricing.ts`: 20% off, code
-   `PEHLEAAP`, all pouch tiers, never the Sample, one per order, one use per
-   customer, 14-day window). If it changes, the surfaces are: the mock
-   eligibility helper (`waitlistEligiblePenceForLines` in `catalog.ts`) and its
-   use in `mock-provider.ts`; the waitlist-mode copy that shows the **percentage**
-   (ticker `TICKER_COPY_WAITLIST`, hero `.hero-incentive`, final-CTA `<p>` and
-   waitlist success in the shared form, popup lede, `buy-box.tsx` waitlist
-   shipping note, the launch FAQ in `site-faqs.ts`); the Klaviyo welcome template
-   (`VnY8iQ`) and the launch email; and the real Shopify code created at launch.
-   The **code string** lives only in `WAITLIST_OFFER`, the launch email and
-   Shopify — never on the site. Grep terms: `WAITLIST_OFFER`, `PEHLEAAP`, `% off`.
+6. The waitlist offer is not a price and has its own section: **§11.9**. (Until
+   2 Sep 2026 this item described a 20% code called `PEHLEAAP`. It was withdrawn and
+   never created. `WAITLIST_OFFER` in `lib/pricing.ts` is a different thing today: it
+   holds only the first-100 count.)
 
 ### 11.4 Product name change ("Khana" is a placeholder)
 
@@ -550,17 +551,19 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
 
 - Date lives in the waitlist ticker string in `heldi-homepage.tsx` ("LAUNCHING
   AUTUMN 2026") and in `fable/brand-voice.md`. The ticker is one string per mode:
-  `TICKER_COPY_WAITLIST` carries the date and no price lines, `TICKER_COPY_LIVE`
-  carries "LAUNCH PRICES ON NOW" / "AUNTIES & UNCLES PAY LESS" and drops the date.
+  the waitlist ticker (`waitlistTickerCopy()`) carries the date, the waitlist offer's
+  ticker items and no price lines; `TICKER_COPY_LIVE` carries "AUNTIES & UNCLES PAY
+  LESS" and drops the date.
 - Waitlist → live is **not** a copy edit: flip `NEXT_PUBLIC_COMMERCE_MODE`. Every CTA,
   the floating mobile CTA, the final-CTA section, PDP button and cart already switch
   on `mode`; never hand-edit a CTA to force it.
 - Waitlist mode shows **no prices (£) and no discount code strings anywhere**;
   everything returns on the flip to live. The one deliberate exception is the
-  waitlist launch offer, advertised as a **percentage only** ("20% off your first
-  order") to give joining a reason — never a £ price, never the `PEHLEAAP` string.
-  It rides the ticker, the join forms/popup, the PDP waitlist shipping note and
-  the launch FAQ (all §11.3 item 6). Gated on the mode: PDP prices, the launch-price
+  waitlist offer (§11.9), stated as a **percentage and the words "free sample pair"**
+  to give joining a reason: never a £ figure (not even the pair's worth), never a
+  code string.
+  It rides the ticker, the hero line, the join forms/popup, the subpage CTAs, both
+  PDP waitlist notes and the launch FAQ (all listed in §11.9). Gated on the mode: PDP prices, the launch-price
   block and the shipping note (`buy-box.tsx`), the accordion shipping rates
   (`product-accordions.tsx`), the gifting band/popup/codes, the "How much is
   delivery?" FAQ and the shipping-policy `more` link (`site-faqs.ts`, which also
@@ -570,10 +573,10 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
   it; gate it on `mode` so live restores it. The consultant preview (`/preview`,
   unlocked with `PREVIEW_PASSWORD`) can flip a single browser into selling mode and
   reveal all of these before launch; that is intentional and affects no one else.
-- After the launch period ends: set each tier's `launchPence` equal to `rrpPence` in
-  pricing.ts (kills the strikethroughs everywhere at once), retire "LAUNCH PRICES ON
-  NOW" from `TICKER_COPY_LIVE` and the "Launch prices. Not forever prices." line in
-  `buy-box.tsx`.
+- There has been no launch price since 4 Sep 2026. £35 is the real single-pouch
+  price and the pair's struck-through £70 is a genuine RRP (§10), so nothing on the
+  site may say "launch prices", and the 15% family rate is a standing rate, never a
+  "sale" (§11.9 says why).
 
 ### 11.6 Other cross-cutting facts
 
@@ -643,6 +646,121 @@ them requires the touch list in PLAYBOOK.md §7 (the analytics rules), and a
 matching edit to the saved insights in PostHog. There is no build error when
 this breaks; the dashboard just goes quiet.
 
+### 11.9 The waitlist offer
+
+**This section owns the offer.** Every other document links here instead of restating
+it, and every surface takes its words from `lib/waitlist-offer.ts` or copies them from
+the table below. Before 17 Sep 2026 nothing owned it, which is how four different
+promises ended up live at once (20% off; 25% for the first 100; "posted free" with
+"postage on us"; launch prices and a free jar).
+
+**The offer, settled by Mihir on 17 Sep 2026:**
+
+| Who | What they get | Small print |
+|---|---|---|
+| Everyone on the list | First to know: one email, the day we launch | Waitlist consent covers exactly this one email (NEXT_STEPS.md, email section) |
+| The first 100 on the list, in `joined_at` order | A free sample pair: one 30g Khana sachet and one 30g Chai sachet. **We pay the postage** | Claimed from the link in the launch email. One per household, UK only, within 30 days |
+| Everyone on the list | 15% off their first order | The public family rate, `GIFTING.percent`. Pouches only, never samples |
+
+**Not part of it:** the 25% founders code (close friends only), "postage on us" on the
+first pouch order (dropped 17 Sep), and 20% / `PEHLEAAP` (dead since 2 Sep, never
+created). `WELCOME` free postage goes to close friends, to post-launch email
+sign-ups and to the early joiners, and to nobody else.
+
+**Early joiners.** The people on the list before the corrected welcome email went
+live (9 on 17 Sep 2026) were told "two sachets, posted free" and "15% off, postage on
+us" by the 5 Sep email. They get exactly that: the pair, 15%, and `WELCOME` on their
+first order. Their launch email (`docs/email/launch-early-joiners.html`) is the one
+place "postage on us" may still appear, and it names `WELCOME` for them to type on
+their first pouch order. It must not put the code on the claim link: `WELCOME` is one
+use per customer, and a checkout holding only the free pair would spend it
+(`npm run pricing-check` asserts this). The 25% the site showed them is not honoured.
+
+**Two rules behind the wording.**
+
+1. *We pay the postage.* A thing may only be called "free" if the customer pays
+   nothing beyond the true cost of delivery: the CAP Code forbids passing on packing,
+   packaging, handling or admin, and it is practice 23 on the DMCC Act 2024 banned
+   list (Schedule 20). Heldi pays the postage, so "free" is safe on every surface.
+   Never introduce a "P&P" or "packaging" charge on the pair without removing the
+   word "free" everywhere first.
+2. *Never a "sale".* A sale claims a price that will end. The 15% is the standing
+   family rate, so "launch sale" would be a false time limit (the same banned list,
+   practice 7). "15% off your first order" is true exactly as written.
+
+**Glossary. One name for each thing:**
+
+| Thing | Always | Never |
+|---|---|---|
+| The list | "the waitlist" on first mention and on buttons ("Join waitlist"), then "the list" | wait list, waiting list, mailing list |
+| Who gets the pair | "the first 100 on the list" | first hundred, first 100 customers, first 100 people to join, founding 100 |
+| The sample | "a free sample pair", explained as "one Khana sachet for the pot, one Chai sachet for the mug" | trial pair, taster pack, Sample Duo, Sample Trio, two sachets to try |
+| Its postage | "we pay the postage" | posted free, free shipping, free delivery, postage on us, P&P, postage and packaging |
+| The 15% | "15% off your first order" | launch sale, launch price, 25%, 20%, founders, any code string in waitlist mode |
+| The email | "one email, the day we launch" | updates, newsletter (that is Heldi Living) |
+| Hearing first | "first to know" | first look, early access (neither is promised) |
+
+**The lines.** `lib/waitlist-offer.ts` is the master and wins if this table ever
+disagrees; they are printed here for the surfaces that cannot import a file. Numbers
+are interpolated from `WAITLIST_OFFER` and `GIFTING`, never typed.
+
+| Field | Used for | The line |
+|---|---|---|
+| `WAITLIST_HEADLINE` | Popup title, final CTA heading | Be first to stir it in. |
+| `tickerItems` | Waitlist ticker | FIRST 100 ON THE LIST GET A FREE SAMPLE PAIR  •  15% OFF YOUR FIRST ORDER |
+| `sentence` | Hero line, both PDP notes, subpage CTA perk line, `llms.txt`, captions | The first 100 on the list get a free sample pair, and we pay the postage. Everyone on the list gets 15% off their first order. |
+| `paragraph` | Popup lede and final CTA paragraph, identical in both | One email, the day we launch. The first 100 on the list get a free sample pair, one for the pot and one for the mug, and we pay the postage. Everyone on the list gets 15% off their first order. |
+| `success` | Form success state | You're on the list. One email, the day we launch, with 15% off your first order inside. If you're one of the first 100, your free sample pair is in there too. Tell your mum we said hi. |
+| `waitlistOfferRows()` | The three-row block in the welcome email, the launch emails and the terms | Everyone on the list: First to know, the day we launch. The first 100: A free sample pair, and we pay the postage. Your first order: 15% off. |
+| `WAITLIST_PAIR_EXPLAINER` | Emails, product description | The pair is one Khana sachet for the pot and one Chai sachet for the mug, so you can try both before you commit to a pouch. |
+| `faqAnswer` | The offer half of the launch FAQ (Voice A) | We send one email on the day the shop opens, so the waitlist is first to know. The first 100 people on the list get a free sample pair, one Khana sachet and one Chai sachet, and we pay the postage. Everyone on the list gets 15% off their first order. |
+| `freePairProductCopy()` | `lib/commerce/catalog.ts` and the Shopify product | Title: Heldi sample pair, on us. Short: A free sample pair for the first 100 on the list. Long: Two 30g sachets, one Khana for the pot and one Chai for the mug. Free for the first 100 on the list, and we pay the postage. |
+| `pairsGoneMessage()` | The basket, if a claim arrives after the last pair | The free sample pairs have all been claimed. Your 15% still works on a pouch. |
+
+**Two forms of every line.** Once the list is longer than 100, offering a pair to a new
+joiner would be offering something they cannot have. `lib/waitlist-count.ts` reads the
+list length (cached ten minutes, fails open), the root layout hands it to
+`WaitlistPopupProvider`, and `useWaitlistOffer()` returns the closed form: the ticker
+drops the pair item and the sentence becomes "The free sample pairs have all gone to
+the first 100. Everyone on the list still gets 15% off their first order." The signup
+API also returns whether that joiner made the first 100, so the success line is exact.
+
+**If the offer changes, this is every place it lives:**
+
+1. `WAITLIST_OFFER` in `lib/pricing.ts` (the count) and `lib/waitlist-offer.ts` (the
+   words). Then `npm run pricing-check`, which asserts both and checks the welcome
+   email's rows against the site's.
+2. Site surfaces, all of which read the wording file and need no edit for a wording
+   change: the waitlist ticker, hero line and final CTA (`heldi-homepage.tsx`), the
+   popup (`waitlist-popup.tsx`), the form's success line and its "Offer terms" link
+   (`waitlist-form.tsx`), the subpage CTA perk line (`waitlist-or-shop-cta.tsx`),
+   both PDP notes (`shop/buy-box.tsx`, `shop/chai-buy-box.tsx`), the launch FAQ
+   (`site-faqs.ts`, which also feeds the /faq JSON-LD), and the free pair's product
+   copy (`lib/commerce/catalog.ts`).
+3. Hand-kept copies on the site: `public/llms.txt` and `docs/brand/specimen.html`.
+4. The terms: the "Waitlist offer" section of `docs/legal/terms-and-conditions.md`
+   (anchor `#waitlist-offer`, linked from the join form).
+5. The emails, masters in `docs/email/`: `waitlist-welcome.html` (Klaviyo flow
+   `T6BYu5`, library template `TvLgd3`), and the three launch emails
+   (`launch-first-100.html`, `launch-everyone-else.html`, `launch-early-joiners.html`).
+   A master is only half the job: push it to Klaviyo the way its header comment says.
+6. Shopify, by hand: the free pair's description, stock of 100 on
+   `HELDI-SAMPLE-PAIR-FREE` with tracking on, both sample products on a £0 shipping
+   profile (this is what makes "we pay the postage" true at checkout), the three
+   family codes at 15%, and `WELCOME` as a free-shipping discount.
+7. The cart: the claim link in `components/cart/cart-context.tsx`, the one-pair clamp
+   in `lib/commerce/shopify/cart-policy.ts`, and `scripts/storefront-check.mjs`.
+8. Outside this repo: HeldiPM's run-one page (`lib/run-one/constants.ts` and the
+   components that read it), the `heldi-email-writer` and `heldi-content-creator`
+   skills (they sync from the claude.ai account, so a local edit can be overwritten),
+   social captions and the Instagram bio, and Claude's project memory.
+
+**Guardrails.** `npm run brand-lint` check 8 fails on any of the "Never" phrases above
+in copy, in `public/llms.txt` or in `docs/email/`. `npm run pricing-check` has a
+"waitlist offer" section. Grep terms for a manual sweep: `first hundred`,
+`posted free`, `postage on us`, `trial pair`, `launch sale`, `wait list`, `25% off`,
+`20% off`, `PEHLEAAP`, `firstJoiners`.
+
 ## §12 Compliance guardrails (UK food supplement)
 
 - Only the three authorised protein claims (§5). No disease prevention, no weight-loss
@@ -699,6 +817,10 @@ Live inconsistencies a copy pass should resolve:
 5. **Still open:** the *whey* purity appears in prose as "over 90% protein" in places
    written before the certificate was read properly. As it arrives the powder is 88.83%.
    Grep `90% protein` and `over 90` before writing any new supplier copy.
+6. **Waitlist offer wording, swept 17 Sep 2026** (§11.9). Known leftovers that the
+   repo cannot fix for itself: the Klaviyo copies of the emails (a master in
+   `docs/email/` is not live until it is pushed), the Shopify product description,
+   and the Heldi skills, which sync from the claude.ai account.
 
 ## §14 Pre-flight checklist for any copy or design change
 

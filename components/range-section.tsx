@@ -66,7 +66,7 @@ function cardCopy(id: RangeProduct["id"], mode: "waitlist" | "live") {
   }
   return mode === "live"
     ? { note: "We are still finishing Chai, so it is not in the shop yet.", cta: "Meet Chai" }
-    : { note: "We are still finishing Chai. We will tell the waitlist first.", cta: "Meet Chai" };
+    : { note: "We are still finishing Chai. The waitlist hears first.", cta: "Meet Chai" };
 }
 
 export function RangeSection() {

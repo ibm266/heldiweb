@@ -50,6 +50,13 @@ Hard rules that are cheap to break by accident:
   "Protein contributes to a growth in muscle mass." / "...to the maintenance of muscle
   mass." / "...to the maintenance of normal bones." (BRAND.md §5 has the exact wording
   and why paraphrasing one is a breach.)
+- **The waitlist offer has one owner: BRAND.md §11.9 and `lib/waitlist-offer.ts`.**
+  First to know, a free sample pair for the first 100 (we pay the postage), 15% off
+  the first order. Never type it, a number in it, or a variation of it into a
+  component, an email or a doc: site surfaces read `useWaitlistOffer()` or
+  `lib/waitlist-offer-site.ts`, and everything off the site copies the lines in
+  §11.9 word for word. `npm run brand-lint` fails on the retired wordings
+  ("25% off", "first hundred", "posted free", "postage on us", "launch sale").
 - One pop-culture easter egg per surface, allusion not quotation.
 - Visuals: ink `#011246` borders, hard offset shadows (no blur), Rozha One / Gelasio
   only, colours from the CSS variables in `app/globals.css`.

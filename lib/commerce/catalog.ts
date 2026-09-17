@@ -11,6 +11,7 @@ import {
   samplePairPence,
   type TierId
 } from "@/lib/pricing";
+import { FREE_PAIR_PRODUCT_COPY } from "@/lib/waitlist-offer-site";
 import { CHAI_IMAGES, CHAI_SERVING_GRAMS } from "@/components/shop/chai-data";
 import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
 import { moneyToPence, penceToMoney } from "./money";
@@ -569,9 +570,11 @@ export const SAMPLE_VARIANT_IDS: Record<string, string> = {
   "HELDI-SAMPLE-PAIR": "gid://shopify/ProductVariant/58361530253695"
 };
 
-// The free trial pair. Gated by INVENTORY, not by code: that variant is the one
-// item in the store with tracking ON, stocked at 100, so it closes itself when
-// the hundredth is claimed. No discount code, no cart rule, nothing to expire.
+// The free sample pair, for the first 100 on the list (BRAND.md §11.9). Gated by
+// INVENTORY, not by code: that variant is the one item in the store with
+// tracking ON, stocked at 100 (WAITLIST_OFFER.freePairFirstJoiners in
+// lib/pricing.ts), so it closes itself when the last pair is claimed. No
+// discount code, no cart rule, nothing to expire.
 export const FREE_PAIR_PRODUCT_ID = "gid://shopify/Product/15876777116031";
 export const FREE_PAIR_VARIANT_ID = "gid://shopify/ProductVariant/58361566790015";
 export const FREE_PAIR_SKU = "HELDI-SAMPLE-PAIR-FREE";
@@ -862,10 +865,14 @@ const MIX_PRODUCTS: Product[] = [
   {
     id: FREE_PAIR_PRODUCT_ID,
     handle: "sample-pair-free",
-    title: "Heldi sample pair, on us",
-    shortDescription: "Two sachets, free for the first hundred.",
-    description:
-      "Two 30g sachets, one Khana for the pot and one Chai for the mug, free for the first 100. Postage is on us too.",
+    // The offer's words are never typed here. They come from
+    // lib/waitlist-offer.ts by way of lib/waitlist-offer-site.ts, which binds
+    // the 100 from lib/pricing.ts, so this product says what the ticker, the
+    // popup and the FAQ say. The same three lines are pasted into the Shopify
+    // product by hand (BRAND.md §11.9).
+    title: FREE_PAIR_PRODUCT_COPY.title,
+    shortDescription: FREE_PAIR_PRODUCT_COPY.shortDescription,
+    description: FREE_PAIR_PRODUCT_COPY.description,
     images: [SAMPLE_PAIR_IMAGE],
     tags: ["samples", "free-trial"],
     variants: [

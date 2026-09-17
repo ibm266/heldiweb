@@ -42,7 +42,7 @@ export const HOME_FAQS = [
   {
     question: "Is there a Heldi for chai?",
     answer:
-      "Yes. Heldi Chai is a whey protein and milk protein concentrate blend with real chai spices. It is made for chai, tea, coffee and hot chocolate, stirred in once the cup is off the boil. Contains milk (whey and milk protein concentrate). It is still in development, so it has a page but no price yet, and the waitlist will hear first when it is ready. Khana is the savoury blend for the pot."
+      "Yes. Heldi Chai is a whey protein and milk protein concentrate blend with real chai spices. It is made for chai, tea, coffee and hot chocolate, stirred in once the cup is off the boil. Contains milk (whey and milk protein concentrate). It is still in development, so it has a page but no price yet, and the waitlist hears first when it is ready. Khana is the savoury blend for the pot."
   },
   {
     question: "Can I put Khana in my chai?",

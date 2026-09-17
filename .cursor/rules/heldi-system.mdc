@@ -19,6 +19,11 @@ conventions.
   source), health claims beyond protein's three verbatim register entries
   ("Protein contributes to a growth in muscle mass" / "to the maintenance of
   muscle mass" / "to the maintenance of normal bones").
+- The waitlist offer has one owner: BRAND.md §11.9 and lib/waitlist-offer.ts
+  (first to know; a free sample pair for the first 100, we pay the postage; 15%
+  off the first order). Never type it into a component, an email or a doc. Site
+  surfaces read useWaitlistOffer() or lib/waitlist-offer-site.ts; everything
+  else copies §11.9 word for word. brand-lint fails on the retired wordings.
 - Finishing gate for every change:
   npm run pricing-check && npm run brand-lint && npm run typecheck && npm run build
   then view the change at a phone width and a wide width.

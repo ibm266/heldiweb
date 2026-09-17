@@ -6,6 +6,7 @@ import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { serializeJsonLd } from "@/lib/json-ld";
 import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
 import { StatutoryStatements } from "@/components/shop/statutory-statements";
+import { getWaitlistPairsOpen } from "@/lib/waitlist-count";
 
 export const metadata: Metadata = {
   title: "FAQ · Heldi",
@@ -15,20 +16,25 @@ export const metadata: Metadata = {
 };
 
 // Built from the same mode-aware groups as the visible list, so waitlist
-// builds keep delivery prices out of the structured data too.
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: siteFaqGroupsForMode(COMMERCE_MODE).flatMap((group) =>
-    group.faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: { "@type": "Answer", text: faq.answer }
-    }))
-  )
-};
+// builds keep delivery prices out of the structured data too. `pairsOpen` is
+// the same cached answer the root layout gives the visible list, so the
+// structured data never offers a free sample pair the page has stopped offering.
+function faqSchemaFor(pairsOpen: boolean) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: siteFaqGroupsForMode(COMMERCE_MODE, pairsOpen).flatMap((group) =>
+      group.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer }
+      }))
+    )
+  };
+}
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  const faqSchema = faqSchemaFor(await getWaitlistPairsOpen());
   return (
     <main>
       <script

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCart } from "@/components/cart/cart-context";
 import { siteFaqGroupsForMode } from "@/components/site-faqs";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 
 // Grouped accordion for the /faq page. Same markup and classes as the
 // homepage FAQ so the styling stays identical; one question open at a time
@@ -12,7 +13,8 @@ import { siteFaqGroupsForMode } from "@/components/site-faqs";
 export function FaqPageList() {
   const { mode } = useCart();
   const [openKey, setOpenKey] = useState<string | null>(null);
-  const groups = siteFaqGroupsForMode(mode);
+  const { pairsOpen } = useWaitlistOffer();
+  const groups = siteFaqGroupsForMode(mode, pairsOpen);
 
   return (
     <>

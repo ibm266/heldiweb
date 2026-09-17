@@ -79,7 +79,7 @@ function status(id: Pouch["id"], mode: "waitlist" | "live") {
   }
   return mode === "live"
     ? { note: "Read the method now. Chai is not on sale yet.", cta: "See Chai" }
-    : { note: "Read the method now. The waitlist hears when Chai is ready.", cta: "See Chai" };
+    : { note: "Read the method now. The waitlist hears first when Chai is ready.", cta: "See Chai" };
 }
 
 export function PouchPicker() {

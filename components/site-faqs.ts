@@ -6,13 +6,19 @@
 // that names a price (delivery costs) and the shipping-policy link, live
 // hides the what-does-the-waitlist-do question. Both the page list and the
 // FAQ JSON-LD go through siteFaqGroupsForMode so they never disagree.
+//
+// The launch question states the waitlist offer, so its offer sentences come
+// from lib/waitlist-offer.ts like every other surface (BRAND.md §11.9), in the
+// form that matches `pairsOpen`: whether the free sample pairs are still open
+// to a new joiner (lib/waitlist-count.ts).
 
 import { HOME_FAQS } from "@/components/home-faqs";
 import { SERVINGS_PER_POUCH } from "@/lib/commerce/catalog";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
-import { FOUNDERS, SHIPPING } from "@/lib/pricing";
+import { SHIPPING } from "@/lib/pricing";
 import { formatPence } from "@/lib/commerce/money";
 import type { CommerceMode } from "@/lib/commerce/types";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 
 export type SiteFaq = {
   question: string;
@@ -35,7 +41,11 @@ function pick(
   return faq;
 }
 
-export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
+export function siteFaqGroupsForMode(
+  mode: CommerceMode,
+  pairsOpen = true
+): SiteFaqGroup[] {
+  const offer = siteWaitlistOfferCopy(pairsOpen);
   return [
   {
     title: "Using Heldi",
@@ -214,7 +224,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
             {
               question: "When does Heldi launch, and what does the waitlist do?",
               answer:
-                `Heldi launches in autumn 2026. The shop is available to browse now, and checkout switches on at launch. If you join the waitlist and are among the first ${FOUNDERS.firstJoiners} people, we hold ${FOUNDERS.percent}% off your first order. We send one email on the day the shop opens.`
+                `Heldi launches in autumn 2026. The shop is available to browse now, and checkout switches on at launch. ${offer.faqAnswer}`
             }
           ]
         : []),

@@ -1,40 +1,65 @@
 <!--
-  Waitlist welcome email. The source of truth for the design; Klaviyo holds a
-  copy, not the master.
+  Launch email 1 of 3: the first 100 on the list.
 
-  Klaviyo objects (account V9JqrE):
-    Flow      "Waitlist welcome" T6BYu5, trigger = added to list Staq52
-    Template  "Waitlist welcome (site branded)" TvLgd3 (library copy)
-  Klaviyo clones the library template into a flow-owned copy whenever the flow
-  message's template_id is set, and that clone is NOT writable through the
-  templates API. To change the design: edit this file, push it to TvLgd3, then
-  re-point the flow message at TvLgd3 so it re-clones.
-  The flow-owned clone gets a new template id every time the flow is re-pointed,
-  so read its id from the flow message rather than recording it here.
+  DRAFT for Mihir's review, written 17 Sep 2026. NOT yet in Klaviyo, and
+  nothing in this file has been sent to anyone.
 
-  Two things Klaviyo does to this file on import, both expected:
-    - it strips any external font <link>, so Rozha One never loads. Everything
-      falls back to Georgia (BRAND.md §8.2 sanctions it). Do not add a webfont
-      link back expecting it to survive.
-    - it compiles {% unsubscribe 'Unsubscribe' %} into the real unsubscribe link.
+  This is the one email the waitlist agreed to receive ("one email, the day we
+  launch"). It goes out once, on launch day, and never again.
 
-  Design notes, all from app/globals.css via BRAND.md §8:
-    gold #eda31d brand chip carrying the nav lockup (§8.7), the 7px double rule
-    (§8.3), white card with 3px ink border and a hard 8px offset shadow (§8.4),
-    launch-day block as a cream menu card with the gold offset shadow and 2px
-    dashed ink/30% separators, ink pill button with gold text (§8.5).
-  Hard offset shadows are faked for email with an ink-filled outer table cell
-  padded right and bottom, because box-shadow does not render in Outlook.
+  Audience: the first 100 on the list by join order, MINUS the early joiners.
+  Supabase public.waitlist.joined_at is the record; the line is drawn there and
+  pushed to Klaviyo as a list at launch.
+  The three launch segments are mutually exclusive and together they are the
+  whole waitlist. Nobody may receive two of these:
+    launch-early-joiners.html   the static list frozen at the welcome-email cut-over
+    launch-first-100.html       the first 100 by join order, minus the early joiners
+    launch-everyone-else.html   everyone on the list after the first 100
 
-  The offer is owned by BRAND.md §11.9 and was settled on 17 Sep 2026. The three
-  rows of the launch-day block must match waitlistOfferRows() in
-  lib/waitlist-offer.ts word for word, and the sentence under the block is
-  WAITLIST_PAIR_EXPLAINER from the same file. `npm run pricing-check` asserts
-  the rows against this file, and `npm run brand-lint` (check 8) greps it,
-  comments included, for retired offer wordings. Change the offer there first,
-  then here, then push to Klaviyo as above.
+  Klaviyo (account V9JqrE): meant to replace draft XGbTBU, the first-100 draft
+  of 4 Sep 2026. That draft could not be read on 17 Sep 2026 because the Klaviyo
+  connection was down, so the id is UNVERIFIED: open it and check it is the
+  right object before overwriting anything. To publish: push this file to the
+  template, then build the launch-day campaign on it for the segment above.
+  The same two import quirks as waitlist-welcome.html apply: Klaviyo strips the
+  webfont <link>, so everything falls back to Georgia (BRAND.md §8.2), and it
+  compiles {% unsubscribe 'Unsubscribe' %} into the real unsubscribe link.
 
-  Verified at 375px and 600px. Preview it by opening this file directly.
+  Suggested subject:  We're live.
+  Suggested preview:  The one email I promised. Your free sample pair is inside.
+  Alternative subjects: "Heldi is open." / "The pouch is real."
+  The preview text is also the hidden preheader div below: change both together.
+
+  The offer is owned by BRAND.md §11.9 (settled 17 Sep 2026). The three rows
+  must match waitlistOfferRows() in lib/waitlist-offer.ts word for word, and
+  the sentence that starts "The pair is" is WAITLIST_PAIR_EXPLAINER from the
+  same file. The claim conditions (30 days, UK only, one per household, the
+  email address they joined with) repeat the "Waitlist offer" section of
+  docs/legal/terms-and-conditions.md, which the small link under the button
+  opens. The three family codes and their 15% are GIFTING in lib/pricing.ts.
+  `npm run brand-lint` (check 8) greps this file, comments included, for
+  retired offer wordings.
+
+  The button is the claim link, https://heldi.co.uk/?claim=pair, which
+  components/cart/cart-context.tsx turns into a basket holding the free pair.
+  It does nothing until NEXT_PUBLIC_COMMERCE_MODE is live.
+
+  Before sending, check three things:
+    - Send it before anything public (Instagram, a banner on the site) says the
+      shop is open. "First to know" is a promise, and it is only true if this
+      email goes first.
+    - The pair contains a Chai sachet, so it cannot ship until Chai clears its
+      gates (NEXT_STEPS.md, Klaviyo section). The terms allow the pair to follow
+      once both blends are ready. If that is the position on launch day, add one
+      plain sentence under the explainer saying when the pair goes out.
+    - The three family codes exist in Shopify at 15%, pouches only.
+
+  No health claims in this email, by design: it says what is in the post, not
+  what protein does (BRAND.md §12). No countdowns and no urgency either; the 30
+  days is a term of the offer and is stated once, plainly.
+
+  Shell, design notes and the faked hard shadows are waitlist-welcome.html's.
+  Preview it by opening this file directly.
 -->
 <html>
 <head>
@@ -42,7 +67,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <meta name="color-scheme" content="light only" />
 <meta name="supported-color-schemes" content="light only" />
-<title>Welcome to the Heldi waitlist</title>
+<title>Heldi is live</title>
 <link href="https://fonts.googleapis.com/css2?family=Rozha+One&amp;family=Gelasio:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet" />
 <style type="text/css">
   body { margin:0; padding:0; }
@@ -63,7 +88,7 @@
 <body style="margin:0;padding:0;background-color:#f8f0de;">
 
 <div style="display:none;font-size:1px;color:#f8f0de;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">
-One email on launch day. Here is exactly what is in it.
+The one email I promised. Your free sample pair is inside.
 </div>
 
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f8f0de;">
@@ -94,13 +119,11 @@ One email on launch day. Here is exactly what is in it.
         <tr>
           <td class="heldi-pad" style="padding:36px 38px 0 38px;">
 
-            <p style="margin:0 0 14px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:13px;font-weight:600;letter-spacing:0.22em;color:#a8432b;">YOU&rsquo;RE ON THE LIST</p>
+            <p style="margin:0 0 14px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:13px;font-weight:600;letter-spacing:0.22em;color:#a8432b;">LAUNCH DAY</p>
 
-            <h1 class="heldi-h1" style="margin:0 0 22px 0;font-family:'Rozha One',Georgia,'Times New Roman',serif;font-weight:400;font-size:38px;line-height:1.1;color:#011246;">We saved you a seat near the food.</h1>
+            <h1 class="heldi-h1" style="margin:0 0 22px 0;font-family:'Rozha One',Georgia,'Times New Roman',serif;font-weight:400;font-size:38px;line-height:1.1;color:#011246;">Heldi is live.</h1>
 
-            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:17px;line-height:1.62;color:#011246;">You&rsquo;re in. Nothing else lands in your inbox from me until there is something real to sell you. That is the whole promise, and it is a short one.</p>
-
-            <p style="margin:0 0 26px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:17px;line-height:1.62;color:#011246;">Here is what that one email carries.</p>
+            <p style="margin:0 0 26px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:17px;line-height:1.62;color:#011246;">The shop opened today, and you&rsquo;re first to know. I said one email, the day we launch. This is it.</p>
 
           </td>
         </tr>
@@ -114,7 +137,7 @@ One email on launch day. Here is exactly what is in it.
                   <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f8f0de;border:3px solid #011246;border-radius:18px;">
                     <tr>
                       <td style="padding:22px 24px 8px 24px;">
-                        <p style="margin:0 0 16px 0;font-family:'Rozha One',Georgia,'Times New Roman',serif;font-weight:400;font-size:24px;line-height:1.15;color:#011246;">On launch day</p>
+                        <p style="margin:0 0 16px 0;font-family:'Rozha One',Georgia,'Times New Roman',serif;font-weight:400;font-size:24px;line-height:1.15;color:#011246;">As promised</p>
                       </td>
                     </tr>
 
@@ -161,22 +184,27 @@ One email on launch day. Here is exactly what is in it.
 
         <tr>
           <td class="heldi-pad" style="padding:0 38px 4px 38px;">
-            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">The pair is one Khana sachet for the pot and one Chai sachet for the mug, so you can try both before you commit to a pouch.</p>
+            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">You&rsquo;re one of the first 100 on the list, so the middle row is yours. The pair is one Khana sachet for the pot and one Chai sachet for the mug, so you can try both before you commit to a pouch.</p>
 
-            <p style="margin:0 0 26px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">If you ticked the box for Heldi Living, a letter lands roughly weekly in between: honest reading about protein in Indian food, and recipes worth cooking. If you did not, this is the only email you get from me until launch.</p>
+            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">Claim it within 30 days, using the email address you joined with. UK addresses only, one pair per household.</p>
+
+            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">When you&rsquo;re ready for a pouch, type whichever family code fits at checkout: <b style="color:#011246;">ACHABETA</b> if you&rsquo;re sorting out your parents, <b style="color:#011246;">RISHTA</b> if it&rsquo;s for uncle and aunty, <b style="color:#011246;">SHABASH</b> for aunties and uncles sorting themselves out. Each takes 15% off your first order of pouches.</p>
+
+            <p style="margin:0 0 26px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">It&rsquo;s a small operation: first batch, packed by me, sent by Royal Mail.</p>
           </td>
         </tr>
 
-        <!-- ---- button: ink fill, gold text, pill ---- -->
+        <!-- ---- button: ink fill, gold text, pill. The ONE primary action. ---- -->
         <tr>
           <td class="heldi-pad" align="left" style="padding:0 38px 32px 38px;">
             <table role="presentation" cellpadding="0" cellspacing="0" border="0">
               <tr>
                 <td style="background-color:#011246;border-radius:999px;">
-                  <a href="https://heldi.co.uk/our-story" style="display:inline-block;padding:14px 30px;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;font-weight:600;color:#eda31d;text-decoration:none;border-radius:999px;">Read why I made this</a>
+                  <a href="https://heldi.co.uk/?claim=pair" style="display:inline-block;padding:14px 30px;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;font-weight:600;color:#eda31d;text-decoration:none;border-radius:999px;">Claim your sample pair</a>
                 </td>
               </tr>
             </table>
+            <p style="margin:14px 0 0 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:13px;line-height:1.7;color:#8a8378;"><a href="https://heldi.co.uk/legal/terms#waitlist-offer" style="color:#8a8378;">Offer terms</a></p>
           </td>
         </tr>
 
@@ -184,7 +212,7 @@ One email on launch day. Here is exactly what is in it.
           <td class="heldi-pad" style="padding:0 38px 34px 38px;">
             <div style="height:1px;line-height:1px;font-size:0;border-top:2px dashed #b3b8c8;">&nbsp;</div>
             <p style="margin:22px 0 6px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:17px;line-height:1.5;color:#011246;">&mdash; Mihir, founder</p>
-            <p style="margin:0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-style:italic;font-size:15px;line-height:1.55;color:#8a8378;">P.S. Hit reply and tell me what you cook most weeks. I read every one.</p>
+            <p style="margin:0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-style:italic;font-size:15px;line-height:1.55;color:#8a8378;">P.S. Anything not working? Hit reply. It&rsquo;s me who answers, usually with opinions about dal.</p>
           </td>
         </tr>
       </table>

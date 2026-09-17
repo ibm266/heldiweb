@@ -4,8 +4,9 @@ import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { WAITLIST_CONSENT_COPY } from "@/lib/waitlist";
-import { FOUNDERS } from "@/lib/pricing";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 
 // The site's single waitlist entry point: a collapsed "Join waitlist" button
 // that expands into an email field with the weekly-letter opt-in. Lives in the
@@ -33,8 +34,14 @@ export function WaitlistForm({
   const [expanded, setExpanded] = useState(startExpanded);
   const [wantsLetter, setWantsLetter] = useState(false);
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
+  // What the API said about THIS joiner's place on the list. Null until they
+  // join, and null again if the form remounts (the popup reopening), in which
+  // case the success line falls back to the site-wide state, which is still
+  // true: it just says "if you're one of the first 100" rather than knowing.
+  const [madeFirstJoiners, setMadeFirstJoiners] = useState<boolean | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const { mode } = useCart();
+  const offer = useWaitlistOffer();
   const placementValue = placement ?? id;
 
   useEffect(() => {
@@ -60,6 +67,14 @@ export function WaitlistForm({
         })
       });
       if (!response.ok) throw new Error(`waitlist ${response.status}`);
+      // Best effort: a body we cannot read must never turn a saved signup into
+      // an error, so it only ever sharpens the success line.
+      const result: unknown = await response.json().catch(() => null);
+      const made =
+        result && typeof result === "object" && "firstJoiners" in result
+          ? (result as { firstJoiners: unknown }).firstJoiners
+          : null;
+      setMadeFirstJoiners(typeof made === "boolean" ? made : null);
       track("waitlist_signup", { placement: placementValue, marketing_opt_in: wantsLetter });
       onJoin();
     } catch {
@@ -79,11 +94,13 @@ export function WaitlistForm({
   }
 
   if (joined) {
+    // A joiner the API placed outside the first joiners is never told a pair
+    // might be waiting, even if the site-wide count has not caught up yet.
+    const successCopy =
+      madeFirstJoiners === null ? offer : siteWaitlistOfferCopy(madeFirstJoiners);
     return (
       <p className="waitlist-success" role="status">
-        You&apos;re on the list. If you&apos;re one of the first{" "}
-        {FOUNDERS.firstJoiners}, you&apos;ll find {FOUNDERS.percent}% off in
-        your launch email. Tell your mum we said hi.
+        {successCopy.success}
       </p>
     );
   }
@@ -138,7 +155,8 @@ export function WaitlistForm({
           </label>
           <p className="waitlist-smallprint">
             Unsubscribe anytime.{" "}
-            <Link href="/legal/privacy">Privacy policy</Link>
+            <Link href="/legal/privacy">Privacy policy</Link> and{" "}
+            <Link href="/legal/terms#waitlist-offer">offer terms</Link>.
           </p>
           {status === "error" ? (
             <p className="waitlist-error" role="alert">

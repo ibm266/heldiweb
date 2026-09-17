@@ -23,6 +23,7 @@ import {
   GIFTING,
   FOUNDERS,
   WELCOME_POSTAGE,
+  WAITLIST_OFFER,
   rrpPence,
   ladderPence,
   bundleSavingPence,
@@ -39,6 +40,8 @@ import {
   presentsForPouches,
   giftCountsForPouches
 } from "../lib/pricing.ts";
+// Import-free on purpose, so this script can read the site's real offer wording.
+import { waitlistOfferCopy, waitlistOfferRows } from "../lib/waitlist-offer.ts";
 import { SERVING_GRAMS } from "../components/shop/nutrition-data.ts";
 import { CHAI_SERVING_GRAMS } from "../components/shop/chai-data.ts";
 
@@ -129,7 +132,9 @@ throws(`no pouch after ${MAX_POUCHES}`, () => nextPouchPence(MAX_POUCHES));
 console.log("\n== Discount codes ==");
 check("family rate", GIFTING.percent, 15);
 check("founders rate", FOUNDERS.percent, 25);
-check("founders offered to the first N joiners", FOUNDERS.firstJoiners, 100);
+// Close friends only since 17 Sep 2026. If a joiner count ever comes back onto
+// FOUNDERS, some surface is about to promise the waitlist 25% again.
+check("the founders rate carries no waitlist count", "firstJoiners" in FOUNDERS, false);
 
 // Every step lands on a whole penny at both rates, so nothing rounds away.
 const FAMILY = { 1: 2975, 2: 5525, 3: 8500, 4: 11050 };
@@ -248,6 +253,66 @@ check("Chai portion", CHAI_SERVING_GRAMS, 8);
 check("a Khana sachet is 2 meals", Math.floor(SAMPLE_GRAMS / SERVING_GRAMS), 2);
 check("a Chai sachet is 3 mugs", Math.floor(SAMPLE_GRAMS / CHAI_SERVING_GRAMS), 3);
 
+// --- The waitlist offer -------------------------------------------------------
+// Settled 17 Sep 2026 (BRAND.md §11.9): first to know, a free sample pair for the
+// first 100 with Heldi paying the postage, and the public family rate off the
+// first order. The offer owns one number, the 100. The percent is GIFTING's, so
+// the promise can never quote a rate checkout will not give.
+console.log("\n== The waitlist offer ==");
+check("free sample pair goes to the first N joiners", WAITLIST_OFFER.freePairFirstJoiners, 100);
+check("the offer owns no percentage of its own", "percent" in WAITLIST_OFFER, false);
+{
+  const facts = { firstJoiners: WAITLIST_OFFER.freePairFirstJoiners, percent: GIFTING.percent };
+  const open = waitlistOfferCopy(facts, true);
+  const closed = waitlistOfferCopy(facts, false);
+  check("the open offer names the count", open.sentence.includes("first 100 on the list"), true);
+  check("the open offer names the family rate", open.sentence.includes("15% off their first order"), true);
+  check("the open offer says who pays the postage", open.sentence.includes("we pay the postage"), true);
+  // Once the hundred have gone, no line may still hold out a pair to a new joiner.
+  for (const [name, line] of Object.entries(closed)) {
+    if (typeof line !== "string") continue;
+    check(`closed ${name} does not offer a pair`, /get a free sample pair|GET A FREE SAMPLE PAIR|your free sample pair/.test(line), false);
+  }
+  check("the closed ticker keeps the family rate", closed.tickerItems.join(" "), "15% OFF YOUR FIRST ORDER");
+  check("the paragraph parts add up to the paragraph", Object.values(open.paragraphParts).join(""), open.paragraph);
+  check("and in the closed form", Object.values(closed.paragraphParts).join(""), closed.paragraph);
+  // The founders rate must never leak into the public promise again.
+  check("no offer line quotes the founders rate", JSON.stringify([open, closed]).includes(`${FOUNDERS.percent}%`), false);
+
+  // The welcome email is the same promise on another platform. Its master is
+  // tracked in docs/email/, and its three rows must be the site's three rows.
+  const email = (name) => readFileSync(new URL(`../docs/email/${name}`, import.meta.url), "utf8");
+  const [everyone, firstJoiners, firstOrder] = waitlistOfferRows(facts);
+  const welcome = email("waitlist-welcome.html");
+  for (const row of [everyone, firstJoiners, firstOrder]) {
+    check(`welcome email carries "${row.who}"`, welcome.includes(row.who), true);
+    check(`welcome email carries "${row.what}"`, welcome.includes(row.what), true);
+  }
+
+  // The three launch emails, one per audience. They are mutually exclusive, so
+  // each must carry exactly the rows its audience is owed and no others.
+  const first100 = email("launch-first-100.html");
+  for (const row of [everyone, firstJoiners, firstOrder]) {
+    check(`first-100 launch email carries "${row.what}"`, first100.includes(row.what), true);
+  }
+  check("first-100 launch email links to the claim", first100.includes("https://heldi.co.uk/?claim=pair"), true);
+
+  const rest = email("launch-everyone-else.html");
+  check(`everyone-else launch email carries "${everyone.what}"`, rest.includes(everyone.what), true);
+  check(`everyone-else launch email carries "${firstOrder.what}"`, rest.includes(firstOrder.what), true);
+  check("everyone-else launch email offers no pair", rest.includes(firstJoiners.what), false);
+  check("everyone-else launch email has no claim link", rest.includes("claim=pair"), false);
+
+  // The early joiners keep what the 5 Sep 2026 email told them about their
+  // first order. Their link must NOT apply WELCOME: it is one use per customer,
+  // and a checkout holding only the free pair would spend it.
+  const early = email("launch-early-joiners.html");
+  check(`early-joiner launch email carries "${firstJoiners.what}"`, early.includes(firstJoiners.what), true);
+  check("early-joiner launch email keeps their first-order promise", early.includes(`${facts.percent}% off, postage on us`), true);
+  check("early-joiner launch email names WELCOME", early.includes("WELCOME"), true);
+  check("early-joiner claim link does not spend WELCOME", /claim=pair&(amp;)?code=WELCOME"/.test(early), false);
+}
+
 // --- What can actually be bought --------------------------------------------
 // The ceiling and the two products together define the Shopify variant list.
 console.log("\n== The buyable set ==");
@@ -289,6 +354,19 @@ for (const m of mixes) {
 }
 for (const sku of ["HELDI-SAMPLE", "HELDI-SAMPLE-CHAI", "HELDI-SAMPLE-PAIR"]) {
   check(`${sku} has a variant id`, gidFor(sku) !== null, true);
+}
+// The free sample pair is not in a SKU map: it is one variant with its own
+// constants, free, and worth exactly what the pair pack sells for, so the
+// drawer's "minus £8" is a real price and not an invented one.
+check(
+  "HELDI-SAMPLE-PAIR-FREE has a variant id",
+  /FREE_PAIR_VARIANT_ID = "gid:\/\/shopify\/ProductVariant\/\d+"/.test(catalogSrc),
+  true
+);
+{
+  const freePair = /sku: FREE_PAIR_SKU,\s*price: penceToMoney\((\w+(?:\(\))?)\),[\s\S]*?compareAtPrice: penceToMoney\((\w+(?:\(\))?)\)/.exec(catalogSrc);
+  check("the free pair costs nothing", freePair?.[1] ?? null, "0");
+  check("the free pair is worth the pair pack's price", freePair?.[2] ?? null, "samplePairPence()");
 }
 const gids = [...catalogSrc.matchAll(/gid:\/\/shopify\/ProductVariant\/(\d+)/g)].map((m) => m[1]);
 check("no variant id is reused", new Set(gids).size, gids.length);

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import {
   POUCH_THUMB,
@@ -26,7 +27,6 @@ import {
 } from "@/lib/commerce/money";
 import type { IncludedItem, Product, ProductVariant } from "@/lib/commerce/types";
 import {
-  FOUNDERS,
   MAX_POUCHES,
   SHIPPING,
   TIER_ORDER,
@@ -80,6 +80,7 @@ export function BuyBox({ product }: { product: Product }) {
   const [giftingPopupOpen, setGiftingPopupOpen] = useState(false);
   const { cart, mode, addItem, addPouches, isPending } = useCart();
   const { open: openWaitlist } = useWaitlistPopup();
+  const offer = useWaitlistOffer();
   const viewTracked = useRef(false);
 
   useEffect(() => {
@@ -150,9 +151,10 @@ export function BuyBox({ product }: { product: Product }) {
   // The rate and the threshold both come from SHIPPING, never typed: they were
   // £3.55 / £40 until 4 Sep 2026, when they were corrected to match what
   // Shopify actually charges. Waitlist mode says why there is no price on the
-  // page instead of quoting one.
+  // page instead of quoting one, then states the waitlist offer in the words
+  // every other surface uses (lib/waitlist-offer.ts, BRAND.md §11.9).
   const shippingNote = !showPrices
-    ? `We will put the prices here when the shop opens. Join the waitlist to hear first; the first ${FOUNDERS.firstJoiners} people on it get ${FOUNDERS.percent}% off.`
+    ? `We will put the prices here when the shop opens. Join the waitlist to hear first. ${offer.sentence}`
     : isPouch && ladderPence(pouchQty) < SHIPPING.freeOverPence
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
       : "UK shipping is free.";

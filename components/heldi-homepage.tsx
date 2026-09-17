@@ -20,9 +20,10 @@ import { StatutoryStatements } from "@/components/shop/statutory-statements";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 import { WaitlistForm } from "@/components/waitlist-form";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { WaysGallery } from "@/components/ways-gallery";
-import { FOUNDERS } from "@/lib/pricing";
+import { WAITLIST_HEADLINE } from "@/lib/waitlist-offer";
 
 type HeroAnimation = "split-flap" | "dissolve";
 type HeroLayout = "video" | "classic" | "reveal";
@@ -134,13 +135,30 @@ const COLS = 11;
 
 const FAQS = HOME_FAQS;
 
-// One ticker per commerce mode: waitlist carries the launch date and no
-// price or discount lines; live carries the price lines and drops the
+// One ticker per commerce mode: waitlist carries the launch date, the waitlist
+// offer and no price lines; live carries the family-rate line and drops the
 // date. The launch date lives here (BRAND.md §11.5).
-const TICKER_COPY_WAITLIST =
-  `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  FIRST ${FOUNDERS.firstJoiners} ON THE LIST GET ${FOUNDERS.percent}% OFF  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
+//
+// The offer's ticker items come from lib/waitlist-offer.ts (BRAND.md §11.9):
+// two while the free sample pairs are open, one once the first 100 have gone.
+// Everything else in the string is fixed, including the trailing bullet the
+// marquee needs to loop cleanly.
+function waitlistTickerCopy(offerItems: string[]): string {
+  return [
+    "THEY SHAKE, WE STIR",
+    "MADE IN THE UK",
+    "FOR INDIAN KITCHENS",
+    "KHANA FOR THE POT, CHAI FOR THE MUG",
+    "100% VEGETARIAN",
+    ...offerItems,
+    "SAME RECIPES, SAME TASTE",
+    "LAUNCHING AUTUMN 2026",
+    ""
+  ].join("  •  ");
+}
+
 const TICKER_COPY_LIVE =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
+  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -231,6 +249,7 @@ function HeroRevealActions({ className }: { className: string }) {
       <a className="button button--pill button--outline" href="#how">
         How it works
       </a>
+      <HeroIncentive />
     </div>
   );
 }
@@ -262,19 +281,18 @@ function HeroLines({ variant }: { variant: "copy" | "foot" }) {
   );
 }
 
-// The waitlist reward, shown as a subtitle directly beneath the hero's Join
-// waitlist pill so joining has an obvious payoff. Waitlist mode only: in live
-// mode there is no offer to advertise. Used by both hero layouts (inside the
-// reveal actions row and beneath the split-flap form).
+// The waitlist offer, as one line directly beneath the hero's Join waitlist
+// pill, so joining has an obvious payoff. Waitlist mode only: in live mode
+// there is no offer to advertise. Both hero layouts use it. In the reveal hero
+// it is the last child of the CTA row and takes that row's full width (under
+// the two buttons in the mobile grid, under the wrapped flex row on wide); in
+// the split-flap hero it sits beneath the form. The words come from
+// lib/waitlist-offer.ts, never from here (BRAND.md §11.9).
 function HeroIncentive() {
   const { mode } = useCart();
+  const offer = useWaitlistOffer();
   if (mode === "live") return null;
-  return (
-    <p className="hero-incentive">
-      {FOUNDERS.percent}% off at launch, for the first {FOUNDERS.firstJoiners} on
-      the list.
-    </p>
-  );
+  return <p className="hero-incentive">{offer.sentence}</p>;
 }
 
 function PouchEquation() {
@@ -910,7 +928,9 @@ export function HeldiHomepage({
   const { hidden: scrollHidden } = useNavScrollState();
   const { mode } = useCart();
   const { open: openWaitlist } = useWaitlistPopup();
-  const tickerCopy = mode === "live" ? TICKER_COPY_LIVE : TICKER_COPY_WAITLIST;
+  const offer = useWaitlistOffer();
+  const tickerCopy =
+    mode === "live" ? TICKER_COPY_LIVE : waitlistTickerCopy(offer.tickerItems);
   const navHidden = scrollHidden && !menuOpen;
 
   // Close the mobile menu when the viewport grows past the nav breakpoint.
@@ -1385,12 +1405,11 @@ export function HeldiHomepage({
         <section className="final-cta section--bordered" id="join" data-floating-cta-suppress>
           <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
           <div className="final-cta-copy">
-            <h2>Be first to stir it in.</h2>
+            <h2>{WAITLIST_HEADLINE}</h2>
             <p>
-              One email the day we <CopyHighlight>launch</CopyHighlight>, with{" "}
-              <CopyHighlight>{FOUNDERS.percent}% off</CopyHighlight> inside it for
-              the first {FOUNDERS.firstJoiners} on the list. Pot or mug, the
-              waitlist hears first.
+              {offer.paragraphParts.before}
+              <CopyHighlight>{offer.paragraphParts.highlight}</CopyHighlight>
+              {offer.paragraphParts.after}
             </p>
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
           </div>

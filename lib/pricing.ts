@@ -212,8 +212,10 @@ export const SHIPPING = {
 // Three classes, and only one pair of them combines.
 //
 //   Family (public, 15%)    printed openly on the site, one per order
-//   Founders (private, 25%) one unique code per person, in the launch email
-//   Welcome (free postage)  given for an email after launch
+//   Founders (private, 25%) one unique code per close friend, sent by hand
+//   Welcome (free postage)  close friends, early joiners, and an email after launch
+//
+// None of these is the waitlist offer. That is section 4b below.
 //
 // Family and Founders are both PRODUCT discounts on pouches: a basket may
 // carry one or the other, never both, and never on the Sample or the presents.
@@ -261,17 +263,18 @@ export function giftingDiscountPence(eligiblePence: number): number {
   return Math.round((eligiblePence * GIFTING.percent) / 100);
 }
 
-// Founders rate: the reward for being on the list before launch, and for the
-// friends who backed it early. One unique code per person, single use, sent in
-// the launch email. It replaces the 20% PEHLEAAP promise, which is never
-// created: the people already on the list sit inside the first 100, so 25%
-// honours the old promise with room to spare (decision D3).
+// Founders rate: for the close friends who backed it early, and nobody else.
+// One unique named code per person, single use, sent by hand.
+//
+// CLOSE FRIENDS ONLY SINCE 17 SEP 2026. From 2 to 17 Sep this was also promised
+// to the first 100 waitlist joiners, and eight surfaces said so. The waitlist
+// now gets the offer in section 4b instead (a free sample pair, not a code), so
+// nothing public may quote this percentage. The 20% PEHLEAAP promise before it
+// was never created either.
 export const FOUNDERS = {
   percent: 25,
-  /** Close friends get a named code. First-100 joiners get a generated one. */
-  friendPrefix: "SHUKRIYA-",
-  /** How many waitlist joiners, in joined_at order, are offered a code. */
-  firstJoiners: 100
+  /** Every founders code is a named one: SHUKRIYA-<NAME>. */
+  friendPrefix: "SHUKRIYA-"
 } as const;
 
 export function isFoundersCode(code: string): boolean {
@@ -287,12 +290,20 @@ export function isProductDiscountCode(code: string): boolean {
   return isGiftingCode(code) || isFoundersCode(code);
 }
 
-// Welcome postage: free first-order shipping in exchange for an email, issued
-// after launch. A shipping discount, so it is the one code that combines with
-// a product discount. Static for run 1 because Klaviyo can only mint unique
-// codes through its Shopify integration, which is not connected: it leaks at
-// most £3.55 per single-pouch order and nothing at all above that, since
-// everything from two pouches up already ships free (decision D4).
+// Welcome postage: free first-order shipping. A shipping discount, so it is the
+// one code that combines with a product discount. Three audiences, and the
+// waitlist as a whole is NOT one of them (decided 17 Sep 2026):
+//
+//   close friends      it rides with every founders code, because a pair at
+//                      25% falls under the free-postage threshold
+//   early joiners      the people on the list before the welcome email was
+//                      corrected, who were told "15% off, postage on us"
+//   after launch       in exchange for an email, once the shop is open
+//
+// Static for run 1 because Klaviyo can only mint unique codes through its
+// Shopify integration, which is not connected: it leaks at most one
+// SHIPPING.standardPence per single-pouch order and nothing at all above that,
+// since everything from two pouches up already ships free (decision D4).
 export const WELCOME_POSTAGE = {
   code: "WELCOME"
 } as const;
@@ -300,6 +311,29 @@ export const WELCOME_POSTAGE = {
 export function isWelcomeCode(code: string): boolean {
   return code.toUpperCase() === WELCOME_POSTAGE.code;
 }
+
+// ---------------------------------------------------------------------------
+// 4b. The waitlist offer
+// ---------------------------------------------------------------------------
+// Settled 17 Sep 2026. What joining the waitlist gets you:
+//
+//   everyone on the list   first to know: one email, the day we launch
+//   the first 100          a free sample pair (one Khana sachet, one Chai
+//                          sachet), and Heldi pays the postage
+//   everyone on the list   GIFTING.percent off their first order
+//
+// The 15% is deliberately NOT repeated here. It is the public family rate, so
+// every surface reads GIFTING.percent and the offer can never promise a rate
+// checkout will not give. The only number this offer owns is the 100.
+//
+// BRAND.md §11.9 owns the offer and lists every surface that repeats it.
+// lib/waitlist-offer.ts owns its wording on the site: no component types its
+// own offer sentence. The free pair itself is HELDI-SAMPLE-PAIR-FREE in
+// lib/commerce/catalog.ts, capped in Shopify by stock on that one variant.
+export const WAITLIST_OFFER = {
+  /** How many joiners, in joined_at order, can claim the free sample pair. */
+  freePairFirstJoiners: 100
+} as const;
 
 // ---------------------------------------------------------------------------
 // 5. Presents

@@ -7,6 +7,7 @@ import { ConsentModal } from "@/components/consent-modal";
 import { FloatingWaitlistCta } from "@/components/floating-waitlist-cta";
 import { WaitlistPopupProvider } from "@/components/waitlist-popup";
 import { SITE_URL } from "@/lib/site";
+import { getWaitlistPairsOpen } from "@/lib/waitlist-count";
 import "./globals.css";
 
 const gelasio = Gelasio({
@@ -42,14 +43,17 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{ children: React.ReactNode }>) {
+  // Cached and fail-open (lib/waitlist-count.ts): it never throws and never
+  // makes a render wait on the database, which matters in a root layout.
+  const pairsOpen = await getWaitlistPairsOpen();
   return (
     <html lang="en">
       <body className={`${gelasio.variable} ${rozhaOne.variable}`}>
         <CartProvider>
-          <WaitlistPopupProvider>
+          <WaitlistPopupProvider pairsOpen={pairsOpen}>
             <AnalyticsBoot />
             {children}
             <FloatingWaitlistCta />

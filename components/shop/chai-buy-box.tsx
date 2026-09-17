@@ -4,9 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-context";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { track } from "@/lib/analytics";
-import { FOUNDERS } from "@/lib/pricing";
 import { ChaiAccordions } from "./chai-accordions";
 import {
   CHAI_ALLERGENS,
@@ -46,6 +46,7 @@ export function ChaiBuyBox() {
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const { mode } = useCart();
   const { open: openWaitlist } = useWaitlistPopup();
+  const offer = useWaitlistOffer();
   const viewTracked = useRef(false);
 
   useEffect(() => {
@@ -197,7 +198,7 @@ export function ChaiBuyBox() {
         <p className="pdp__promise">
           {mode === "live"
             ? "Chai is not on sale yet. Khana is ready for dal, curry, sabzi and raita."
-            : `We are finishing Chai before we sell it. Join the waitlist to hear when it is ready; the first ${FOUNDERS.firstJoiners} people on the list get ${FOUNDERS.percent}% off.`}
+            : `We are finishing Chai before we sell it. Join the waitlist to hear when it is ready. ${offer.sentence}`}
         </p>
 
         <StatutoryStatements
