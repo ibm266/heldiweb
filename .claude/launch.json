@@ -41,6 +41,17 @@
         "dev:mock"
       ],
       "port": 3001
+    },
+    {
+      "name": "heldi-mock-live-chai",
+      "runtimeExecutable": "env",
+      "runtimeArgs": [
+        "NEXT_PUBLIC_CHAI_SELLABLE=true",
+        "npm",
+        "run",
+        "dev:mock"
+      ],
+      "port": 3001
     }
   ]
 }

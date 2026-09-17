@@ -143,17 +143,18 @@ export function CartDrawer() {
   // pre-discount full price minus the cart total (Shopify allocates code
   // discounts into the lines, so subtotal - total reads as zero and cannot be
   // used). Free: the worth of every £0 line, the jar and tote that come with a
-  // pair and the trial pair if they claimed one, struck out on their own rows
-  // and counted toward the total too.
+  // pair and the free sample pair if they claimed one, struck out on their own
+  // rows and counted toward the total too.
   const fullPricePence = lines.reduce(
     (sum, line) => sum + moneyToPence(line.merchandise.price) * line.quantity,
     0
   );
   const discountPence = Math.max(0, fullPricePence - totalPence);
   const giftWorthPence = giftItems.reduce((sum, item) => sum + item.valuePence, 0);
-  // The claimed trial pair is a £0 line the shopper chose rather than one the
-  // cart added, so it is not a "gift" row, but its £8 is a real saving and the
-  // drawer says so. Without this the basket shows a free thing worth nothing.
+  // The claimed free sample pair is a £0 line the shopper chose rather than one
+  // the cart added, so it is not a "gift" row, but its £8 is a real saving and
+  // the drawer says so. Without this the basket shows a free thing worth
+  // nothing.
   const freePairLine = lines.find(
     (line) => line.merchandise.sku === FREE_PAIR_SKU
   );
@@ -188,8 +189,8 @@ export function CartDrawer() {
   const codeFieldLocked = activeMethod === "checkbox";
 
   // Shipping, recalculated after discounts. Sachets on their own ship free
-  // (Heldi absorbs the Large Letter rate), which includes a claimed trial pair:
-  // a free thing must not arrive with a postage charge attached.
+  // (Heldi absorbs the Large Letter rate), which includes a claimed free sample
+  // pair: a free thing must not arrive with a postage charge attached.
   const SACHET_SKUS = [SAMPLE_SKU, SAMPLE_CHAI_SKU, SAMPLE_PAIR_SKU, FREE_PAIR_SKU];
   const sampleOnly =
     lines.length > 0 &&
@@ -281,10 +282,11 @@ export function CartDrawer() {
 
   const lastCode = appliedCodes[appliedCodes.length - 1];
   const showCodeRejected = lastCode && !lastCode.applicable;
-  // A code can be inapplicable for two different reasons, and telling a
-  // first-100 claimer their real code is "invalid" because their basket is a
-  // free sachet is the wrong one. If the code is one of ours and the basket
-  // simply has no pouches to discount yet, say that instead.
+  // A code can be inapplicable for two different reasons, and telling someone
+  // who has just claimed their free sample pair that their real code is
+  // "invalid", because the basket holds nothing but sachets, is the wrong one.
+  // If the code is one of ours and the basket simply has no pouches to
+  // discount yet, say that instead.
   const codeIsOurs =
     lastCode &&
     (isGiftingCode(lastCode.code) || isFoundersCode(lastCode.code));
@@ -452,10 +454,10 @@ export function CartDrawer() {
               {otherLines.map((line) => {
                 const lineImage =
                   line.merchandise.image ?? line.merchandise.product.images[0];
-                // One free trial pair per basket: the offer is one each for
-                // the first hundred, so there is no "+" on this row at all.
-                // The server clamp enforces the same cap for anything that
-                // does not come through this button.
+                // One free sample pair per basket: the offer is one each for
+                // the first 100 on the list, so there is no "+" on this row at
+                // all. The server clamp enforces the same cap for anything
+                // that does not come through this button.
                 const isFreePair = line.merchandise.sku === FREE_PAIR_SKU;
                 return (
                 <li className="cart-line" key={line.id}>

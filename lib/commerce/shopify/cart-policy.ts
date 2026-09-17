@@ -53,8 +53,8 @@ const SACHET_VARIANT_IDS: string[] = [
   ...Object.values(SAMPLE_VARIANT_IDS)
 ];
 
-/** The £0 trial pair, capped at one per basket. Matched by SKU with the GID as
- *  a fallback, the same way every other line in this file is. */
+/** The £0 free sample pair, capped at one per basket. Matched by SKU with the
+ *  GID as a fallback, the same way every other line in this file is. */
 function isFreePairLine(line: Pick<CartLine, "merchandise">): boolean {
   return (
     line.merchandise.sku === FREE_PAIR_SKU ||
@@ -98,14 +98,34 @@ function pouchRepairs(lines: CartLine[]): Repairs {
   for (const line of lines) {
     if (isPresentLine(line)) continue; // counted against the pouches, below.
 
-    // The free trial pair is the one giveaway a basket can hold, and one is
-    // the whole offer: "free for the first hundred", one per person. The
-    // storefront's claim is idempotent and the drawer offers no way to add a
-    // second, but neither of those binds a hand-crafted request, and the
-    // variant is untracked in Shopify so inventory will not refuse a tenth
-    // either. This is the only thing that does.
+    // The free sample pair is the one giveaway a basket can hold, and one is
+    // the whole offer: a free sample pair for the first 100 on the list, one
+    // per household (BRAND.md §11.9). Three different things keep it to that,
+    // and only the first of them lives in this file.
+    //
+    //   ONE PER BASKET is enforced here. The storefront's claim is idempotent
+    //   and the drawer offers no way to add a second, but neither of those
+    //   binds a hand-crafted request, and stock will not refuse a tenth pair
+    //   in one basket while there are still ten on the shelf.
+    //
+    //   HOW MANY PEOPLE CLAIM is capped by stock. This is the one variant in
+    //   the store with inventory tracking ON: stocked at 100 and set to stop
+    //   selling at zero (docs/launch-runbook.md Step 3), so it closes itself
+    //   when the last pair goes. Nothing in the site counts claimers.
+    //
+    //   ONE PER HOUSEHOLD is enforced at packing. Nothing here can see a
+    //   household: a second basket is simply a second cart.
+    //
+    // THE CHAI GATE comes before any of that. The pair holds a Chai sachet, so
+    // while Chai cannot be sold it is an order that cannot be shipped, exactly
+    // like the Chai pouch refused further down, and it goes the same way:
+    // removed, in the half of enforceCartPolicy that fails closed. The
+    // storefront refuses the claim before it ever gets here and tells the
+    // claimer why (claimFreePair in components/cart/cart-context.tsx), so this
+    // only meets a crafted request or a basket made while the flag was on.
     if (isFreePairLine(line)) {
-      if (line.quantity !== 1) updates.push({ id: line.id, quantity: 1 });
+      if (!CHAI_SELLABLE) removals.push(line.id);
+      else if (line.quantity !== 1) updates.push({ id: line.id, quantity: 1 });
       continue;
     }
 
@@ -226,11 +246,12 @@ async function applyRepairs(cart: Cart, repairs: Repairs): Promise<Cart> {
  * un-clamped cart on any failure, which is right for one half and exactly
  * wrong for the other.
  *
- *   FAIL CLOSED on the pouch lines (the Chai gate, the over-cap basket, a
- *   second mix line, a foreign line). If the repair cannot be applied, the
- *   un-clamped cart IS the attack: handing it back publishes a checkout URL
- *   for Chai we cannot ship or for pouches we have not priced. An error here
- *   costs a failed cart mutation, which the shopper can retry.
+ *   FAIL CLOSED on the pouch lines (the Chai gate, which takes the free sample
+ *   pair with it, the over-cap basket, a second mix line, a foreign line). If
+ *   the repair cannot be applied, the un-clamped cart IS the attack: handing
+ *   it back publishes a checkout URL for Chai we cannot ship or for pouches
+ *   we have not priced. An error here costs a failed cart mutation, which the
+ *   shopper can retry.
  *
  *   FAIL OPEN on the presents. The worst case of a present clamp that did not
  *   land is a free jar in a box that had not earned it, caught by eye on the

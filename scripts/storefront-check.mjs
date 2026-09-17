@@ -138,36 +138,82 @@ async function quote(label, lines, expectPence) {
     { l: lines, a: ADDRESS }
   );
   const c = d?.cartCreate?.cart;
-  if (!c) return fail(`${label}: no cart`);
+  if (!c) { fail(`${label}: no cart`); return null; }
   const opts = c.deliveryGroups.nodes.flatMap((g) => g.deliveryOptions);
   const cheapest = opts.length ? Math.min(...opts.map((o) => Math.round(Number(o.estimatedCost.amount) * 100))) : null;
   const sub = money(Math.round(Number(c.cost.subtotalAmount.amount) * 100));
-  if (cheapest === null) return fail(`${label} (${sub}): no delivery options`);
+  if (cheapest === null) { fail(`${label} (${sub}): no delivery options`); return null; }
   cheapest === expectPence
     ? pass(`${label} (${sub}) ships ${money(cheapest)}`)
     : fail(`${label} (${sub}) ships ${money(cheapest)}, expected ${money(expectPence)}`);
+  // The cheapest rate in pence, or null when there was nothing to quote, for
+  // the one check below that needs the figure as well as the verdict.
+  return cheapest;
 }
 const L = (id, q = 1) => ({ merchandiseId: V[id], quantity: q });
 await quote("one pouch", [L("HELDI-K1C0")], SHIPPING.standardPence);
 await quote("a pair", [L("HELDI-K2C0")], 0);
 await quote("a sachet alone", [L("HELDI-SAMPLE")], 0);
 await quote("the pair pack alone", [L("HELDI-SAMPLE-PAIR")], 0);
-await quote("the FREE trial pair", [L("HELDI-SAMPLE-PAIR-FREE")], 0);
+const freePairPostage = await quote("the free sample pair", [L("HELDI-SAMPLE-PAIR-FREE")], 0);
 // The mixed case: a sachet must never ADD postage to a basket that has some.
 await quote("one pouch plus a sachet", [L("HELDI-K1C0"), L("HELDI-SAMPLE")], SHIPPING.standardPence);
 await quote("a pair plus a sachet", [L("HELDI-K2C0"), L("HELDI-SAMPLE")], 0);
 
-// --- 4. Is the first-100 gate actually armed? -------------------------------
-console.log("\n== The first-100 gate ==");
+// --- 3b. Does the claim link still need its WELCOME rider? ------------------
+// components/cart/cart-context.tsx puts WELCOME on every claimed basket while
+// CLAIM_RIDES_WITH_WELCOME is true, because until the samples sit on a £0
+// shipping profile (launch-runbook Step 4) the free sample pair is charged
+// postage, and a thing called free must not arrive with postage attached. Once
+// the profile exists the rider does nothing for the pair and only gives away
+// the postage on any pouch the claimer adds, which the waitlist offer no longer
+// includes (BRAND.md §11.9). The flag is one line of code that nobody will
+// think of on the day the profile is made, so it is checked here, against the
+// quote above, in both directions. Read as text, like pricing-check reads the
+// catalog: the file is a client component and cannot be imported from Node.
+console.log("\n== The claim link's WELCOME rider ==");
+const contextSrc = fs.readFileSync(
+  new URL("../components/cart/cart-context.tsx", import.meta.url),
+  "utf8"
+);
+const rider =
+  /export const CLAIM_RIDES_WITH_WELCOME(?::\s*boolean)?\s*=\s*(true|false)\s*;/.exec(contextSrc)?.[1] ?? null;
+if (rider === null) {
+  fail("cannot find `export const CLAIM_RIDES_WITH_WELCOME = true;` (or false) in components/cart/cart-context.tsx");
+} else if (freePairPostage === null) {
+  fail("no postage quote for the free sample pair, so the WELCOME rider cannot be judged");
+} else if (freePairPostage === 0 && rider === "true") {
+  fail("the free sample pair now ships £0.00 on its own, so the rider only gives away pouch postage: set CLAIM_RIDES_WITH_WELCOME to false in components/cart/cart-context.tsx");
+} else if (freePairPostage > 0 && rider === "false") {
+  fail(`CLAIM_RIDES_WITH_WELCOME is false but the free sample pair is still charged ${money(freePairPostage)} postage: finish launch-runbook Step 4, or set it back to true until you have`);
+} else if (rider === "true") {
+  pass(`the free sample pair is still charged ${money(freePairPostage)} on its own, so CLAIM_RIDES_WITH_WELCOME = true is right for now`);
+} else {
+  pass("the free sample pair ships £0.00 on its own and CLAIM_RIDES_WITH_WELCOME is false");
+}
+
+// --- 4. Is the free sample pair really capped at the first 100 on the list? -
+// Stock on this one variant is the only thing that stops claims after the
+// first 100 on the list, so it has to be tracked. Asking for 250 in one cart
+// shows whether it is. Untracked, Shopify hands back all 250. Tracked, it
+// either refuses the line or cuts it down to what is in stock: since
+// Storefront API 2024-10 a stock problem is a warning on a successful
+// mutation, not a userError, so both count as proof.
+console.log("\n== The free sample pair: stock is the only cap ==");
+const ASKED = 250;
 const over = await gql(
   `mutation($l:[CartLineInput!]!){ cartCreate(input:{lines:$l}){
      cart{ lines(first:1){ nodes{ quantity } } } userErrors{message} } }`,
-  { l: [{ merchandiseId: V["HELDI-SAMPLE-PAIR-FREE"], quantity: 250 }] }
+  { l: [{ merchandiseId: V["HELDI-SAMPLE-PAIR-FREE"], quantity: ASKED }] }
 );
 const got = over?.cartCreate?.cart?.lines?.nodes?.[0]?.quantity ?? null;
-got === null
-  ? pass("Shopify refuses 250 free pairs, so the variant is tracked")
-  : fail(`Shopify allowed ${got} free pairs: tracking is OFF, the first-100 gate does nothing`);
+if (got === null) {
+  pass(`Shopify refuses ${ASKED} free sample pairs, so the variant is tracked`);
+} else if (got < ASKED) {
+  pass(`Shopify cut ${ASKED} free sample pairs down to ${got}, so the variant is tracked`);
+} else {
+  fail(`Shopify allowed ${got} free sample pairs: tracking is OFF, so nothing stops claims after the first 100 on the list`);
+}
 
 console.log(
   failures === 0
