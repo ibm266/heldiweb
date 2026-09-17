@@ -6787,7 +6787,7 @@ a.living-card__tag:hover {
 }
 
 /* Reformed-style callouts overlaid on the hero image; rendered in HTML so
-   prices stay in sync with the catalog and the launch sale. */
+   prices stay in sync with the catalog and lib/pricing.ts. */
 .pdp__annos {
   position: absolute;
   inset: 0;
