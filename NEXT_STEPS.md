@@ -22,25 +22,45 @@ each Shopify change; it reads the live Storefront API and prints a pass or fail
 per item. Full click-by-click detail is
 [docs/launch-runbook.md](docs/launch-runbook.md) Phase 1b.
 
+**Settled 17 September 2026, do not reopen:** the waitlist offer is fixed. First to
+know for everyone, one email the day we launch. The first 100 on the list get a free
+sample pair and we pay the postage. Everyone on the list gets 15% off their first
+order. `BRAND.md` §11.9 owns the wording, `docs/waitlist-offer-plan.md` is the working
+plan. Still open to make it true: push the corrected welcome email to Klaviyo and
+deploy this branch the same day (the cut-over), freeze the early-joiner list at that
+moment, the five Shopify admin jobs below, the revised skills upload, and the
+Instagram bio line.
+
 **Shopify, in order:**
 
-- [ ] **Rebuild the three family codes at 15%.** They are still the July 10%,
-  scoped to two variants on the archived "Heldi Khana" product, so they discount
-  nothing a customer can buy. Critically, tick **Combinations: shipping
-  discounts**, which is off today and is why `WELCOME` can never stack.
+- [ ] **Rebuild the three family codes at 15%.** They do not exist in Shopify at
+  all any more, as of 17 Sep 2026 (deleted, not left at the old July 10%), so they
+  discount nothing a customer can buy. Recreate them at 15%, unscoped to any
+  archived product, and tick **Combinations: shipping discounts** from the start,
+  so `WELCOME` can stack with them.
 - [ ] **Recreate `WELCOME` as a FREE SHIPPING discount.** It currently exists as
-  a fixed £4.99 amount off, which was measured against the live store and fails:
+  a fixed £4.99 amount off (confirmed live in Shopify 17 Sep 2026), which fails:
   it takes £4.99 off the goods rather than the postage, hands £4.99 of margin
-  away on a pair that already ships free, and on the £0 trial pair it reads *not
-  applicable* while the buyer is still charged £4.99. That is the one basket the
-  launch email exists for.
+  away on a pair that already ships free, and on the £0 free sample pair it reads
+  *not applicable* while the buyer is still charged £4.99. `WELCOME` is not the
+  waitlist's offer: it rides with every founders code (close friends), goes out
+  on the early joiners' launch link, and is offered again to anyone who signs up
+  by email after launch. The first 100 and everyone-else launch emails do not
+  carry it; their free postage on the sample pair comes from the £0 shipping
+  profile below, not from this code (BRAND.md §11.9).
 - [ ] **Arm the first-100 gate.** `HELDI-SAMPLE-PAIR-FREE` needs tracking ON,
-  "continue selling" OFF, 100 units. Shopify accepted a request for **250**
-  today, so the whole first-hundred mechanism currently does nothing. The site
-  caps the basket at one free pair; only inventory caps how many people claim.
+  "continue selling" OFF, 100 units. Read live on 17 Sep 2026 it had no stock
+  set, and when `storefront-check` last probed it (5 Sep) Shopify accepted a
+  basket of **250**, which means tracking is off. So the gate that limits the
+  free sample pair to the first 100 on the list currently does nothing at all. The site caps a basket at one free pair per claim; only this
+  inventory figure decides how many of the first 100 actually receive one, and
+  one per household is enforced by hand at packing against the first-100 export.
 - [ ] **Put the samples on a £0 shipping profile.** A £5 sachet, the £8 pair and
-  the £0 trial pair are all charged £4.99 right now, which contradicts "postage
-  is on us" in the launch email.
+  the £0 free sample pair are all charged £4.99 right now. This is what makes
+  "we pay the postage" true for the first 100 (BRAND.md §11.9): once both sample
+  products sit on a £0 profile, `CLAIM_RIDES_WITH_WELCOME` in
+  `components/cart/cart-context.tsx` can flip to false, which
+  `scripts/storefront-check.mjs` checks for.
 - [ ] Set the jar variant's SKU to `HELDI-JAR`; it is null, and the Phase 5
   orders webhook keys on SKU.
 - [ ] Settle or clear the tote's £6 compare-at. `lib/pricing.ts` says it "IS
@@ -49,22 +69,26 @@ per item. Full click-by-click detail is
   blocking, since every basket over one pouch clears the £50 threshold, but the
   free jar and tote add real weight and the estimates have never been weighed.
 
-**Klaviyo** (drafts written 4 Sep, nothing sent; templates `VnY8iQ` welcome,
-`XGbTBU` first hundred, `YqrsCh` the rest, plus two Draft campaigns):
+**Klaviyo** (the welcome flow `T6BYu5` exists and is live on library template
+`TvLgd3`; the three launch masters are being written into `docs/email/`, replacing
+the 4 Sep drafts `XGbTBU` and `YqrsCh`; older draft `VnY8iQ` is orphaned and gets
+archived, not reused):
 
-- [ ] **Build the two segments.** Both campaigns currently target the whole
-  Waitlist list. The first-hundred split needs a segment on `joined_at` order,
-  and the two campaigns must exclude each other or people get both.
-- [ ] **Generate the founders codes and write them to profiles.** The launch
-  link merges `{{ person.founders_code }}`, and nothing writes that property
-  yet, so today the link would go out as `&code=`.
-- [ ] **The free trial pair contains a Chai sachet**, so it cannot ship until
+- [ ] **Build the three launch segments.** Early joiners (the static list frozen
+  at the Klaviyo cut-over), the first 100 by `joined_at` order minus the early
+  joiners, and everyone else. The three campaigns must be mutually exclusive, or
+  someone gets two launch emails.
+- [ ] **The free sample pair contains a Chai sachet**, so it cannot ship until
   Chai's gates clear (printed label, finished-product gluten result, stock).
-  Same gate as the Chai pouch, §1b. The first-hundred email waits on this.
-- [ ] Rewrite the `heldi-email-writer` skill. Its facts are a 20 July snapshot
-  and every commercial figure in it is now wrong: tiers, gifting rate, gifts,
-  shipping, and it has never heard of the founders codes, `WELCOME` or the free
-  trial pair.
+  Same gate as the Chai pouch, §1b. The first-100 email waits on this.
+- [ ] **Upload the revised skills to the claude.ai account.** `heldi-email-writer`
+  (now v3.1.0) and `heldi-content-creator` were re-based on 17 Sep 2026 on the
+  4 Sep commercial model and the waitlist offer (BRAND.md §11.9), and this Mac's
+  copies were updated. All five Heldi skills sync from the claude.ai account, so
+  until the two revised zips are uploaded there a sync can put the July facts
+  back. Two flow incentives inside the email skill are marked "UNSETTLED (ask
+  Mihir)": the abandoned-checkout and reorder emails used a 10% code, which is
+  now a worse deal than the public 15%.
 
 **Settled 4 and 5 September, do not reopen:**
 
@@ -84,7 +108,6 @@ this list into exact admin clicks, API scopes and verification steps:
 
 - [x] Create the Shopify store; add the Khana product with four variants mirroring `lib/pricing.ts` — One pouch (£30, compare-at £35), The pair (£55, compare-at £70), The full table (£80, compare-at £105), Sample (£5). Each bundle is its own variant/SKU; the cart UI thinks in pouches and repacks the lines to the cheapest tier mix (`packPouches` in `lib/pricing.ts`), so a basket holds at most one line per tier — e.g. 4 pouches is 1 × The full table + 1 × One pouch. Done 16 Jul 2026; stock and variant weights still to set in admin
 - [x] Create the ACHABETA, RISHTA and SHABASH discount codes (same rules, three codes so we can see who's buying — kids for parents, kids for uncle/aunty, aunties/uncles buying for themselves): 10% off, applies to the One pouch and The pair variants only (never The full table or the Sample), one discount per order, no stacking
-- [ ] Create the waitlist launch code **`PEHLEAAP`** (`WAITLIST_OFFER` in `lib/pricing.ts`): 20% off, applies to all three pouch variants (One pouch, The pair, The full table) but **never the Sample**, one use per customer, combines with nothing, expires 14 days after launch. This is the reward the launch email hands the waitlist; the site only ever shows the percentage, never the code. (MCP `create_discount_code` if its params cover one-use-per-customer + expiry, else Shopify admin.) Do this at launch prep, not before the shop is live
 - [x] Included items now ship as real £0.00 Shopify products the site adds to the cart automatically (`HELDI-JAR` "Refillable table jar", compare-at £8; `HELDI-DABBA` "Masala dabba", compare-at £15), so they show as FREE lines with a thumbnail at Shopify checkout. Capped at 2 jars + 1 dabba per order (`GIFT_CAPS` in `lib/pricing.ts`); compare-at prices mirror `EXTRA_VALUE_PENCE`. Created 19 Jul 2026. The pick-pack sheet still says what physically goes in each box (this reverses the earlier "part of the bundle variant, Shopify does not model them" decision)
 - [ ] Publish the two gift products to the **Headless sales channel the Storefront token uses**, and remove them from the Online Store channel, so the cart can add them but no one can reach a buyable £0 page on the legacy theme. Until this is done the Storefront API answers "merchandise does not exist" for their variants (verified 19 Jul 2026), so gift lines will not appear in a real cart
 - [ ] Untrack inventory on both gift variants (Track quantity off) or a 0-stock variant passes `cartLinesAdd` but blocks at checkout
@@ -126,8 +149,8 @@ provisional but uncontradicted, which is why the site publishes those.
 - [x] **Net weight and mugs per pouch.** 250 g and 31 level tablespoons, from the COGS decision (site constants updated 3 Sep 2026; the print files still say 100 g). Earlier note: the print files say 100g and "around 12 servings"; the COGS model says a 250g pouch; HeldiPM's own pouch-v2 README calls 100g *"a placeholder for the sample"* and asks for a filled pouch to be weighed. The site currently states 100g / 12 mugs, from `CHAI_POUCH_GRAMS` and `CHAI_MUGS_PER_POUCH` in `components/shop/chai-data.ts`, because that is the pack in the product photography. Weigh a filled pouch and change those two constants together
 - [x] **The serving size, and whether "5g per mug" survives.** It survives: 8 g is a LEVEL tablespoon (Mihir weighed a level spoon at 7 to 8 g, a heaped one at 12 to 14 g) and the calculation gives 5.1 g at the whey certificate's 87.3%. The site says "level tablespoon" everywhere Chai is spooned (`CHAI_SERVING_SPOON`). The roundel can come back onto the site's pack shots now; they were rendered without it. Earlier note: Every protein number hangs off the whey purity, and there are three figures in play. The pack table assumes 93.5% because that is what Khana's table implies. The Arla certificate of analysis behind `lib/cogs/constants.ts` says **87.3% as-is**, and at 87.3% an 8g spoonful of the pack formulation gives about **4.7g**, below even the 4.9g failure case the nutrition spec's own sensitivity note describes. If the certificate wins, the serving moves to 9g or the claim softens, and **the front-of-pack roundel, the back-of-pack claims strip and the print PDFs all have to be re-rendered**, because every one of them shows "5g PROTEIN PER MUG". The four site shots in `public/images/shop/chai-*.webp` already have the roundel removed, so they do not publish a figure the page withholds; they will need re-rendering again if the roundel comes back with a settled number
 - [x] **The price ladder.** Settled 4 Sep 2026: Chai is priced identically to Khana, £35 a pouch with £5 off the second, and £5 a sachet. Parity is load-bearing, because a different Chai price collapses "one price per total pouch count" and with it the five-variant checkout. In `lib/pricing.ts` §1. Earlier note kept for the record: There was no agreed Chai price anywhere. `lib/cogs/constants.ts` carries £35 / £65 / £95 flagged `TIER_PRICES_PROVISIONAL.chai = true` and says outright *"Chai has no agreed pricing of its own and mirrors Khana for now"*; the only Chai price ever named is a **£20 entry point** for the 100g pouch in `data/project-status.json`, and it is recorded as parked. Note the COGS Khana ladder (£35/£65/£95) does not match the locked one in `lib/pricing.ts` (£35/£70/£105), so "mirror Khana" would mirror an error
-- [x] **Does Chai get a Sample?** Yes, decided 4 Sep 2026. Three sample SKUs: `HELDI-SAMPLE` (Khana) £5, `HELDI-SAMPLE-CHAI` £5 and `HELDI-SAMPLE-PAIR` £8, a fixed one-of-each pack at £2 off the two singles. Prices are in `lib/pricing.ts` §2 and asserted by `npm run pricing-check`; the Shopify product is plan Phase 1 step 1b. All three sachet shots ship as of 4 Sep 2026, reshot on GPT Image 2 from the HeldiPM print fronts onto the Khana sachet's own set: `public/images/shop/sample.webp` (Khana), `chai-sample.webp` (Chai) and `sample-pair.webp` (both sachets side by side, used by `HELDI-SAMPLE-PAIR` and the free trial pair). Before this every sample SKU showed the navy Khana sachet, so a Chai sample looked like a Khana one in the picker, the drawer and at checkout. Shopify exports are in `public/images/originals/shopify-upload/`, named by SKU. Still open: weigh the pair pack, because two sachets have never been weighed together and a parcel rate instead of a Large Letter would eat the margin. The Chai sachet is gated on the same blend sign-off as the Chai pouch
-- [ ] **Do Chai pouches earn the free jar and the masala dabba, the 20% waitlist code, and the 10% family codes?** Today they would silently earn **nothing**: `khanaPouchCount`, `giftingEligiblePenceForLines` and `waitlistEligiblePenceForLines` in `lib/commerce/catalog.ts` all key off Khana's SKUs
+- [x] **Does Chai get a Sample?** Yes, decided 4 Sep 2026. Three sample SKUs: `HELDI-SAMPLE` (Khana) £5, `HELDI-SAMPLE-CHAI` £5 and `HELDI-SAMPLE-PAIR` £8, a fixed one-of-each pack at £2 off the two singles. Prices are in `lib/pricing.ts` §2 and asserted by `npm run pricing-check`; the Shopify product is plan Phase 1 step 1b. All three sachet shots ship as of 4 Sep 2026, reshot on GPT Image 2 from the HeldiPM print fronts onto the Khana sachet's own set: `public/images/shop/sample.webp` (Khana), `chai-sample.webp` (Chai) and `sample-pair.webp` (both sachets side by side, used by `HELDI-SAMPLE-PAIR` and the free sample pair). Before this every sample SKU showed the navy Khana sachet, so a Chai sample looked like a Khana one in the picker, the drawer and at checkout. Shopify exports are in `public/images/originals/shopify-upload/`, named by SKU. Still open: weigh the pair pack, because two sachets have never been weighed together and a parcel rate instead of a Large Letter would eat the margin. The Chai sachet is gated on the same blend sign-off as the Chai pouch
+- [ ] **Do Chai pouches earn the free jar and the masala dabba, the 20% waitlist code, and the 10% family codes?** Today they would silently earn **nothing**: `khanaPouchCount`, `giftingEligiblePenceForLines` and `waitlistEligiblePenceForLines` in `lib/commerce/catalog.ts` all key off Khana's SKUs *(Partly overtaken, 17 Sep 2026: there is no waitlist code any more (BRAND.md §11.9), `waitlistEligiblePenceForLines` no longer exists, the family codes are 15%, the dabba is withdrawn, and the mix model counts Khana and Chai together. Re-check what is left of this question against `lib/commerce/catalog.ts` before acting on it.)*
 - [ ] **"Organic".** The printed back-of-pack strip says `ORGANIC SPICES`. Organic is a certified term in the UK, Heldi holds no certification, and `lib/cogs/constants.ts` records that no organic ground clove exists to buy, so one Chai spice cannot be organic even in principle. It is deliberately absent from the website; it has to come off the pack or the certification has to happen
 - [ ] **"England" or "the UK".** Khana's "What's inside" accordion says the blend is *"Blended and packed in England"*; the Chai pack footer and the Chai page both say *"the UK"*. Both can be true and the UK is the safer superset, but two products should not describe the same co-packer two ways. Pick one and make Khana match
 - [ ] **The casein line in Our story.** `app/our-story/page.tsx` lists casein in the trial menu as *"turned dal to cement"*, and Chai is a whey-and-casein blend. True of dal and not of hot milk, but a reader on both pages will notice. Decide whether that line gains a clause
@@ -164,7 +187,7 @@ Nothing here is needed for the page as it stands. It is the list of what the
 
 ### Shopify
 
-- [x] **Three DRAFT products created 4 Sep 2026.** "Heldi pouches" (5 mix variants), "Heldi samples" (3 sachets) and "Heldi sample pair, on us" (the £0 first-100 trial). All GIDs are recorded in [docs/two-product-cart-plan.md](docs/two-product-cart-plan.md) Phase 1 and exist nowhere else. **Five admin jobs still block the checkout test**, all listed there: untrack inventory on the 8 paid variants, set the free pair to tracked at 100, publish all three to the Headless channel, put the samples on the Sample shipping profile, and add weights and images
+- [x] **Three DRAFT products created 4 Sep 2026.** "Heldi pouches" (5 mix variants), "Heldi samples" (3 sachets) and "Heldi sample pair, on us" (the £0 free sample pair for the first 100 on the list). All GIDs are recorded in [docs/two-product-cart-plan.md](docs/two-product-cart-plan.md) Phase 1 and exist nowhere else. **Five admin jobs still block the checkout test**, all listed there: untrack inventory on the 8 paid variants, set the free pair to tracked at 100, publish all three to the Headless channel, put the samples on the Sample shipping profile, and add weights and images
 - [ ] Create the **Heldi Chai** product with variants mirroring whatever `lib/pricing.ts` ends up carrying, SKUs in the `HELDI-CHAI-*` shape, and the images from `public/images/shop/chai-*.webp`. Then replace the placeholder GIDs the same way Khana's were on 16 Jul 2026
 - [ ] Two **archived** Chai products still sit in the store from the pre-bundle catalogue: `heldi-for-chai` at £20 and `heldi-chai-tadka-sample` at £4 (the archived trio SKUs alongside them are not Chai-specific). Leave them archived or delete them, but do not reuse their GIDs: they are on the old one-variant model
 - [ ] Add Chai to the shipping profile and the VAT setting alongside Khana
@@ -186,7 +209,9 @@ Decided in HeldiPM with the Price Book (claude.ai/code/artifact/bee7cef4-bc72-48
 which holds the working, the COGS and the run maths. The mechanics were settled the same evening: fixed-price size-and-mix variants, no discount app (see "Shopify shape"). Nothing below is implemented; every
 bullet is a change to make when the shop is rebuilt for two products. Until then the
 site still carries the July model (launch prices with a struck-through RRP, Khana tier
-variants, 10% gifting codes on single and pair, 20% waitlist code).
+variants, 10% gifting codes on single and pair), plus a 20% waitlist code that was never
+built and is now doubly dead: the waitlist offer since 17 Sep 2026 is a free sample pair
+for the first 100 on the list plus 15% off, not a percentage code at all (BRAND.md §11.9).
 
 **The structure**
 
@@ -199,17 +224,23 @@ variants, 10% gifting codes on single and pair, 20% waitlist code).
   and pair only), one use per customer, one code per order. Printed on the site in the
   gifting band as today — deliberately not gated.
 - **Founders code: 25%** ("the family 15% plus an extra 10%", written as one straight code,
-  not 15% then 10%) for close friends and the **first 100 waitlist joiners**, one use each.
-  Replaces the 20% `PEHLEAAP` promise: **remove "20% off" from the eight places it appears**
-  (ticker, homepage ×3, popup, form, FAQ, Chai buy box) — only 4 people have ever seen it.
+  not 15% then 10%) for close friends and the **first 100 waitlist joiners**, one use each
+  *(superseded 17 Sep 2026: founders is close friends only now; the first 100 on the list
+  get a free sample pair instead, see BRAND.md §11.9)*. Replaces the 20% `PEHLEAAP`
+  promise: **remove "20% off" from the eight places it appears** (ticker, homepage ×3,
+  popup, form, FAQ, Chai buy box) — only 4 people have ever seen it.
 - **After launch, an email gets free postage on the first order.** A Shopify *shipping*
   discount, one use, set to combine with product discounts, so it stacks with a family
-  code (a single pouch on SHABASH then reads "£29.75 delivered"). Optional extra pop-up
-  lead magnets: a free Khana + Chai taster while sachets last (cap 200), and the 1994
-  recipes as a PDF.
+  code (a single pouch on SHABASH then reads "£29.75 delivered"). This survived as
+  `WELCOME` (BRAND.md §11.9). The other idea here, a pop-up lead magnet giving away a free
+  Khana + Chai taster while sachets last (cap 200), was never built and is now dead: the
+  first 100 on the list get the free sample pair instead. The 1994 recipes PDF is
+  unrelated and still open.
 - **Presents, first order only:** 1 pouch → 1 jar; 2 → 1 jar + tote (tote ≈ £1 each, to
   be sourced); 3+ → 2 jars + tote. **No dabba** (never ordered — delete or unpublish
-  `HELDI-DABBA`). The first 50 waitlist joiners also get a taster pack posted before launch.
+  `HELDI-DABBA`). The first 50 waitlist joiners also get a taster pack posted before
+  launch. It was never built and is now dead: the first 100 on the list get the free
+  sample pair instead (17 Sep 2026, BRAND.md §11.9).
 - **Chai** 250 g is priced identically to Khana 300 g at every level.
 
 **Shopify shape — decided 2 Sep 2026 (evening): size × mix variants, no discount app**
@@ -248,7 +279,10 @@ variants, 10% gifting codes on single and pair, 20% waitlist code).
 - `lib/pricing.ts`: `TIERS`/`TIER_ORDER`/`packPouches` become a ladder function
   (`35 + 30 * (n - 1)`, n ≤ 6) and a `(pouches, khana) → variant` lookup; `launchPence ===
   rrpPence` and no strikethrough; `GIFTING.percent` 15, scope any quantity;
-  `WAITLIST_OFFER` 25% for the first 100 joiners; `giftCountsForPouches` → jar / jar + tote /
+  `WAITLIST_OFFER` holds only the first-100 count (`freePairFirstJoiners`), not a
+  percentage *(built this way already, superseded 17 Sep 2026: the 25% moved to
+  `FOUNDERS`, close friends only, and the first 100 get a free sample pair instead,
+  BRAND.md §11.9)*; `giftCountsForPouches` → jar / jar + tote /
   2 jars + tote, and `GIFT_CAPS.dabbas` 0.
 - `lib/commerce/catalog.ts`: one product, 27 variants with real GIDs; `khanaPouchCount`
   becomes a per-product count read back from the variant's option values; `linesForPouchCount`,
@@ -316,12 +350,16 @@ Still to do, and all of it is account work only you can do:
   - Do not tighten DMARC past `p=none` until the DKIM records verify, or Heldi's own Workspace mail starts failing
   - Sender check: Klaviyo's default sender is `info@heldi.co.uk` (the apex), not `send.heldi.co.uk`. Once DKIM lands, confirm the From address is authorised on the verified sending domain, or Klaviyo keeps using shared infrastructure and the dedicated domain buys nothing
 - [ ] Run `node --env-file=.env.local scripts/backfill-waitlist-to-klaviyo.mjs --dry`, then for real, to sweep up everyone who joined before the account existed
-- [~] Welcome flow in Klaviyo, triggered by "added to Waitlist list". The copy now leads with the waitlist reward: **20% off the first order** (`WAITLIST_OFFER`), landing in the launch email, plus launch prices and the jar-with-every-order promise. The "Waitlist welcome" template (`VnY8iQ`) carries it and its card/button corners are rounded to match the site. **Correction, 28 Jul 2026: there IS a flow API now**, so this no longer has to be hand-built in the UI. The Klaviyo MCP exposes `create_flow`, which takes a full definition (list/metric/segment/date triggers; `send-email`, `time-delay`, `conditional-split`, `update-profile`, `list-update` and more), plus `update_flow` to set a flow live. Three caveats before relying on it: nothing in the API forces a flow to be valid (`template_id`, `subject_line` and `from_email` are all optional, so a malformed create followed by a status flip is a live flow sending empty email, always review at `klaviyo.com/flow/{id}/edit` first); **no endpoint appends a step to an existing flow or changes its trigger**, so a correction means delete and recreate; and one trigger per flow, always. **Left to do:** fix the list split below, then build the flow (trigger = list `Staq52`, action = `send-email` using template `VnY8iQ`), review it in the UI, then set it live. Welcome emails run ~80% open, so this is worth more than the newsletter
+- [~] **Welcome flow, corrected 17 Sep 2026.** It already exists and is live in Klaviyo (`T6BYu5`), triggered on every waitlist signup, built on library template `TvLgd3` ("Waitlist welcome (site branded)"); Klaviyo clones that library template into a flow-owned copy whose id changes on every re-point, so do not chase one fixed template id here. Its copy is corrected on this branch in `docs/email/waitlist-welcome.html` (the free sample pair, we pay the postage, 15% off; BRAND.md §11.9), but that master still has to be **pushed to Klaviyo**, which was blocked on 17 Sep 2026 because the Klaviyo connection failed to authorise. The older "Waitlist welcome" template `VnY8iQ` is an orphaned draft (20%/25% copy, sends to nobody) to archive, not to build against. Background on the flow API, still accurate: the Klaviyo MCP exposes `create_flow`, which takes a full definition (list/metric/segment/date triggers; `send-email`, `time-delay`, `conditional-split`, `update-profile`, `list-update` and more), plus `update_flow` to set a flow live. Three caveats: nothing in the API forces a flow to be valid (`template_id`, `subject_line` and `from_email` are all optional, so a malformed create followed by a status flip is a live flow sending empty email, always review at `klaviyo.com/flow/{id}/edit` first); **no endpoint appends a step to an existing flow or changes its trigger**, so a correction means delete and recreate; and one trigger per flow, always. Welcome emails run ~80% open, so getting this pushed matters more than the newsletter
 - [ ] **Fix the list split before building any flow.** Of the 11 profiles in the account, **9 sit on `XQfBFE` "Email List"** (a Klaviyo default nobody chose) and only 2 are on `Staq52`. A welcome flow triggered on `Staq52` would reach two people and permanently skip the other nine, because a list-triggered flow only fires on future additions. The nine also make the four "Engaged" segments read as populated when genuine engagement is zero, since those segments key on `XQfBFE`. Move the nine, then rebuild the segments against `Staq52`
 - [ ] **Cap the welcome flow at two emails, and treat that as a consent limit rather than a style choice.** The join copy promises "One email the day we launch", so `Staq52` consent is scoped to exactly that; a four or five email series to people who agreed to one launch email is a consent mismatch. Ongoing contact is what the separate weekly-letter tick (`U6jLSH`) buys, and that list currently has zero members. There is a cost argument too: on the free tier the 500-sends-a-month ceiling binds well before the 250-profile cap, and a five-email series breaches it at roughly 90 signups where two emails absorb about three times as many
-- [ ] **Create the 20% coupon object in Klaviyo.** Template `VnY8iQ` promises a code that has no coupon behind it anywhere in Klaviyo (verified 28 Jul 2026: zero coupons in the account). Needs `PEHLEAAP` to exist in Shopify first (§1)
-- [ ] Draft the **launch announcement** campaign to the Waitlist list (`Staq52`) — the email that actually carries the `PEHLEAAP` code, RRP + launch prices, the free jar/dabba, free shipping over £40, and one line on the family codes. Keep it a **draft** until launch day. The heldi-email-writer skill drafts the copy
-- [ ] **Fix the heldi-email-writer skill source** (lives outside this repo): its locked figures say the full table ships **3 jars** — the site ships **2** (the `GIFT_CAPS` cap; per-tier jars/dabbas fields have been removed from `lib/pricing.ts`). Also add the waitlist 20% offer to the skill's pricing block so drafted emails match `WAITLIST_OFFER`. Until fixed, any email the skill drafts can overpromise a jar
+- [ ] Turn the three launch masters in `docs/email/` (`launch-early-joiners.html`,
+  `launch-first-100.html`, `launch-everyone-else.html`) into campaigns against the three
+  segments above (early joiners, the first 100 minus early joiners, everyone else), each
+  with its own claim link and the wording in BRAND.md §11.9. Keep all three **draft**
+  until launch day. The heldi-email-writer skill drafts changes to the copy, once its
+  source is fixed below
+- [ ] **Fix the heldi-email-writer skill source** (lives outside this repo): its locked figures say the full table ships **3 jars** — the site ships **2** (the `GIFT_CAPS` cap; per-tier jars/dabbas fields have been removed from `lib/pricing.ts`). Point its waitlist-offer section at BRAND.md §11.9 instead of a percentage: the offer is the free sample pair for the first 100 plus 15% off, never a 20% code. Until fixed, any email the skill drafts can overpromise a jar or a discount that no longer exists
 
 ## 3. Legal pages (required before selling)
 

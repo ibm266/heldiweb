@@ -265,17 +265,18 @@ work. Verified against real Shopify carts at 5, 14 and the 24 ceiling.
 at a 12g portion and 3 Chai mugs at 8g, derived and rounded down. That settled a fill
 the go-live checklist had been carrying as an open question in three places.
 
-**A free trial pair**, `HELDI-SAMPLE-PAIR-FREE`, £0 with an £8 compare-at, for the
-first 100. It is gated by INVENTORY, not by code: that one variant is tracked and
-stocked at 100 and closes itself. It is the only variant in the store that should
-have tracking on, which is the opposite of every other one.
+**A free sample pair**, `HELDI-SAMPLE-PAIR-FREE`, £0 with an £8 compare-at, for the
+first 100 on the list. It is gated by INVENTORY, not by code: that one variant is
+tracked and stocked at 100 and closes itself. It is the only variant in the store
+that should have tracking on, which is the opposite of every other one.
 
 **Presents:** one set per order. A jar with a single, a jar and a tote with a pair.
 Never two jars. The masala dabba is withdrawn.
 
 **Codes:** family ACHABETA / RISHTA / SHABASH at 15% on any quantity; founders at 25%,
-one code per person; welcome free postage, the only thing that combines with a product
-discount. `PEHLEAAP` and the 20% promise are gone from the codebase entirely.
+one code per person, close friends only, made by hand, not a reward for joining the
+list; welcome free postage, the only thing that combines with a product discount.
+`PEHLEAAP` and the 20% promise are gone from the codebase entirely.
 
 **RRP is shown.** From two pouches up the page strikes the RRP through beside the
 price and names the saving. This reverses P2 of the plan, and the reason it is
@@ -294,8 +295,13 @@ charged. That is the line the DMCC draws.
   product with its own stepper, a group price line, and the presents beneath. The
   server clamp is `lib/commerce/shopify/cart-policy.ts`, wired into all four mutating
   routes and the GET route.
-- **The launch email deep link.** `?claim=pair&code=XXX` lands on a basket with the
-  free pair in it and the code applied, and strips both params from the URL.
+- **The launch email deep link.** `?claim=pair` lands on a basket with the free pair
+  in it, for the first 100 on the list and for the early joiners alike, and strips
+  itself from the URL. It carries no personal code any more. The early joiners' email
+  gives them `WELCOME` to type on their first pouch order instead of putting it on the
+  link: the code is one use per customer, and a checkout holding only the free pair
+  would spend it. (`&code=XXX` still works on the link for any code, if one is ever
+  wanted.)
 - **Phase 4 partly done.** The Khana buy box offers one or two pouches priced from the
   ladder. The Chai buy box still has no add-to-basket path, because Chai cannot be
   sold yet.
@@ -342,6 +348,13 @@ exactly the fabricated former price the code's own comment says the DMCC forbids
 
 **The lesson for whoever picks this up: mock-mode green is not proof.** The clamp has
 still never run against a real Shopify cart.
+
+**What changed on 17 September:** the waitlist reward described below (a founders
+code at 25% for the first 100 joiners) was replaced. Everyone on the list still gets
+one email the day we launch and 15% off their first order; the first 100 on the list
+now get a free sample pair, and Heldi pays the postage; founders is close friends
+only, made by hand, and is no longer a joiner reward at all. BRAND.md §11.9 owns the
+wording, and `docs/waitlist-offer-plan.md` is the working plan behind it.
 
 ---
 
@@ -390,10 +403,11 @@ clamp cannot be exercised at all, which is where the review found the subtle bug
 11. **Both sample products onto the Sample shipping profile**, or a £0 pair still
     charges £3.55 postage.
 12. **Rebuild the three family codes at 15%**, any quantity, once per customer,
-    combining with shipping discounts only. They are still the July 10% on single and
-    pair, and `GIFTING.percent` in the repo now says 15. Every surface reading it is
-    live-mode gated, so nothing is visibly wrong today, but the two must agree before
-    the mode flips.
+    combining with shipping discounts only. They do not exist in Shopify at all any
+    more, as of 17 Sep 2026 (deleted, not left at the old July 10%), and
+    `GIFTING.percent` in the repo says 15. Every surface reading it is live-mode
+    gated, so nothing is visibly wrong today, but the two must agree before the mode
+    flips.
 13. **Product images**, from `public/images/originals/shopify-upload/`, named by SKU.
 
 ### Added 4 September: decisions still open
@@ -405,8 +419,16 @@ clamp cannot be exercised at all, which is where the review found the subtle bug
 - **Chai's remaining gates**: printed label, finished-product gluten result, physical
   stock. `CHAI_SELLABLE` stays false until all three land. Note it is inlined at build
   time, so flipping it needs a redeploy with the build cache cleared.
-- **Klaviyo template `VnY8iQ`** still promises 20% off and £30 pouches. Both false.
-- **The launch email needs the claim link format**: `heldi.co.uk/?claim=pair&code=THEIR-CODE`.
+- **Klaviyo template `VnY8iQ`** still promises 20% off and £30 pouches. Both false,
+  and it is now an orphaned draft that sends to nobody: archive it rather than fix
+  it. The live welcome flow is `T6BYu5` on library template `TvLgd3`; its copy is
+  corrected on this branch in `docs/email/waitlist-welcome.html` but still has to be
+  pushed to Klaviyo, which was blocked on 17 Sep 2026 because the Klaviyo connection
+  failed to authorise.
+- **The launch email claim link, settled 17 Sep 2026**: `heldi.co.uk/?claim=pair`
+  for the first 100 on the list and for the early joiners. It carries no personal
+  code, and the early joiners' email names `WELCOME` for their first pouch order
+  rather than applying it through the link.
 
 **Decided, so do not reopen:** no finished-product lab analysis for the first run.
 The calculation is the declaration, which FIC Art 31(4)(b) permits in its own right.
