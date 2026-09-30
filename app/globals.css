@@ -531,49 +531,6 @@ h2 {
   visibility: visible;
 }
 
-.hero-reveal-showcase,
-.hero-reveal-actions {
-  opacity: 0;
-  transform: translateY(14px);
-}
-
-.hero-reveal-panel.is-revealed .hero-reveal-showcase {
-  animation: hero-part-in 640ms cubic-bezier(0.23, 1, 0.32, 1) 80ms forwards;
-}
-
-.hero-reveal-panel.is-revealed .hero-reveal-actions {
-  animation: hero-part-in 640ms cubic-bezier(0.23, 1, 0.32, 1) 320ms forwards;
-}
-
-.hero-reveal-split {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(1.5rem, 4vw, 3.5rem);
-}
-
-.hero-reveal-columns {
-  display: grid;
-  grid-template-rows: auto auto;
-  row-gap: clamp(1rem, 2.5vw, 1.25rem);
-  width: 100%;
-  max-width: 920px;
-  margin: 0 auto;
-}
-
-.hero-reveal-showcase {
-  grid-row: 1;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: clamp(1rem, 2.5vw, 1.5rem);
-  border: 3px solid var(--ink);
-  border-radius: 20px;
-  background: #fff;
-  box-shadow: 8px 8px 0 var(--ink);
-}
-
 .hero-reveal-call-elephants {
   position: absolute;
   right: clamp(0.5rem, 1.25vw, 0.75rem);
@@ -656,202 +613,6 @@ h2 {
   }
 }
 
-.hero-reveal-showcase__main {
-  display: grid;
-  grid-template-columns: 1fr minmax(220px, 280px);
-  column-gap: clamp(1.5rem, 3vw, 2.25rem);
-  align-items: center;
-}
-
-.hero-reveal-showcase__copy {
-  min-width: 0;
-}
-
-.hero-reveal-showcase__foot {
-  display: none;
-}
-
-.hero-reveal-showcase__rule {
-  height: 1px;
-  margin-bottom: 0.875rem;
-  background: rgb(var(--ink-rgb) / 14%);
-}
-
-.hero-reveal-showcase__pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-  gap: 0.5rem 0.625rem;
-  list-style: none;
-}
-
-.hero-reveal-showcase__pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.4375rem 0.75rem;
-  border: 1.5px solid rgb(var(--ink-rgb) / 32%);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--ink);
-  font-size: 0.8125rem;
-  gap: 0.375rem;
-  white-space: nowrap;
-}
-
-.hero-reveal-showcase__pill-icon {
-  flex-shrink: 0;
-  width: auto;
-  height: 1.25rem;
-}
-
-.hero-reveal-actions--in-showcase {
-  display: none;
-}
-
-/* Name gloss, then the line that says what the product does. One block, two
-   mount points (copy column on wide, foot band on mobile); each breakpoint
-   below shows one and hides the other. */
-/* Three deliberate steps so the block reads in order rather than as one grey
-   paragraph: an italic caption for the name, a bold promise, then the plain
-   sentence that explains how. Sizes per breakpoint below. */
-.hero-reveal-lines {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-/* The definition band closing the card. Bleeds to the card's edges by pulling
-   back its padding, so the card's own padding vars are the single source for
-   both. Ink fill, gold term, cream gloss: the pack's bottom band. */
-.hero-reveal-definition {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  margin: 0 calc(-1 * var(--card-pad-x)) calc(-1 * var(--card-pad-b));
-  padding: 0.5625rem var(--card-pad-x);
-  /* Right side clears the elephant button, which sits over this band. */
-  padding-right: calc(var(--card-pad-x) + 2.25rem);
-  border-radius: 0 0 calc(var(--card-radius) - 3px) calc(var(--card-radius) - 3px);
-  background: var(--ink);
-  color: var(--cream);
-  gap: 0 0.5ch;
-  font-style: italic;
-  line-height: 1.35;
-}
-
-.hero-reveal-definition__term {
-  color: var(--gold);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-
-/* "for" is connective tissue between the two loud parts of the headline, so it
-   steps down rather than shouting alongside them. */
-.hero-reveal-lede__prefix-line:nth-child(3) {
-  font-size: 0.62em;
-  letter-spacing: 0;
-}
-
-.hero-reveal-claim {
-  margin: 0;
-  color: var(--ink);
-  font-weight: 700;
-  line-height: 1.25;
-  text-wrap: balance;
-}
-
-.hero-reveal-claim__support {
-  margin: 0;
-  color: rgb(var(--ink-rgb) / 82%);
-  line-height: 1.45;
-  text-wrap: balance;
-}
-
-/* Gold would fail contrast at this size on white, so the grams carry weight
-   instead of colour. */
-.hero-reveal-claim__support strong {
-  color: var(--ink);
-  font-weight: 700;
-}
-
-/* Keeps the figure and its noun together when the sentence wraps. The whole
-   emphasised phrase is too long to hold unbroken, so only this part is
-   protected. */
-.hero-reveal-claim__grams {
-  white-space: nowrap;
-}
-
-.hero-reveal-lede {
-  container-type: inline-size;
-  min-width: 0;
-  margin: 0;
-  color: var(--ink);
-  font-size: clamp(0.72rem, 9.5cqw, 3.9rem);
-  line-height: 1.04;
-  text-align: left;
-}
-
-.hero-reveal-pouch {
-  width: 100%;
-}
-
-.hero-reveal-actions {
-  grid-row: 2;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
-}
-
-.hero-reveal-lede__prefix {
-  display: block;
-  flex-shrink: 0;
-  margin-bottom: 0.15em;
-  font-size: calc(1.08em + 10px);
-  line-height: 1.02;
-}
-
-.hero-reveal-lede__prefix-line {
-  display: block;
-}
-
-.hero-reveal-columns .word-board {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  min-height: calc((1em + 10px) * 1.02 * 2.08);
-}
-
-.hero-reveal-columns .dissolve-board {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.02em;
-  color: var(--gold);
-  text-align: left;
-  font-size: calc(1em + 10px);
-  line-height: 1.02;
-  letter-spacing: 0.02em;
-}
-
-.hero-reveal-columns .dissolve-word {
-  display: block;
-}
-
-.hero-reveal-columns .dissolve-word + .dissolve-word {
-  margin-left: 0;
-}
-
-.hero-reveal-pouch__image {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 .hero-reveal-curtain {
   position: absolute;
   inset: 0;
@@ -888,6 +649,557 @@ h2 {
   height: 100%;
 }
 
+/* ---------- Hero card (reveal layout) ----------
+   One white card. Wide: the headline centred across the top ("Protein powder
+   for" over the rotating word in a gold badge), then three columns: story |
+   pouches and pills | actions and the offer ticket. Mobile (<=899px): one
+   column in the order a phone reader needs it: headline, pouches, actions,
+   story. The /hel-dee/ sticker sits on the card's top-right corner at both
+   widths. Type is sized in cqw against the card (PLAYBOOK 1.1.6), capped in
+   svh so short laptop windows still show the ticker. */
+.hero-card {
+  --badge-max: clamp(3rem, min(7cqw, 8.4svh), 4.5rem);
+  --badge-pad-top: 0.375rem;
+  container-type: inline-size;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: clamp(1.5rem, 2.4vw, 1.875rem) clamp(1.75rem, 3.4vw, 2.75rem)
+    clamp(1.25rem, 2vw, 1.625rem);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+/* Outranks the base `.hero h1` rule, which would otherwise set the size. */
+.hero .hero-card__lede {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.hero-card__prefix {
+  display: block;
+  font-size: clamp(2.5rem, min(5.8cqw, 7svh), 3.75rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.hero-card__prefix-word,
+.hero-card__badge-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hero-card__prefix-word + .hero-card__prefix-word {
+  margin-left: 0.24em;
+}
+
+.hero-card__badge-word + .hero-card__badge-word {
+  margin-left: 0.22em;
+}
+
+.hero-card__prefix-letter,
+.hero-card__badge-letter {
+  display: inline-block;
+}
+
+.hero-card__badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* The badge at full size, so a long word that shrinks to fit never moves
+     the pouches and buttons below. */
+  min-height: calc(var(--badge-max) * 1.12 + var(--badge-pad-top) + 6px);
+  margin-top: 0.5rem;
+}
+
+/* The rotating word. --len (set per word) shrinks the type only when the
+   word would not fit, so INDIAN FOOD always holds one line. The width is
+   animated from JS between words; overflow keeps the letters inside while it
+   stretches. */
+.hero-card__badge {
+  --badge-chrome: 3rem;
+  display: inline-flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: var(--badge-pad-top) 1.25rem 0;
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  background: var(--gold);
+  box-shadow: 5px 5px 0 var(--ink);
+  color: var(--ink);
+  font-size: min(
+    var(--badge-max),
+    calc((100cqw - var(--badge-chrome)) / (var(--len, 5) * 0.74))
+  );
+  line-height: 1.12;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  transition: width 460ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.hero-card__body {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 3cqw, 2.25rem);
+  width: 100%;
+  margin-top: clamp(1rem, 2.2cqw, 1.375rem);
+}
+
+.hero-card__story,
+.hero-card__actions {
+  display: flex;
+  flex: 0 0 clamp(13.5rem, 29cqw, 18.75rem);
+  flex-direction: column;
+}
+
+.hero-card__tagline {
+  margin: 0 0 0.75rem;
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.5rem, 3cqw, 1.9375rem);
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.hero-card__support {
+  margin: 0;
+  color: rgb(var(--ink-rgb) / 82%);
+  font-size: 0.9625rem;
+  line-height: 1.45;
+}
+
+/* Gold would fail contrast at this size on white, so the grams carry weight
+   instead of colour. */
+.hero-card__support strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+/* Keeps the figure and its noun together when the sentence wraps. */
+.hero-card__grams {
+  white-space: nowrap;
+}
+
+.hero-card__claim {
+  margin: 0.75rem 0 0;
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.hero-card__pack {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+.hero-card__pack-image {
+  display: block;
+  width: min(354px, 100%, 42svh);
+  height: auto;
+}
+
+.hero-card__pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.375rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hero-card__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  padding: 0.3125rem 0.75rem 0.3125rem 0.4375rem;
+  border: 1px solid rgb(var(--ink-rgb) / 32%);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.hero-card__pill-icon {
+  flex-shrink: 0;
+  width: auto;
+  height: 1.375rem;
+}
+
+.hero-card__actions {
+  gap: 0.625rem;
+}
+
+.hero-card__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+
+/* The offer as a tear-off ticket: the gifting code chip's shape (BRAND.md
+   8.4) in cream. */
+.hero-card__ticket {
+  margin: 0.375rem 0 0;
+  padding: 0.625rem 1rem 0.625rem 0.875rem;
+  border: 2px solid var(--ink);
+  border-left: 3px dotted var(--ink);
+  border-radius: 4px 16px 16px 4px;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 0.90625rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* The name, as a sticker: ink disc, white die-cut ring, ink outline, hard
+   shadow, slapped on the card's corner. */
+.hero-card__sticker {
+  --sticker-rot: 10deg;
+  position: absolute;
+  top: -1rem;
+  right: -1.625rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3125rem;
+  width: 8.75rem;
+  height: 8.75rem;
+  margin: 0;
+  padding: 0 1.125rem;
+  border: 4px solid #fff;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow:
+    0 0 0 3px var(--ink),
+    6px 6px 0 3px var(--ink);
+  text-align: center;
+  transform: rotate(var(--sticker-rot));
+}
+
+.hero-card__sticker::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1.5px dashed rgb(248 240 222 / 45%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-card__sticker-term {
+  color: var(--gold);
+  font-family: var(--font-display), serif;
+  font-size: 1.5rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.hero-card__sticker-gloss {
+  color: #fff;
+  font-size: 0.8125rem;
+  font-style: italic;
+  line-height: 1.25;
+}
+
+/* Entrance, once the curtain lifts: the card rises, "Protein powder for"
+   and the word dissolve in letter by letter (delays set inline), the columns
+   follow, and the sticker lands last. `backwards` so each part returns to
+   its own styles afterwards. Motion-safe only; reduced motion sees the card
+   settled. */
+@keyframes hero-card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--rise, 16px));
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-card-slap {
+  0% {
+    opacity: 0;
+    transform: scale(1.45) rotate(calc(var(--sticker-rot) - 18deg));
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(var(--sticker-rot));
+  }
+}
+
+@keyframes hero-badge-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(-6px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-reveal-panel.is-revealed .hero-card {
+    animation: hero-card-rise 640ms cubic-bezier(0.23, 1, 0.32, 1) 80ms backwards;
+  }
+
+  .hero-reveal-panel.is-revealed .hero-card__prefix-letter,
+  .hero-reveal-panel.is-revealed .hero-card__badge-letter {
+    animation: dissolve-in 500ms ease-out backwards;
+  }
+
+  .hero-reveal-panel.is-revealed .hero-card__badge.is-leaving .hero-card__badge-letter {
+    animation: hero-badge-out 240ms ease-in forwards;
+  }
+
+  .hero-reveal-panel.is-revealed .hero-card__tagline,
+  .hero-reveal-panel.is-revealed .hero-card__support,
+  .hero-reveal-panel.is-revealed .hero-card__claim,
+  .hero-reveal-panel.is-revealed .hero-card__cta,
+  .hero-reveal-panel.is-revealed .hero-card__ticket,
+  .hero-reveal-panel.is-revealed .hero-card__pack-image,
+  .hero-reveal-panel.is-revealed .hero-card__pill {
+    animation: hero-card-rise 640ms cubic-bezier(0.23, 1, 0.32, 1) backwards;
+  }
+
+  .hero-reveal-panel.is-revealed .hero-card__tagline { animation-delay: 620ms; }
+  .hero-reveal-panel.is-revealed .hero-card__support { animation-delay: 700ms; }
+  .hero-reveal-panel.is-revealed .hero-card__claim { animation-delay: 780ms; }
+  .hero-reveal-panel.is-revealed .hero-card__cta { animation-delay: 680ms; }
+  .hero-reveal-panel.is-revealed .hero-card__cta + .hero-card__cta { animation-delay: 760ms; }
+  .hero-reveal-panel.is-revealed .hero-card__ticket { animation-delay: 840ms; }
+
+  .hero-reveal-panel.is-revealed .hero-card__pack-image {
+    --rise: 28px;
+    animation-delay: 720ms;
+  }
+
+  .hero-reveal-panel.is-revealed .hero-card__pill {
+    --rise: 10px;
+    animation-delay: 1040ms;
+  }
+
+  .hero-reveal-panel.is-revealed .hero-card__pill + .hero-card__pill { animation-delay: 1110ms; }
+  .hero-reveal-panel.is-revealed .hero-card__pill + .hero-card__pill + .hero-card__pill { animation-delay: 1180ms; }
+
+  .hero-reveal-panel.is-revealed .hero-card__sticker {
+    animation: hero-card-slap 520ms cubic-bezier(0.23, 1, 0.32, 1) 1280ms backwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-card__badge {
+    transition: none;
+  }
+}
+
+/* Narrow desktops, where the nav wraps to two rows: a smaller sticker that
+   sits lower on the corner, clear of the nav. */
+@media (min-width: 900px) and (max-width: 1099px) {
+  .hero-card__sticker {
+    top: 0.5rem;
+    right: -1rem;
+    width: 7.5rem;
+    height: 7.5rem;
+    padding: 0 0.875rem;
+  }
+
+  .hero-card__sticker-term {
+    font-size: 1.25rem;
+  }
+
+  .hero-card__sticker-gloss {
+    font-size: 0.75rem;
+  }
+}
+
+/* Short laptop windows: a tighter card so the ticker still shows. */
+@media (min-width: 900px) and (max-height: 820px) {
+  .hero-card {
+    padding-top: 1.125rem;
+    padding-bottom: 1rem;
+  }
+
+  .hero-card__body {
+    margin-top: 0.875rem;
+  }
+}
+
+@media (max-width: 899px) {
+  /* Top padding leaves room for the sticker's lower half. */
+  .hero-card {
+    --badge-max: clamp(2rem, 14.5cqw, 2.875rem);
+    --badge-pad-top: 0.3125rem;
+    padding: 3.375rem 1.125rem 1.25rem;
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+
+  /* Live mode pins the basket top-right in the nav, so the sticker drops
+     below it and the headline moves down to match. */
+  .hero-card--live {
+    padding-top: 4.875rem;
+  }
+
+  .hero-card__prefix {
+    font-size: clamp(1.5rem, 10.4cqw, 2.25rem);
+  }
+
+  .hero-card__badge-row {
+    margin-top: 0.375rem;
+  }
+
+  .hero-card__badge {
+    --badge-chrome: 2.5rem;
+    padding: var(--badge-pad-top) 0.875rem 0;
+    border-radius: 12px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  /* One column: the body's three blocks join the card's own flow and take
+     the phone order. */
+  .hero-card__body {
+    display: contents;
+  }
+
+  .hero-card__pack {
+    order: 2;
+    width: 100%;
+    margin-top: 1rem;
+    gap: 0.75rem;
+  }
+
+  .hero-card__actions {
+    order: 3;
+    display: grid;
+    flex: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.625rem;
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .hero-card__story {
+    order: 4;
+    flex: none;
+    width: 100%;
+    margin-top: 1.125rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgb(var(--ink-rgb) / 14%);
+  }
+
+  .hero-card__pack-image {
+    width: min(262px, 72cqw, 36svh);
+  }
+
+  /* All three pills on one line down to 375px. */
+  .hero-card__pills {
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+  }
+
+  .hero-card__pill {
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+    font-size: 0.71875rem;
+  }
+
+  .hero-card__pill-icon {
+    height: 1rem;
+  }
+
+  .hero-card__cta {
+    min-height: 2.75rem;
+    padding: 0.625rem 0.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .hero-card__ticket {
+    grid-column: 1 / -1;
+    margin: 0;
+    padding: 0.5625rem 0.875rem 0.5625rem 0.75rem;
+    font-size: 0.84375rem;
+  }
+
+  .hero-card__tagline {
+    margin-bottom: 0.625rem;
+    font-size: 1.625rem;
+  }
+
+  .hero-card__support {
+    font-size: 0.9375rem;
+  }
+
+  /* Clears the elephant button in the card's bottom-right corner. */
+  .hero-card__claim {
+    padding-right: 2.625rem;
+    font-size: 1rem;
+  }
+
+  /* On the card's corner, half over the gold, clear of the centred brand
+     card in the nav. */
+  .hero-card__sticker {
+    top: -3rem;
+    right: -0.75rem;
+    gap: 0.1875rem;
+    width: 6.25rem;
+    height: 6.25rem;
+    padding: 0 0.625rem;
+    border-width: 3px;
+    box-shadow:
+      0 0 0 2px var(--ink),
+      4px 4px 0 2px var(--ink);
+  }
+
+  .hero-card--live .hero-card__sticker {
+    top: -1.625rem;
+  }
+
+  .hero-card__sticker::before {
+    inset: 5px;
+  }
+
+  .hero-card__sticker-term {
+    font-size: 0.96875rem;
+  }
+
+  .hero-card__sticker-gloss {
+    font-size: 0.625rem;
+    line-height: 1.2;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-reveal-call-elephants {
     transition: none;
@@ -910,207 +1222,8 @@ h2 {
     padding: clamp(1rem, 3vw, 1.5rem) clamp(1rem, 4vw, 1.5rem) 0;
   }
 
-  .hero-reveal-columns {
-    row-gap: 1.25rem;
-    max-width: 100%;
-  }
-
-  /* Headline beside the pack, then the copy and the definition band across
-     the full width beneath them. */
-  .hero-reveal-showcase {
-    --card-radius: 16px;
-    --card-pad-x: clamp(0.875rem, 3vw, 1.125rem);
-    --card-pad-b: clamp(0.875rem, 3vw, 1.125rem);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: clamp(0.375rem, 1.5vw, 0.625rem);
-    row-gap: clamp(0.375rem, 1.2vw, 0.5rem);
-    padding: clamp(0.875rem, 3vw, 1.125rem) var(--card-pad-x) var(--card-pad-b);
-    border-radius: var(--card-radius);
-    box-shadow: 6px 6px 0 var(--ink);
-  }
-
-  .hero-reveal-showcase__main {
-    display: contents;
-  }
-
-  .hero-reveal-pouch {
-    grid-column: 2;
-    grid-row: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .hero-reveal-pouch__image {
-    width: 100%;
-    max-width: none;
-    height: auto;
-    max-height: none;
-  }
-
-  /* The container the headline sizes itself against, so the type can never
-     outgrow the column the way it used to. */
-  .hero-reveal-showcase__copy {
-    container-type: inline-size;
-    grid-column: 1;
-    grid-row: 1;
-    align-self: center;
-  }
-
-  .hero-reveal-showcase__foot {
-    display: block;
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
-
-  .hero-reveal-definition {
-    grid-column: 1 / -1;
-    grid-row: 4;
-    margin-top: clamp(0.25rem, 1.5vw, 0.5rem);
-    font-size: clamp(0.875rem, 3.4vw, 1rem);
-  }
-
-  /* Sized off the copy column, not the viewport. The .hero in the selector
-     outranks the base `.hero h1` rule, which used to size this headline off
-     the viewport while it lived in a column worth 45% of the card, which is
-     how "Powder" ended up wider than the space it had. */
-  .hero .hero-reveal-lede {
-    container-type: normal;
-    font-size: clamp(1rem, 19cqw, 2.5rem);
-    line-height: 1.03;
-  }
-
-  /* "Protein Powder" flows and breaks on its own; "for" always starts a fresh
-     line and the rotating word sits under it. */
-  .hero-reveal-lede__prefix-line:nth-child(1),
-  .hero-reveal-lede__prefix-line:nth-child(2) {
-    display: inline;
-  }
-
-  .hero-reveal-lede__prefix-line:nth-child(3) {
-    display: block;
-  }
-
-  .hero-reveal-lede__prefix {
-    font-size: 1.3em;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-reveal-columns .dissolve-board {
-    flex-direction: row;
-    flex-wrap: wrap;
-    font-size: 1.3em;
-  }
-
-  .hero-reveal-columns .dissolve-word + .dissolve-word {
-    margin-left: 0.15em;
-  }
-
-  /* Two lines reserved: "INDIAN FOOD" needs both in a column this narrow while
-     the shorter words need one. Reserving the taller case keeps the headline
-     box a fixed height, so the block does not shuffle as the word rotates. */
-  .hero-reveal-columns .word-board {
-    min-height: calc(1.3em * 1.02 * 2.06);
-    align-items: flex-start;
-  }
-
-  .hero-reveal-showcase__rule,
-  .hero-reveal-showcase__pills {
-    display: none;
-  }
-
   .hero-reveal-call-elephants::after {
     display: none;
-  }
-
-  /* Here the button sits on the ink band, where an ink border and shadow
-     would disappear. */
-  .hero-reveal-call-elephants {
-    border-color: var(--cream);
-    box-shadow: none;
-  }
-
-  .hero-reveal-call-elephants:hover:not(:disabled),
-  .hero-reveal-call-elephants:focus-visible:not(:disabled),
-  .hero-reveal-call-elephants:active:not(:disabled) {
-    box-shadow: none;
-  }
-
-  .hero-reveal-lines--copy {
-    display: none;
-  }
-
-  .hero-reveal-lines--foot {
-    align-items: flex-start;
-    width: 100%;
-    margin-top: 0;
-    text-align: left;
-  }
-
-  /* pretty, not balance: balanced lines pull the right-hand edge in and leave
-     a ragged margin down the side of the card. These fill the measure. */
-  .hero-reveal-lines--foot .hero-reveal-claim {
-    font-size: clamp(0.9375rem, 3.8vw, 1.125rem);
-    text-wrap: pretty;
-  }
-
-  .hero-reveal-lines--foot .hero-reveal-claim__support {
-    font-size: clamp(0.8125rem, 3.1vw, 0.9375rem);
-    text-wrap: pretty;
-  }
-
-  .hero-reveal-actions--in-showcase {
-    display: none;
-  }
-
-  /* Inside the card, under the copy, filling the space the tall portrait pack
-     leaves beside the headline. */
-  .hero-reveal-actions--below {
-    grid-column: 1 / -1;
-    grid-row: 3;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0.5rem;
-    row-gap: 0.5rem;
-    align-items: stretch;
-    width: 100%;
-    margin-bottom: 0;
-  }
-
-  /* The card now carries the CTAs, so the breathing room before the ticker
-     moves out to the column wrapper. */
-  .hero-reveal-columns {
-    padding-bottom: clamp(2rem, 6vw, 3rem);
-  }
-
-  /* Two CTAs (Join waitlist / Shop now, then How it works) share the row. */
-  .hero-reveal-actions > .button {
-    width: 100%;
-    padding: 0.5625rem 0.75rem;
-    font-size: 0.875rem;
-    line-height: 1.2;
-    text-align: center;
-  }
-
-  .hero-reveal-columns .dissolve-board {
-    line-height: 1.02;
-    text-align: left;
-  }
-}
-
-/* Short phones (SE-class). The pack drives the card height, so give it a
-   slightly narrower column and tighten the gaps to keep the CTAs above the
-   fold. */
-@media (max-width: 899px) and (max-height: 740px) {
-  .hero-reveal-showcase {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
-    row-gap: 0.5rem;
-  }
-
-  .hero .hero-reveal-lede {
-    font-size: clamp(1rem, 17.5cqw, 2.25rem);
   }
 }
 
@@ -3452,9 +3565,7 @@ footer {
     transform: none;
   }
 
-  .hero-reveal-panel,
-  .hero-reveal-showcase,
-  .hero-reveal-actions {
+  .hero-reveal-panel {
     visibility: visible;
     opacity: 1;
     transform: none;
@@ -3850,7 +3961,7 @@ footer {
   .hero-reveal {
     flex: 0 0 auto;
     width: 100%;
-    max-width: min(920px, 92vw);
+    max-width: min(1200px, 100%);
     min-height: auto;
     margin-inline: auto;
     padding: clamp(1rem, 2.5vh, 1.5rem) clamp(1.25rem, 4vw, 2.5rem)
@@ -3861,157 +3972,10 @@ footer {
     height: auto;
   }
 
-  .hero-reveal-columns {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: clamp(0.75rem, 1.5vw, 1rem);
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .hero-reveal-showcase {
-    --card-radius: 20px;
-    --card-pad-x: clamp(1.375rem, 2.5vw, 2rem);
-    --card-pad-b: clamp(1rem, 1.75vw, 1.375rem);
-    /* The size the headline actually renders at. The base `.hero h1` rule
-       (0,1,1) outranks `.hero-reveal-lede` (0,1,0), so this mirrors that rule
-       rather than the dead one below. The copy's measure is derived from it. */
-    --hero-lede-size: clamp(1.875rem, 4.5vw, 2.75rem);
-    width: 100%;
-    padding: clamp(1.125rem, 2vw, 1.625rem) var(--card-pad-x) var(--card-pad-b);
-    border-radius: var(--card-radius);
-  }
-
-  .hero-reveal-definition {
-    margin-top: clamp(0.75rem, 1.5vw, 1.125rem);
-    font-size: clamp(0.9375rem, min(1.2vw, 1.8svh), 1.0625rem);
-  }
-
-  .hero-reveal-showcase__main {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: clamp(1rem, 2.5vw, 2rem);
-  }
-
-  /* The copy claims its width first: "Protein Powder" has to hold one line and
-     the copy under it is measured against that, so the pack takes what is
-     left rather than squeezing the headline into two lines. */
-  .hero-reveal-showcase__copy {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    align-items: flex-start;
-    min-width: min(100%, 25rem);
-    max-width: none;
-    gap: clamp(0.625rem, 1.25vw, 0.875rem);
-  }
-
-  .hero-reveal-lede {
-    container-type: normal;
-    width: auto;
-    max-width: none;
-    font-size: clamp(2.5rem, 3.6vw + 0.9vh, 4.75rem);
-  }
-
-  .hero-reveal-lede__prefix {
-    margin-bottom: 0.04em;
-    font-size: calc(1em + 8px);
-  }
-
-  .hero-reveal-lede__prefix-line:nth-child(1),
-  .hero-reveal-lede__prefix-line:nth-child(2) {
-    display: inline;
-  }
-
-  .hero-reveal-lede__prefix-line:nth-child(3) {
-    display: block;
-  }
-
-  .hero-reveal-columns .word-board {
-    min-height: auto;
-  }
-
-  .hero-reveal-columns .dissolve-board {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: baseline;
-    font-size: calc(1em + 10px);
-    color: var(--gold);
-  }
-
-  .hero-reveal-columns .dissolve-word {
-    display: inline;
-  }
-
-  .hero-reveal-columns .dissolve-word + .dissolve-word {
-    margin-left: 0.15em;
-  }
-
-  .hero-reveal-lines--foot {
-    display: none;
-  }
-
-  /* Sits in the slack between the h1 and the CTAs: the copy column runs
-     shorter than the pouch beside it, so these lines add no card height.
-     The measure is the width of "Protein Powder" above it (7.2x the prefix
-     size in Rozha One, prefix being the headline size plus 8px), so no line
-     ever runs past the "r" the headline ends on. */
-  .hero-reveal-lines--copy {
-    max-width: calc(7.2 * (var(--hero-lede-size) + 8px));
-    text-align: left;
-  }
-
-  /* Sized so "Protein that behaves like an ingredient," holds the first line
-     inside the measure above, and pretty rather than balance so the line fills
-     rather than being evened out with the second. */
-  .hero-reveal-lines--copy .hero-reveal-claim {
-    font-size: clamp(1.0625rem, min(1.45vw, 2.2svh), 1.125rem);
-    text-wrap: pretty;
-  }
-
-  /* pretty, not balance, so the lines fill the measure the wrapper sets. */
-  .hero-reveal-lines--copy .hero-reveal-claim__support {
-    font-size: clamp(0.9375rem, min(1.2vw, 1.85svh), 1.0625rem);
-    text-wrap: pretty;
-  }
-
-  /* A container so the pill row below can size itself in cqw and therefore
-     always occupy the same fraction of the row, i.e. never wrap. Positioned so
-     the elephant button anchors to the pill row rather than to the card. */
-  .hero-reveal-showcase__foot {
-    container-type: inline-size;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: clamp(0.75rem, 1.5vw, 1.125rem);
-    gap: 0.625rem;
-  }
-
-  .hero-reveal-showcase__rule {
-    order: 2;
-    width: 100%;
-    margin-bottom: 0;
-  }
-
-  /* Sized in cqw throughout (text, padding, icons, gaps) so the whole row
-     scales with the card and the six pills stay on one line at every width.
-     nowrap is the belt to that braces: if a fallback font ever renders wider
-     than Gelasio, the row stays a single line. */
-  .hero-reveal-showcase__pills {
-    order: 3;
-    flex-wrap: nowrap;
-    gap: 0.5cqw 0.75cqw;
-    padding-right: 2.4cqw;
-  }
-
-  /* At the right-hand end of the pill row (the foot is the containing block
-     here), clear of the definition band below it. */
+  /* The hero card's bottom-right corner, below the offer ticket. */
   .hero-reveal-call-elephants {
-    right: 0;
-    bottom: 0;
+    right: 1rem;
+    bottom: 0.875rem;
     width: clamp(1.625rem, 2.4vw, 1.875rem);
     height: clamp(1.625rem, 2.4vw, 1.875rem);
     padding: 0.15rem;
@@ -4032,55 +3996,6 @@ footer {
   .hero-reveal-call-elephants::after {
     font-size: 0.6875rem;
     max-width: min(180px, 62vw);
-  }
-
-  .hero-reveal-pouch {
-    flex: 0 1 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: clamp(280px, 32vw, 480px);
-  }
-
-  .hero-reveal-pouch__image {
-    width: 100%;
-    max-width: clamp(260px, 26vw + 2.4vh, 440px);
-    height: auto;
-  }
-
-  .hero-reveal-actions--in-showcase {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    width: auto;
-    margin: 0;
-    gap: 0.625rem;
-  }
-
-  .hero-reveal-actions--in-showcase .waitlist-form {
-    flex: 0 0 auto;
-    width: auto;
-  }
-
-  .hero-reveal-actions--in-showcase .waitlist-form--expanded {
-    flex: 1 1 100%;
-    width: min(420px, 100%);
-    justify-content: flex-start;
-  }
-
-  .hero-reveal-actions--below {
-    display: none;
-  }
-
-  .hero-reveal-showcase__pill {
-    padding: 0.62cqw 0.95cqw;
-    font-size: 1.6cqw;
-    gap: 0.5cqw;
-  }
-
-  .hero-reveal-showcase__pill-icon {
-    height: 2.85cqw;
   }
 
   /* How it works — laptop header + protein equation at bottom */
@@ -4285,32 +4200,6 @@ footer {
 }
 
 @media (min-width: 1280px) {
-  .hero-reveal {
-    max-width: min(960px, 90vw);
-  }
-
-  .hero-reveal-lede {
-    font-size: clamp(2.75rem, 3.8vw + 0.9vh, 5rem);
-  }
-
-  .hero-reveal-columns .dissolve-board {
-    font-size: calc(1em + 12px);
-  }
-
-  /* The column stays clear of the copy: "Protein Powder" must still hold one
-     line in what is left of the card. */
-  .hero-reveal-pouch {
-    width: clamp(360px, 27vw, 520px);
-  }
-
-  .hero-reveal-pouch__image {
-    max-width: clamp(300px, 22vw + 2.5vh, 440px);
-  }
-
-  .hero-reveal-showcase__main {
-    gap: clamp(1.25rem, 3vw, 2.25rem);
-  }
-
   .content > h2.centered {
     font-size: clamp(2.25rem, 3vw, 3.25rem);
   }
@@ -4355,56 +4244,12 @@ footer {
 }
 
 /* Moderate laptop height — gentle scale so ticker stays visible */
-@media (min-width: 900px) and (max-height: 900px) {
-  .hero-reveal-lede {
-    font-size: clamp(2.125rem, 3.2vw + 1vh, 3.75rem);
-  }
-
-  .hero-reveal-pouch__image {
-    max-width: clamp(240px, 20vw + 2vh, 360px);
-  }
-
-  /* Through the vars, so the definition band's negative margins keep matching
-     the card's actual padding. */
-  .hero-reveal-showcase {
-    --card-pad-x: clamp(1.25rem, 2.5vw, 1.75rem);
-    --card-pad-b: clamp(0.875rem, 1.5vh, 1.125rem);
-    padding: clamp(1rem, 1.75vh, 1.375rem) var(--card-pad-x) var(--card-pad-b);
-  }
-}
 
 /* Short laptop viewports — scale hero so nav + card + ticker fit */
 @media (min-width: 900px) and (max-height: 820px) {
   .hero-reveal {
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
-  }
-
-  .hero-reveal-showcase {
-    --card-pad-x: 1.25rem;
-    --card-pad-b: 0.75rem;
-    padding: 0.875rem var(--card-pad-x) var(--card-pad-b);
-  }
-
-  .hero-reveal-lede {
-    font-size: clamp(1.75rem, 4.5vh + 1.5vw, 2.75rem);
-  }
-
-  .hero-reveal-pouch__image {
-    max-width: clamp(170px, 17vh + 9vw, 270px);
-  }
-
-  .hero-reveal-showcase__main {
-    gap: 0.875rem;
-  }
-
-  .hero-reveal-showcase__copy {
-    gap: 0.5rem;
-  }
-
-  .hero-reveal-showcase__foot {
-    margin-top: 0.5rem;
-    gap: 0.5rem;
   }
 
   /* No pill overrides here: the row is sized in cqw so it already scales with

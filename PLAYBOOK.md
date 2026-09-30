@@ -54,7 +54,7 @@ looks considered at only one width is not done.
 | Nav | burger button + slide-down sheet (`.nav-links--mobile`), cart pinned right | floating white card with inline links (`.nav-links--desktop`) |
 | Homepage CTA | floating pill bottom-right, suppressed while a CTA section is on screen (IntersectionObserver) | none; inline CTAs suffice |
 | Menu / audience galleries | horizontal **snap rail**: `overflow-x: auto` + `scroll-snap-type: x mandatory`, edge-bleed negative margins, dots underneath | centred grid, dots hidden |
-| Hero showcase | compact two-column card (copy beside pouch), attribute pills hidden, pronunciation moves into the card foot, actions become a grid below | wide card: copy + pouch columns, pills row, actions inline |
+| Hero card | one column: headline over the word badge, pouches, all three pills on one line, the two CTAs side by side with the offer ticket under them, then the story; the /hel-dee/ sticker on the card corner | white card up to 1120px: headline centred over the word badge, then story, pouches + pills, CTAs + offer ticket in three columns; sticker on the card corner |
 | Heldi vs shaker | scorecard (ticks) + stacked detail cards, a different information design | single comparison table |
 | How it works | its own H2 ("No shaking. No blending. More protein.") | a different H2 and lede |
 
@@ -80,7 +80,7 @@ just the boxes. Decide per section what the phone reader needs first.
 6. **The page never scrolls sideways.** Anything wider than the viewport gets its
    own `overflow-x: auto` container (rails, tables).
 7. Every `next/image` gets a `sizes` attribute that mirrors the real layout at both
-   widths, e.g. the hero pouch: `(max-width: 899px) 52vw, (max-width: 1280px) 320px, 420px`.
+   widths, e.g. the hero pouch: `(max-width: 899px) 262px, 354px`.
 8. Order flips (image left on desktop, above on mobile) are done with grid/flex
    placement in CSS, never by duplicating DOM. Duplicated DOM variants (the
    comparison section, nav link lists) are the exception, cost double maintenance,

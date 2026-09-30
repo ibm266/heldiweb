@@ -10,7 +10,8 @@
 import { HOME_FAQS } from "@/components/home-faqs";
 import { SERVINGS_PER_POUCH } from "@/lib/commerce/catalog";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
-import { FOUNDERS, SHIPPING } from "@/lib/pricing";
+import { SHIPPING } from "@/lib/pricing";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 import { formatPence } from "@/lib/commerce/money";
 import type { CommerceMode } from "@/lib/commerce/types";
 
@@ -214,7 +215,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
             {
               question: "When does Heldi launch, and what does the waitlist do?",
               answer:
-                `Heldi launches in autumn 2026. You can browse the shop now, but checkout switches on at launch. Join the waitlist and, if you are one of the first ${FOUNDERS.firstJoiners} on it, we hold ${FOUNDERS.percent}% off your first order for you. Either way we send one email the day we open. That is the whole list: first to know, first to stir it in.`
+                `Heldi launches in autumn 2026. You can browse the shop now, but checkout switches on at launch. ${siteWaitlistOfferCopy(true).faqAnswer}`
             }
           ]
         : []),

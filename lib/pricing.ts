@@ -302,6 +302,30 @@ export function isWelcomeCode(code: string): boolean {
 }
 
 // ---------------------------------------------------------------------------
+// 4b. The waitlist offer
+// ---------------------------------------------------------------------------
+// Settled 17 Sep 2026. What joining the waitlist gets you:
+//
+//   everyone on the list   first to know: one email, the day we launch
+//   the first 100          a free sample pair (one Khana sachet, one Chai
+//                          sachet), and Heldi pays the postage
+//   everyone on the list   GIFTING.percent off their first order
+//
+// The 15% is deliberately NOT repeated here. It is the public family rate, so
+// every surface reads GIFTING.percent and the offer can never promise a rate
+// checkout will not give. The only number this offer owns is the 100.
+// FOUNDERS above is now the close-friends code only; its firstJoiners no
+// longer describes the waitlist.
+//
+// lib/waitlist-offer.ts owns its wording on the site: no component types its
+// own offer sentence. The free pair itself is HELDI-SAMPLE-PAIR-FREE in
+// lib/commerce/catalog.ts.
+export const WAITLIST_OFFER = {
+  /** How many joiners, in joined_at order, can claim the free sample pair. */
+  freePairFirstJoiners: 100
+} as const;
+
+// ---------------------------------------------------------------------------
 // 5. Presents
 // ---------------------------------------------------------------------------
 // One set per order, agreed 4 Sep 2026:

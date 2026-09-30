@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { track } from "@/lib/analytics";
-import { FOUNDERS } from "@/lib/pricing";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 import { ChaiAccordions } from "./chai-accordions";
 import {
   CHAI_ALLERGENS,
@@ -194,7 +194,7 @@ export function ChaiBuyBox() {
         <p className="pdp__promise">
           {mode === "live"
             ? "Chai is not in the shop yet. Khana is, and it is the same spoonful for the food rather than the drink."
-            : `Chai comes after Khana. The waitlist hears first, and the first ${FOUNDERS.firstJoiners} on it get ${FOUNDERS.percent}% off.`}
+            : `Chai comes after Khana. The waitlist hears first. ${siteWaitlistOfferCopy(true).sentence}`}
         </p>
 
         <StatutoryStatements

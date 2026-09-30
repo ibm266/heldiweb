@@ -26,7 +26,6 @@ import {
 } from "@/lib/commerce/money";
 import type { IncludedItem, Product, ProductVariant } from "@/lib/commerce/types";
 import {
-  FOUNDERS,
   MAX_POUCHES,
   SHIPPING,
   TIER_ORDER,
@@ -37,6 +36,7 @@ import {
   rrpPence,
   type TierId
 } from "@/lib/pricing";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 import { GiftingPopup } from "./gifting-popup";
 import {
   KHANA_NUTRITION, SERVING_GRAMS } from "./nutrition-data";
@@ -152,7 +152,7 @@ export function BuyBox({ product }: { product: Product }) {
   // Shopify actually charges. Waitlist mode says why there is no price on the
   // page instead of quoting one.
   const shippingNote = !showPrices
-    ? `Prices arrive when the shop opens. The waitlist hears first, and the first ${FOUNDERS.firstJoiners} on it get ${FOUNDERS.percent}% off.`
+    ? `Prices arrive when the shop opens. The waitlist hears first. ${siteWaitlistOfferCopy(true).sentence}`
     : isPouch && ladderPence(pouchQty) < SHIPPING.freeOverPence
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
       : "Ships free.";

@@ -2,7 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties
+} from "react";
 import { AudienceGallery } from "@/components/audience-gallery";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { useCart } from "@/components/cart/cart-context";
@@ -22,7 +28,7 @@ import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 import { WaitlistForm } from "@/components/waitlist-form";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { WaysGallery } from "@/components/ways-gallery";
-import { FOUNDERS } from "@/lib/pricing";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 
 type HeroAnimation = "split-flap" | "dissolve";
 type HeroLayout = "video" | "classic" | "reveal";
@@ -128,17 +134,30 @@ function drawCurtainCover(
   ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
 }
 
-const WORDS = ["INDIAN FOOD", "DAL", "CURRY", "RAITA", "DAHI", "CHAAT", "CHAI"];
+// The hero's rotating word, in order. Chai, tea and coffee are Chai's; the
+// rest are Khana's. COLS is the split-flap board's width: the longest word.
+const WORDS = [
+  "INDIAN FOOD",
+  "DAL",
+  "CURRY",
+  "RAITA",
+  "DAHI",
+  "CHAAT",
+  "CHAI",
+  "TEA",
+  "COFFEE"
+];
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const COLS = 11;
 
 const FAQS = HOME_FAQS;
 
-// One ticker per commerce mode: waitlist carries the launch date and no
-// price or discount lines; live carries the price lines and drops the
-// date. The launch date lives here (BRAND.md §11.5).
-const TICKER_COPY_WAITLIST =
-  `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  FIRST ${FOUNDERS.firstJoiners} ON THE LIST GET ${FOUNDERS.percent}% OFF  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
+// One ticker per commerce mode: waitlist carries the launch date and the
+// waitlist offer; live carries the price lines and drops the date. The launch
+// date lives here (BRAND.md §11.5); the offer's items come from
+// lib/waitlist-offer.ts, never typed here.
+const WAITLIST_OFFER_COPY = siteWaitlistOfferCopy(true);
+const TICKER_COPY_WAITLIST = `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  ${WAITLIST_OFFER_COPY.tickerItems.join("  •  ")}  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
 const TICKER_COPY_LIVE =
   "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
@@ -189,18 +208,18 @@ function imageSrc(path: string) {
   return `${IMAGE_BASE}/${file}?v=${IMAGE_VERSION}`;
 }
 
-function HeroShowcasePills() {
+function HeroPills() {
   return (
-    <ul className="hero-reveal-showcase__pills" aria-label="Product attributes">
+    <ul className="hero-card__pills" aria-label="Product attributes">
       {HERO_SHOWCASE_PILLS.map((pill) => (
-        <li key={pill.label} className="hero-reveal-showcase__pill">
+        <li key={pill.label} className="hero-card__pill">
           <Image
-            className="hero-reveal-showcase__pill-icon"
+            className="hero-card__pill-icon"
             src={pill.icon}
             alt=""
             width={pill.width}
             height={pill.height}
-            sizes="34px"
+            sizes="22px"
             aria-hidden="true"
           />
           {pill.label}
@@ -210,70 +229,217 @@ function HeroShowcasePills() {
   );
 }
 
-function HeroRevealActions({ className }: { className: string }) {
+// The CTA pair and the offer ticket. One DOM for both widths: a stacked right
+// column on wide, a two-button grid with the ticket under it on mobile.
+function HeroActions() {
   const { mode } = useCart();
   const { open } = useWaitlistPopup();
   return (
-    <div className={className}>
+    <div className="hero-card__actions">
       {mode === "live" ? (
-        <Link className="button button--pill" href="/shop">
+        <Link className="button button--pill hero-card__cta" href="/shop">
           Shop now
         </Link>
       ) : (
         <button
-          className="button button--pill"
+          className="button button--pill hero-card__cta"
           type="button"
           onClick={() => open("popup-hero")}
         >
           Join waitlist
         </button>
       )}
-      <a className="button button--pill button--outline" href="#how">
+      <a className="button button--pill button--outline hero-card__cta" href="#how">
         How it works
       </a>
+      <HeroIncentive className="hero-card__ticket" />
     </div>
   );
 }
 
-// The two small lines under the headline: what the name means, then what the
-// product actually does (the h1 only names the category and the dish).
-// Rendered twice because they live in the copy column on wide and in the
-// full-width band under the pouch on mobile, where the copy column is ~150px
-// wide and too narrow to read a sentence in. Each breakpoint hides the variant
-// it does not use.
-function HeroLines({ variant }: { variant: "copy" | "foot" }) {
+// The brand line, what the two pouches do, and who made them. Left column on
+// wide; the last block in the card on mobile.
+function HeroStory() {
   return (
-    <div className={`hero-reveal-lines hero-reveal-lines--${variant}`}>
-      <p className="hero-reveal-claim">
-        Protein that behaves like an ingredient, not a supplement.
-      </p>
-      <p className="hero-reveal-claim__support">
-        Two pouches, one rule. Khana goes into the pot with all the other
-        spices,{" "}
+    <div className="hero-card__story">
+      <p className="hero-card__tagline">More from the food you love.</p>
+      <p className="hero-card__support">
+        Khana stirs straight into home-cooked dal, curry, sabzi and raita,
+        adding{" "}
         <strong>
-          <span className="hero-reveal-claim__grams">10g of protein</span> a
-          spoonful
+          <span className="hero-card__grams">10g of protein</span> per serving
         </strong>
-        . Chai goes into the mug, <strong>5g a spoonful</strong>. Nobody at
-        the table can tell.
+        . Chai adds <strong>5g per serving</strong> to chai, tea, coffee or hot
+        chocolate. Both were made for the food and drinks your family already
+        loves.
+      </p>
+      <p className="hero-card__claim">
+        Developed by Indian home cooks for Indian families.
       </p>
     </div>
   );
 }
 
-// The waitlist reward, shown as a subtitle directly beneath the hero's Join
-// waitlist pill so joining has an obvious payoff. Waitlist mode only: in live
-// mode there is no offer to advertise. Used by both hero layouts (inside the
-// reveal actions row and beneath the split-flap form).
-function HeroIncentive() {
+// "Protein powder for", its letters dissolving in once the curtain lifts,
+// the way the rotating word does. The spans are presentational; the h1 still
+// reads as one phrase.
+const HERO_PREFIX = "Protein powder for";
+
+// Splits a phrase into its words, each with the index of its first letter in
+// the whole phrase (spaces counted), so letter delays run on across words.
+function wordRuns(text: string): { part: string; start: number }[] {
+  return text.split(" ").map((part, index, parts) => ({
+    part,
+    start: parts.slice(0, index).reduce((total, word) => total + word.length + 1, 0)
+  }));
+}
+
+function HeroPrefix() {
+  return (
+    <span className="hero-card__prefix">
+      {wordRuns(HERO_PREFIX).map(({ part, start }, partIndex) => {
+        return (
+          <span className="hero-card__prefix-word" key={partIndex}>
+            {part.split("").map((letter, letterIndex) => (
+              <span
+                className="hero-card__prefix-letter"
+                key={letterIndex}
+                style={{ animationDelay: `${120 + (start + letterIndex) * 22}ms` }}
+              >
+                {letter}
+              </span>
+            ))}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+// The rotating word in its gold badge. Same words, order and timing as
+// DissolveBoard (3.2s on the first word, 2.6s on the rest, letters dissolving
+// in 55ms apart). New here: the letters dissolve out before the next word,
+// and the badge stretches from one word's width to the next. --len lets the
+// CSS shrink the type so INDIAN FOOD always fits the card.
+const BADGE_IN_STEP_MS = 55;
+const BADGE_OUT_STEP_MS = 22;
+const BADGE_OUT_MS = 240;
+
+function HeroWordBadge({ active }: { active: boolean }) {
+  const [wordIndex, setWordIndex] = useState(0);
+  const [leaving, setLeaving] = useState(false);
+  const [run, setRun] = useState(0);
+  const badgeRef = useRef<HTMLSpanElement>(null);
+  const widthRef = useRef(0);
+
+  // Timer-driven rotation, reset whenever `active` toggles, so setting state
+  // in the effect is the point.
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    setWordIndex(0);
+    setLeaving(false);
+    if (!active) return;
+
+    // A fresh run re-keys the letters so the first word dissolves in as the
+    // card appears.
+    setRun((value) => value + 1);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let index = 0;
+    let timer: number;
+
+    function scheduleNext() {
+      timer = window.setTimeout(
+        () => {
+          const next = (index + 1) % WORDS.length;
+          if (reduce) {
+            index = next;
+            setWordIndex(index);
+            scheduleNext();
+            return;
+          }
+          setLeaving(true);
+          timer = window.setTimeout(() => {
+            index = next;
+            setLeaving(false);
+            setWordIndex(index);
+            scheduleNext();
+          }, BADGE_OUT_MS + WORDS[index].length * BADGE_OUT_STEP_MS);
+        },
+        index === 0 ? 3200 : 2600
+      );
+    }
+
+    scheduleNext();
+    return () => window.clearTimeout(timer);
+  }, [active]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  // Stretch from the last word's width to this one's. Measured before paint,
+  // so the new word never flashes at the old width.
+  useLayoutEffect(() => {
+    const el = badgeRef.current;
+    if (!el) return;
+    el.style.width = "";
+    const to = el.getBoundingClientRect().width;
+    const from = widthRef.current;
+    widthRef.current = to;
+    if (
+      !from ||
+      Math.abs(from - to) < 1 ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+    el.style.width = `${from}px`;
+    void el.offsetWidth;
+    el.style.width = `${to}px`;
+  }, [wordIndex]);
+
+  const word = WORDS[wordIndex];
+
+  return (
+    <span
+      ref={badgeRef}
+      className={`hero-card__badge${leaving ? " is-leaving" : ""}`}
+      style={{ "--len": word.length } as CSSProperties}
+      aria-live="polite"
+      onTransitionEnd={(event) => {
+        if (event.propertyName === "width") event.currentTarget.style.width = "";
+      }}
+    >
+      {wordRuns(word).map(({ part, start }, partIndex) => {
+        return (
+          <span className="hero-card__badge-word" key={`${run}-${wordIndex}-${partIndex}`}>
+            {part.split("").map((letter, letterIndex) => (
+              <span
+                className="hero-card__badge-letter"
+                key={letterIndex}
+                style={{
+                  animationDelay: `${
+                    (start + letterIndex) *
+                    (leaving ? BADGE_OUT_STEP_MS : BADGE_IN_STEP_MS)
+                  }ms`
+                }}
+              >
+                {letter}
+              </span>
+            ))}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
+
+// The waitlist offer, beside the hero's Join waitlist button so joining has an
+// obvious payoff. Waitlist mode only: in live mode there is no offer to
+// advertise. The reveal hero shows it as a tear-off ticket; the split-flap
+// hero as a plain line under its form. The words come from
+// lib/waitlist-offer.ts, never from here.
+function HeroIncentive({ className = "hero-incentive" }: { className?: string }) {
   const { mode } = useCart();
   if (mode === "live") return null;
-  return (
-    <p className="hero-incentive">
-      {FOUNDERS.percent}% off at launch, for the first {FOUNDERS.firstJoiners} on
-      the list.
-    </p>
-  );
+  return <p className={className}>{WAITLIST_OFFER_COPY.sentence}</p>;
 }
 
 function PouchEquation() {
@@ -588,6 +754,7 @@ function HeroReveal({
 }: {
   onIntroComplete?: () => void;
 }) {
+  const { mode } = useCart();
   const [revealed, setRevealed] = useState(false);
   const [curtainDismissed, setCurtainDismissed] = useState(false);
   const [curtainFading, setCurtainFading] = useState(false);
@@ -788,80 +955,62 @@ function HeroReveal({
   return (
     <div className="hero-reveal">
       <div className={`hero-reveal-panel${revealed ? " is-revealed" : ""}`}>
-        <div className="hero-reveal-columns">
-          <div className="hero-reveal-showcase">
-            <div className="hero-reveal-showcase__main">
-              <div className="hero-reveal-showcase__copy">
-                <h1 className="hero-reveal-lede">
-                  <span className="hero-reveal-lede__prefix">
-                    <span className="hero-reveal-lede__prefix-line">Protein </span>
-                    <span className="hero-reveal-lede__prefix-line">Powder </span>
-                    <span className="hero-reveal-lede__prefix-line">for</span>
-                  </span>
-                  <span className="word-board">
-                    <DissolveBoard active={revealed} />
-                  </span>
-                </h1>
-                <HeroLines variant="copy" />
-                <HeroRevealActions className="hero-reveal-actions hero-reveal-actions--in-showcase" />
-              </div>
-              <div className="hero-reveal-pouch">
-                <Image
-                  className="hero-reveal-pouch__image"
-                  src={imageSrc("/images/hero-pair.webp")}
-                  alt="The Heldi Khana and Heldi Chai pouches side by side, one for the pot and one for the mug"
-                  width={1744}
-                  height={2336}
-                  priority
-                  sizes="(max-width: 899px) 46vw, (max-width: 1280px) 320px, 420px"
-                />
-              </div>
+        {/* Wide: centred headline, then story | pouches | actions. Mobile:
+            one column, reordered in CSS (headline, pouches, actions, story).
+            The /hel-dee/ sticker sits on the card's top-right corner at both
+            widths. */}
+        <div className={`hero-card${mode === "live" ? " hero-card--live" : ""}`}>
+          <p className="hero-card__sticker">
+            <span className="hero-card__sticker-term">/hel-dee/</span>
+            <span className="hero-card__sticker-gloss">
+              <em>adj.</em> how my nani says “healthy.”
+            </span>
+          </p>
+          <h1 className="hero-card__lede">
+            <HeroPrefix />
+            <span className="hero-card__badge-row">
+              <HeroWordBadge active={revealed} />
+            </span>
+          </h1>
+          <div className="hero-card__body">
+            <HeroStory />
+            <div className="hero-card__pack">
+              <Image
+                className="hero-card__pack-image"
+                src={imageSrc("/images/hero-pair-cutout.webp")}
+                alt="The Heldi Khana and Heldi Chai pouches side by side, one for the pot and one for the mug"
+                width={708}
+                height={667}
+                priority
+                sizes="(max-width: 899px) 262px, 354px"
+              />
+              <HeroPills />
             </div>
-            {/* Mobile's CTA row, inside the card under the pack. Hidden on
-                wide, where the CTAs sit in the copy column instead. */}
-            <HeroRevealActions className="hero-reveal-actions hero-reveal-actions--below" />
-            {/* Lives in the foot so it can sit at the right-hand end of the
-                pill row on wide; on mobile the pills are hidden and it stays
-                anchored to the card, inside the definition band. */}
-            <div className="hero-reveal-showcase__foot">
-              <HeroLines variant="foot" />
-              <div className="hero-reveal-showcase__rule" aria-hidden="true" />
-              <HeroShowcasePills />
-              {revealed ? (
-                <button
-                  type="button"
-                  className={`hero-reveal-call-elephants${
-                    canCallElephants ? " is-visible" : ""
-                  }`}
-                  onClick={handleCallElephants}
-                  disabled={!canCallElephants}
-                  aria-label="Press to call the elephants"
-                  aria-hidden={!canCallElephants}
-                  tabIndex={canCallElephants ? 0 : -1}
-                  data-tooltip="Press to call the elephants"
-                >
-                  <Image
-                    className="hero-reveal-call-elephants__icon"
-                    src={imageSrc("/images/elephant-large-transparent.webp")}
-                    alt=""
-                    width={2048}
-                    height={2048}
-                    sizes="34px"
-                  />
-                </button>
-              ) : null}
-            </div>
-            {/* The name, given the pack's own treatment: an ink band closing
-                the card, the way the ink band closes the pouch above it. It
-                is the one filled element in a white card, so it carries
-                without competing with the headline. */}
-            <p className="hero-reveal-definition">
-              <span className="hero-reveal-definition__term">/hel-dee/</span>
-              <span className="hero-reveal-definition__gloss">
-                <em>adj.</em> how my nani says “healthy.”
-              </span>
-            </p>
+            <HeroActions />
           </div>
+          {revealed ? (
+            <button
+              type="button"
+              className={`hero-reveal-call-elephants${
+                canCallElephants ? " is-visible" : ""
+              }`}
+              onClick={handleCallElephants}
+              disabled={!canCallElephants}
+              aria-label="Press to call the elephants"
+              aria-hidden={!canCallElephants}
+              tabIndex={canCallElephants ? 0 : -1}
+              data-tooltip="Press to call the elephants"
+            >
+              <Image
+                className="hero-reveal-call-elephants__icon"
+                src={imageSrc("/images/elephant-large-transparent.webp")}
+                alt=""
+                width={2048}
+                height={2048}
+                sizes="34px"
+              />
+            </button>
+          ) : null}
         </div>
       </div>
 
@@ -1386,10 +1535,9 @@ export function HeldiHomepage({
           <div className="final-cta-copy">
             <h2>Be first to stir it in.</h2>
             <p>
-              One email the day we <CopyHighlight>launch</CopyHighlight>, with{" "}
-              <CopyHighlight>{FOUNDERS.percent}% off</CopyHighlight> inside it for
-              the first {FOUNDERS.firstJoiners} on the list. Pot or mug, the
-              waitlist hears first.
+              {WAITLIST_OFFER_COPY.paragraphParts.before}
+              <CopyHighlight>{WAITLIST_OFFER_COPY.paragraphParts.highlight}</CopyHighlight>
+              {WAITLIST_OFFER_COPY.paragraphParts.after}
             </p>
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
           </div>

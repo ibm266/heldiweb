@@ -11,7 +11,7 @@ import {
 } from "react";
 import { useCart } from "@/components/cart/cart-context";
 import { WaitlistForm } from "@/components/waitlist-form";
-import { FOUNDERS } from "@/lib/pricing";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 
 // Site-wide "join the waitlist" popup. A visitor can open it from anywhere
 // (a page CTA, the shop buy box, the floating button, the nav) instead of
@@ -146,9 +146,7 @@ function WaitlistPopupPanel({
           Be first to stir it in.
         </h2>
         <p className="waitlist-pop__lede">
-          One email the day we launch, with {FOUNDERS.percent}% off inside it
-          for the first {FOUNDERS.firstJoiners} on the list. The waitlist eats
-          first. And drinks first.
+          {siteWaitlistOfferCopy(true).paragraph}
         </p>
         <WaitlistForm
           joined={joined}

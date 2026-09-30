@@ -31,7 +31,9 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
 - **Tagline family**: "The same food, just a little Heldier." · "Bringing something new
   to the table." · "Same recipes. Same taste. More protein." (the gold v1 pack front;
   the navy v2 front, on every product shot since 2 Sep 2026, reads "Protein powder for
-  Indian food")
+  Indian food") · "More from the food you love." (the brand line the round-16 pouch
+  backs lead with; since 30 Sep 2026 also the homepage hero's line, heading the story
+  column above "Developed by Indian home cooks for Indian families.")
 - **Founder story, one line**: "My nani never said healthy. She said heldi. Warm food,
   made with care, made for you. That is where the name comes from." (founder band,
   homepage; photo of Mihir with nani; signed "— Mihir, founder")
@@ -231,11 +233,11 @@ The six named patterns, with canon examples:
   founder quote, story notes).
 - **CTA canon**: primary "Join waitlist" (waitlist mode) or "Shop now" (live), decided
   by `COMMERCE_MODE`, never hard-coded per surface; secondary "How it works" (outline);
-  closing "Be first to stir it in." with "One email the day we launch, with 20% off
-  your first order inside."; waitlist success: "You're on the list, 20% off saved for
-  launch day. Tell your mum we said hi." The 20% is the waitlist launch offer
-  (`WAITLIST_OFFER`, §11.3); every surface interpolates the percent, never a hard-coded
-  number or the code string.
+  closing "Be first to stir it in." over the waitlist offer paragraph; waitlist
+  success: "You're on the list. One email, the day we launch, with 15% off your first
+  order inside. Tell your mum we said hi." Every offer line comes from
+  `lib/waitlist-offer.ts` (§11.3 item 6); no surface types the offer, a number in it,
+  or a code string.
 - **Pill-links** end with a spaced arrow: "Read the full truth →".
 - **FAQ style**: question = what a person actually types; answer = 2 to 5 sentences,
   direct first sentence, no marketing pivot until the facts are done, optional
@@ -510,17 +512,22 @@ list, for the next time:
    A tier is only pouches/RRP/launch price — it carries **no** jars/dabbas field;
    gift counts always come from `giftCountsForPouches`, so the full table ships
    2 jars, not 3. Don't reintroduce per-tier gift fields (they drift).
-6. Waitlist launch offer (`WAITLIST_OFFER` in `lib/pricing.ts`: 20% off, code
-   `PEHLEAAP`, all pouch tiers, never the Sample, one per order, one use per
-   customer, 14-day window). If it changes, the surfaces are: the mock
-   eligibility helper (`waitlistEligiblePenceForLines` in `catalog.ts`) and its
-   use in `mock-provider.ts`; the waitlist-mode copy that shows the **percentage**
-   (ticker `TICKER_COPY_WAITLIST`, hero `.hero-incentive`, final-CTA `<p>` and
-   waitlist success in the shared form, popup lede, `buy-box.tsx` waitlist
-   shipping note, the launch FAQ in `site-faqs.ts`); the Klaviyo welcome template
-   (`VnY8iQ`) and the launch email; and the real Shopify code created at launch.
-   The **code string** lives only in `WAITLIST_OFFER`, the launch email and
-   Shopify — never on the site. Grep terms: `WAITLIST_OFFER`, `PEHLEAAP`, `% off`.
+6. Waitlist offer (settled 17 Sep 2026, on the site since 30 Sep 2026). Everyone on
+   the list is first to know (one email, the day we launch); the first 100 on the
+   list get a free sample pair (one Khana sachet, one Chai sachet) and we pay the
+   postage; everyone on the list gets 15% off their first order. The 100 is
+   `WAITLIST_OFFER.freePairFirstJoiners` and the 15% is `GIFTING.percent`, both in
+   `lib/pricing.ts`. The words live in `lib/waitlist-offer.ts` (import-free) and
+   reach components already bound to those numbers through
+   `lib/waitlist-offer-site.ts`. Surfaces: the ticker (`TICKER_COPY_WAITLIST`), the
+   hero's offer ticket (`HeroIncentive`), the final-CTA paragraph, the popup lede,
+   the waitlist form's success line, both buy boxes' waitlist notes, and the launch
+   FAQ in `site-faqs.ts`; off the site, the Klaviyo welcome email (template
+   `TvLgd3`) and the launch email. The founders 25% (`FOUNDERS`) is a close-friends
+   code now and is never advertised. Until branch `offer/waitlist-free-sample` lands,
+   the site does not count the list, so the lines never switch to their "pairs gone"
+   form: check the list size before it reaches 100. Grep terms:
+   `siteWaitlistOfferCopy`, `WAITLIST_OFFER`, `% off`.
 
 ### 11.4 Product name change ("Khana" is a placeholder)
 
@@ -545,8 +552,9 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
   on `mode`; never hand-edit a CTA to force it.
 - Waitlist mode shows **no prices (£) and no discount code strings anywhere**;
   everything returns on the flip to live. The one deliberate exception is the
-  waitlist launch offer, advertised as a **percentage only** ("20% off your first
-  order") to give joining a reason — never a £ price, never the `PEHLEAAP` string.
+  waitlist offer (§11.3 item 6), stated in words and a percentage ("a free sample
+  pair", "15% off your first order") to give joining a reason, never as a £ price or
+  a code string.
   It rides the ticker, the join forms/popup, the PDP waitlist shipping note and
   the launch FAQ (all §11.3 item 6). Gated on the mode: PDP prices, the launch-price
   block and the shipping note (`buy-box.tsx`), the accordion shipping rates

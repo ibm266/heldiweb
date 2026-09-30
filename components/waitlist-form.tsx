@@ -5,7 +5,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
 import { WAITLIST_CONSENT_COPY } from "@/lib/waitlist";
-import { FOUNDERS } from "@/lib/pricing";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 
 // The site's single waitlist entry point: a collapsed "Join waitlist" button
 // that expands into an email field with the weekly-letter opt-in. Lives in the
@@ -81,8 +81,7 @@ export function WaitlistForm({
   if (joined) {
     return (
       <p className="waitlist-success" role="status">
-        You&apos;re on the list. The first {FOUNDERS.firstJoiners} on it get{" "}
-        {FOUNDERS.percent}% off at launch. Tell your mum we said hi.
+        {siteWaitlistOfferCopy(true).success}
       </p>
     );
   }
