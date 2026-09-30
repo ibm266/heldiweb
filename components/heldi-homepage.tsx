@@ -135,17 +135,20 @@ function drawCurtainCover(
 }
 
 // The hero's rotating word, in order. Chai, tea and coffee are Chai's; the
-// rest are Khana's. COLS is the split-flap board's width: the longest word.
+// rest are Khana's. After INDIAN FOOD the list alternates food and drink so
+// both pouches come up in the first few words (chai second, tea fourth)
+// rather than the drinks waiting until the food has run out. COLS is the
+// split-flap board's width: the longest word.
 const WORDS = [
   "INDIAN FOOD",
-  "DAL",
-  "CURRY",
-  "RAITA",
-  "DAHI",
-  "CHAAT",
   "CHAI",
+  "DAL",
   "TEA",
-  "COFFEE"
+  "CURRY",
+  "COFFEE",
+  "RAITA",
+  "CHAAT",
+  "DAHI"
 ];
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const COLS = 11;
