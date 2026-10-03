@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
@@ -17,7 +18,8 @@ import { WAITLIST_CONSENT_COPY } from "@/lib/waitlist";
 // call sites keep their placement, while the popup can pass a distinct one.
 // The field takes focus when it opens; `autoFocus={false}` is for a form that
 // starts open on page load (the shop page), where focus would scroll the page
-// and raise the phone keyboard before anyone asked.
+// and raise the phone keyboard before anyone asked. `onNavigate` lets the
+// popup close itself when the success state's Our story link is followed.
 export function WaitlistForm({
   joined,
   onJoin,
@@ -25,7 +27,8 @@ export function WaitlistForm({
   buttonStyle = "square",
   startExpanded = false,
   autoFocus = true,
-  placement
+  placement,
+  onNavigate
 }: {
   joined: boolean;
   onJoin: () => void;
@@ -34,6 +37,7 @@ export function WaitlistForm({
   startExpanded?: boolean;
   autoFocus?: boolean;
   placement?: string;
+  onNavigate?: () => void;
 }) {
   const [expanded, setExpanded] = useState(startExpanded);
   const [wantsLetter, setWantsLetter] = useState(false);
@@ -41,6 +45,7 @@ export function WaitlistForm({
   const inputRef = useRef<HTMLInputElement>(null);
   const { mode } = useCart();
   const offer = useWaitlistOffer();
+  const pathname = usePathname();
   const placementValue = placement ?? id;
 
   useEffect(() => {
@@ -87,10 +92,20 @@ export function WaitlistForm({
   if (joined) {
     // One line for everyone. The form never tells a joiner whether they made
     // the first hundred (BRAND.md §11.9), so it needs nothing from the API.
+    // A quiet next step follows it, except on the page it points to.
     return (
-      <p className="waitlist-success" role="status">
-        {offer.success}
-      </p>
+      <>
+        <p className="waitlist-success" role="status">
+          {offer.success}
+        </p>
+        {pathname !== "/our-story" ? (
+          <p className="waitlist-success__more">
+            <Link href="/our-story" onClick={onNavigate}>
+              While you wait, meet the nani who named&nbsp;it&nbsp;&#8594;
+            </Link>
+          </p>
+        ) : null}
+      </>
     );
   }
 

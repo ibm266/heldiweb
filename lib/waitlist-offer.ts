@@ -68,7 +68,7 @@ export function waitlistOfferCopy(
   // pair sours the moment they joined, and telling them they made it is a
   // promise the form is not the place to make: the launch email carries the
   // claim link, and joined_at order settles who gets one.
-  const success = `You're on the list. One email, the day we launch, with ${percent}% off your first order inside. Tell your mum we said hi.`;
+  const success = `You're on the list. One email, the day we launch, with ${percent}% off your first order inside.`;
   const heardFirst =
     "We send one email on the day the shop opens, so the waitlist is first to know.";
 

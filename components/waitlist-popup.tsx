@@ -172,6 +172,7 @@ function WaitlistPopupPanel({
           placement={placement}
           buttonStyle="pill"
           startExpanded
+          onNavigate={onClose}
         />
       </div>
     </div>

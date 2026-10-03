@@ -248,7 +248,8 @@ The six named patterns, with canon examples:
   by `COMMERCE_MODE`, never hard-coded per surface; secondary "How it works" (outline);
   closing "Be first to stir it in." followed by the waitlist offer paragraph; waitlist
   success: "You're on the list. One email, the day we launch, with 15% off your first
-  order inside. Tell your mum we said hi." Those lines, and every other statement of
+  order inside." followed by a quiet link, "While you wait, meet the nani who named
+  it →", to /our-story (not shown on /our-story itself). Those lines, and every other statement of
   the waitlist offer, come from `lib/waitlist-offer.ts` (client surfaces read them through
   `useWaitlistOffer()`). §11.9 owns the offer. No surface types the offer, a number in
   it, or a code string.
@@ -736,7 +737,7 @@ are interpolated from `WAITLIST_OFFER` and `GIFTING`, never typed.
 | `tickerItems` | Waitlist ticker | FIRST 100 ON THE LIST GET A FREE SAMPLE PAIR  •  15% OFF YOUR FIRST ORDER |
 | `sentence` | Hero line, both PDP notes, subpage CTA perk line, `llms.txt`, captions | The first 100 on the list get a free sample pair, and we pay the postage. Everyone on the list gets 15% off their first order. |
 | `paragraph` | Popup lede and final CTA paragraph, identical in both | One email, the day we launch. The first 100 on the list get a free sample pair, one for the bowl and one for the mug, and we pay the postage. Everyone on the list gets 15% off their first order. |
-| `success` | Form success state. One line in both forms: it never places the joiner | You're on the list. One email, the day we launch, with 15% off your first order inside. Tell your mum we said hi. |
+| `success` | Form success state. One line in both forms: it never places the joiner. The form adds the Our story link under it | You're on the list. One email, the day we launch, with 15% off your first order inside. |
 | `waitlistOfferRows()` | The three-row block in the welcome email, the launch emails and the terms | Everyone on the list: First to know, the day we launch. The first 100: A free sample pair, and we pay the postage. Your first order: 15% off. |
 | `WAITLIST_PAIR_EXPLAINER` | Emails, product description | The pair is one Khana sachet for the bowl and one Chai sachet for the mug, so you can try both before you commit to a pouch. |
 | `faqAnswer` | The offer half of the launch FAQ (Voice A) | We send one email on the day the shop opens, so the waitlist is first to know. The first 100 people on the list get a free sample pair, one Khana sachet and one Chai sachet, and we pay the postage. Everyone on the list gets 15% off their first order. |

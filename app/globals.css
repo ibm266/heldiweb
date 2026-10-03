@@ -1813,6 +1813,17 @@ h2 {
   font-style: italic;
 }
 
+.waitlist-success__more {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+}
+
+.waitlist-success__more a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .double-rule {
   height: 7px;
   border-block: 3px solid var(--ink);
