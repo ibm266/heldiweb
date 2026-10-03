@@ -15,12 +15,16 @@ import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 // `id` names the DOM field (and its honeypot). `placement` is what the API and
 // the waitlist_signup analytics event record; it defaults to `id` so existing
 // call sites keep their placement, while the popup can pass a distinct one.
+// The field takes focus when it opens; `autoFocus={false}` is for a form that
+// starts open on page load (the shop page), where focus would scroll the page
+// and raise the phone keyboard before anyone asked.
 export function WaitlistForm({
   joined,
   onJoin,
   id,
   buttonStyle = "square",
   startExpanded = false,
+  autoFocus = true,
   placement
 }: {
   joined: boolean;
@@ -28,6 +32,7 @@ export function WaitlistForm({
   id: string;
   buttonStyle?: "square" | "pill";
   startExpanded?: boolean;
+  autoFocus?: boolean;
   placement?: string;
 }) {
   const [expanded, setExpanded] = useState(startExpanded);
@@ -38,8 +43,8 @@ export function WaitlistForm({
   const placementValue = placement ?? id;
 
   useEffect(() => {
-    if (expanded) inputRef.current?.focus();
-  }, [expanded]);
+    if (expanded && autoFocus) inputRef.current?.focus();
+  }, [expanded, autoFocus]);
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

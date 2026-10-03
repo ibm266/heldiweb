@@ -22,27 +22,11 @@ const TICK_ROWS: TickRow[] = [
   { kind: "tick", label: "Zero new habits required" }
 ];
 
+// Trimmed in October 2026 to the two rows nothing else on the homepage says
+// (docs/ui-audit/homepage.md). The cut rows each repeated a section above:
+// how you take it (How it works), aftertaste (the stir gallery), hot drinks
+// (the range band), 94% whey isolate (the truth teaser), who it feeds.
 const TEXT_ROWS: TextRow[] = [
-  {
-    kind: "text",
-    label: "How you take it",
-    heldi: "One spoonful, stirred into your plate",
-    shakes: "Shake, gulp, rinse, repeat"
-  },
-  {
-    kind: "text",
-    label: "Aftertaste",
-    heldi: "None. It disappears into the masala",
-    shakes: "Fake vanilla until your next chai"
-  },
-  {
-    kind: "text",
-    label: "Hot drinks",
-    // Chai's page is the source for what it goes into; no figure here because
-    // Chai publishes none yet (components/shop/chai-data.ts).
-    heldi: "Chai, tea, coffee. That is what Heldi Chai is for",
-    shakes: "Cold, from a bottle, every time"
-  },
   {
     kind: "text",
     label: "Flavours",
@@ -56,26 +40,9 @@ const TEXT_ROWS: TextRow[] = [
   },
   {
     kind: "text",
-    label: "On the label",
-    // 94%, not 90%. The pouch is 94% whey protein isolate (FORMULA in
-    // components/shop/nutrition-data.ts); the isolate itself is 88.83% protein
-    // as it arrives, 92.66% with the water out. Three different numbers that
-    // used to be conflated here. All move if the formulation changes, so
-    // BRAND.md §11.1 greps for "94".
-    heldi: "94% whey protein isolate, then kitchen spices",
-    shakes: "Sweeteners, gums and 'natural flavourings'"
-  },
-  {
-    kind: "text",
     label: "Washing up",
     heldi: "A spoon",
     shakes: "That shaker. You know the smell."
-  },
-  {
-    kind: "text",
-    label: "Who it feeds",
-    heldi: "The whole table",
-    shakes: "Whoever owns the shaker"
   }
 ];
 

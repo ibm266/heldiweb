@@ -9,14 +9,13 @@ import {
   useState,
   type CSSProperties
 } from "react";
-import { AudienceGallery } from "@/components/audience-gallery";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { useCart } from "@/components/cart/cart-context";
 import { ComparisonSection } from "@/components/comparison-section";
 import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
 import { FooterLegal } from "@/components/subpage-nav";
 import { CopyHighlight } from "@/components/copy-highlight";
-import { HOME_FAQS } from "@/components/home-faqs";
+import { HOME_FAQ_GROUPS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
 import { NavMore } from "@/components/nav-more";
 import { RangeSection } from "@/components/range-section";
@@ -154,8 +153,6 @@ const WORDS = [
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const COLS = 11;
 
-const FAQS = HOME_FAQS;
-
 // One ticker per commerce mode: waitlist carries the launch date and the
 // waitlist offer; live carries the price lines and drops the date. The launch
 // date lives here (BRAND.md §11.5); the offer's items come from
@@ -168,9 +165,6 @@ const TICKER_COPY_LIVE =
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
   allNatural: "/images/pouch-badges/all-natural.png",
-  lactoseFree: "/images/pouch-badges/lactose-free.png",
-  noSugar: "/images/pouch-badges/no-sugar.png",
-  glutenFree: "/images/pouch-badges/gluten-free.png",
   vegetarian: "/images/pouch-badges/vegetarian.png"
 } as const;
 
@@ -469,76 +463,6 @@ function PouchEquation() {
         </div>
       </div>
     </>
-  );
-}
-
-function PouchStats({ grams, className }: { grams: number; className: string }) {
-  return (
-    <div className={className}>
-      <div className="pouch-stat pouch-stat--gold">
-        <strong>{grams}g</strong>
-        <span>protein per bowl</span>
-      </div>
-      <div className="pouch-stat pouch-stat--white">
-        <strong>All natural</strong>
-        <span>ingredients</span>
-      </div>
-    </div>
-  );
-}
-
-function PouchBadgesList({ className }: { className: string }) {
-  return (
-    <ul className={className} aria-label="Product attributes">
-      <li className="pouch-badge">
-        <Image
-          className="pouch-badge__icon"
-          src={POUCH_BADGE_ICONS.lactoseFree}
-          alt=""
-          width={280}
-          height={377}
-          sizes="34px"
-          aria-hidden="true"
-        />
-        98% lactose-free
-      </li>
-      <li className="pouch-badge">
-        <Image
-          className="pouch-badge__icon"
-          src={POUCH_BADGE_ICONS.noSugar}
-          alt=""
-          width={386}
-          height={390}
-          sizes="34px"
-          aria-hidden="true"
-        />
-        No added sugar
-      </li>
-      <li className="pouch-badge">
-        <Image
-          className="pouch-badge__icon"
-          src={POUCH_BADGE_ICONS.glutenFree}
-          alt=""
-          width={328}
-          height={225}
-          sizes="34px"
-          aria-hidden="true"
-        />
-        Gluten free
-      </li>
-      <li className="pouch-badge">
-        <Image
-          className="pouch-badge__icon"
-          src={POUCH_BADGE_ICONS.vegetarian}
-          alt=""
-          width={286}
-          height={367}
-          sizes="34px"
-          aria-hidden="true"
-        />
-        Vegetarian
-      </li>
-    </ul>
   );
 }
 
@@ -1054,6 +978,7 @@ export function HeldiHomepage({
   ticker = true
 }: HeldiHomepageProps) {
   const [faqOpen, setFaqOpen] = useState(-1);
+  const [faqGroup, setFaqGroup] = useState<string>(HOME_FAQ_GROUPS[0].id);
   const [joined, setJoined] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroIntroComplete, setHeroIntroComplete] = useState(
@@ -1357,21 +1282,6 @@ export function HeldiHomepage({
         <div className="double-rule" aria-hidden="true" />
       </section>
 
-      <section className="section section--cream" id="pouch">
-        <div className="pouch-section">
-          <div className="pouch-section__copy">
-            <h2>Food you love. Nutrients you need.</h2>
-            <p>
-              Khana <CopyHighlight>vanishes clean</CopyHighlight> into every
-              gravy, dal and yoghurt base. Chai does the same in the mug. No
-              chalk, no aftertaste.
-            </p>
-          </div>
-          <PouchStats grams={grams} className="pouch-section__stats" />
-          <PouchBadgesList className="pouch-section__badges" />
-        </div>
-      </section>
-
       <section
         className="section section--ink section--bordered"
         id="stir"
@@ -1424,20 +1334,10 @@ export function HeldiHomepage({
         <MenuGallery gramsPerTbsp={grams} />
       </section>
 
-      <section className="section section--gold section--bordered" id="audience">
-        <div className="content">
-          <h2 className="centered audience-heading">
-            Built for you.{" "}
-            <span className="audience-heading__line2">
-              Made for the whole family.
-            </span>
-          </h2>
-          <AudienceGallery />
-        </div>
-      </section>
-
-      <ComparisonSection />
-
+      {/* Founder band before the shaker comparison: with the audience band
+          gone, menus (ink) and the comparison (ink) would otherwise touch.
+          The showcase-only reviews band travels with it so the cream, gold,
+          ink order holds in showcase mode too (PLAYBOOK R1). */}
       <ReviewsSection
         id="reviews"
         tone="cream"
@@ -1472,32 +1372,62 @@ export function HeldiHomepage({
         </div>
       </section>
 
+      <ComparisonSection />
+
       <section className="section section--cream section--bordered" id="faq">
         <div className="faq">
           <h2 className="centered">The questions we hear most.</h2>
-          <div className="faq-list">
-            {FAQS.map((faq, index) => {
-              const open = faqOpen === index;
-              return (
-                <article key={faq.question}>
-                  <h3>
-                    <button
-                      type="button"
-                      aria-expanded={open}
-                      aria-controls={`faq-answer-${index}`}
-                      onClick={() => setFaqOpen(open ? -1 : index)}
-                    >
-                      <span>{faq.question}</span>
-                      <b aria-hidden="true">{open ? "–" : "+"}</b>
-                    </button>
-                  </h3>
-                  <p id={`faq-answer-${index}`} hidden={!open}>
-                    {faq.answer}
-                  </p>
-                </article>
-              );
-            })}
+          {/* One group shows at a time, but every group and every answer is
+              rendered (hidden, not left out), so crawlers read all thirteen
+              and they match the FAQPage JSON-LD in app/page.tsx. */}
+          <div className="faq-groups" role="radiogroup" aria-label="Question topics">
+            {HOME_FAQ_GROUPS.map((group) => (
+              <button
+                key={group.id}
+                type="button"
+                role="radio"
+                aria-checked={faqGroup === group.id}
+                aria-controls={`faq-group-${group.id}`}
+                className={`truth-chip${faqGroup === group.id ? " is-active" : ""}`}
+                onClick={() => {
+                  setFaqGroup(group.id);
+                  setFaqOpen(-1);
+                }}
+              >
+                {group.label}
+              </button>
+            ))}
           </div>
+          {HOME_FAQ_GROUPS.map((group) => (
+            <div
+              className="faq-list faq-list--grouped"
+              id={`faq-group-${group.id}`}
+              key={group.id}
+              hidden={faqGroup !== group.id}
+            >
+              {group.faqs.map(({ faq, index }) => {
+                const open = faqOpen === index;
+                return (
+                  <article key={faq.question}>
+                    <h3>
+                      <button
+                        type="button"
+                        aria-expanded={open}
+                        aria-controls={`faq-answer-${index}`}
+                        onClick={() => setFaqOpen(open ? -1 : index)}
+                      >
+                        <span>{faq.question}</span>
+                        <b aria-hidden="true">{open ? "–" : "+"}</b>
+                      </button>
+                    </h3>
+                    <p id={`faq-answer-${index}`} hidden={!open}>
+                      {faq.answer}
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
+          ))}
           <p className="faq-more">
             <a className="pill-link" href="/faq">
               See the full FAQ &#8594;

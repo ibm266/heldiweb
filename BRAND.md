@@ -371,7 +371,7 @@ product shots are AI-generated placeholders to be replaced with real photography
 
 | Route | Job | Registered in |
 |---|---|---|
-| `/` | Convert: hero reveal, pouch stats, stir gallery, the two-pouch range band (Khana for the pot, Chai for the mug, `components/range-section.tsx`), how-it-works, gifting, truth teaser, menus, audience, vs-shaker, reviews, founder band, FAQ teaser, jar, waitlist CTA | `components/heldi-homepage.tsx` |
+| `/` | Convert: hero reveal, stir gallery, the two-pouch range band (Khana for the pot, Chai for the mug, `components/range-section.tsx`), how-it-works, gifting, truth teaser, menus, reviews, founder band, vs-shaker, grouped FAQ teaser, jar, waitlist CTA | `components/heldi-homepage.tsx` |
 | `/truth` | Educate + rank for protein questions (interactive myth-busting) | `components/truth-page.tsx` |
 | `/our-story` | Founder trust: nani, kitchen trials, taste panel, what's next | `app/our-story/page.tsx` |
 | `/inside-the-pouch` | Provenance: suppliers, batch report, made in England | `app/inside-the-pouch/page.tsx` |
@@ -460,7 +460,8 @@ list, for the next time:
    supplier sections, metadata description, batch report if supplier changes.
 3. `components/site-faqs.ts`: "What are the ingredients?", "Where do the ingredients
    come from?", "Is whey protein ultra-processed?" answers.
-4. `components/comparison-section.tsx`: the "Flavours" and "On the label" rows.
+4. `components/comparison-section.tsx`: the "Flavours" row (the "On the label" row
+   was cut in October 2026).
 5. `components/heldi-homepage.tsx`: truth-teaser ingredient line ("90% whey protein
    isolate. The rest, spices you already know.") and the "Will my food taste
    different?" FAQ in `home-faqs.ts` ("The spices are designed to disappear").
@@ -584,7 +585,8 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
   changes it, `grep -rl "contributes to the maintenance"`.
 - **Nav changes**: four link lists (§9), `components/nav-more.tsx` for the three
   folded links, + `app/sitemap.ts`. Re-check that the row fits at 900px.
-- **FAQ question renames**: update `site-faqs.ts` `pick()` calls or the build throws.
+- **FAQ question renames**: update `site-faqs.ts` `pick()` calls, and for homepage
+  questions the group list `HOME_FAQ_GROUP_SPEC` in `home-faqs.ts`, or the build throws.
 - **Regenerated images**: bump the `?v=` versions (`IMAGE_VERSION` in
   `heldi-homepage.tsx` and `subpage-nav.tsx`; per-URL `?v=` in `catalog.ts`).
 - **Social share cards**: every route has an `opengraph-image.tsx` rendered from
