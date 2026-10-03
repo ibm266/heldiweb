@@ -1,5 +1,12 @@
 # Plan: Khana and Chai on one ladder, in one basket, through one checkout
 
+**Superseded in part on 17 Sep 2026:** the waitlist reward this plan describes (a
+25% founders code for the first 100 waitlist joiners) is not what shipped. The
+waitlist offer settled 17 Sep 2026 is a free sample pair for the first 100 on the
+list, we pay the postage, and 15% off for everyone; founders is close friends only
+now. BRAND.md §11.9 owns the current wording; the markers below point at exactly
+what this changes. Nothing else in this record is touched.
+
 Written 2 Sep 2026 for execution by a coding model. **Simplified 4 Sep 2026 to
 singles and pairs only** (see P1): five Shopify variants instead of twenty-seven,
 one set of presents per order, and a two-choice picker. The phase structure is
@@ -38,7 +45,7 @@ After this plan:
 | Shopify | "Heldi Khana", 3 tier variants + Sample | One product "Heldi pouches", 5 fixed-price size-and-mix variants (`HELDI-K1C1` = 1 Khana + 1 Chai); Sample stays its own product |
 | Basket | One Khana pouch line, stepped one at a time | Two pouch counts (Khana, Chai) mapped to one variant line; two steppers, one price |
 | Family codes | 10%, single and pair only, no per-customer limit | 15%, any quantity, one use per customer, printed on the site |
-| Waitlist reward | 20% (`PEHLEAAP`), promised in 8 places | 25% founders code for close friends + the first 100 joiners, one use each; `PEHLEAAP` never created |
+| Waitlist reward | 20% (`PEHLEAAP`), promised in 8 places | 25% founders code for close friends + the first 100 joiners, one use each; `PEHLEAAP` never created *(superseded 17 Sep 2026, see BRAND.md §11.9)* |
 | Email after launch | Nothing | Free first-order postage for an email; a shipping discount, so it stacks with a family code |
 | Presents | Jar per pouch (cap 2) + dabba on a full table, every order | One set per order: 1 pouch a jar, 2 pouches a jar and a tote. No dabba. First order only (see D2 for run 1) |
 | Samples | One Khana sachet, £5 | Khana sachet £5, Chai sachet £5, pair pack (one of each) £8. Outside the ladder, in no code, no presents |
@@ -83,7 +90,9 @@ From the Price Book and NEXT_STEPS §1c, 2 Sep 2026:
 - **P3. Codes.** ACHABETA / RISHTA / SHABASH: 15% off pouch variants only, any
   quantity, one use per customer, one code per order, printed in the gifting band.
   Founders: 25% off pouch variants, one code per person, for close friends and the
-  first 100 waitlist joiners, sent in the launch email. Welcome: free shipping on the
+  first 100 waitlist joiners, sent in the launch email *(superseded 17 Sep 2026: founders
+  is close friends only now; the first 100 on the list get a free sample pair instead,
+  see BRAND.md §11.9)*. Welcome: free shipping on the
   first order for an email, issued after launch, the one discount that combines with
   a product discount. Nothing else combines. No code ever touches the Sample.
 - **P4. Presents. SIMPLIFIED 4 Sep 2026: one set per order.** `HELDI-JAR` (£0,
@@ -133,7 +142,9 @@ Build decisions this plan makes (mine; overrule in the phase that uses them):
   goes in the box; if a repeat customer is spotted by eye, the jar still ships.
 - **D3. `PEHLEAAP` is never created.** The four people on the list today are inside
   the first 100, so the 25% founders code honours the 20% promise with room to spare.
-  The site copy changes now (Phase 0) so nobody is promised 20% again.
+  The site copy changes now (Phase 0) so nobody is promised 20% again. *(Superseded
+  17 Sep 2026: the first 100 no longer get a founders code at all, they get a free
+  sample pair, see BRAND.md §11.9.)*
 - **D4. Welcome postage is one static code, once per customer, for run 1.** Klaviyo
   can only mint unique codes through its Shopify integration, which is not connected
   (zero coupons, zero flows on 2 Sep 2026). A static shipping code leaks at most
@@ -145,6 +156,8 @@ Build decisions this plan makes (mine; overrule in the phase that uses them):
   `joined_at` order. Each code: usage limit 1, once per customer. The launch email
   mail-merges the code from a Klaviyo profile property. Needs either an admin CSV
   import or a new MCP tool (`discountRedeemCodeBulkAdd`); the MCP server is ours.
+  *(Superseded 17 Sep 2026: no code is generated per first-100 joiner any more; only
+  the close-friends half of this still happens, and by hand, see BRAND.md §11.9.)*
 - **D6. Tote worth.** `EXTRA_VALUE_PENCE.tote` proposed at 600 (£6) pending the
   quote. It is a stated worth on a free item, so it must be defensible against the
   tote's retail price once one exists.
@@ -166,7 +179,9 @@ decision has withdrawn, and it can go out this week.
 1. `lib/pricing.ts`: `WAITLIST_OFFER` becomes `{ percent: 25, firstJoiners: 100 }`
    and loses `code` and `windowDays` (the code strings live in Shopify and the
    launch email only). Do not touch `TIERS`, `GIFTING` or the gift constants yet;
-   Phase 2 replaces them together.
+   Phase 2 replaces them together. *(Superseded 17 Sep 2026: built instead as
+   `{ freePairFirstJoiners: 100 }`, no percentage at all; the 25% moved to
+   `FOUNDERS`, close friends only; see BRAND.md §11.9.)*
 2. Rewrite the eight "20% off your first order" surfaces to "the first 100 to join
    get 25% off at launch" (wording per surface, number from `WAITLIST_OFFER`):
    `components/heldi-homepage.tsx` (ticker `TICKER_COPY_WAITLIST`, the hero incentive
@@ -174,12 +189,16 @@ decision has withdrawn, and it can go out this week.
    `components/waitlist-form.tsx` (success line), `components/site-faqs.ts` (launch
    FAQ), `components/shop/buy-box.tsx` (waitlist shipping note),
    `components/shop/chai-buy-box.tsx` (promise line). The live-mode ticker line
-   "LAUNCH PRICES ON NOW" goes too; "AUNTIES & UNCLES PAY LESS" stays.
+   "LAUNCH PRICES ON NOW" goes too; "AUNTIES & UNCLES PAY LESS" stays. *(Superseded
+   17 Sep 2026: those surfaces now read the free-sample-pair-plus-15% wording from
+   `lib/waitlist-offer.ts`, not a 25% promise; see BRAND.md §11.9.)*
 3. Klaviyo template `VnY8iQ` ("Waitlist welcome") still says "20% off your first
    order... on top of launch prices (£30 for a pouch instead of £35)". Both halves
    are now false. Rewrite to the first-100 / 25% promise and RRP; the
    heldi-email-writer skill's locked prices and "no stacking" rule change to match
-   (free postage is the one thing that stacks).
+   (free postage is the one thing that stacks). *(Superseded 17 Sep 2026: `VnY8iQ`
+   is now archived as an orphaned draft; the live flow is `T6BYu5` and its corrected
+   copy is the free sample pair plus 15%, see BRAND.md §11.9.)*
 4. Chai pouch facts: `components/shop/chai-data.ts` `CHAI_POUCH_GRAMS` 100 → 250
    and `CHAI_MUGS_PER_POUCH` 12 → 31 (250 / 8, rounded down), with the header note
    updated: the Price Book settles the retail pouch at 250g; the 100g print artwork
@@ -560,7 +579,9 @@ pages.
    anyway).
 3. Founders codes generated and merged into Klaviyo profiles; the launch email goes
    out; the welcome pop-up is switched on the day after (P3: founders is the reason
-   to be on the list before launch, welcome is the reason after).
+   to be on the list before launch, welcome is the reason after). *(Superseded
+   17 Sep 2026: no founders codes are generated for joiners; the launch email carries
+   the free-sample-pair claim link instead, see BRAND.md §11.9.)*
 4. Flip `NEXT_PUBLIC_COMMERCE_MODE=live`. The rest of the checklist is unchanged.
 
 ## 10. Acceptance criteria
@@ -585,7 +606,10 @@ pages.
 - [ ] Chai cannot be added anywhere while `CHAI_SELLABLE` is false, including via
       `/api/cart/*`.
 - [ ] No pouch price anywhere is struck through; no "launch price" copy remains;
-      no "20% off" copy remains; the Klaviyo welcome template matches.
+      no "20% off" copy remains; the Klaviyo welcome template matches. *(The Klaviyo
+      welcome template criterion is superseded 17 Sep 2026: the live flow is
+      `T6BYu5` on template `TvLgd3`, and it matches the free-sample-pair wording in
+      BRAND.md §11.9, not a 25% promise.)*
 - [ ] The drawer, both product pages and the schema read the same numbers as the
       rate card; the verification matrix passes against the live store.
 - [ ] The orders webhook writes an idempotent order row and the stock endpoint,

@@ -166,18 +166,25 @@ and the checkout popup offers them, so treat them as public.
 
 ### Step 2. Replace WELCOME with a free-shipping discount
 
-**The fixed £4.99 amount-off version is not right, and it fails in the one case
-it exists for.** Measured against the live store on 4 Sep 2026:
+**The fixed £4.99 amount-off version is not right, and it fails on every basket
+it is supposed to help.** Measured against the live store on 4 Sep 2026:
 
 | Basket | With the £4.99 amount-off WELCOME |
 |---|---|
 | Single pouch, £35 | total £39.99 → £35.00, postage still £4.99. Nets out by luck |
 | Pair, £65, already free postage | total £65.00 → **£60.01**. Gives away £4.99 of product margin on an order that had free postage anyway |
-| **The £0 free trial pair** | code reads **not applicable**, buyer is charged **£4.99**. The launch email says postage is on us, and this charges them |
+| **The £0 free sample pair** | code reads **not applicable**, buyer is charged **£4.99**, and `WELCOME` was never meant to cover this basket in the first place |
 
 An amount-off discount reduces the goods, not the postage, so on a £0 order
 there is nothing for it to reduce. It can also push a basket back under the £50
 threshold and cost you the postage as well as the £4.99.
+
+**Who `WELCOME` is for, settled 17 Sep 2026 (BRAND.md §11.9): close friends,
+alongside every founders code; the early joiners, on their launch link; and
+anyone who signs up by email after launch.** It does not go out with the
+first-100 or everyone-else launch emails, and it is not what makes the free
+sample pair's postage free. That is Step 4's £0 shipping profile, not this
+code.
 
 **2.1** Discounts → delete the existing `WELCOME`.
 
@@ -205,10 +212,10 @@ pouch with WELCOME quotes **£0.00 postage** rather than £4.99 off the goods.
 
 ### Step 3. Arm the first-100 gate
 
-**This is the one with money attached.** The whole "free for the first hundred"
-mechanism is inventory-gated: there is no code and no cart rule, just one
-variant that closes itself when the hundredth goes. The script currently
-reports `Shopify allowed 250 free pairs: tracking is OFF`.
+**This is the one with money attached.** The whole "free sample pair for the
+first 100 on the list" mechanism is inventory-gated: there is no code and no
+cart rule, just one variant that closes itself when the hundredth goes. The
+script currently reports `Shopify allowed 250 free sample pairs: tracking is OFF, so nothing stops claims after the first 100 on the list`.
 
 On **`HELDI-SAMPLE-PAIR-FREE`** only (Products → Heldi sample pair, on us):
 
@@ -224,13 +231,17 @@ on that row, and `lib/commerce/shopify/cart-policy.ts` clamps the line to
 quantity 1 server side (verified: a crafted request for five came back as one).
 Nothing in the site limits how many *people* claim one. Only this does.
 
-**Check**: `Shopify refuses 250 free pairs, so the variant is tracked`.
+**One per household** is a packing-time check, not a code: before dispatch,
+check the order's email against the first-100 export, in `joined_at` order,
+and hold back a second claim from the same household.
+
+**Check**: `Shopify refuses 250 free sample pairs, so the variant is tracked` (or `Shopify cut 250 free sample pairs down to 100`, which means the same thing).
 
 ---
 
 ### Step 4. Put the samples on £0 postage
 
-Right now a £5 sachet, the £8 pair pack and the **£0 free trial pair** are every
+Right now a £5 sachet, the £8 pair pack and the **£0 free sample pair** are every
 one of them charged **£4.99**.
 
 **4.1** Settings → Shipping and delivery → Custom shipping rates → **Create new
@@ -269,6 +280,12 @@ what has happened.
 **Check**: the three sample lines in the script flip to £0.00, and
 `one pouch plus a sachet (£40.00) ships £4.99` still passes.
 
+**This is what makes "we pay the postage" true** for the first 100 (BRAND.md
+§11.9). Once both sample products are confirmed on this profile, flip
+`CLAIM_RIDES_WITH_WELCOME` in `components/cart/cart-context.tsx` to `false`.
+`scripts/storefront-check.mjs` fails until it is, as a reminder not to skip
+this.
+
 ---
 
 ### Step 5. Two small ones
@@ -287,13 +304,14 @@ compare-at.
 
 ### Step 6. The founders codes, at launch
 
-Not now: these are generated when the launch email goes out, one per person,
-prefix `SHUKRIYA-` (`FOUNDERS.friendPrefix`). Same shape as the family codes but
-**25%**, and **Maximum uses: 1 in total** rather than one per customer.
+Not automated, and not for the first 100 on the list: founders codes are close
+friends only, made by hand, one per person, prefix `SHUKRIYA-`
+(`FOUNDERS.friendPrefix`). Same shape as the family codes but **25%**, and
+**Maximum uses: 1 in total** rather than one per customer.
 
 Note the consequence of the £50 threshold: a pair at 25% is **£48.75**, which
-falls under it. **Every founders code should go out with `WELCOME` beside it**
-in the same email, or its holder pays £4.99 postage on the best basket they
+falls under it. **Every founders code still goes out with `WELCOME` beside it**,
+in the same message, or its holder pays £4.99 postage on the best basket they
 could build.
 
 ---
@@ -566,6 +584,9 @@ function send(name, event) {
   (both automatic, `TICKER_COPY_LIVE` in `components/heldi-homepage.tsx`).
 - [ ] Watch the first orders in Shopify admin; email replies come from
   info@heldi.co.uk.
+- [ ] Klaviyo: send the three launch campaigns (early joiners, the first 100,
+  everyone else) only once the flip above is live and verified. Segment and
+  campaign detail is tracked in NEXT_STEPS.md, not here.
 - [ ] **Rollback**: flip `NEXT_PUBLIC_COMMERCE_MODE` back to `waitlist` and
   redeploy. The site returns to waitlist behaviour in one deploy; no code
   changes involved.

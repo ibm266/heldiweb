@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import {
   POUCH_THUMB,
@@ -36,10 +37,13 @@ import {
   rrpPence,
   type TierId
 } from "@/lib/pricing";
-import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 import { GiftingPopup } from "./gifting-popup";
 import {
-  KHANA_NUTRITION, SERVING_GRAMS } from "./nutrition-data";
+  KHANA_NUTRITION,
+  MAX_DAILY_SERVINGS,
+  NUTRITION_ROWS,
+  SERVING_GRAMS
+} from "./nutrition-data";
 import { NutritionModal } from "./nutrition-modal";
 import { PdpReviewTeasers } from "./pdp-review-teasers";
 import { ProductAccordions } from "./product-accordions";
@@ -80,6 +84,7 @@ export function BuyBox({ product }: { product: Product }) {
   const [giftingPopupOpen, setGiftingPopupOpen] = useState(false);
   const { cart, mode, addItem, addPouches, isPending } = useCart();
   const { open: openWaitlist } = useWaitlistPopup();
+  const offer = useWaitlistOffer();
   const viewTracked = useRef(false);
 
   useEffect(() => {
@@ -150,12 +155,13 @@ export function BuyBox({ product }: { product: Product }) {
   // The rate and the threshold both come from SHIPPING, never typed: they were
   // £3.55 / £40 until 4 Sep 2026, when they were corrected to match what
   // Shopify actually charges. Waitlist mode says why there is no price on the
-  // page instead of quoting one.
+  // page instead of quoting one, then states the waitlist offer in the words
+  // every other surface uses (lib/waitlist-offer.ts, BRAND.md §11.9).
   const shippingNote = !showPrices
-    ? `Prices arrive when the shop opens. The waitlist hears first. ${siteWaitlistOfferCopy(true).sentence}`
+    ? `We will put the prices here when the shop opens. Join the waitlist to hear first. ${offer.sentence}`
     : isPouch && ladderPence(pouchQty) < SHIPPING.freeOverPence
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
-      : "Ships free.";
+      : "UK shipping is free.";
 
   async function handleAdd() {
     const giftingApplied = (cart?.discountCodes ?? []).some(
@@ -394,7 +400,7 @@ export function BuyBox({ product }: { product: Product }) {
                 longer on either of them. */}
             <div className="pdp__qty">
               <span className="pdp__qty-label" id="pdp-qty-label">
-                Need more than two?
+                Select more than two pouches:
               </span>
               <div className="qty-stepper" role="group" aria-labelledby="pdp-qty-label">
                 <button
@@ -455,7 +461,7 @@ export function BuyBox({ product }: { product: Product }) {
 
         {mode === "live" ? (
           <button type="button" className="pdp__cta" onClick={handleAdd} disabled={isPending}>
-            {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket — ${formatMoney(selectedCurrent)}`}
+            {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket · ${formatMoney(selectedCurrent)}`}
           </button>
         ) : (
           <button type="button" className="pdp__cta" data-floating-cta-suppress onClick={() => openWaitlist("popup-shop")}>
@@ -469,21 +475,23 @@ export function BuyBox({ product }: { product: Product }) {
 
         <StatutoryStatements
           servingGrams={SERVING_GRAMS}
+          maxServings={MAX_DAILY_SERVINGS}
+          declaration={NUTRITION_ROWS}
           allergens="Contains milk (whey)."
           className="pdp__disclaimer"
         />
 
         <div className="pdp__desc">
           <p>
-            <strong>One pouch for the whole table.</strong> Heldi Khana is a
-            high-protein blend made to disappear into the food you already
-            cook. Stir it into <strong>dal, curry, sabzi or raita</strong> and
-            the taste stays exactly where your family left it.{" "}
-            <strong>High in protein</strong>, and protein contributes to the
-            maintenance of muscle mass. Contains <strong>milk</strong> (whey).
-            New to Heldi? <a href="/truth">Start with the honest truth about protein</a>.
-            Making chai rather than dal? <a href="/shop/chai">Meet Heldi Chai</a>,
-            the blend for the mug.
+            <strong>Made for the food already in your bowl.</strong> Heldi
+            Khana is a high-protein whey isolate blend with warm spices. Dish
+            up your <strong>dal, curry, sabzi or raita</strong> and stir a
+            spoonful into your own bowl, or stir it through the shared pot once
+            it is off the heat. Your recipe stays in charge. <strong>High in protein.</strong> Protein
+            contributes to the maintenance of muscle mass. Contains{" "}
+            <strong>milk</strong> (whey). If you want the numbers before the
+            pouch, <a href="/truth">start with the honest truth about protein</a>.
+            For the mugs in your family, <a href="/shop/chai">meet Heldi Chai</a>.
           </p>
         </div>
 

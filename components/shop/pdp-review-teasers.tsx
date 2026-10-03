@@ -142,7 +142,7 @@ export function PdpReviewTeasers({ reviews }: { reviews?: Review[] }) {
       {fiveStarCount > 0 ? (
         <div className="pdp-review-teasers__summary">
           <p className="pdp-review-teasers__count">
-            {fiveStarCount} five star {fiveStarCount === 1 ? "review" : "reviews"}
+            {fiveStarCount} five-star {fiveStarCount === 1 ? "review" : "reviews"}
           </p>
           <p
             className="pdp-review-teasers__stars"
@@ -187,7 +187,7 @@ export function PdpReviewTeasers({ reviews }: { reviews?: Review[] }) {
         className="pdp-review-teasers__more"
         onClick={seeMoreReviews}
       >
-        See more reviews
+        See all reviews
       </button>
       {openReview ? (
         <VideoReviewModal

@@ -3,10 +3,9 @@
 // typed at a call site. The wording itself lives in lib/waitlist-offer.ts, which
 // has to stay import-free (see its header).
 //
-// On main the site does not yet count the list, so every caller passes
-// pairsOpen = true. The count-aware useWaitlistOffer() hook, which flips the
-// lines once the list passes 100, arrives with branch
-// offer/waitlist-free-sample; until then keep an eye on the list size.
+// Client components should not call these directly for the offer lines: use
+// useWaitlistOffer() from components/waitlist-popup.tsx, which also knows
+// whether the free pairs are still open.
 
 import { GIFTING, WAITLIST_OFFER } from "@/lib/pricing";
 import {

@@ -16,6 +16,13 @@ import {
 // Supabase and leaves synced_to_esp_at null, so early signups can be
 // backfilled once the account exists
 // (scripts/backfill-waitlist-to-klaviyo.mjs).
+//
+// The response says only that the signup landed. It deliberately does not work
+// out where this joiner sits on the list: the success line is the same for
+// everyone (BRAND.md §11.9), so nobody is told at the moment they type an
+// address whether they made the first hundred. Who did is settled at launch
+// from joined_at order, and told to people by the launch email that carries
+// the claim link.
 
 function cleanPlacement(value: unknown): string | null {
   if (typeof value !== "string") return null;

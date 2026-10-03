@@ -8,7 +8,7 @@ import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 export const metadata: Metadata = {
   title: "Our story · Heldi",
   description:
-    "Heldi is healthy, the way my nani says it. The story of the name, the kitchen trials, and protein made for the family table.",
+    "Why Mihir built Heldi after trying six protein powders in his mother's kitchen, and why the family table still gets the final say.",
   alternates: { canonical: "/our-story" }
 };
 
@@ -21,7 +21,7 @@ export default function OurStoryPage() {
         <div className="story-hero__inner">
           <p className="eyebrow">OUR STORY</p>
           <h1 className="story-hero__title">
-            Heldi began with a word my nani made up.
+            Heldi began with the way my nani said healthy.
           </h1>
 
           <figure className="story-photo-card story-hero__figure">
@@ -35,16 +35,17 @@ export default function OurStoryPage() {
               sizes="(max-width: 560px) calc(100vw - 4.5rem), 440px"
             />
             <figcaption className="story-photo-card__caption">
-              My nani, the woman who coined it.
+              My nani. Her healthy became Heldi.
             </figcaption>
           </figure>
 
           <p className="story-hero__lede">
-            Ask her if the food was healthy and she would smile and say it was{" "}
-            <CopyHighlight>heldi</CopyHighlight>. Not healthy in the clinical
-            sense. Heldi the way home-cooked food is:{" "}
-            <CopyHighlight>warm, familiar, made with care, made for you</CopyHighlight>.
-            That is where the name comes from.{" "}
+            Ask my nani if the food was healthy and she would say it was{" "}
+            <CopyHighlight>heldi</CopyHighlight>. She meant the meals she had
+            always made us:{" "}
+            <CopyHighlight>warm, familiar, cooked with care</CopyHighlight>.
+            That was simply how she said it, and the word stuck with me. When
+            it came time to name this, I borrowed hers.{" "}
             <CopyHighlight>Healthy, the way my nani says it.</CopyHighlight>
           </p>
         </div>
@@ -53,24 +54,24 @@ export default function OurStoryPage() {
       <div className="double-rule" aria-hidden="true" />
 
       <section className="section section--gold story-pull">
-        <p className="story-pull__line">That word stayed with me.</p>
+        <p className="story-pull__line">That was the word I kept.</p>
       </section>
 
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">MIHIR</p>
-          <h2>I grew up on dal. Training asked for more.</h2>
+          <h2>I loved our dinner. I was still 10g short.</h2>
           <p>
             I&apos;m Mihir. I grew up in a vegetarian house on dal, sabzi,
-            raita and chai, and I loved all of it. Then training became a big
-            part of my life, and the food of my childhood started slipping off
-            my plate. Not because I stopped loving it. Because{" "}
-            <CopyHighlight>the numbers didn&apos;t add up</CopyHighlight>.
+            raita and chai. When training became a big part of my life, I
+            started paying attention to protein. That dinner came to 20g.
+            I was aiming for 30g, and{" "}
+            <CopyHighlight>I did not want to give up the food I loved</CopyHighlight>.
           </p>
           <div className="story-menu-card">
             <h3 className="story-menu-card__title">Nani&apos;s menu</h3>
             <p className="story-menu-card__subtitle">
-              same dishes, since forever
+              what was actually on my plate
             </p>
             <ul className="story-menu-card__list">
               <li className="story-menu-card__item">
@@ -116,12 +117,12 @@ export default function OurStoryPage() {
           </div>
 
           <p>
-            The meals I grew up on are rich in almost everything{" "}
-            <CopyHighlight>except protein</CopyHighlight>. I didn&apos;t want
-            bland fitness food, and I didn&apos;t want another shake. I wanted
-            the food I loved to do one more thing for me. So I made Heldi:{" "}
+            The problem was practical. I wanted to eat{" "}
+            <CopyHighlight>the same dinner with my family</CopyHighlight>,
+            without adding another shake or making a separate plate. Heldi
+            came from that stubborn requirement:{" "}
             <CopyHighlight>one spoonful, ten grams of protein</CopyHighlight>,
-            disappearing into the dishes we already cook.
+            stirred into the dishes already being passed round.
           </p>
           <p className="story-note">The same food, just a little Heldier.</p>
         </div>
@@ -132,18 +133,18 @@ export default function OurStoryPage() {
           <p className="eyebrow">THE KITCHEN TRIALS</p>
           <h2>Six powders. One kitchen. A few ruined dinners.</h2>
           <p>
-            I did not start with whey. I started with{" "}
+            I bought{" "}
             <CopyHighlight>
-              every protein powder you can think of
+              six different protein powders
             </CopyHighlight>{" "}
-            and brought each one home to the only lab that mattered: my
-            mother&apos;s kitchen. She cooked, I stirred, and we ate the
-            results. Some of them we would rather forget.
+            and carried them into my mother&apos;s kitchen. She cooked the dal
+            and kadhi. I added the powder. Then we sat down and ate whatever I
+            had done to dinner. Some of those trials we would rather forget.
           </p>
           <div className="story-menu-card">
             <h3 className="story-menu-card__title">The trial menu</h3>
             <p className="story-menu-card__subtitle">
-              every powder, judged at the table
+              six powders, judged with dinner
             </p>
             <ul className="story-menu-card__list">
               <li className="story-menu-card__item">
@@ -179,9 +180,9 @@ export default function OurStoryPage() {
             </ul>
           </div>
           <p>
-            Whey protein isolate was the only one that vanished into the pot.
-            No grit, no aftertaste, no argument from the cook. The dishes
-            stayed nani&apos;s dishes. That was the whole test:{" "}
+            Whey protein isolate was the only one that mixed through without
+            grit or aftertaste. The dal still tasted like my mother&apos;s
+            dal. That gave us one useful rule:{" "}
             <CopyHighlight>
               if Mama could taste the difference, it failed
             </CopyHighlight>
@@ -228,21 +229,18 @@ export default function OurStoryPage() {
               </li>
             </ul>
             <p>
-              Neither of them was ever going to drink a shake. Both of them
-              were always going to stay at the table. And anyone with Indian
-              parents knows the rules: every decision is a negotiation, and{" "}
-              <CopyHighlight>every deal ends in a compromise</CopyHighlight>.
-              This one didn&apos;t. The food stayed exactly the same, and the
-              protein came to the table.
+              Mama and Papa had no interest in shakes. They did have very clear
+              opinions about dinner. In our house, a new idea is usually
+              discussed from every side. This one got two cleared plates and{" "}
+              <CopyHighlight>no request to change the recipe</CopyHighlight>.
+              That was the verdict I needed.
             </p>
             <p>
-              And this is the part that matters. As we get older, protein
-              matters more, not less. Protein contributes to the maintenance
-              of muscle mass, and I want{" "}
+              Protein contributes to the maintenance of muscle mass. I want{" "}
               <CopyHighlight>
                 as many long walks with my mama and papa as I can get
               </CopyHighlight>
-              . Their plate is part of that plan.
+              . They are the family I had in mind while making Heldi.
             </p>
           </div>
         </div>
@@ -250,24 +248,24 @@ export default function OurStoryPage() {
 
       <section className="section section--gold section--bordered story-pull">
         <p className="story-pull__line">
-          Not here to replace tradition. Here to back it up.
+          The recipes led. Heldi had to fit.
         </p>
       </section>
 
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">THE FAMILY TABLE</p>
-          <h2>Food first. Family friendly.</h2>
+          <h2>Made for the food we share.</h2>
           <p>
-            In a lot of desi homes, supplements carry a stigma. Powders are for
-            gym boys, not for the family table. Heldi is built to be{" "}
-            <CopyHighlight>the opposite</CopyHighlight>: whey, the part of milk
-            that has always been there, stirred into{" "}
-            <CopyHighlight>recipes that never change</CopyHighlight>.
+            To reach our dinner table, a protein powder had to work for all of
+            us. The base is{" "}
+            <CopyHighlight>whey, the part of milk that has always been there</CopyHighlight>,
+            stirred into{" "}
+            <CopyHighlight>the recipes we already make</CopyHighlight>.
           </p>
           <p>
-            The food we grew up with is already beautiful. Heldi simply helps
-            it carry more of what we need, for{" "}
+            Dal, sabzi and raita already brought our family to the table.
+            Heldi has one small job: add protein in a form that works for{" "}
             <CopyHighlight>every generation at the table</CopyHighlight>.
           </p>
         </div>
@@ -278,10 +276,10 @@ export default function OurStoryPage() {
           <p className="eyebrow">WHAT&apos;S NEXT</p>
           <h2>Khana is on the table. Chai is on the stove.</h2>
           <p>
-            Khana, our savoury blend, is the first Heldi to reach the table.{" "}
-            <CopyHighlight>Chai is in development now</CopyHighlight>, going
-            through the same kitchen trials, in front of the same taste panel,
-            who have not lowered their standards for anyone.
+            Khana, our savoury blend, came first.{" "}
+            <CopyHighlight>Chai is in development now</CopyHighlight> and is
+            going through the same kitchen trials. Mama and Papa are still the
+            taste panel. Their standards have not moved.
           </p>
           <p className="story-note">
             <Link href="/shop/chai">Have a look at the Chai pouch</Link>.
@@ -300,8 +298,8 @@ export default function OurStoryPage() {
           aria-hidden="true"
         />
         <div className="final-cta-copy">
-          <h2>Strength in tradition.</h2>
-          <p>Heldi exists to prove the strength that was always on the table.</p>
+          <h2>The family table gets the final say.</h2>
+          <p>Heldi started in our kitchen. Every decision still comes back there.</p>
           <WaitlistOrShopCta />
         </div>
         <Image

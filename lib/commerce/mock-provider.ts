@@ -6,6 +6,7 @@ import {
   foundersDiscountPence
 } from "@/lib/pricing";
 import {
+  FREE_PAIR_VARIANT_ID,
   findVariantById,
   pouchPenceForCounts,
 } from "./catalog";
@@ -49,6 +50,27 @@ function readStorage(): StoredCart | null {
 function writeStorage(cart: StoredCart) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+}
+
+// A dev switch for the one state a mock cannot reach by itself: the free sample
+// pairs running out. The mock has no stock, so without this the claim link's
+// "pairs gone" path could only ever be tried against the real store. Shopify
+// does not refuse a sold-out add, it accepts the request and leaves the line
+// out (see claimFreePair in components/cart/cart-context.tsx), so that is what
+// this copies. In the browser console:
+//
+//   localStorage.setItem("heldi_mock_pairs_gone", "1")
+//
+// then open /?claim=pair. Remove the key to put the pairs back on the shelf.
+const PAIRS_GONE_KEY = "heldi_mock_pairs_gone";
+
+function pairsGone(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.localStorage.getItem(PAIRS_GONE_KEY) === "1";
+  } catch {
+    return false;
+  }
 }
 
 function buildLine(merchandiseId: string, quantity: number): CartLine | null {
@@ -169,6 +191,9 @@ export class MockProvider implements CommerceProvider {
   async addLines(cartId: string, lines: CartLineInput[]): Promise<Cart> {
     const stored = this.load(cartId);
     for (const input of lines) {
+      // Sold out, the way Shopify does it: no error, the line is just not
+      // there when the cart comes back. See pairsGone above.
+      if (input.merchandiseId === FREE_PAIR_VARIANT_ID && pairsGone()) continue;
       const existing = stored.lines.find(
         (line) => line.merchandiseId === input.merchandiseId
       );

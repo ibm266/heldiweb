@@ -4,18 +4,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "@/components/cart/cart-context";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { track } from "@/lib/analytics";
-import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 import { ChaiAccordions } from "./chai-accordions";
 import {
   CHAI_ALLERGENS,
   CHAI_DRINKS,
   CHAI_IMAGES,
   CHAI_LEGAL_NAME,
+  CHAI_MAX_DAILY_SERVINGS,
   CHAI_METHOD,
   CHAI_MUGS_PER_POUCH,
+  CHAI_NATURAL_LINE,
   CHAI_NUTRITION,
+  CHAI_NUTRITION_ROWS,
   CHAI_PILLS,
   CHAI_POUCH_GRAMS,
   CHAI_PROTEIN_MARKETING_GRAMS,
@@ -46,6 +49,7 @@ export function ChaiBuyBox() {
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const { mode } = useCart();
   const { open: openWaitlist } = useWaitlistPopup();
+  const offer = useWaitlistOffer();
   const viewTracked = useRef(false);
 
   useEffect(() => {
@@ -92,7 +96,9 @@ export function ChaiBuyBox() {
             It also discharges the "food supplement" designation at the top of
             the page rather than only in the block at the bottom. */}
         <p className="pdp__legal-name">{CHAI_LEGAL_NAME}</p>
-        <p className="pdp__lede">Protein that disappears into your chai.</p>
+        <p className="pdp__lede">
+          A level spoonful for the mug you make every day.
+        </p>
 
         <button
           type="button"
@@ -123,7 +129,7 @@ export function ChaiBuyBox() {
         </ul>
 
         <p className="pdp__group-label">
-          HOW IT GOES IN: <strong>THREE STEPS</strong>
+          THE MUG ROUTINE: <strong>THREE STEPS</strong>
         </p>
         {/* role="list" because list-style:none drops list semantics in
             Safari/VoiceOver. No step numbers: the pack has none either, the
@@ -154,7 +160,7 @@ export function ChaiBuyBox() {
           <div className="pdp__includes-row">
             <Image
               className="pdp__includes-img"
-              src="/images/shop/chai-pouch-solo.webp?v=3"
+              src="/images/shop/chai-pouch-solo.webp?v=4"
               alt=""
               width={28}
               height={28}
@@ -165,8 +171,9 @@ export function ChaiBuyBox() {
             </span>
           </div>
           <p className="pdp__includes-note">
-            One {CHAI_SERVING_SPOON} ({CHAI_SERVING_GRAMS}g) a mug,{" "}
-            {CHAI_PROTEIN_MARKETING_GRAMS}g of protein. Good in{" "}
+            One mug uses an {CHAI_SERVING_GRAMS}g serving, about one{" "}
+            {CHAI_SERVING_SPOON}, and adds {CHAI_PROTEIN_MARKETING_GRAMS}g of
+            protein. Use it in{" "}
             {CHAI_DRINKS.slice(0, -1).join(", ").toLowerCase()} and{" "}
             {CHAI_DRINKS[CHAI_DRINKS.length - 1].toLowerCase()}.
           </p>
@@ -193,12 +200,14 @@ export function ChaiBuyBox() {
 
         <p className="pdp__promise">
           {mode === "live"
-            ? "Chai is not in the shop yet. Khana is, and it is the same spoonful for the food rather than the drink."
-            : `Chai comes after Khana. The waitlist hears first. ${siteWaitlistOfferCopy(true).sentence}`}
+            ? "Chai is not on sale yet. Khana is ready for dal, curry, sabzi and raita."
+            : `We are finishing Chai before we sell it. Join the waitlist to hear when it is ready. ${offer.sentence}`}
         </p>
 
         <StatutoryStatements
           servingGrams={CHAI_SERVING_GRAMS}
+          maxServings={CHAI_MAX_DAILY_SERVINGS}
+          declaration={CHAI_NUTRITION_ROWS}
           spoon={CHAI_SERVING_SPOON}
           allergens={CHAI_ALLERGENS}
           className="pdp__disclaimer"
@@ -207,10 +216,11 @@ export function ChaiBuyBox() {
         <div className="pdp__desc">
           <p>
             <strong>One spoonful, stirred in at the end.</strong> Heldi Chai
-            is a high-protein blend made for the hot drinks you already make.
-            Stir it into <strong>chai, tea, coffee or hot chocolate</strong>{" "}
-            once the cup is cool enough to drink, and it still tastes like your
-            cup: no chalk, no aftertaste, no shaker on the draining board.{" "}
+            is a high-protein blend made for the hot drinks you already make.{" "}
+            {CHAI_NATURAL_LINE} Stir it into{" "}
+            <strong>chai, tea, coffee or hot chocolate</strong> once the cup is
+            cool enough to drink, and it still tastes like your cup: no chalk,
+            no aftertaste, no shaker on the draining board.{" "}
             <strong>High in protein</strong>: {CHAI_PROTEIN_MARKETING_GRAMS}g
             in every mug, and protein contributes to the
             maintenance of muscle mass. Contains{" "}

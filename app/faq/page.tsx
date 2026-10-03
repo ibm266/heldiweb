@@ -4,31 +4,41 @@ import { siteFaqGroupsForMode } from "@/components/site-faqs";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { serializeJsonLd } from "@/lib/json-ld";
-import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
+import {
+  MAX_DAILY_SERVINGS,
+  NUTRITION_ROWS,
+  SERVING_GRAMS
+} from "@/components/shop/nutrition-data";
 import { StatutoryStatements } from "@/components/shop/statutory-statements";
+import { getWaitlistPairsOpen } from "@/lib/waitlist-count";
 
 export const metadata: Metadata = {
   title: "FAQ · Heldi",
   description:
-    "Straight answers to everything people ask about Heldi: how to use it, the protein numbers, vegetarian and halal questions, using it alongside GLP-1 medicines, what is in the pouch, and delivery.",
+    "Plain answers about using Heldi, protein portions, vegetarian and halal questions, GLP-1 medicines, ingredients, orders and delivery.",
   alternates: { canonical: "/faq" }
 };
 
 // Built from the same mode-aware groups as the visible list, so waitlist
-// builds keep delivery prices out of the structured data too.
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: siteFaqGroupsForMode(COMMERCE_MODE).flatMap((group) =>
-    group.faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: { "@type": "Answer", text: faq.answer }
-    }))
-  )
-};
+// builds keep delivery prices out of the structured data too. `pairsOpen` is
+// the same cached answer the root layout gives the visible list, so the
+// structured data never offers a free sample pair the page has stopped offering.
+function faqSchemaFor(pairsOpen: boolean) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: siteFaqGroupsForMode(COMMERCE_MODE, pairsOpen).flatMap((group) =>
+      group.faqs.map((faq) => ({
+        "@type": "Question",
+        name: faq.question,
+        acceptedAnswer: { "@type": "Answer", text: faq.answer }
+      }))
+    )
+  };
+}
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  const faqSchema = faqSchemaFor(await getWaitlistPairsOpen());
   return (
     <main>
       <script
@@ -40,12 +50,12 @@ export default function FaqPage() {
       <section className="section section--cream story-hero" data-nav-hero>
         <div className="story-hero__inner">
           <p className="eyebrow">FAQ</p>
-          <h1 className="story-hero__title">Questions, answered honestly.</h1>
+          <h1 className="story-hero__title">Questions, answered plainly.</h1>
           <p className="story-hero__lede">
-            Everything people ask us about Heldi, in one place. If yours is
-            not here, email{" "}
+            We have gathered the questions people ask us most. If yours is not
+            here, email{" "}
             <a href="mailto:info@heldi.co.uk">info@heldi.co.uk</a> and a human
-            will answer. Usually the founder, usually quickly.
+            will answer. At the moment, that is usually the founder.
           </p>
         </div>
       </section>
@@ -55,7 +65,12 @@ export default function FaqPage() {
       <section className="section section--cream section--bordered">
         <FaqPageList />
         <div className="faq">
-          <StatutoryStatements servingGrams={SERVING_GRAMS} allergens="Contains milk (whey)." />
+          <StatutoryStatements
+            servingGrams={SERVING_GRAMS}
+            maxServings={MAX_DAILY_SERVINGS}
+            declaration={NUTRITION_ROWS}
+            allergens="Contains milk (whey)."
+          />
         </div>
       </section>
 

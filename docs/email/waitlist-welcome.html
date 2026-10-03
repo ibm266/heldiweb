@@ -1,0 +1,216 @@
+<!--
+  Waitlist welcome email. The source of truth for the design; Klaviyo holds a
+  copy, not the master.
+
+  Klaviyo objects (account V9JqrE):
+    Flow      "Waitlist welcome" T6BYu5, trigger = added to list Staq52
+    Template  "Waitlist welcome (site branded)" TvLgd3 (library copy)
+  Klaviyo clones the library template into a flow-owned copy whenever the flow
+  message's template_id is set, and that clone is NOT writable through the
+  templates API. To change the design: edit this file, push it to TvLgd3, then
+  re-point the flow message at TvLgd3 so it re-clones.
+  The flow-owned clone gets a new template id every time the flow is re-pointed,
+  so read its id from the flow message rather than recording it here.
+  THE PLAIN-TEXT PART IS A SEPARATE FIELD. Klaviyo does not regenerate it from
+  this HTML, so push waitlist-welcome.txt (beside this file) as the template's
+  text every time. On 3 Oct 2026 the live text part was found still carrying the
+  retired 5 Sep offer (two sachets sent free to the earliest joiners, and 15% off
+  with free postage) although the HTML had been corrected on 17 Sep.
+
+  Two things Klaviyo does to this file on import, both expected:
+    - it strips any external font <link>, so Rozha One never loads. Everything
+      falls back to Georgia (BRAND.md §8.2 sanctions it). Do not add a webfont
+      link back expecting it to survive.
+    - it compiles {% unsubscribe 'Unsubscribe' %} into the real unsubscribe link.
+
+  Design notes, all from app/globals.css via BRAND.md §8:
+    gold #eda31d brand chip carrying the nav lockup (§8.7), the 7px double rule
+    (§8.3), white card with 3px ink border and a hard 8px offset shadow (§8.4),
+    launch-day block as a cream menu card with the gold offset shadow and 2px
+    dashed ink/30% separators, ink pill button with gold text (§8.5).
+  Hard offset shadows are faked for email with an ink-filled outer table cell
+  padded right and bottom, because box-shadow does not render in Outlook.
+
+  The offer is owned by BRAND.md §11.9 and was settled on 17 Sep 2026. The three
+  rows of the launch-day block must match waitlistOfferRows() in
+  lib/waitlist-offer.ts word for word, and the sentence under the block is
+  WAITLIST_PAIR_EXPLAINER from the same file. `npm run pricing-check` asserts
+  the rows against this file, and `npm run brand-lint` (check 8) greps it,
+  comments included, for retired offer wordings. Change the offer there first,
+  then here, then push to Klaviyo as above.
+
+  Verified at 375px and 600px. Preview it by opening this file directly.
+-->
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="color-scheme" content="light only" />
+<meta name="supported-color-schemes" content="light only" />
+<title>Welcome to the Heldi waitlist</title>
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&amp;family=Gelasio:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet" />
+<style type="text/css">
+  body { margin:0; padding:0; }
+  img { border:0; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
+  table { border-collapse:collapse; }
+  a { color:#a8432b; }
+  @media screen and (max-width:620px) {
+    .heldi-pad { padding-left:22px !important; padding-right:22px !important; }
+    .heldi-h1 { font-size:30px !important; line-height:1.12 !important; }
+    .heldi-row-label, .heldi-row-value {
+      display:block !important; width:100% !important;
+      text-align:left !important; padding-right:0 !important;
+    }
+    .heldi-row-value { padding-top:4px !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#f8f0de;">
+
+<div style="display:none;font-size:1px;color:#f8f0de;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">
+One email on launch day. Here is exactly what is in it.
+</div>
+
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f8f0de;">
+<tr>
+<td align="center" style="padding:28px 12px 40px 12px;">
+
+<!-- ============ HEADER: gold brand chip (site nav treatment) ============ -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:100%;max-width:600px;">
+  <tr>
+    <td align="center" style="background-color:#eda31d;border-radius:8px;padding:14px 24px;">
+      <img src="https://heldi.co.uk/images/heldi-nav-lockup.png" width="260" alt="Heldi" style="display:block;width:260px;max-width:100%;height:auto;" />
+    </td>
+  </tr>
+  <tr><td style="height:18px;line-height:18px;font-size:0;">&nbsp;</td></tr>
+  <!-- signature double rule: 3px ink, gap, 3px ink -->
+  <tr><td style="height:3px;line-height:3px;font-size:0;background-color:#011246;">&nbsp;</td></tr>
+  <tr><td style="height:1px;line-height:1px;font-size:0;">&nbsp;</td></tr>
+  <tr><td style="height:3px;line-height:3px;font-size:0;background-color:#011246;">&nbsp;</td></tr>
+  <tr><td style="height:26px;line-height:26px;font-size:0;">&nbsp;</td></tr>
+</table>
+
+<!-- ============ MAIN CARD: white, 3px ink, hard offset shadow ============ -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:100%;max-width:600px;">
+  <tr>
+    <td style="background-color:#011246;border-radius:20px;padding:0 8px 8px 0;">
+
+      <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#ffffff;border:3px solid #011246;border-radius:20px;">
+        <tr>
+          <td class="heldi-pad" style="padding:36px 38px 0 38px;">
+
+            <p style="margin:0 0 14px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:13px;font-weight:600;letter-spacing:0.22em;color:#a8432b;">YOU&rsquo;RE ON THE LIST</p>
+
+            <h1 class="heldi-h1" style="margin:0 0 22px 0;font-family:'Rozha One',Georgia,'Times New Roman',serif;font-weight:400;font-size:38px;line-height:1.1;color:#011246;">We saved you a seat near the food.</h1>
+
+            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:17px;line-height:1.62;color:#011246;">You&rsquo;re in. Nothing else lands in your inbox from me until there is something real to sell you. That is the whole promise, and it is a short one.</p>
+
+            <p style="margin:0 0 26px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:17px;line-height:1.62;color:#011246;">Here is what that one email carries.</p>
+
+          </td>
+        </tr>
+
+        <!-- ---- menu card: cream, ink border, gold hard shadow ---- -->
+        <tr>
+          <td class="heldi-pad" style="padding:0 38px 30px 38px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td style="background-color:#eda31d;border-radius:18px;padding:0 6px 6px 0;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color:#f8f0de;border:3px solid #011246;border-radius:18px;">
+                    <tr>
+                      <td style="padding:22px 24px 8px 24px;">
+                        <p style="margin:0 0 16px 0;font-family:'Rozha One',Georgia,'Times New Roman',serif;font-weight:400;font-size:24px;line-height:1.15;color:#011246;">On launch day</p>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td style="padding:0 24px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                          <tr>
+                            <td class="heldi-row-label" width="44%" valign="top" style="padding:0 12px 12px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;font-weight:600;line-height:1.5;color:#011246;">Everyone on the list</td>
+                            <td class="heldi-row-value" width="56%" valign="top" align="right" style="padding:0 0 12px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.5;color:#4a4238;">First to know, the day we launch</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr><td style="padding:0 24px;"><div style="height:1px;line-height:1px;font-size:0;border-top:2px dashed #aeadb0;">&nbsp;</div></td></tr>
+
+                    <tr>
+                      <td style="padding:12px 24px 0 24px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                          <tr>
+                            <td class="heldi-row-label" width="44%" valign="top" style="padding:0 12px 12px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;font-weight:600;line-height:1.5;color:#011246;">The first 100</td>
+                            <td class="heldi-row-value" width="56%" valign="top" align="right" style="padding:0 0 12px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.5;color:#4a4238;"><b style="color:#011246;">A free sample pair, and we pay the postage</b></td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                    <tr><td style="padding:0 24px;"><div style="height:1px;line-height:1px;font-size:0;border-top:2px dashed #aeadb0;">&nbsp;</div></td></tr>
+
+                    <tr>
+                      <td style="padding:12px 24px 4px 24px;">
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                          <tr>
+                            <td class="heldi-row-label" width="44%" valign="top" style="padding:0 12px 14px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;font-weight:600;line-height:1.5;color:#011246;">Your first order</td>
+                            <td class="heldi-row-value" width="56%" valign="top" align="right" style="padding:0 0 14px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.5;color:#4a4238;">15% off</td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="heldi-pad" style="padding:0 38px 4px 38px;">
+            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">The pair is one Khana sachet for the bowl and one Chai sachet for the mug, so you can try both before you commit to a pouch.</p>
+
+            <p style="margin:0 0 26px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">If you ticked the box for Heldi Living, a letter lands roughly weekly in between: honest reading about protein in Indian food, and recipes worth cooking. If you did not, this is the only email you get from me until launch.</p>
+          </td>
+        </tr>
+
+        <!-- ---- button: ink fill, gold text, pill ---- -->
+        <tr>
+          <td class="heldi-pad" align="left" style="padding:0 38px 32px 38px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td style="background-color:#011246;border-radius:999px;">
+                  <a href="https://heldi.co.uk/our-story" style="display:inline-block;padding:14px 30px;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;font-weight:600;color:#eda31d;text-decoration:none;border-radius:999px;">Read why I made this</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="heldi-pad" style="padding:0 38px 34px 38px;">
+            <div style="height:1px;line-height:1px;font-size:0;border-top:2px dashed #b3b8c8;">&nbsp;</div>
+            <p style="margin:22px 0 6px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:17px;line-height:1.5;color:#011246;">&mdash; Mihir, founder</p>
+            <p style="margin:0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-style:italic;font-size:15px;line-height:1.55;color:#8a8378;">P.S. Hit reply and tell me what you cook most weeks. I read every one.</p>
+          </td>
+        </tr>
+      </table>
+
+    </td>
+  </tr>
+</table>
+
+<!-- ============ FOOTER ============ -->
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="width:100%;max-width:600px;">
+  <tr>
+    <td class="heldi-pad" align="center" style="padding:26px 32px 0 32px;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:13px;line-height:1.7;color:#8a8378;">
+      You are getting this because you joined the Heldi waitlist at heldi.co.uk.<br />
+      Heldi, 71-75 Shelton Street, London WC2H 9JQ<br />
+      {% unsubscribe 'Unsubscribe' %}
+    </td>
+  </tr>
+</table>
+
+</td>
+</tr>
+</table>
+</body>
+</html>

@@ -6,14 +6,19 @@
 // that names a price (delivery costs) and the shipping-policy link, live
 // hides the what-does-the-waitlist-do question. Both the page list and the
 // FAQ JSON-LD go through siteFaqGroupsForMode so they never disagree.
+//
+// The launch question states the waitlist offer, so its offer sentences come
+// from lib/waitlist-offer.ts like every other surface (BRAND.md §11.9), in the
+// form that matches `pairsOpen`: whether the free sample pairs are still open
+// to a new joiner (lib/waitlist-count.ts).
 
 import { HOME_FAQS } from "@/components/home-faqs";
 import { SERVINGS_PER_POUCH } from "@/lib/commerce/catalog";
 import { TRUTH_FAQS } from "@/components/truth-faqs";
 import { SHIPPING } from "@/lib/pricing";
-import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 import { formatPence } from "@/lib/commerce/money";
 import type { CommerceMode } from "@/lib/commerce/types";
+import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 
 export type SiteFaq = {
   question: string;
@@ -36,7 +41,11 @@ function pick(
   return faq;
 }
 
-export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
+export function siteFaqGroupsForMode(
+  mode: CommerceMode,
+  pairsOpen = true
+): SiteFaqGroup[] {
+  const offer = siteWaitlistOfferCopy(pairsOpen);
   return [
   {
     title: "Using Heldi",
@@ -50,17 +59,17 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Does cooking destroy the protein?",
         answer:
-          "No. Heat changes the shape of the protein, which is harmless and happens during digestion anyway. The amino acids your body actually uses stay intact. We still suggest stirring Heldi in once the pot is off the heat and has cooled a little, simply because a rolling boil can make any milk protein clump. Heldi Chai waits longer: its milk protein clumps into little white specks well before the boil, so it goes in once the cup is cool enough to drink."
+          "No. Heat changes a protein's shape, a process called denaturing, and digestion changes it too. The amino acids remain. Stir Heldi Khana into your own bowl once the food is served, or into the pot once it is off the heat and has cooled a little, because a rolling boil can make milk protein clump. Heldi Chai waits longer: its milk protein clumps into little white specks well before the boil, so it goes in once the cup is cool enough to drink."
       },
       {
         question: "How do I add more protein to Indian food?",
         answer:
-          "Three moves cover most meals. Use more dahi and paneer across the week. Make dals thicker rather than soupy, which raises the dal in every bowl. And stir a clean whey isolate like Heldi into gravies, dals and yoghurt dishes: one heaped tablespoon adds 10.1g without changing the recipe. Eggs and chicken do the heavy lifting in non-veg homes."
+          "Start with the food already on the table. Use dahi and paneer more often, and make dal thicker rather than soupy so each bowl contains more dal. Eggs and chicken add protein in non-vegetarian homes. If there is still a gap, a 12g serving of Heldi Khana, about one heaped tablespoon, adds 10.1g of protein to a gravy, dal or yoghurt dish."
       },
       {
         question: "When is the best time to eat protein?",
         answer:
-          "Spread through the day beats any magic window. The body uses protein best when it arrives in decent amounts at each meal, roughly 20 to 30g at a time, rather than one big hit at dinner. The famous post-workout window matters far less than the daily total. For most desi households the practical fix is lifting breakfast and lunch, the two lowest-protein meals of the day."
+          "There is no single required time. A practical approach is to spread protein across meals, with roughly 20 to 30g at a time, rather than leaving most of it for dinner. The daily total matters more than an exact post-workout window. In many desi households, breakfast and lunch are the two meals worth checking first."
       }
     ]
   },
@@ -70,21 +79,21 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "How much protein does one spoonful add?",
         answer:
-          "A 12g serving, about one heaped tablespoon, adds 10.1g of complete protein with all nine essential amino acids. A bowl of dal has around 6g on its own, so with Heldi that is about 16g in the same bowl, same taste."
+          "For Heldi Khana, a 12g serving, about one heaped tablespoon, provides 10.1g of protein with all nine essential amino acids. A bowl of dal has around 6g on its own, so the same bowl contains about 16g after Khana is added. Heldi Chai is different: an 8g serving, about one level tablespoon, provides 5.1g of protein, marketed as 5g per mug."
       },
-      pick(HOME_FAQS, "Why do I need more protein?"),
+      pick(HOME_FAQS, "Do I need more protein?"),
       pick(TRUTH_FAQS, "How much protein is in a bowl of dal?"),
       pick(TRUTH_FAQS, "How much protein do I need a day?"),
       {
         question: "Which Indian foods are high in protein?",
         answer:
-          "Per realistic serving: paneer leads at around 18g per 100g, dahi gives 3 to 4g per 100g, a standard bowl of cooked dal 5 to 7g, chana and rajma much the same, and two rotis about 6g. Eggs and chicken lift non-veg days. The honest pattern: desi staples are decent but modest, which is why the daily totals fall short.",
+          "For everyday portions, 100g of paneer provides around 18g of protein and 100g of dahi provides 3 to 4g. A standard bowl of cooked dal has 5 to 7g, with chana and rajma in a similar range, while two rotis have about 6g. Eggs and chicken add more on non-vegetarian days. The useful step is to add up the portions you actually eat rather than compare dry ingredients.",
         more: { href: "/truth", label: "Read the full honest truth" }
       },
       {
         question: "Can your body only absorb 30g of protein in one meal?",
         answer:
-          "No, that is a myth. Your body absorbs nearly all the protein you eat; bigger meals just digest more slowly. The truth behind the number is that muscle building responds best to roughly 20 to 40g per meal, so spreading protein across the day works better than loading it all into one sitting."
+          "No. The body digests and absorbs nearly all the protein in a meal, although a larger meal takes longer to digest. The 30g idea comes from research on the response to roughly 20 to 40g of protein at a meal, not from a hard limit on absorption. Spreading protein through the day is a practical way to cover several meals."
       }
     ]
   },
@@ -95,22 +104,22 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Is Heldi vegan?",
         answer:
-          "No. Whey comes from milk, so Heldi is vegetarian but not vegan. It sits in the same dietary family as paneer, dahi and chai, which is exactly why it belongs in the pot."
+          "No. Both Heldi Khana and Heldi Chai contain milk, so they are suitable for lacto-vegetarians but are not vegan. Khana contains whey; Chai contains whey and milk protein concentrate."
       },
       pick(HOME_FAQS, "Is Heldi halal?"),
       pick(HOME_FAQS, "I am lactose intolerant. Can I have Heldi?"),
-      pick(HOME_FAQS, "Is it safe for kids?"),
-      pick(HOME_FAQS, "Is it safe for parents and grandparents?"),
-      pick(HOME_FAQS, "I have diabetes. Is it OK for me?"),
+      pick(HOME_FAQS, "Can children have Heldi?"),
+      pick(HOME_FAQS, "Can older adults have Heldi?"),
+      pick(HOME_FAQS, "Can I use Heldi if I have diabetes?"),
       {
         question: "I am pregnant or breastfeeding. Can I use it?",
         answer:
-          "Protein needs rise during pregnancy and breastfeeding, but this is a time to be careful with any food supplement. Speak to your GP or midwife before adding Heldi to your meals. They know your situation; we do not."
+          "Protein needs rise during pregnancy and breastfeeding, but a food supplement is not automatically suitable for every person. Speak to your GP or midwife before adding Heldi to your meals. They can assess the label alongside your individual needs."
       },
       {
         question: "Will protein make me bulky?",
         answer:
-          "No. Visible muscle takes years of hard, deliberate training, and accidental bulk is close to impossible, especially for women. Across whey protein trials in women, the average lean mass gain was 0.37kg, less than 1% of body composition. Protein at normal intakes supports the muscle you already have; it does not inflate anyone.",
+          "Protein intake alone does not determine visible muscle size. Across whey protein trials in women, the average lean mass gain was 0.37kg, less than 1% of total lean mass. Larger visible changes also depend on sustained, deliberate training over time.",
         more: {
           href: "/heldi-living/will-i-get-bulky-if-i-have-too-much-protein",
           label: "Read the full piece on the bulky myth"
@@ -119,12 +128,12 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Is too much protein bad for my kidneys?",
         answer:
-          "For healthy kidneys, no. Reviews of controlled trials in healthy adults keep failing to find harm from higher protein intakes at sensible levels. The caution is real for people who already have kidney disease, where protein targets are set by a doctor. If that is you, speak to your GP or renal dietitian before changing anything."
+          "Reviews of controlled trials comparing higher-protein with lower-protein diets in adults with healthy kidney function have not found impaired kidney function over the periods studied. Those trials do not establish a universally safe amount or lifetime safety. They also do not apply to someone who already has kidney disease, where a doctor sets the protein target. Speak to your GP or renal dietitian before changing your intake."
       },
       {
         question: "Is whey protein ultra-processed?",
         answer:
-          "A powder is processed by definition, so the honest question is what is in it. Whey is milk protein filtered out of the same liquid your nani strains off when making paneer, then gently dried. Heldi adds sunflower lecithin, sea salt and five spices you already cook with. No sweeteners, no flavourings, no thickeners, nothing you would need to look up. Read the label and judge it like you would any food."
+          "The answer depends on which definition of ultra-processed food is being used. The process itself is straightforward: milk protein is filtered from liquid whey and dried. Heldi Khana then adds sunflower lecithin, sea salt and five familiar spices. It contains no sweeteners, separate flavourings or thickeners. The full ingredients list is published so you can judge the product by what is actually in it."
       }
     ]
   },
@@ -135,22 +144,22 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
         question:
           "Can I use Heldi with a GLP-1 medicine like Ozempic, Wegovy or Mounjaro?",
         answer:
-          "Heldi is a food, not a medicine: whey protein from milk, the same protein family as paneer and dahi, with no stimulants and no sweeteners. That said, anyone on a prescription medicine should run new supplements past their prescriber, GP or dietitian first. Show them the label and the nutrition table; everything is on this site."
+          "Heldi Khana and Heldi Chai are food supplements, not medicines, and both contain milk. Khana has no sweeteners; Chai contains coconut sugar. Those facts do not establish whether either product is suitable alongside a prescription medicine. Ask your prescriber, GP or dietitian first, and show them the specific ingredients list and nutrition table."
       },
       {
-        question: "Why does protein matter more on a GLP-1?",
+        question: "Why does protein matter when taking a GLP-1 medicine?",
         answer:
-          "Because you eat much less, and the weight you lose is not all fat. Studies of GLP-1 medicines consistently show a meaningful share of the loss is lean mass, which is why clinical guidance pairs them with adequate protein and resistance training. Protein contributes to the maintenance of muscle mass, as part of a varied and balanced diet and a healthy lifestyle."
+          "GLP-1 medicines can reduce appetite and the amount of food a person eats. Clinical guidance therefore considers dietary protein and resistance training where lean mass is a concern. Protein contributes to the maintenance of muscle mass. This applies as part of a varied and balanced diet and a healthy lifestyle."
       },
       {
-        question: "How does Heldi help when my appetite has shrunk?",
+        question: "How can Heldi fit into smaller portions?",
         answer:
-          "By making small portions carry more. When half a bowl of dal is all you want, that half-bowl has about 3g of protein. One heaped tablespoon of Heldi stirred in takes it past 13g without adding volume, another drink, or anything new to swallow. On a small appetite, every bite has to earn its place."
+          "Half a bowl of dal contains about 3g of protein. One spoonful of Heldi Khana adds 10g, taking that portion to about 13g without requiring a full second portion or a separate drink. Heldi Chai is a hot-drink blend with a separate 8g serving, about one level tablespoon, and a 5g-per-mug marketing figure, so this bowl calculation does not apply to it. Whether either product is appropriate for you is a question for the clinician supporting your GLP-1 treatment."
       },
       {
         question: "What does this mean for Indian food on a GLP-1?",
         answer:
-          "A typical home-cooked vegetarian day delivers 35 to 45g of protein at full appetite. Shrink every portion and it can drop to 20g or less, a long way from the 1.2 to 1.6g per kilo of body weight that guidance points to. The practical advice is protein first: eat the highest-protein part of the meal before anything else, and make the small amount you do eat work harder. Stirring Heldi into the dal, kadhi or raita does exactly that, without changing the food."
+          "A typical home-cooked vegetarian day delivers 35 to 45g of protein at full appetite. If every portion becomes smaller, that total can fall to 20g or less. Guidance often uses 1.2 to 1.6g per kilo of body weight, but a GP or dietitian should set a personal target for someone taking a prescription medicine. If they advise prioritising protein, familiar options include eating the highest-protein part of the meal first or stirring Heldi Khana into dal, kadhi or raita."
       }
     ]
   },
@@ -160,13 +169,13 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "What are the ingredients?",
         answer:
-          "Eight things, most to least: whey protein isolate (MILK) (94%), cumin, sunflower lecithin, coriander, fine sea salt, garam masala, Kashmiri chilli and turmeric. Six of those are spices you already cook with. We list them in order of how much is in the pouch, which is what the law asks for, and we keep the exact spice ratios to ourselves, which is the recipe. No added sugar, no sweeteners, no preservatives, no fillers. Contains naturally occurring sugars. Contains milk (whey).",
+          "Heldi Khana has eight ingredients, listed from most to least: whey protein isolate (MILK) (94%), cumin, sunflower lecithin, coriander, fine sea salt, garam masala, Kashmiri chilli and turmeric. Six are familiar kitchen spices. The order and the whey percentage are published as required; the exact spice proportions are the recipe. No added sugar, sweeteners, preservatives or fillers. Contains naturally occurring sugars. Contains milk (whey).",
         more: { href: "/inside-the-pouch", label: "See the full breakdown" }
       },
       {
         question: "Where do the ingredients come from?",
         answer:
-          "The whey protein isolate comes from Arla, the farmer-owned dairy cooperative, and every batch arrives with a certificate of analysis. The single spices come from Spice Entice, a British spice house, and the garam masala from Buy Whole Foods Online, since it is a blend rather than one spice. The sunflower lecithin comes from Special Ingredients, a UK supplier. Everything is blended and packed in England.",
+          "The whey protein isolate comes from Arla, the farmer-owned dairy cooperative, and every incoming batch has a supplier certificate of analysis. That certificate covers the whey ingredient; it is not finished-product analysis or product certification. The single spices come from the British spice house Spice Entice. The garam masala comes from Buy Whole Foods Online because it is a blend, and the sunflower lecithin comes from the UK supplier Special Ingredients. Heldi Khana is blended and packed in the UK.",
         more: { href: "/inside-the-pouch", label: "Read where it all comes from" }
       }
     ]
@@ -180,14 +189,14 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
             {
               question: "How much is delivery?",
               answer:
-                `UK orders over ${formatPence(SHIPPING.freeOverPence)} ship free. Under that, Royal Mail Tracked 48 is ${formatPence(SHIPPING.standardPence)}. A sachet on its own always ships free, we cover the stamp.`
+                `UK orders at or over ${formatPence(SHIPPING.freeOverPence)} ship free. Below that amount, Royal Mail Tracked 48 costs ${formatPence(SHIPPING.standardPence)}. A sachet ordered on its own also ships free.`
             }
           ]
         : []),
       {
         question: "How long does delivery take?",
         answer:
-          "We pack every order ourselves and send it by Royal Mail Tracked 48, which usually delivers 2 to 3 working days after dispatch. You get a tracking link either way.",
+          "We pack each order and send it by Royal Mail Tracked 48. Delivery usually takes 2 to 3 working days after dispatch, and we send a tracking link.",
         // The shipping policy page is unpublished until launch (it lists rates).
         ...(mode === "live"
           ? { more: { href: "/legal/shipping", label: "Read the shipping policy" } }
@@ -196,18 +205,18 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Can I return it?",
         answer:
-          "Yes. You have 14 days after delivery to change your mind, as long as the pouch is unopened. Email info@heldi.co.uk to start a return and we refund within 14 days of receiving it back. If anything arrives faulty or damaged, we replace or refund it in full and cover the postage.",
+          "Yes. You have 14 days after delivery to change your mind, provided the pouch is unopened. Email info@heldi.co.uk to start the return. We issue the refund within 14 days of receiving it. If an item arrives faulty or damaged, we replace it or refund it in full and cover the postage.",
         more: { href: "/legal/returns", label: "Read the returns policy" }
       },
       {
         question: "Do you deliver outside the UK?",
         answer:
-          "Not yet. We are UK-only for now, sent by Royal Mail from our own packing table. If you want Heldi somewhere else, email info@heldi.co.uk and tell us where. The list of requests genuinely shapes where we ship next."
+          "Not yet. Heldi currently ships only within the UK, by Royal Mail. If you would like it sent elsewhere, email info@heldi.co.uk and tell us the country. We use those requests when deciding where to ship next."
       },
       {
         question: "How long does a pouch keep?",
         answer:
-          `Every pouch has an 18-month best-before date, printed on the base. Once it is open, reseal it after each use, keep it somewhere cool and dry, and use it within 3 months for the best taste and texture. Never dip a wet spoon in. A 300g pouch is about ${SERVINGS_PER_POUCH} meals, so most kitchens finish it long before any of that matters.`
+          `This answer is for Heldi Khana. Each pouch has an 18-month best-before date printed on the base. After opening, reseal it after each use, store it somewhere cool and dry, and use it within 3 months for the best taste and texture. Keep wet spoons out of the pouch. A 300g pouch provides about ${SERVINGS_PER_POUCH} meals, so many kitchens will finish it within that period. Heldi Chai has a different pouch and no published shelf-life figure yet.`
       },
       // Only makes sense before launch; live mode drops it.
       ...(mode === "waitlist"
@@ -215,7 +224,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
             {
               question: "When does Heldi launch, and what does the waitlist do?",
               answer:
-                `Heldi launches in autumn 2026. You can browse the shop now, but checkout switches on at launch. ${siteWaitlistOfferCopy(true).faqAnswer}`
+                `Heldi launches in autumn 2026. The shop is available to browse now, and checkout switches on at launch. ${offer.faqAnswer}`
             }
           ]
         : []),

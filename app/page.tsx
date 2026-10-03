@@ -15,7 +15,7 @@ const organizationSchema = {
   url: SITE_URL,
   slogan: "They shake, we stir",
   description:
-    "Heldi makes whey protein blends designed to stir invisibly into Indian home cooking and hot drinks: Khana for dal, curry and raita, Chai for chai, tea and coffee. 100% vegetarian, made in the UK.",
+    "Heldi is a UK food supplement brand making vegetarian whey protein blends for Indian home cooking. Heldi Khana is for dal, curry, sabzi and raita. Heldi Chai is for chai, tea, coffee and hot chocolate. Both are made in the UK.",
   founder: { "@type": "Person", name: "Mihir" }
 };
 

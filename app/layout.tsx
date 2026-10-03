@@ -8,6 +8,7 @@ import { FloatingWaitlistCta } from "@/components/floating-waitlist-cta";
 import { VercelAnalytics } from "@/components/vercel-analytics";
 import { WaitlistPopupProvider } from "@/components/waitlist-popup";
 import { SITE_URL } from "@/lib/site";
+import { getWaitlistPairsOpen } from "@/lib/waitlist-count";
 import "./globals.css";
 
 const gelasio = Gelasio({
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Heldi, desi protein for Indian food",
   description:
-    "Protein that disappears into dal, curry, raita and chai. They shake, we stir.",
+    "Vegetarian whey protein blends for Indian home cooking. Khana is for savoury dishes; Chai is for hot drinks. They shake, we stir.",
   alternates: {
     types: { "application/rss+xml": "/feed.xml" }
   },
@@ -43,14 +44,17 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{ children: React.ReactNode }>) {
+  // Cached and fail-open (lib/waitlist-count.ts): it never throws and never
+  // makes a render wait on the database, which matters in a root layout.
+  const pairsOpen = await getWaitlistPairsOpen();
   return (
     <html lang="en">
       <body className={`${gelasio.variable} ${rozhaOne.variable}`}>
         <CartProvider>
-          <WaitlistPopupProvider>
+          <WaitlistPopupProvider pairsOpen={pairsOpen}>
             <AnalyticsBoot />
             {children}
             <FloatingWaitlistCta />

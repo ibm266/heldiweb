@@ -6,6 +6,7 @@ import {
   CHAI_FORMULA,
   CHAI_LACTOSE_PER_100G,
   CHAI_MUGS_PER_POUCH,
+  CHAI_NATURAL_LINE,
   CHAI_NUTRITION_ROWS,
   CHAI_POUCH_GRAMS,
   CHAI_PROTEIN_MARKETING_GRAMS,
@@ -35,18 +36,19 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     answer: (
       <>
         <p>
-          Whey protein isolate and milk protein concentrate, both from milk,
-          blended with real chai spices and a little coconut sugar. In full,
-          largest first: {CHAI_FORMULA}. <strong>{CHAI_ALLERGENS}</strong>{" "}
-          Blended and packed in the UK.
+          Whey protein isolate and milk protein concentrate both come from
+          milk. We blend them with chai spices and a little coconut sugar.{" "}
+          <strong>{CHAI_NATURAL_LINE}</strong> In full, largest first:{" "}
+          {CHAI_FORMULA}. Nothing in that list contains caffeine, so the blend
+          itself is <strong>caffeine free</strong>, though the tea or coffee
+          you stir it into usually is not.{" "}
+          <strong>{CHAI_ALLERGENS}</strong> Blended and packed in the UK.
         </p>
         <p>
-          The order is the order, largest first, which is what the label has to
-          show. We publish how much of each milk protein and how much coconut
-          sugar is in there, and we keep the spice ratios to ourselves, because
-          that part is the recipe.{" "}
-          <a href="/our-story">Read our story</a> for why we built it this
-          way.
+          Ingredients appear in weight order, as the label requires. We
+          publish the amount of each milk protein and the coconut sugar; the
+          spice ratios stay with our recipe.{" "}
+          <a href="/our-story">Read how that recipe began</a>.
         </p>
       </>
     )
@@ -70,8 +72,8 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
           normal.
         </p>
         <p>
-          It goes into more than chai. Tea, coffee, hot chocolate, warm milk.
-          Anything you would run back down a platform for.
+          Use that end-of-mug step for tea, coffee, hot chocolate and warm
+          milk too. Make the drink first, then stir.
         </p>
       </>
     )
@@ -81,18 +83,20 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     answer: (
       <>
         <p>
-          <strong>{CHAI_PROTEIN_PER_SERVING_GRAMS}g in a {CHAI_SERVING_SPOON}</strong>,
-          the {CHAI_SERVING_GRAMS}g serving, and {CHAI_PROTEIN_PER_100G}g per
-          100g. The pack rounds that to {CHAI_PROTEIN_MARKETING_GRAMS}g a mug.
-          Protein contributes to the maintenance of muscle mass.
+          An <strong>{CHAI_SERVING_GRAMS}g serving</strong>, about one{" "}
+          {CHAI_SERVING_SPOON}, contains{" "}
+          <strong>{CHAI_PROTEIN_PER_SERVING_GRAMS}g of protein</strong>. The
+          blend contains {CHAI_PROTEIN_PER_100G}g per 100g. On the front of the
+          pouch and in everyday copy, we round down to{" "}
+          {CHAI_PROTEIN_MARKETING_GRAMS}g per mug. Protein contributes to the
+          maintenance of muscle mass.
         </p>
         <p>
-          Where the number comes from: the recipe, with the whey at the
-          figure on its certificate of analysis and the milk protein
-          concentrate at typical published values, added up the way the
-          labelling rules allow. The
-          figure from analysis of the finished blend replaces it, here and
-          on the pouch, before Chai is sold.{" "}
+          These figures are calculated from the recipe, using the whey
+          certificate of analysis and typical published composition values
+          for MPC85 in the way the labelling rules allow. Bacarel&apos;s own
+          supplier specification is still outstanding. These calculations
+          are the basis of Chai&apos;s nutrition declaration.{" "}
           <a href="/truth">Read the honest truth about protein</a>.
         </p>
       </>
@@ -122,10 +126,10 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
           not a test, so we say the number and do not call it lactose-free.
         </p>
         <p>
-          <strong>Watching sugar?</strong> Chai is sweetened with{" "}
-          <strong>coconut sugar</strong>: 0.9g of sugars in a mug, so unlike
-          Khana it is not a no-added-sugar product. We can&apos;t give
-          medical advice, so show the label to your GP or dietitian. More on{" "}
+          <strong>Watching sugar?</strong> Chai contains{" "}
+          <strong>coconut sugar</strong>, with 0.9g of sugars in a mug. It is
+          not a no-added-sugar product. We can&apos;t give medical advice, so
+          show the label to your GP or dietitian. More on{" "}
           <a href="/faq">kids, pregnancy and kidneys in the full FAQ</a>.
         </p>
       </>
@@ -159,10 +163,11 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         <p className="nutri-footnote">{CHAI_RI_FOOTNOTE}</p>
         <p>
           A {CHAI_POUCH_GRAMS}g pouch makes about {CHAI_MUGS_PER_POUCH} mugs
-          at one {CHAI_SERVING_SPOON} each. The full amino acid profile is
-          under <strong>Nutrition &amp; amino acids</strong> above. Every
-          figure is calculated from the recipe and is replaced by the
-          analysis of the finished blend before Chai goes on sale.
+          at an {CHAI_SERVING_GRAMS}g serving, about one {CHAI_SERVING_SPOON},
+          per mug. Open <strong>Nutrition &amp; amino acids</strong> near the
+          top of the page for the full amino acid profile. The figures are
+          calculated from the recipe on the same basis as the nutrition
+          declaration.
         </p>
       </>
     )
@@ -181,15 +186,15 @@ function ShippingAnswer() {
   return (
     <>
       <p>
-        <strong>UK delivery</strong> by{" "}
-        <strong>Royal Mail Tracked 48</strong>, sent by us, packed with care.
-        Chai is not in the shop yet, so its rates are confirmed{" "}
+        We plan to send Chai in the UK by{" "}
+        <strong>Royal Mail Tracked 48</strong>. It is not in the shop yet, so
+        the rates will appear{" "}
         {mode === "live" ? "when it goes on sale" : "when the shop opens"}.
       </p>
       <p>
         Every pouch carries a best-before on the base. Once open, reseal it,
-        keep it cool and dry, and never dip a wet spoon in: a mug of chai is
-        steam, and steam is how powder turns to cement.
+        keep it cool and dry, and use a dry spoon. Keep the open pouch away
+        from the steam above the mug.
       </p>
     </>
   );

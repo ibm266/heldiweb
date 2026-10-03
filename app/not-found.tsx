@@ -4,7 +4,8 @@ import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 
 export const metadata: Metadata = {
   title: "Page not found · Heldi",
-  description: "That page is not on the table. The rest of the kitchen is."
+  description:
+    "This page has gone missing. Find your way back to Heldi, the shop, the honest truth or the family FAQ."
 };
 
 export default function NotFound() {
@@ -15,11 +16,10 @@ export default function NotFound() {
       <section className="section section--cream story-hero" data-nav-hero>
         <div className="story-hero__inner">
           <p className="eyebrow">404</p>
-          <h1 className="story-hero__title">This page vanished clean.</h1>
+          <h1 className="story-hero__title">This page missed dinner.</h1>
           <p className="story-hero__lede">
-            Normally that is exactly what we want. Not this time. Whatever you
-            were looking for is not in this pot, but the rest of the table is
-            where it always was.
+            We checked the kitchen twice. Whatever you were looking for is not
+            here, but the rest of Heldi is just where we left it.
           </p>
           <div className="pill-links">
             <Link className="pill-link" href="/">

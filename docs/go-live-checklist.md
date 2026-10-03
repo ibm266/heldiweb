@@ -149,7 +149,7 @@ Nobody has audited this. The whole site assumes a product, stock, a packer and a
 - [ ] Packaging materials in hand: boxes, void fill, tape, label printing, and a decision on posting steel alongside a foil pouch. **(Mihir, real world)**
 - [ ] Dispatch promise reviewed. `docs/legal/shipping-policy.md:24` publishes "within 1 working day, and within 2 working days at the latest" for a one-person operation. Decide what happens at 30 orders in a day. A softer published promise costs nothing and cannot be breached. **(Mihir, then code)**
 - [~] Product liability insurance in place. Confirmed 28 Jul 2026: not yet, will be set up. Must be in force before the first parcel leaves, not before launch day. Heldi LTD is strictly liable as own-brander under CPA 1987, and `docs/legal/terms-and-conditions.md:74-76` correctly does not limit liability for personal injury. **(Mihir, real world)**
-- [ ] UK IPO word-mark search on "Heldi" and on the product name. A conflict found after the film is printed is a rebrand plus scrapped stock. Same deadline as the naming decision: the print order. **(Mihir, real world)**
+- [ ] UK IPO word-mark search on "Heldi" and on the product name, then file. `docs/trademark.md` holds the full plan: the six searches to run (§8), what to file and in which classes (§1, §4), the April 2026 fees (§5) and the click-by-click filing steps (§7). A conflict found after the film is printed is a rebrand plus scrapped stock. Same deadline as the naming decision: the print order. **(Mihir, real world)**
 - [ ] Unit economics modelled once. There is no COGS figure anywhere in the repo. Worst case at launch: full table £80, minus 20% (£64), minus free shipping on a probably-oversized parcel, minus 2 jars and a dabba, minus roughly £1.32 of Shopify fees, minus 900g of Arla isolate and three pouches. Ten minutes in a spreadsheet. **(Mihir with accountant)**
 
 ---
@@ -178,12 +178,12 @@ Nobody has audited this. The whole site assumes a product, stock, a packer and a
 ### Food information (fix before selling)
 
 - [ ] Emphasise milk inside the ingredients list wherever the list appears: `components/shop/nutrition-data.ts:5-6`, `app/inside-the-pouch/page.tsx:25`, `components/site-faqs.ts:158`. FIC Art 21(1) requires it in the list itself, and a separate "contains milk" elsewhere does not satisfy it. `fable/compliance-requirements.md:60-68` already specifies "Whey Protein Isolate (MILK)", so this is drift from the project's own spec. **(code)**
-- [ ] One shared statutory-statements component rendered on every commercial surface: food supplement designation, recommended daily portion, do not exceed it, not a substitute for a varied and balanced diet, keep out of reach of children, contains milk. Today the block exists only at `app/faq/page.tsx:56-61`, with a partial version at `components/truth-page.tsx:510-514`. `BRAND.md` §12 already requires it to be reachable from every commercial surface. **(code)**
+- [ ] One shared statutory-statements component rendered on every commercial surface: food supplement designation, recommended daily intake (a range of 1 to 4 servings since 3 Oct 2026, matching the pack), do not exceed it, not a substitute for a varied and balanced diet, keep out of reach of children, contains milk. Today the block exists only at `app/faq/page.tsx:56-61`, with a partial version at `components/truth-page.tsx:510-514`. `BRAND.md` §12 already requires it to be reachable from every commercial surface. **(code)**
 - [ ] Declare the sachet's net quantity in grams (**30g ℮**, confirmed 4 Sep 2026). It appears nowhere on the site yet. **(code)**
 - [ ] Add "contains naturally occurring sugars" wherever "no added sugar" appears (`components/heldi-homepage.tsx:177`, `:353`, `components/shop/buy-box.tsx:42`, `components/shop/product-accordions.tsx:21`, `:74`, `components/home-faqs.ts:50`, `:55`, `components/site-faqs.ts:158`), or drop the claim. **(code)**
 - [ ] Add a descriptive legal name near the H1 at `components/shop/buy-box.tsx:181`, for example "Whey protein isolate blend with warm spices. Food supplement." (not "with cumin": the blend is eight ingredients as of 3 Sep 2026) One line, and it also discharges the supplement designation. **(code)**
-- [ ] "All natural" decision. Whey **isolate** is produced by industrial microfiltration or ion exchange and sunflower lecithin, now 1.5%, is functioning as an emulsifier. This is the weakest claim on the site. `components/site-faqs.ts:158` already says something defensible ("no sweeteners, no preservatives, no fillers"). Decide before the pouch artwork goes to print, because it retires `all-natural.png`. **(Mihir, then code)**
-- [ ] Origin. "Made in the UK" (`components/subpage-nav.tsx:184`, `components/heldi-homepage.tsx:1401`, ticker at `:138`, `:140`) against Arla whey at 94% triggers the primary-ingredient origin rule (retained Reg 2018/775). Confirm Arla's actual sourcing, then either state the whey's origin or keep the safer process statement "Blended and packed in England". **(Mihir, then code)**
+- [x] "All natural" decision. **Settled 3 Oct 2026, Mihir: it stays.** Sunflower lecithin is a natural ingredient, so the natural claims stay wherever they are: the Khana pack keeps ALL NATURAL INGREDIENTS, the Chai pack carries *Made with natural ingredients.* (and the Chai page now repeats that line), and the site keeps its Khana "All natural" badges and `all-natural.png`. The concern this item raised, kept for the record and for solicitor question 3 above: whey **isolate** is produced by industrial microfiltration or ion exchange, and sunflower lecithin, now 1.5%, is functioning as an emulsifier. **(Mihir, then code)**
+- [ ] Origin. "Made in the UK" (`components/subpage-nav.tsx:184`, `components/heldi-homepage.tsx:1401`, ticker at `:138`, `:140`) against Arla whey at 94% triggers the primary-ingredient origin rule (retained Reg 2018/775). Confirm Arla's actual sourcing, then either state the whey's origin or keep the safer process statement "Blended and packed in the UK" (it read "in England" until 3 Oct 2026, when the site moved to the round-16 pack's wording). **(Mihir, then code)**
 - [ ] Rewrite "Is it safe for kids? Yes" (`components/home-faqs.ts:43-45`). It opens unqualified, sits on the same page as a "keep out of reach of children" warning, and unlike the pregnancy and medication answers it never hands off to a GP or health visitor, which `BRAND.md` §7 requires. **(code)**
 - [ ] Add a rule to `BRAND.md` §12: the "98%" and "lactose-free" travel together, always, in every ad, badge and social crop. The qualifier is what keeps the claim lawful. **(code)**
 
@@ -257,7 +257,7 @@ Store `jfz4qx-4u.myshopify.com`, GBP, GB. Product `gid://shopify/Product/1579046
 
 ## 4. Email and Klaviyo
 
-Klaviyo account `V9JqrE`. Lists: Waitlist `Staq52` (single opt-in), Weekly letter `U6LSH` (double opt-in). One template, "Waitlist welcome" `VnY8iQ`.
+Klaviyo account `V9JqrE`. Lists: Waitlist `Staq52` (single opt-in), Weekly letter `U6jLSH` (double opt-in). The welcome flow `T6BYu5` exists and is live, on library template `TvLgd3` ("Waitlist welcome (site branded)"); older template `VnY8iQ` is an orphaned draft (20%/25% copy, sends to nobody) to archive.
 
 - [x] `KLAVIYO_PRIVATE_API_KEY`, `KLAVIYO_WAITLIST_LIST_ID` and `KLAVIYO_NEWSLETTER_LIST_ID` are set locally and on Vercel Production and Preview. Waitlist signups are reaching Klaviyo, verified 25 July.
 - [x] `_dmarc.heldi.co.uk` publishes `v=DMARC1 p=none`. `send.heldi.co.uk` CNAMEs to klaviyodns.com and its SPF resolves.
@@ -270,17 +270,15 @@ Klaviyo account `V9JqrE`. Lists: Waitlist `Staq52` (single opt-in), Weekly lette
 
 ### Klaviyo build
 
-- [ ] **Zero flows exist.** Build the waitlist welcome flow triggered on list `Staq52`, using template `VnY8iQ`. Today someone joins the waitlist and hears nothing. **(Mihir, dashboard)**
+- [~] **The welcome flow exists and is live** (`T6BYu5`, on library template `TvLgd3`), firing on every waitlist signup. Its copy was corrected in `docs/email/waitlist-welcome.html` (BRAND.md §11.9: the free sample pair, we pay the postage, 15% off) and **pushed to Klaviyo on 17 Sep 2026**, once the connection authorised: the live send now carries the three settled rows and none of the retired wordings. One job left here, and it is a dashboard one: the older "Waitlist welcome" template `VnY8iQ` is an orphaned draft (20%/25% copy, sends to nobody), so archive it and do not build against it. **(Mihir, dashboard)**
 - [ ] **The Shopify integration is not connected.** `get_catalog_items` returns empty while Shopify has an ACTIVE product with 4 variants. That is why there is no back-in-stock, no browse-abandon and no Shopify order data in Klaviyo. Connect it after the store is live. **(Mihir, dashboard)**
 - [ ] **9 of the 11 profiles sit on an unused Klaviyo default list `XQfBFE`, not on `Staq52`.** They did not come from the site form (Supabase has only 2 waitlist rows). Decide whether they get the launch email and move them if so. **(Mihir, dashboard)**
-- [ ] Launch campaign drafted, proofed, and its audience confirmed. **(Mihir, dashboard)**
-- [ ] **`PEHLEAAP` does not exist in Shopify.** `list_discounts` returns only the three gifting codes. Every waitlist surface promises it and so does template `VnY8iQ`. Create it: 20% off, the three pouch variant GIDs only (never `HELDI-SAMPLE`), one use per customer, combines with nothing, plus a **total usage cap** sized to the list, plus an end date. **(Mihir, dashboard)**
-- [ ] Note that `PEHLEAAP` is already public in the shipped JavaScript, despite the comment at `lib/pricing.ts:165-166`. `WAITLIST_OFFER` is one object literal imported into client components, so the whole object ships (`grep -rl PEHLEAAP .next/static` matches a browser-served chunk). If it must be private, rename it at creation and let the email carry the real string. Otherwise the per-customer limit plus the total cap is the mitigation. **(Mihir, or code)**
+- [ ] **Build and draft the three launch campaigns**, one per segment: early joiners (the static list frozen at the cut-over), the first 100 by `joined_at` order minus the early joiners, and everyone else. Each carries its own master from `docs/email/` and its own claim link, and the three must be mutually exclusive. Keep all three **draft** until launch day. **(Mihir, dashboard)**
+- [ ] **The five Shopify jobs the offer depends on**, all by hand in the admin (BRAND.md §11.9): rebuild the three family codes at 15%; recreate `WELCOME` as free shipping; put both sample products on a £0 shipping profile (this is what makes "we pay the postage" true); track `HELDI-SAMPLE-PAIR-FREE` at 100 units with "continue selling" off; paste the free pair's Shopify description from BRAND.md §11.9. Once the shipping profile exists, flip `CLAIM_RIDES_WITH_WELCOME` in `components/cart/cart-context.tsx` to false (`scripts/storefront-check.mjs` fails until it is). **(Mihir, dashboard + code)**
 
 ### What the waitlist has been told
 
-- [ ] **The 14-day window is disclosed nowhere.** `WAITLIST_OFFER.windowDays: 14` (`lib/pricing.ts:167-171`) is rendered on zero surfaces, while the percentage is rendered on six. What waitlisters are actually told is "we hold 20% off your first order for you" (`components/site-faqs.ts:213`), unqualified. Either surface the window in the waitlist copy now, or carry the deadline only in the launch email and honour late claims by hand. **(code, then Mihir)**
-- [ ] **The offer excludes the Sample and the copy never says so.** Same six surfaces promise "20% off your first order"; `lib/pricing.ts:163` and `BRAND.md:455` exclude `HELDI-SAMPLE`. **(code)**
+- [ ] **Confirm the offer reads the same everywhere.** The site, the welcome email, the terms (`docs/legal/terms-and-conditions.md#waitlist-offer`) and Shopify itself all have to say the same three things: first to know for everyone, a free sample pair for the first 100 with the postage paid, 15% off everyone's first order (BRAND.md §11.9). The terms now carry the full small print (one per household, UK only, 30 days from the launch email), so this is a match-the-wording check before launch, not a fresh disclosure decision. **(Mihir, before launch)**
 
 ### Shopify's own customer emails (the most-read copy Heldi will publish)
 
@@ -296,7 +294,7 @@ Klaviyo account `V9JqrE`. Lists: Waitlist `Staq52` (single opt-in), Weekly lette
 
 ### The decision nobody has made
 
-- [ ] **Decide whether to launch to this list, or to spend the weeks before launch building one.** 2 waitlist rows in Supabase, 11 Klaviyo profiles, 0 members on the weekly letter. The 20% code, the "one email the day we launch" and the whole `WAITLIST_OFFER` construct currently address roughly two people. Fixing DKIM, building the flow and drafting the campaign are all necessary and all worthless against an audience of two. This changes the launch date, so make it deliberately. **(Mihir)**
+- [ ] **Decide whether to launch to this list, or to spend the weeks before launch building one.** 2 waitlist rows in Supabase, 11 Klaviyo profiles, 0 members on the weekly letter. The waitlist offer (a free sample pair for the first 100, 15% off for everyone, BRAND.md §11.9), the "one email the day we launch" and the whole `WAITLIST_OFFER` construct currently address roughly two people. Fixing DKIM, building the flow and drafting the campaign are all necessary and all worthless against an audience of two. This changes the launch date, so make it deliberately. **(Mihir)**
 
 ---
 
@@ -458,14 +456,14 @@ Klaviyo account `V9JqrE`. Lists: Waitlist `Staq52` (single opt-in), Weekly lette
 
 Do not reorder these. Each step depends on the one above it.
 
-- [ ] **1.** `PEHLEAAP` created in Shopify with the exact expiry the launch email states, restricted to the three pouch variants, one use per customer, plus a total usage cap. **(Mihir, dashboard)**
+- [ ] **1.** Confirm the five Shopify jobs the waitlist offer depends on are done (BRAND.md §11.9): the three family codes rebuilt at 15%, `WELCOME` recreated as free shipping, both sample products on the £0 shipping profile, `HELDI-SAMPLE-PAIR-FREE` tracked at 100 units with "continue selling" off, and its Shopify description pasted from BRAND.md §11.9. Flip `CLAIM_RIDES_WITH_WELCOME` in `components/cart/cart-context.tsx` to false once the shipping profile is confirmed (`scripts/storefront-check.mjs` fails until it is). **(Mihir, dashboard)**
 - [ ] **2.** Shipping rates live, tax verified at £0.00 on a test checkout, Shopify Payments out of test mode, policies pasted, product images uploaded. **(Mihir, dashboard)**
 - [ ] **3.** Online Store password removed, and the Shopify theme kept out of the index (see §6). **(Mihir, dashboard)**
 - [ ] **4.** Vercel: set `NEXT_PUBLIC_COMMERCE_MODE=live` and confirm `NEXT_PUBLIC_COMMERCE_PROVIDER=shopify`, then trigger a **fresh build**. **Untick "use existing build cache"**, or push a commit. `lib/commerce/config.ts:5-9` reads a `NEXT_PUBLIC_` variable, which Next.js **inlines at build time**, so a cached redeploy leaves the old `waitlist` value baked into the client bundle and the site does not change. This is the single most likely way launch day appears to fail for no reason. Runbook Phase 7. **(Mihir, dashboard)**
 - [ ] **5.** `/shop` is ISR at 1 hour, so allow for that or force a revalidation before judging the result. **(Mihir)**
 - [ ] **6.** Verify the live site yourself, end to end, with a real card: add to basket, gifts attach at the right counts, discount applies, shipping matches, checkout completes, confirmation email arrives, `purchase` lands in PostHog. **(Mihir)**
 - [ ] **7.** Confirm `https://heldi.co.uk/legal/shipping` returns 200. It is deliberately 404 today and self-heals at launch via `lib/legal.ts:29`. Ten-second curl. **(Mihir)**
-- [ ] **8.** **Only now** send the Klaviyo launch campaign. Sending it at step 1 by mistake lands the whole list on a waitlist site holding a code that does not exist. **(Mihir, dashboard)**
+- [ ] **8.** **Only now** send the three Klaviyo launch campaigns (early joiners, first 100, everyone else). Sending any of them before step 4 lands the list on a waitlist site whose free-pair link and family codes do not work yet. **(Mihir, dashboard)**
 - [ ] **9.** Submit the sitemap in Search Console and request indexing on `/` and `/shop`. **(Mihir, dashboard)**
 
 ### Rollback
@@ -474,7 +472,7 @@ Flipping the mode back reverts the site and nothing else. A real rollback is fou
 
 - [ ] **Trigger agreed in advance.** Pull the launch if: checkout fails, any order charges the wrong total, any order charges tax, or the gift lines do not attach. **(Mihir)**
 - [ ] **a.** Re-enable the Shopify Online Store password, or deactivate the product. Otherwise anyone holding a `checkoutUrl` can still complete an order and `shop.heldi.co.uk` stays public. **(Mihir, dashboard)**
-- [ ] **b.** Disable `PEHLEAAP`. **(Mihir, dashboard)**
+- [ ] **b.** There is no single launch code to disable any more: the three family codes and `WELCOME` are standing discounts, not launch-only ones. If the free sample pair is the concern, drop `HELDI-SAMPLE-PAIR-FREE`'s inventory to 0 so no further claim can complete. **(Mihir, dashboard)**
 - [ ] **c.** Flip `NEXT_PUBLIC_COMMERCE_MODE` back to `waitlist` and rebuild without the cache. **(Mihir, dashboard)**
 - [ ] **d.** Decide what happens to orders already taken, and who emails those customers. **(Mihir)**
 

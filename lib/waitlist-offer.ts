@@ -55,7 +55,7 @@ export const WAITLIST_HEADLINE = "Be first to stir it in.";
 
 /** What the pair is, for the emails and the product description. */
 export const WAITLIST_PAIR_EXPLAINER =
-  "The pair is one Khana sachet for the pot and one Chai sachet for the mug, so you can try both before you commit to a pouch.";
+  "The pair is one Khana sachet for the bowl and one Chai sachet for the mug, so you can try both before you commit to a pouch.";
 
 export function waitlistOfferCopy(
   { firstJoiners, percent }: WaitlistOfferFacts,
@@ -88,7 +88,7 @@ export function waitlistOfferCopy(
 
   const before = `One email, the day we launch. The first ${firstJoiners} on the list get `;
   const highlight = "a free sample pair";
-  const after = `, one for the pot and one for the mug, and we pay the postage. ${everyone}`;
+  const after = `, one for the bowl and one for the mug, and we pay the postage. ${everyone}`;
   return {
     pairsOpen,
     tickerItems: [
@@ -127,7 +127,7 @@ export function freePairProductCopy({ firstJoiners }: WaitlistOfferFacts): {
   return {
     title: "Heldi sample pair, on us",
     shortDescription: `A free sample pair for the first ${firstJoiners} on the list.`,
-    description: `Two 30g sachets, one Khana for the pot and one Chai for the mug. Free for the first ${firstJoiners} on the list, and we pay the postage.`
+    description: `Two 30g sachets, one Khana for the bowl and one Chai for the mug. Free for the first ${firstJoiners} on the list, and we pay the postage.`
   };
 }
 

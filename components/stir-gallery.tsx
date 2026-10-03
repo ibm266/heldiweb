@@ -68,18 +68,18 @@ const DISHES: Dish[] = [
 ];
 
 const CHAI_CAPTIONS = [
-  "Not one comment at the table.",
-  "Same chai. Nobody asked.",
-  "Papa had a second cup and still has no idea."
+  "Pass the biscuits. This one is ready.",
+  "The evening chai carried on as usual.",
+  "Papa had a second cup. We will take that."
 ];
 
 const DAL_CAPTIONS = [
   "The dal did not even notice.",
-  "Bends into the dal like Beckham."
+  "The tadka still gets all the attention."
 ];
 
 const SHARED_CAPTIONS = [
-  "Still tastes exactly the same.",
+  "The bowl is ready for the rotis.",
   "The same food, just a little heldier.",
   "Nani is impressed.",
   "Save some for the raita.",
@@ -345,10 +345,10 @@ export function StirGallery({ boostGrams = 10 }: StirGalleryProps) {
     <div className="stir-gallery">
       <header className="stir-gallery__header">
           <p className="eyebrow eyebrow--gold">THEY SHAKE. WE STIR.</p>
-          <h2>Stir it into everything.</h2>
+          <h2>See what a spoonful adds.</h2>
           <p className="stir-gallery__lede">
-            Every dish on tonight&apos;s table takes a spoonful. Nothing
-            changes but <CopyHighlight>the protein</CopyHighlight>.
+            Pick a bowl or mug and stir in Heldi. We will do the{" "}
+            <CopyHighlight>protein maths</CopyHighlight> as you go.
           </p>
         </header>
 

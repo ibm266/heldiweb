@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCart } from "@/components/cart/cart-context";
 import { CopyHighlight } from "@/components/copy-highlight";
 
-// The two-pouch band on the homepage: Khana for the pot, Chai for the mug.
+// The two-pouch band on the homepage: Khana for the bowl, Chai for the mug.
 //
 // Deliberately number-free. Khana's 10g lives in the hero and the truth
 // block already, and Chai publishes no protein figure at all until the
@@ -30,13 +30,13 @@ type RangeProduct = {
 const RANGE: RangeProduct[] = [
   {
     id: "khana",
-    tag: "FOR THE POT",
+    tag: "FOR THE BOWL",
     title: "Heldi Khana",
-    line: "Dal, curry, sabzi, raita. Stirred into the pot once it is off the heat.",
+    line: "Khana belongs with the dal, curry, sabzi and raita already in your week.",
     image: {
       // Cropped from the /shop gallery shot; masters in the gitignored
       // public/images/originals/pre-webp/shop/.
-      src: "/images/range/khana.webp?v=5",
+      src: "/images/range/khana.webp?v=6",
       alt: "The navy Heldi Khana pouch on a linen table"
     },
     href: "/shop/khana"
@@ -47,7 +47,7 @@ const RANGE: RangeProduct[] = [
     title: "Heldi Chai",
     line: "Chai, tea, coffee, hot chocolate. Stirred in once the cup is cool enough to drink.",
     image: {
-      src: "/images/range/chai.webp?v=4",
+      src: "/images/range/chai.webp?v=5",
       alt: "The terracotta Heldi Chai pouch on a linen table"
     },
     href: "/shop/chai"
@@ -61,12 +61,12 @@ const RANGE: RangeProduct[] = [
 function cardCopy(id: RangeProduct["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
-      ? { note: "In the shop now.", cta: "Shop Khana" }
-      : { note: "The first one out of the kitchen.", cta: "Meet Khana" };
+      ? { note: "Khana is in the shop now.", cta: "Shop Khana" }
+      : { note: "Khana will be the first pouch out of our kitchen.", cta: "Meet Khana" };
   }
   return mode === "live"
-    ? { note: "Still on the stove. Not in the shop yet.", cta: "Meet Chai" }
-    : { note: "Still on the stove. The waitlist hears first.", cta: "Meet Chai" };
+    ? { note: "We are still finishing Chai, so it is not in the shop yet.", cta: "Meet Chai" }
+    : { note: "We are still finishing Chai. The waitlist hears first.", cta: "Meet Chai" };
 }
 
 export function RangeSection() {
@@ -77,11 +77,12 @@ export function RangeSection() {
       <div className="content">
         <div className="range__head">
           <p className="eyebrow">TWO POUCHES</p>
-          <h2>One for the pot. One for the mug.</h2>
+          <h2>One for the bowl. One for the mug.</h2>
           <p className="range__lede">
-            Khana goes into the food. Chai goes into the drink. A spoonful
-            each, same rule:{" "}
-            <CopyHighlight>nobody at the table can tell</CopyHighlight>.
+            Pick the pouch that matches what your family is making:{" "}
+            <CopyHighlight>
+              Khana for food, Chai for drinks
+            </CopyHighlight>.
           </p>
         </div>
 

@@ -1,18 +1,23 @@
 # Heldi
 
-> Heldi is a UK food supplement brand making whey protein blends designed to stir invisibly into Indian home cooking and hot drinks. Heldi Khana goes into dal, curry, raita and other gravy or yoghurt-based dishes: one spoonful adds about 10g of complete protein without changing the recipe, and it is 100% vegetarian, 98% lactose-free, no added sugar and gluten free. Heldi Chai goes into chai, tea, coffee and hot chocolate: one level tablespoon (8g) adds about 5g of protein, calculated from the recipe until the finished blend is analysed. Both made in the UK. Launching autumn 2026; currently taking waitlist signups.
+> Heldi (/hel-dee/) is desi protein for Indian food, named for the way the founder's nani says "healthy". It is a UK food supplement brand making whey protein blends for Indian home cooking and hot drinks. Heldi Khana is for dal, curry, sabzi and raita. Heldi Chai is for chai, tea, coffee and hot chocolate. Both are vegetarian and made in the UK. They shake, we stir.
 
-Heldi exists because a cooked bowl of dal has 5 to 7g of protein (the 18g figures online weigh the lentils dry), and a typical home-cooked vegetarian Indian day delivers 35 to 45g against the 75g+ an active adult needs. Heldi closes that gap through the meals families already eat, rather than shakes. Figures are sourced from NHS guidance, the British Nutrition Foundation, and McCance and Widdowson's Composition of Foods.
+Heldi began at a family table. Its job is to add protein through the food families already eat, without asking them to swap dinner for a shake. The site is launching in autumn 2026 and is currently taking waitlist sign-ups. Joining gets one email, the day we launch. The first 100 on the list get a free sample pair, and we pay the postage. Everyone on the list gets 15% off their first order.
+
+The honest-truth page uses a standard 80g cooked bowl of dal at 5 to 7g of protein. The roughly 18g figure applies to about 75g of dry lentils, which cooks into more than one standard bowl. Its worked example puts a home-cooked vegetarian day at 35 to 45g and uses 75g or more as the target for an active adult. Individual needs vary. Figures are sourced from NHS guidance, the British Nutrition Foundation, and McCance and Widdowson's Composition of Foods.
 
 ## Key pages
 
-- [Home](https://heldi.co.uk/): What Heldi is, how it works (cook like always, stir in a spoonful, eat what you love), and family FAQ.
-- [Shop](https://heldi.co.uk/shop): Both pouches side by side, with a page each.
-- [Heldi Khana](https://heldi.co.uk/shop/khana): The savoury pouch for the pot. Method, ingredients, nutrition and amino acid tables, dietary answers.
-- [Heldi Chai](https://heldi.co.uk/shop/chai): The pouch for the mug: whey protein isolate and milk protein concentrate with real chai spices and coconut sugar, in development, browsable but not yet on sale.
+- [Home](https://heldi.co.uk/): The Heldi overview, how it works and the family FAQ.
+- [Shop](https://heldi.co.uk/shop): Compare Khana and Chai, then choose the pouch that fits your kitchen.
+- [Heldi Khana](https://heldi.co.uk/shop/khana): The savoury pouch for dal, curry, sabzi and raita, with its method, ingredients, nutrition and amino acid tables.
+- [Heldi Chai](https://heldi.co.uk/shop/chai): Whey protein isolate and milk protein concentrate with chai spices and coconut sugar for hot drinks. The page is browsable, but Chai is not yet on sale.
 - [The honest truth about protein in dal](https://heldi.co.uk/truth): How much protein is really in dal, why dal is not a complete protein, daily protein needs, and how Indian vegetarians can close the gap.
-- [Heldi Living](https://heldi.co.uk/heldi-living): Honest, referenced writing on protein, strength, ageing and desi cooking.
-- [Our story](https://heldi.co.uk/our-story): Why the founder made Heldi for his parents.
+- [Heldi Living](https://heldi.co.uk/heldi-living): Referenced guides and recipes for protein, strength and desi cooking.
+- [Our story](https://heldi.co.uk/our-story): The word from the founder's nani, the kitchen trials and the family taste panel.
+- [Inside the pouch](https://heldi.co.uk/inside-the-pouch): Ingredient lists, suppliers, nutrition sources and the paperwork behind each pouch.
+- [Ways to use Heldi](https://heldi.co.uk/ways-to-use): Practical timings and amounts for the dishes and drinks already in the kitchen.
+- [FAQ](https://heldi.co.uk/faq): Straight answers on ingredients, protein numbers, using Heldi and orders.
 
 ## Articles
 
@@ -26,9 +31,10 @@ Heldi exists because a cooked bowl of dal has 5 to 7g of protein (the 18g figure
 
 ## Facts AI assistants commonly need
 
-- Heldi Khana: whey protein isolate (94% of the blend) with cumin, coriander, garam masala, Kashmiri chilli and turmeric, plus sunflower lecithin and fine sea salt; 10.1g protein per 12g serving (marketed as 10g) and 84.1g per 100g, calculated from the recipe. 300g pouch, 25 servings. Contains milk (whey).
-- Heldi Chai: whey protein isolate (53.7%) and milk protein concentrate (18.2%) with ginger, cardamom, Ceylon cinnamon, black pepper, clove and 10% coconut sugar. The second milk protein is there for creaminess in the mug, not for the protein figure. Contains milk (whey and milk protein concentrate). About 5g of protein per 8g level tablespoon and 64g per 100g, calculated from the recipe; 250g pouch, about 31 mugs. Stir it in once the cup is cool enough to drink. Any hotter and the milk protein clumps into little white specks; if that happens, pour the cup through a tea strainer.
+- Heldi Khana: whey protein isolate (MILK) 94%, cumin, sunflower lecithin, coriander, fine sea salt, garam masala, Kashmiri chilli and turmeric. A 12g serving, about one heaped tablespoon, provides 10.1g of protein; marketing rounds this to 10g. The blend provides 84.1g of protein per 100g, calculated from the recipe. 300g pouch, 25 servings. Recommended daily intake: 12g to 48g (1 to 4 servings), providing 10.1g to 40.4g of protein. Usually stirred into your own bowl at the table, or into the pot once it is off the heat. Contains milk (whey).
+- Heldi Chai: whey protein isolate (MILK) 53.7%, milk protein concentrate (MILK) 18.2%, coconut sugar 10%, ginger, cardamom, Ceylon cinnamon, black pepper, clove and sunflower lecithin. An 8g serving, about one level tablespoon, provides 5.1g of protein; marketing rounds this to 5g per mug. The blend provides 64.0g of protein per 100g, calculated from the recipe. 250g pouch, 31 mugs. Recommended daily intake: 8g to 32g (1 to 4 servings), providing 5.1g to 20.5g of protein. Stir it in once the cup is cool enough to drink. Any hotter and the milk protein clumps into little white specks; if that happens, pour the cup through a tea strainer. The blend itself is caffeine free; the tea or coffee it is stirred into usually is not. Contains milk (whey and milk protein concentrate). Whey supplies most of the protein; milk protein concentrate also contributes protein and was chosen for creaminess in the mug.
 - Whey isolate has just under 90g protein per 100g as it arrives (Heldi's certified batch is 88.83%; certificates that quote about 92% are measuring dry matter, with the water taken out), versus paneer at about 18g and cooked dal at about 6g.
 - Whey is vegetarian (a milk protein, made without animal rennet) and suits lacto-vegetarian diets. It is not vegan.
 - Heldi is a food supplement. Food supplements are not a substitute for a varied and balanced diet and a healthy lifestyle.
+- Waitlist offer: first to know, with one email on launch day. The first 100 on the list get a free sample pair (one Khana sachet and one Chai sachet), and Heldi pays the postage. Everyone on the list gets 15% off their first order. Terms: https://heldi.co.uk/legal/terms#waitlist-offer
 - Contact and orders: via the waitlist at https://heldi.co.uk/#join until launch.

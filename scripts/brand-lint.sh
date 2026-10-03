@@ -4,7 +4,9 @@
 # ERROR-level findings; warnings are printed for judgement calls.
 #
 # Scope: copy surfaces are app/, components/, content/, lib/. Docs, legal
-# markdown and the gitignored workspaces are not linted.
+# markdown and the gitignored workspaces are not linted. The one exception is
+# check 8 (waitlist offer wording), which also reads public/llms.txt and the
+# email masters in docs/email/.
 
 set -u
 cd "$(dirname "$0")/.."
@@ -216,6 +218,29 @@ while IFS= read -r ref; do
 done < <(printf '%s\n' "$ASSET_REFS")
 if [ "$MISSING" -gt 0 ]; then
   warnings=$((warnings + 1))
+else
+  say "ok"
+fi
+
+# 8. ERROR: stale waitlist offer wording (BRAND.md §11.9). The offer has been
+#    20% off, then 25% for the first 100, then "posted free" and "postage on
+#    us", and each rewrite left the last one behind somewhere. The offer's words
+#    now live in lib/waitlist-offer.ts and nowhere else, so any of these
+#    phrases in copy is either a leftover or somebody typing the offer by hand.
+#    Wider than the other rules on purpose: it also reads public/llms.txt and
+#    the email masters in docs/email/, because they repeat the same promise.
+#    One sanctioned exception: the early joiners' launch email repeats "postage
+#    on us", which is what those people were told on 5 Sep 2026.
+rule "Stale waitlist offer wording (§11.9: the offer lives in lib/waitlist-offer.ts)"
+OFFER_PATTERN='PEHLEAAP|WAITLIST_OFFER\.code|(20|25)% off|first hundred|posted free|postage on us|trial pair|wait list|waiting list|launch sale'
+OFFER_HITS=$(grep -rniE "$OFFER_PATTERN" "${COPY_DIRS[@]}" public/llms.txt docs/email \
+    "${INCLUDES[@]}" --include='*.txt' 2>/dev/null \
+  | grep -vE ':[0-9]+:[[:space:]]*(//|\*|/\*)' \
+  | grep -vE '^docs/email/launch-early-joiners\.html:.*postage on us' || true)
+if [ -n "$OFFER_HITS" ]; then
+  say "ERROR: stale or hand-typed waitlist offer wording:"
+  say "$OFFER_HITS" | cut -c1-240
+  errors=$((errors + 1))
 else
   say "ok"
 fi

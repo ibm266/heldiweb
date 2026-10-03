@@ -52,9 +52,10 @@
 export const FORMULA =
   "Whey protein isolate (MILK) 94% · cumin · sunflower lecithin · coriander · fine sea salt · garam masala · Kashmiri chilli · turmeric";
 
-/** One serving in grams. The recommended daily portion the statutory
- *  statements have to declare, and the basis of every per-serving figure
- *  below. Kept separate from SERVING_LABEL so callers never parse prose.
+/** One serving in grams: the bottom of the recommended daily intake the
+ *  statutory statements declare (see MAX_DAILY_SERVINGS for the top), and the
+ *  basis of every per-serving figure below. Kept separate from SERVING_LABEL
+ *  so callers never parse prose.
  *
  *  12 g, SOLVED for 10 g of protein against the real certificate of analysis
  *  on 3 Sep 2026, not picked for a round spoon. Arla certificate 0000672935
@@ -70,6 +71,14 @@ export const FORMULA =
  *  See statutory-statements.tsx. The weighing record that backs 12.5 g is a
  *  real-world document, not a repo one; docs/go-live-checklist.md tracks it. */
 export const SERVING_GRAMS = 12;
+
+/** The recommended daily intake runs from one serving to this many. Mihir
+ *  settled 1 to 4 a day on 1 Oct 2026 and the round-16 pack prints it: "12g
+ *  to 48g (1 to 4 servings)". It is a RANGE, never "1 recommended, 4
+ *  maximum": the statutory warning not to exceed bites at the stated figure,
+ *  so stating one serving would forbid the second spoon. Change it here and
+ *  on the pack together. */
+export const MAX_DAILY_SERVINGS = 4;
 
 export const SERVING_LABEL = `Per ${SERVING_GRAMS}g serving (heaped tbsp)`;
 
@@ -94,6 +103,46 @@ export const NUTRITION_ROWS: NutritionRow[] = [
 
 export const RI_FOOTNOTE =
   "*RI = adult Reference Intake (8400 kJ / 2000 kcal, 70g fat, 20g saturates, 260g carbohydrate, 90g sugars, 50g protein, 6g salt). No RI is set for fibre.";
+
+/** The recommended daily intake as the statutory statements declare it:
+ *  grams and servings at each end, and the protein they provide. */
+export type DailyIntake = {
+  servingGrams: number;
+  maxServings: number;
+  minGrams: number;
+  maxGrams: number;
+  /** Protein in one serving: the declaration's per-serving figure. */
+  minProtein: string;
+  /** Protein at the top of the range, calculated from the per-100g row the
+   *  way the per-serving column is, never by multiplying the rounded
+   *  per-serving figure: 48 x 84.1% is 40.4g, and Chai's 32 x 64.0% is
+   *  20.5g where 4 x 5.1 would say 20.4g. */
+  maxProtein: string;
+};
+
+/** Builds a product's DailyIntake from its own declaration rows, so the
+ *  statutory sentence can never disagree with the table beside it.
+ *  statutory-statements.tsx calls it for both products. It lives here rather
+ *  than in chai-data.ts because scripts/pricing-check.mjs loads chai-data.ts
+ *  straight into Node, where only type imports between these files resolve. */
+export function dailyIntake(
+  servingGrams: number,
+  maxServings: number,
+  rows: readonly { label: string; per100g: string; perServing: string }[]
+): DailyIntake {
+  const protein = rows.find((row) => row.label === "Protein");
+  if (!protein) throw new Error("dailyIntake: no Protein row in the declaration");
+  const per100g = parseFloat(protein.per100g);
+  const maxGrams = servingGrams * maxServings;
+  return {
+    servingGrams,
+    maxServings,
+    minGrams: servingGrams,
+    maxGrams,
+    minProtein: parseFloat(protein.perServing).toFixed(1),
+    maxProtein: (Math.round(maxGrams * per100g / 10) / 10).toFixed(1)
+  };
+}
 
 export type AminoRow = {
   name: string;

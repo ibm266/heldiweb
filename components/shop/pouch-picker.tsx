@@ -37,12 +37,12 @@ const BADGES = "/images/pouch-badges";
 const POUCHES: Pouch[] = [
   {
     id: "khana",
-    tag: "FOR THE POT",
+    tag: "FOR THE BOWL",
     title: "Heldi Khana",
     legalName: "Whey protein isolate blend with warm spices. Food supplement.",
-    line: "Dal, curry, sabzi, raita. A heaped tablespoon stirred into the pot once it is off the heat, and nobody at the table can tell.",
+    line: "For dal, curry, sabzi and raita. Stir a heaped tablespoon into your own bowl at the table, or through the shared pot once it is off the heat.",
     image: {
-      src: "/images/range/khana.webp?v=5",
+      src: "/images/range/khana.webp?v=6",
       alt: "The navy Heldi Khana pouch on a linen table"
     },
     pills: [
@@ -60,11 +60,12 @@ const POUCHES: Pouch[] = [
     legalName: CHAI_LEGAL_NAME,
     line: `Chai, tea, coffee, hot chocolate. A ${CHAI_SERVING_SPOON} stirred into the mug once it is cool enough to drink, and the cup still tastes like your cup.`,
     image: {
-      src: "/images/range/chai.webp?v=4",
+      src: "/images/range/chai.webp?v=5",
       alt: "The terracotta Heldi Chai pouch on a linen table"
     },
     pills: [
       { icon: `${BADGES}/high-protein.png`, label: "High protein", width: 256, height: 256 },
+      { icon: `${BADGES}/caffeine-free.webp`, label: "Caffeine free", width: 256, height: 256 },
       { icon: `${BADGES}/vegetarian.png`, label: "Vegetarian", width: 286, height: 367 }
     ],
     href: "/shop/chai"
@@ -74,12 +75,12 @@ const POUCHES: Pouch[] = [
 function status(id: Pouch["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
-      ? { note: "In the shop now.", cta: "Shop Khana" }
-      : { note: "First to the table. On sale at launch.", cta: "See Khana" };
+      ? { note: "Ready for the next bowl.", cta: "Shop Khana" }
+      : { note: "Khana is the pouch launching first.", cta: "See Khana" };
   }
   return mode === "live"
-    ? { note: "Still on the stove. Not in the shop yet, no price yet.", cta: "See Chai" }
-    : { note: "Still on the stove. No price yet; the waitlist hears first.", cta: "See Chai" };
+    ? { note: "Read the method now. Chai is not on sale yet.", cta: "See Chai" }
+    : { note: "Read the method now. The waitlist hears first when Chai is ready.", cta: "See Chai" };
 }
 
 export function PouchPicker() {

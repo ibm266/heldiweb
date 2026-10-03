@@ -45,9 +45,25 @@ or store card details.
 If we discover an obvious pricing error before dispatch we will contact you
 to reconfirm or cancel with a full refund.
 
-Promotions (launch prices, bundle prices, gifting discount codes, included
+Promotions (bundle prices, gifting discount codes, included
 items such as the jar or the tote bag) apply only while advertised, cannot
 be exchanged for cash, and one discount per order unless stated otherwise.
+
+### <a id="waitlist-offer"></a>Waitlist offer
+
+If you join the waitlist before we launch, we email you once, on launch day.
+The first 100 people to join, in the order they joined, can claim one free
+sample pair (one 30g Heldi Khana sachet and one 30g Heldi Chai sachet) using
+the link in that email. We pay the postage. UK addresses only, one pair per
+household, claimed with the email address you joined with, within 30 days of
+the launch email.
+
+Everyone on the waitlist can also take 15% off their first order of pouches
+with a code in the launch email. The 15% applies to pouches, not to samples
+or included items, and cannot be combined with another product discount.
+
+There is no cash alternative. If we cannot send the pair at launch because
+one of the blends is not yet ready to ship, we send it as soon as both are.
 
 ## 5. Delivery
 

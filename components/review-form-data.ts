@@ -4,39 +4,39 @@
 // the whitelist the /api/reviews route validates against.
 
 export const STAR_CAPTIONS: Record<number, string> = {
-  1: "Oh no. Tell us everything.",
-  2: "Not good. We want specifics.",
-  3: "On the fence. Which way were you leaning?",
-  4: "Nearly perfect. What was the nearly?",
-  5: "Not one comment at the table."
+  1: "It did not work for you. Tell us what happened.",
+  2: "There were problems. Please give us the details.",
+  3: "Somewhere in the middle. What worked, and what did not?",
+  4: "Mostly good. What could have been better?",
+  5: "Everything worked for you. Tell us why."
 };
 
 export type ReviewChip = { value: string; label: string };
 
 export const WENT_WRONG_CHIPS: ReviewChip[] = [
   { value: "taste", label: "I could taste it" },
-  { value: "texture", label: "Lumps or grit" },
-  { value: "stir", label: "It would not stir in clean" },
-  { value: "packaging", label: "Pouch or packaging trouble" },
-  { value: "delivery", label: "Delivery took too long" },
-  { value: "price", label: "The price" },
+  { value: "texture", label: "It was lumpy or gritty" },
+  { value: "stir", label: "It did not stir in cleanly" },
+  { value: "packaging", label: "There was a packaging problem" },
+  { value: "delivery", label: "Delivery was slower than expected" },
+  { value: "price", label: "The price did not feel right" },
   { value: "other", label: "Something else" }
 ];
 
 export const WENT_WELL_CHIPS: ReviewChip[] = [
-  { value: "vanished", label: "It vanished clean" },
-  { value: "unnoticed", label: "Nobody at the table noticed" },
+  { value: "vanished", label: "It disappeared into the food" },
+  { value: "unnoticed", label: "Nobody noticed a difference" },
   { value: "numbers", label: "The protein numbers" },
-  { value: "easy", label: "Easier than a shaker" },
+  { value: "easy", label: "It was easy to use" },
   { value: "delivery", label: "Delivery was quick" },
-  { value: "again", label: "Already planning the next pot" }
+  { value: "again", label: "I would use it again" }
 ];
 
 export const TBSP_OPTIONS: { value: number; label: string; note: string }[] = [
-  { value: 1, label: "1", note: "a quiet bowl" },
-  { value: 2, label: "2", note: "the usual" },
+  { value: 1, label: "1", note: "one bowl" },
+  { value: 2, label: "2", note: "a small pot" },
   { value: 3, label: "3", note: "a family pot" },
-  { value: 4, label: "4+", note: "the full kadhi pot" }
+  { value: 4, label: "4+", note: "a large pot" }
 ];
 
 export const DISH_SUGGESTIONS = [

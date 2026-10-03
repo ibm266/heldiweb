@@ -7,7 +7,7 @@ import { serializeJsonLd } from "@/lib/json-ld";
 export const metadata: Metadata = {
   title: "How much protein is in dal? The honest truth · Heldi",
   description:
-    "A cooked bowl of dal has 5 to 7g of protein, not 18. What a vegetarian Indian day really delivers, why dal isn't complete, and how to get more protein without shakes.",
+    "A standard 80g cooked bowl of dal has 5 to 7g of protein. Around 18g can be valid for roughly 75g of dry lentils, which cooks into more than one standard bowl.",
   alternates: { canonical: "/truth" }
 };
 

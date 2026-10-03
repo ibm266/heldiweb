@@ -6,7 +6,8 @@ import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 
 export const metadata: Metadata = {
   title: "Leave a review · Heldi",
-  description: "Stars, spoon count, straight talk. Tell us how the dal took it.",
+  description:
+    "Leave an honest Heldi review: stars, dish, spoon count and what happened at your table.",
   // Link-only surface: reached from the PDP reviews band and review-request
   // emails, never from search. Kept out of app/sitemap.ts and the nav for the
   // same reason.
@@ -14,9 +15,9 @@ export const metadata: Metadata = {
 };
 
 const NEXT_STEPS = [
-  "We read it. All of it. Small operation, strong opinions about dal.",
-  "We match it to a real order. Real bowls only, no invented aunties.",
-  "It goes up, stars and all: praise, complaints and the three-star fence sitters together."
+  "Your review joins our queue, where straight feedback matters just as much as praise. Your email and order number stay off the site.",
+  "If you include an order number, our team checks it by hand before choosing whether to add a verified badge.",
+  "If we publish your review, it may include the details named in your consent: your review, star rating, dish, spoon count, name, town or city, and any photo or video you add."
 ];
 
 export default function ReviewPage() {
@@ -28,11 +29,11 @@ export default function ReviewPage() {
         <div className="review-shell">
           <header className="review-hero">
             <p className="eyebrow">FROM YOUR TABLE</p>
-            <h1>How did the dal take it?</h1>
+            <h1>How did Heldi get on in your kitchen?</h1>
             <p className="review-hero__lede">
-              Two minutes, stars to spoon count. We publish{" "}
-              <CopyHighlight>the good and the bad</CopyHighlight>, once we have
-              matched your review to a real order.
+              Tell us what worked, what did not and what you cooked. We want{" "}
+              <CopyHighlight>the version you would tell your family</CopyHighlight>,
+              not a polished answer.
             </p>
           </header>
           {/* ReviewForm reads ?stars= and ?order= prefills from the URL. */}
@@ -45,7 +46,7 @@ export default function ReviewPage() {
       <section className="section section--gold section--bordered review-next">
         <div className="review-shell">
           <p className="eyebrow">AFTER YOU PRESS SEND</p>
-          <h2>Where your review goes</h2>
+          <h2>What happens next</h2>
           <ol className="review-next__steps">
             {NEXT_STEPS.map((step, index) => (
               <li className="sticker-card review-next__step" key={step}>

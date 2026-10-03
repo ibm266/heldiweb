@@ -42,7 +42,7 @@ export function NutritionModal({
         onClick={(event) => event.stopPropagation()}
       >
         <header className="nutri-modal__header">
-          <h2>Nutrition</h2>
+          <h2>Nutrition &amp; amino acids</h2>
           <button
             className="nutri-modal__close"
             type="button"
@@ -57,8 +57,8 @@ export function NutritionModal({
           <strong>Formula:</strong> {formula}
         </p>
         <p className="nutri-complete">
-          {productName} is a <strong>complete protein</strong>: every serving
-          carries all nine essential amino acids.
+          {productName} is a <strong>complete protein</strong>. Each serving
+          contains all nine essential amino acids.
         </p>
         <p className="nutri-footnote">{basisNote}</p>
 

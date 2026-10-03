@@ -1596,9 +1596,9 @@ h2 {
   line-height: 1.35;
 }
 
-/* Waitlist reward, shown as a subtitle directly beneath the hero's Join
+/* The waitlist offer, shown as a subtitle directly beneath the hero's Join
    waitlist pill. An emphasised line (not a pill) so it reads as secondary to
-   the CTA. Waitlist mode only. */
+   the CTA. Waitlist mode only. Its words come from lib/waitlist-offer.ts. */
 .hero-incentive {
   margin: 0.15rem 0 0;
   color: var(--ink);
@@ -1606,6 +1606,41 @@ h2 {
   font-weight: 700;
   line-height: 1.35;
   text-align: center;
+  text-wrap: pretty;
+}
+
+/* The shared subpage CTA in waitlist mode (components/waitlist-or-shop-cta.tsx):
+   the Join waitlist pill with the waitlist offer beneath it as one quiet line.
+   It inherits its colour because it sits on gold, cream and ink sections. One
+   layout serves both widths: a centred column whose line wraps to about three
+   lines at 375 and stays within a comfortable measure at 1280. */
+.waitlist-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.waitlist-cta-perk {
+  max-width: 34rem;
+  margin: 0;
+  color: inherit;
+  font-size: clamp(0.875rem, 1.2vw, 0.9375rem);
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: pretty;
+}
+
+/* In the reveal hero the line is the last child of the CTA row, and takes the
+   row's full width in both layouts: it spans the two-button grid on mobile and
+   wraps onto its own line under the flex row on wide (where the row is
+   left-aligned, so the line is too: see the wide block below). Two sentences
+   now, so it steps down from the bold single line it used to be. */
+.hero-reveal-actions > .hero-incentive {
+  grid-column: 1 / -1;
+  flex: 1 1 100%;
+  margin: 0.125rem 0 0;
+  font-weight: 600;
 }
 
 .waitlist-form {
@@ -1668,6 +1703,11 @@ h2 {
   color: var(--ink);
   font-size: 0.8125rem;
   text-align: center;
+}
+
+/* Two links now share the line, so neither may break in the middle. */
+.waitlist-smallprint a {
+  white-space: nowrap;
 }
 
 .waitlist-smallprint a {
@@ -6584,7 +6624,7 @@ a.living-card__tag:hover {
 }
 
 /* Reformed-style callouts overlaid on the hero image; rendered in HTML so
-   prices stay in sync with the catalog and the launch sale. */
+   prices stay in sync with the catalog and lib/pricing.ts. */
 .pdp__annos {
   position: absolute;
   inset: 0;
@@ -9173,7 +9213,7 @@ a.living-card__tag:hover {
 .range__head h2 {
   margin: 0.75rem 0 1rem;
   line-height: 1.1;
-  /* Two beats, two lines: "One for the pot." / "One for the mug." Without
+  /* Two beats, two lines: "One for the bowl." / "One for the mug." Without
      this the wide widths orphan "mug." on its own line. */
   text-wrap: balance;
 }

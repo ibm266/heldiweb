@@ -21,14 +21,19 @@ import { MenuGallery } from "@/components/menu-gallery";
 import { RangeSection } from "@/components/range-section";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
-import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
+import {
+  MAX_DAILY_SERVINGS,
+  NUTRITION_ROWS,
+  SERVING_GRAMS
+} from "@/components/shop/nutrition-data";
 import { StatutoryStatements } from "@/components/shop/statutory-statements";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 import { WaitlistForm } from "@/components/waitlist-form";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { WaysGallery } from "@/components/ways-gallery";
-import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
+import { WAITLIST_HEADLINE } from "@/lib/waitlist-offer";
 
 type HeroAnimation = "split-flap" | "dissolve";
 type HeroLayout = "video" | "classic" | "reveal";
@@ -155,14 +160,30 @@ const COLS = 11;
 
 const FAQS = HOME_FAQS;
 
-// One ticker per commerce mode: waitlist carries the launch date and the
-// waitlist offer; live carries the price lines and drops the date. The launch
-// date lives here (BRAND.md §11.5); the offer's items come from
-// lib/waitlist-offer.ts, never typed here.
-const WAITLIST_OFFER_COPY = siteWaitlistOfferCopy(true);
-const TICKER_COPY_WAITLIST = `THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  ${WAITLIST_OFFER_COPY.tickerItems.join("  •  ")}  •  SAME RECIPES, SAME TASTE  •  LAUNCHING AUTUMN 2026  •  `;
+// One ticker per commerce mode: waitlist carries the launch date, the waitlist
+// offer and no price lines; live carries the family-rate line and drops the
+// date. The launch date lives here (BRAND.md §11.5).
+//
+// The offer's ticker items come from lib/waitlist-offer.ts (BRAND.md §11.9):
+// two while the free sample pairs are open, one once the first 100 have gone.
+// Everything else in the string is fixed, including the trailing bullet the
+// marquee needs to loop cleanly.
+function waitlistTickerCopy(offerItems: string[]): string {
+  return [
+    "THEY SHAKE, WE STIR",
+    "MADE IN THE UK",
+    "FOR INDIAN KITCHENS",
+    "KHANA FOR THE BOWL, CHAI FOR THE MUG",
+    "100% VEGETARIAN",
+    ...offerItems,
+    "SAME RECIPES, SAME TASTE",
+    "LAUNCHING AUTUMN 2026",
+    ""
+  ].join("  •  ");
+}
+
 const TICKER_COPY_LIVE =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  LAUNCH PRICES ON NOW  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
+  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE BOWL, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -203,7 +224,7 @@ const HERO_SHOWCASE_PILLS: {
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-12";
+const IMAGE_VERSION = "ink-blue-13";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -441,8 +462,9 @@ function HeroWordBadge({ active }: { active: boolean }) {
 // lib/waitlist-offer.ts, never from here.
 function HeroIncentive({ className = "hero-incentive" }: { className?: string }) {
   const { mode } = useCart();
+  const offer = useWaitlistOffer();
   if (mode === "live") return null;
-  return <p className={className}>{WAITLIST_OFFER_COPY.sentence}</p>;
+  return <p className={className}>{offer.sentence}</p>;
 }
 
 function PouchEquation() {
@@ -981,7 +1003,7 @@ function HeroReveal({
               <Image
                 className="hero-card__pack-image"
                 src={imageSrc("/images/hero-pair-cutout.webp")}
-                alt="The Heldi Khana and Heldi Chai pouches side by side, one for the pot and one for the mug"
+                alt="The Heldi Khana and Heldi Chai pouches side by side, one for the bowl and one for the mug"
                 width={708}
                 height={667}
                 priority
@@ -1061,7 +1083,9 @@ export function HeldiHomepage({
   const { hidden: scrollHidden } = useNavScrollState();
   const { mode } = useCart();
   const { open: openWaitlist } = useWaitlistPopup();
-  const tickerCopy = mode === "live" ? TICKER_COPY_LIVE : TICKER_COPY_WAITLIST;
+  const offer = useWaitlistOffer();
+  const tickerCopy =
+    mode === "live" ? TICKER_COPY_LIVE : waitlistTickerCopy(offer.tickerItems);
   const navHidden = scrollHidden && !menuOpen;
 
   // Close the mobile menu when the viewport grows past the nav breakpoint.
@@ -1356,11 +1380,11 @@ export function HeldiHomepage({
       <section className="section section--cream" id="pouch">
         <div className="pouch-section">
           <div className="pouch-section__copy">
-            <h2>Food you love. Nutrients you need.</h2>
+            <h2>Made for the dinner already cooking.</h2>
             <p>
-              Khana <CopyHighlight>vanishes clean</CopyHighlight> into every
-              gravy, dal and yoghurt base. Chai does the same in the mug. No
-              chalk, no aftertaste.
+              Khana <CopyHighlight>vanishes clean</CopyHighlight> into gravy,
+              dal and yoghurt bases. No chalk, no aftertaste. Chai has its own
+              place: the mug.
             </p>
           </div>
           <PouchStats grams={grams} className="pouch-section__stats" />
@@ -1391,9 +1415,9 @@ export function HeldiHomepage({
           <p className="eyebrow">THE HONEST TRUTH</p>
           <h2>That 18g figure? It&apos;s for dry dal.</h2>
           <p>
-            So the bowl you actually eat lands closer to 6g. Protein
-            contributes to the maintenance of muscle mass, and that matters
-            more every year past 30. Here is the{" "}
+            So the bowl you actually eat lands closer to 6g. We counted the
+            cooked bowl because that is the one you put on the table. Protein
+            contributes to the maintenance of muscle mass. Here is the{" "}
             <CopyHighlight>honest fix</CopyHighlight>.
           </p>
           <PouchEquation />
@@ -1423,9 +1447,9 @@ export function HeldiHomepage({
       <section className="section section--gold section--bordered" id="audience">
         <div className="content">
           <h2 className="centered audience-heading">
-            Built for you.{" "}
+            Every appetite at the table.{" "}
             <span className="audience-heading__line2">
-              Made for the whole family.
+              Even the one who said they weren&apos;t hungry.
             </span>
           </h2>
           <AudienceGallery />
@@ -1438,7 +1462,7 @@ export function HeldiHomepage({
         id="reviews"
         tone="cream"
         eyebrow="THEY STIRRED. THEY TOLD US."
-        heading="Proof, straight from the pot."
+        heading="How it went at their table."
         showLeaderboard
       />
 
@@ -1508,12 +1532,12 @@ export function HeldiHomepage({
             <p className="eyebrow eyebrow--gold">WITH EVERY ORDER</p>
             <h2>A jar for the table. On us.</h2>
             <p>
-              Every pouch order ships with a refillable jar for the{" "}
+              Every pouch order comes with a refillable jar for the{" "}
               <CopyHighlight>dinner table</CopyHighlight>. Not the cupboard.
-              Right there <CopyHighlight>beside the dal</CopyHighlight>, where
-              everyone can reach for it. It comes in gold, and only gold. We
-              did look at silver, for about four minutes, and then we
-              remembered whose table it was going on.
+              Keep it <CopyHighlight>beside the dal</CopyHighlight> so everyone
+              can reach for a spoonful. It comes in gold, and only gold. We
+              considered silver for about four minutes, then remembered our
+              families would have the final say.
             </p>
           </div>
           <div className="jar-card">
@@ -1521,7 +1545,7 @@ export function HeldiHomepage({
               <Image
                 className="jar-preview-image"
                 src={imageSrc("/images/jar-pouch.webp")}
-                alt="Heldi pouch beside the gold refillable table jar"
+                alt="The navy Heldi Khana pouch beside the gold table jar and its gold spoon"
                 width={768}
                 height={768}
                 sizes="(max-width: 560px) calc(100vw - 3rem), (max-width: 899px) min(92vw, 380px), 320px"
@@ -1536,11 +1560,11 @@ export function HeldiHomepage({
         <section className="final-cta section--bordered" id="join" data-floating-cta-suppress>
           <Image className="cta-elephant cta-elephant--left" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
           <div className="final-cta-copy">
-            <h2>Be first to stir it in.</h2>
+            <h2>{WAITLIST_HEADLINE}</h2>
             <p>
-              {WAITLIST_OFFER_COPY.paragraphParts.before}
-              <CopyHighlight>{WAITLIST_OFFER_COPY.paragraphParts.highlight}</CopyHighlight>
-              {WAITLIST_OFFER_COPY.paragraphParts.after}
+              {offer.paragraphParts.before}
+              <CopyHighlight>{offer.paragraphParts.highlight}</CopyHighlight>
+              {offer.paragraphParts.after}
             </p>
             <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
           </div>
@@ -1553,7 +1577,12 @@ export function HeldiHomepage({
           have to be reachable here too, not only on /faq. See
           components/shop/statutory-statements.tsx. */}
       <section className="section section--cream">
-        <StatutoryStatements servingGrams={SERVING_GRAMS} allergens="Contains milk (whey)." />
+        <StatutoryStatements
+          servingGrams={SERVING_GRAMS}
+          maxServings={MAX_DAILY_SERVINGS}
+          declaration={NUTRITION_ROWS}
+          allergens="Contains milk (whey)."
+        />
       </section>
 
       <footer>

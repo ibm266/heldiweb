@@ -84,7 +84,7 @@ const ALL_ROWS: ComparisonRow[] = [...TICK_ROWS, ...TEXT_ROWS];
 /* Scaled-down large elephant (not elephant-small) for crisp mobile icons */
 const ELEPHANT_ICON = "/images/comparison/elephant-icon.png";
 const SHAKER_ICON = "/images/comparison/shaker-icon.png";
-const POUCH_SHOT = "/images/comparison/heldi-pouch.png?v=3";
+const POUCH_SHOT = "/images/comparison/heldi-pouch.png?v=4";
 
 function TickMark({ yes }: { yes: boolean }) {
   return (
@@ -287,13 +287,13 @@ export function ComparisonSection() {
         <header className="vs__header">
           <p className="eyebrow eyebrow--gold">HELDI VS THE SHAKER</p>
           <h2>
-            Reasons to stop shaking and{" "}
-            <CopyHighlight>start stirring</CopyHighlight>
+            The shaker can stay in the cupboard.{" "}
+            <CopyHighlight>Keep the jar on the table.</CopyHighlight>
           </h2>
           <p className="vs__lede">
-            The first protein made with spices and flavours Indians actually
-            like. Shakes were never developed for the desi palate, here are a
-            few more reasons to give Heldi a try.
+            We made Heldi for the way our families eat: a bowl at the table, a
+            mug by the kettle and no separate shake waiting afterwards. The
+            scorecard shows where it fits.
           </p>
         </header>
 

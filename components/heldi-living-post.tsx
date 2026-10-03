@@ -53,7 +53,7 @@ export function HeldiLivingPostView({ post }: HeldiLivingPostViewProps) {
           <Link className="pill-link living-post-cta__back" href="/heldi-living">
             ← All Heldi Living
           </Link>
-          <WaitlistOrShopCta className="button button--pill" />
+          <WaitlistOrShopCta className="button button--pill" perk={false} />
         </nav>
       </div>
 

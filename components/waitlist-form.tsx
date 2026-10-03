@@ -4,8 +4,8 @@ import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
+import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { WAITLIST_CONSENT_COPY } from "@/lib/waitlist";
-import { siteWaitlistOfferCopy } from "@/lib/waitlist-offer-site";
 
 // The site's single waitlist entry point: a collapsed "Join waitlist" button
 // that expands into an email field with the weekly-letter opt-in. Lives in the
@@ -35,6 +35,7 @@ export function WaitlistForm({
   const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
   const inputRef = useRef<HTMLInputElement>(null);
   const { mode } = useCart();
+  const offer = useWaitlistOffer();
   const placementValue = placement ?? id;
 
   useEffect(() => {
@@ -79,9 +80,11 @@ export function WaitlistForm({
   }
 
   if (joined) {
+    // One line for everyone. The form never tells a joiner whether they made
+    // the first hundred (BRAND.md §11.9), so it needs nothing from the API.
     return (
       <p className="waitlist-success" role="status">
-        {siteWaitlistOfferCopy(true).success}
+        {offer.success}
       </p>
     );
   }
@@ -136,11 +139,12 @@ export function WaitlistForm({
           </label>
           <p className="waitlist-smallprint">
             Unsubscribe anytime.{" "}
-            <Link href="/legal/privacy">Privacy policy</Link>
+            <Link href="/legal/privacy">Privacy policy</Link> and{" "}
+            <Link href="/legal/terms#waitlist-offer">offer terms</Link>.
           </p>
           {status === "error" ? (
             <p className="waitlist-error" role="alert">
-              That did not go through. Give it one more try.
+              We couldn&apos;t add you to the list. Try again in a moment.
             </p>
           ) : null}
         </>
