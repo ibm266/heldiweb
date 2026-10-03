@@ -549,7 +549,7 @@ list, for the next time:
 our-story "What's next" section ("Khana is on the table. Chai is on the stove."),
 the homepage range band (`components/range-section.tsx`: card titles, alts, the
 `/images/range/khana.webp` filename), the ticker line "KHANA FOR THE BOWL, CHAI
-FOR THE MUG", the "Is there a Heldi for chai?" FAQ in `home-faqs.ts`, the
+FOR THE MUG", the "Can I put Khana in my chai?" FAQ in `home-faqs.ts`, the
 Organization schema description in `app/page.tsx`, `public/llms.txt`, blog
 posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
 (cosmetic), Shopify product. Grep `Khana|khana`.
@@ -628,8 +628,8 @@ longer do, so keep them that way:
 Chai also appears on three surfaces away from its own page, all written to
 stay true under every candidate blend and to carry **no figure**: the homepage
 range band (`components/range-section.tsx`, which names what each pouch is
-for and, since 3 Oct 2026, Chai's five spices), the "Is there a Heldi for chai?" answer in
-`home-faqs.ts` (picked into /faq by `site-faqs.ts`), and the Chai lines in
+for and, since 3 Oct 2026, Chai's five spices), the "Can I put Khana in my chai?" answer in
+`home-faqs.ts` (picked into /faq by `site-faqs.ts`; "Is there a Heldi for chai?" was cut on 3 Oct 2026), and the Chai lines in
 `public/llms.txt`, the "To finish · Masala chai" line on every homepage menu
 card (`menu-gallery.tsx`), the "In the mug" method (`ways-to-use-methods.tsx`,
 on /ways-to-use and the homepage how-it-works rail), the "Masala chai" stir
@@ -824,8 +824,9 @@ quote the pack from `r16_common.py` and `typeset_compliance.py`, never from memo
    description in `lib/commerce/catalog.ts` (mirror that one in Shopify by hand).
    The strip videos stay as drawn. Since 3 Oct 2026 their captions borrow the
    pack's step words wherever the drawn panel allows (Khana: Serve, Stir, Store;
-   Chai: Make tea, Let it cool). The table strip's panels run jar first, so it
-   reads Store, Keep it on the table, Stir until the strip is redrawn.
+   Chai: Make tea, Let it cool). The table strip was redrawn on 3 Oct 2026 in the
+   pack's order (serve, stir, store); its job ids are in
+   `fable/ways-to-use-strips/table-v2/NOTES.md`.
    **The positioning says "bowl" too** (Mihir, 3 Oct 2026: lean into the bowl,
    not the pot): the ticker "KHANA FOR THE BOWL, CHAI FOR THE MUG", the range band
    "One for the bowl. One for the mug." and its FOR THE BOWL tag (also on the

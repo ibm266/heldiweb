@@ -47,17 +47,12 @@ export const HOME_FAQS = [
   {
     question: "Can I use it in dishes that are not on the pouch?",
     answer:
-      "Yes. Heldi Khana is made for dishes with a gravy, dal or yoghurt base, including sambar, kadhi, korma, bhindi in gravy and chaat with dahi. It can also be stirred into chicken curry, keema or egg bhurji. Let the food cool a little first, then mix the spoonful through evenly."
-  },
-  {
-    question: "Is there a Heldi for chai?",
-    answer:
-      "Yes. Heldi Chai is a whey protein and milk protein concentrate blend with real chai spices. It is made for chai, tea, coffee and hot chocolate, stirred in once the cup is cool enough to drink. Contains milk (whey and milk protein concentrate). It is still in development, so it has a page but no price yet, and the waitlist hears first when it is ready. Khana is the savoury blend for the bowl."
+      "Yes. Heldi Khana is made for dishes with a gravy, dal or yoghurt base, including sambar, kadhi, korma, bhindi in gravy and chaat with dahi. It can also be stirred into chicken curry, keema or egg bhurji. Let the food cool a little first, then mix the spoonful through evenly. Found a dish it works brilliantly in? Email info@heldi.co.uk and we will pass it on to everyone else."
   },
   {
     question: "Can I put Khana in my chai?",
     answer:
-      "Khana is the savoury blend, made with warm spices for dal, curry, sabzi and raita, so it is not intended for chai. Heldi Chai is the blend for hot drinks: whey protein and milk protein concentrate with cardamom, ginger, cinnamon and clove, stirred in once the cup is cool enough to drink. Contains milk."
+      "Khana is the savoury blend, made with warm spices for dal, curry, sabzi and raita, so it is not intended for chai. Heldi Chai is the blend for hot drinks: whey protein and milk protein concentrate with ginger, cardamom, cinnamon, black pepper and clove, stirred in once the cup is cool enough to drink. Contains milk."
   },
   {
     question: "Can children have Heldi?",
@@ -98,7 +93,6 @@ const HOME_FAQ_GROUP_SPEC = [
     questions: [
       "How do I use it?",
       "Can I use it in dishes that are not on the pouch?",
-      "Is there a Heldi for chai?",
       "Can I put Khana in my chai?"
     ]
   },

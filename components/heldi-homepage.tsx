@@ -1411,7 +1411,7 @@ export function HeldiHomepage({
         <div className="faq">
           <h2 className="centered">The questions we hear most.</h2>
           {/* One group shows at a time, but every group and every answer is
-              rendered (hidden, not left out), so crawlers read all thirteen
+              rendered (hidden, not left out), so crawlers read all twelve
               and they match the FAQPage JSON-LD in app/page.tsx. */}
           <div className="faq-groups" role="radiogroup" aria-label="Question topics">
             {HOME_FAQ_GROUPS.map((group) => (

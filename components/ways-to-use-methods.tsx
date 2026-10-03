@@ -52,14 +52,15 @@ export const METHODS: Method[] = [
     serving: { start: "1 tsp each", upto: "1 heaped tbsp each" },
     note: "This is why the jar belongs between the dishes.",
     strip: {
-      video: "/videos/ways-to-use/table-strip.mp4",
-      poster: "/images/ways-to-use/table-strip.webp",
+      // Redrawn 3 Oct 2026 in the pack's order: serve, stir, store.
+      video: "/videos/ways-to-use/table-strip.mp4?v=2",
+      poster: "/images/ways-to-use/table-strip.webp?v=2",
       width: 1920,
       height: 1080,
       label: "On the table",
-      captions: ["Store it in\na jar.", "Keep it on\nthe table.", "Stir through\nyour bowl."],
-      anchors: [20, 50, 80],
-      alt: "Engraved table jar in the Heldi pouch style, shown three times: a plain pouch pouring powder into the open jar, the closed jar parked beside a little achaar pot, and two bangled hands lifting spoonfuls toward their own bowls."
+      captions: ["Serve\nyour food.", "Stir\nthrough.", "Store in\na jar."],
+      anchors: [21, 50, 83],
+      alt: "Engraved table strip in the Heldi pouch style, in three scenes: a bangled hand ladling dal from a brass pot into a bowl, a hand stirring a cream swirl through that bowl, and a plain pouch tipping powder into the paisley table jar, its lid resting beside it."
     }
   },
   {
