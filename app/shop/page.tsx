@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CopyHighlight } from "@/components/copy-highlight";
-import { PouchPicker } from "@/components/shop/pouch-picker";
+import { PouchPicker, PouchSmallPrint } from "@/components/shop/pouch-picker";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 import { serializeJsonLd } from "@/lib/json-ld";
@@ -50,11 +50,11 @@ export default function ShopPage() {
             Pick the pouch that fits your kitchen.
           </h1>
           <p className="story-hero__lede">
-            Start with the routine your family repeats most:{" "}
+            A bowl at the dinner table, or a mug by the kettle. Whichever you
+            reach for,{" "}
             <CopyHighlight>
-              a bowl at the dinner table, or a mug by the kettle.
-            </CopyHighlight>{" "}
-            Each page explains what goes in and when to stir.
+              the recipes stay exactly as your family makes them.
+            </CopyHighlight>
           </p>
         </div>
         <PouchPicker />
@@ -79,17 +79,19 @@ export default function ShopPage() {
             tea, coffee or hot chocolate once the cup is cool enough to drink.
             It launches alongside Khana.
           </p>
-          <p className="story-note">
-            Both contain milk. Both are vegetarian. Both are food
-            supplements, not a substitute for a varied and balanced diet.
-          </p>
         </div>
       </section>
 
       <section className="final-cta section--bordered story-final">
         <div className="final-cta-copy">
-          <h2>Start with the pouch your family will use first.</h2>
+          <h2>The bowl, the mug, or both. Your call.</h2>
           <WaitlistOrShopCta />
+        </div>
+      </section>
+
+      <section className="section section--cream">
+        <div className="content">
+          <PouchSmallPrint />
         </div>
       </section>
 

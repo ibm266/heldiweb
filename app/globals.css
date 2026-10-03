@@ -9450,12 +9450,13 @@ a.living-card__tag:hover {
   font-size: clamp(1.75rem, 3vw, 2.25rem);
 }
 
-.range-card__legal {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.9375rem;
-  font-style: italic;
-  line-height: 1.4;
+/* The asterisk on a /shop card title, pointing at the page's small print. */
+.range-card__mark {
+  margin-left: 0.05em;
+  color: inherit;
+  font-size: 0.7em;
+  text-decoration: none;
+  vertical-align: super;
 }
 
 .range-card--page .range-card__line {
