@@ -57,7 +57,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "On the table",
-      captions: ["Fill the\njar.", "Set it by\nthe achaar.", "Stir your\nown bowl."],
+      captions: ["Store it in\na jar.", "Keep it on\nthe table.", "Stir through\nyour bowl."],
       anchors: [20, 50, 80],
       alt: "Engraved table jar in the Heldi pouch style, shown three times: a plain pouch pouring powder into the open jar, the closed jar parked beside a little achaar pot, and two bangled hands lifting spoonfuls toward their own bowls."
     }
@@ -88,7 +88,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "In the pot",
-      captions: ["Finish\ncooking.", "Take it off\nthe boil.", "Scatter and\nstir."],
+      captions: ["Cook just\nas always.", "Take it off\nthe heat.", "Stir, then\nserve."],
       anchors: [18, 48, 80],
       alt: "Engraved brass pot in the Heldi pouch style, shown three times: cooking over a flame, off the heat with its lid set aside, and with a bangled hand stirring in a spoonful."
     }
@@ -122,7 +122,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "In the bowl",
-      captions: ["Ready the\nbowl.", "Sprinkle\nevenly.", "Stir until\nsmooth."],
+      captions: ["Serve your\ndahi.", "Sprinkle\nevenly.", "Stir until\nsmooth."],
       anchors: [21, 50, 80],
       alt: "Engraved metal bowls of dahi in the Heldi pouch style, shown three times: a full bowl with a spoon resting beside it, a bangled hand sprinkling a spoonful across the surface, and another hand stirring it smooth with a spoon."
     }
@@ -255,7 +255,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "In the mug",
-      captions: ["Brew like always.", "Cool enough\nto drink.", "Stir one in.\nGone."],
+      captions: ["Make your\ntea.", "Let it\ncool.", "Stir one in.\nGone."],
       anchors: [18, 50, 82],
       alt: "Engraved brass chai pan and tumbler in the Heldi pouch style, shown three times: brewing over a flame, off the heat beside a steaming cup, and with a bangled hand stirring a spoonful into the cup."
     }
