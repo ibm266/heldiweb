@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import { useCart } from "@/components/cart/cart-context";
 import { useWaitlistOffer } from "@/components/waitlist-offer-context";
-import { useWaitlistPopup } from "@/components/waitlist-popup";
+import { WaitlistForm } from "@/components/waitlist-form";
 import {
   POUCH_THUMB,
   SAMPLE_SKU,
@@ -80,11 +80,11 @@ export function BuyBox({ product }: { product: Product }) {
   const [pouchQty, setPouchQty] = useState(1);
   const [imageOverride, setImageOverride] = useState<number | null>(null);
   const [justAdded, setJustAdded] = useState(false);
+  const [joined, setJoined] = useState(false);
+  const offer = useWaitlistOffer();
   const [nutritionOpen, setNutritionOpen] = useState(false);
   const [giftingPopupOpen, setGiftingPopupOpen] = useState(false);
   const { cart, mode, addItem, addPouches, isPending } = useCart();
-  const { open: openWaitlist } = useWaitlistPopup();
-  const offer = useWaitlistOffer();
   const viewTracked = useRef(false);
 
   useEffect(() => {
@@ -292,181 +292,209 @@ export function BuyBox({ product }: { product: Product }) {
             RRP on a pair, which is a real comparison because a single pouch
             genuinely sells at £35. */}
 
-        <p className="pdp__group-label">
-          SIZE: <strong>{isPouch ? "300G POUCH" : "SAMPLE"}</strong>
-        </p>
-        <div className="option-grid option-grid--size">
-          <label className={`option-card option-card--slim${isPouch ? " is-selected" : ""}`}>
-            <input
-              type="radio"
-              name="size"
-              value="pouch"
-              checked={isPouch}
-              onChange={() => selectSize(true)}
-            />
-            <span className="option-card__name">300g pouch</span>
-            <span className="option-card__meta">{SERVINGS_PER_POUCH} meals</span>
-            {/* One pouch is £35 and £35 is the RRP, so there is nothing to
-                strike. The saving lives on the two-pouch card below. */}
-            {showPrices ? (
-              <span className="option-card__price">{formatPence(ladderPence(1))}</span>
-            ) : null}
-          </label>
-          <label className={`option-card option-card--slim${!isPouch ? " is-selected" : ""}`}>
-            <input
-              type="radio"
-              name="size"
-              value="sample"
-              checked={!isPouch}
-              onChange={() => selectSize(false)}
-            />
-            <span className="option-card__name">Sample</span>
-            <span className="option-card__meta">{SERVINGS_PER_SAMPLE} servings</span>
-            {showPrices ? (
-              <span className="option-card__price">
-                {sampleSingle.compareAt ? <Rrp>{formatMoney(sampleSingle.compareAt)}</Rrp> : null}
-                {formatMoney(sampleSingle.current)}
-              </span>
-            ) : null}
-          </label>
-        </div>
-
-        {isPouch ? (
+        {/* Before launch there is nothing to choose between: no prices, and
+            every path ended at the same waitlist popup, so size, count and the
+            stepper only showed in live mode (docs/ui-audit/README.md item 10).
+            Waitlist mode says what a pouch comes with and takes the email
+            right here, the way the Chai page does. */}
+        {mode === "live" ? (
           <>
-            <p className="pdp__group-label">
-              HOW MANY:{" "}
-              <strong>
-                {pouchQty === 1 ? "ONE POUCH" : `${pouchQty} POUCHES`}
-              </strong>
-            </p>
-            <div className="option-grid option-grid--pair">
-              {[1, 2].map((qty) => {
-                const price = ladderPence(qty);
-                const rrp = rrpPence(qty);
-                const saving = bundleSavingPence(qty);
-                const perMealPence = Math.round(price / (qty * SERVINGS_PER_POUCH));
-                return (
-                  <label key={qty} className={`option-card${pouchQty === qty ? " is-selected" : ""}`}>
-                    <input
-                      type="radio"
-                      name="bundle"
-                      value={qty}
-                      checked={pouchQty === qty}
-                      onChange={() => selectQty(qty)}
-                    />
-                    <Image
-                      className="option-card__img"
-                      src={imageForCounts(qty, 0).url}
-                      alt=""
-                      width={56}
-                      height={56}
-                      sizes="56px"
-                    />
-                    <span className="option-card__name">
-                      {qty === 1 ? "One pouch" : "Two pouches"}
-                    </span>
-                    {showPrices ? (
-                      <>
-                        <span className="option-card__meta">
-                          {formatPence(perMealPence)} a meal
-                        </span>
-                        <span className="option-card__price">
-                          {/* Struck through only where there is a real saving.
-                              At one pouch the RRP IS the price, so striking it
-                              would be inventing a discount. */}
-                          {saving > 0 ? <Rrp>{formatPence(rrp)}</Rrp> : null}
-                          {formatPence(price)}
-                        </span>
-                        {saving > 0 ? (
-                          <span className="option-card__save">
-                            Save {formatPence(saving)}
-                          </span>
-                        ) : null}
-                      </>
-                    ) : (
-                      <span className="option-card__meta">
-                        {qty * SERVINGS_PER_POUCH} meals
-                      </span>
-                    )}
-                  </label>
-                );
-              })}
-            </div>
-
-            {/* The two cards above are the quick picks and carry the price
-                story; this is what makes any quantity reachable now that the
-                ceiling is MAX_POUCHES rather than a pair. Above two the cards
-                simply show as unselected, which is honest: the shopper is no
-                longer on either of them. */}
-            <div className="pdp__qty">
-              <span className="pdp__qty-label" id="pdp-qty-label">
-                Select more than two pouches:
-              </span>
-              <div className="qty-stepper" role="group" aria-labelledby="pdp-qty-label">
-                <button
-                  type="button"
-                  onClick={() => selectQty(pouchQty - 1)}
-                  disabled={pouchQty <= 1}
-                  aria-label="One fewer pouch"
-                >
-                  −
-                </button>
-                <span aria-live="polite">{pouchQty}</span>
-                <button
-                  type="button"
-                  onClick={() => selectQty(pouchQty + 1)}
-                  disabled={pouchQty >= MAX_POUCHES}
-                  aria-label="One more pouch"
-                >
-                  +
-                </button>
-              </div>
+          <p className="pdp__group-label">
+            SIZE: <strong>{isPouch ? "300G POUCH" : "SAMPLE"}</strong>
+          </p>
+          <div className="option-grid option-grid--size">
+            <label className={`option-card option-card--slim${isPouch ? " is-selected" : ""}`}>
+              <input
+                type="radio"
+                name="size"
+                value="pouch"
+                checked={isPouch}
+                onChange={() => selectSize(true)}
+              />
+              <span className="option-card__name">300g pouch</span>
+              <span className="option-card__meta">{SERVINGS_PER_POUCH} meals</span>
+              {/* One pouch is £35 and £35 is the RRP, so there is nothing to
+                  strike. The saving lives on the two-pouch card below. */}
               {showPrices ? (
-                <span className="pdp__qty-price">
-                  {formatPence(ladderPence(pouchQty))}
-                  {pouchQty > 2 ? (
-                    <em>
-                      {" "}
-                      ({formatPence(perPouchPence(pouchQty))} a pouch)
-                    </em>
-                  ) : null}
+                <span className="option-card__price">{formatPence(ladderPence(1))}</span>
+              ) : null}
+            </label>
+            <label className={`option-card option-card--slim${!isPouch ? " is-selected" : ""}`}>
+              <input
+                type="radio"
+                name="size"
+                value="sample"
+                checked={!isPouch}
+                onChange={() => selectSize(false)}
+              />
+              <span className="option-card__name">Sample</span>
+              <span className="option-card__meta">{SERVINGS_PER_SAMPLE} servings</span>
+              {showPrices ? (
+                <span className="option-card__price">
+                  {sampleSingle.compareAt ? <Rrp>{formatMoney(sampleSingle.compareAt)}</Rrp> : null}
+                  {formatMoney(sampleSingle.current)}
                 </span>
               ) : null}
-            </div>
+            </label>
+          </div>
 
+          {isPouch ? (
+            <>
+              <p className="pdp__group-label">
+                HOW MANY:{" "}
+                <strong>
+                  {pouchQty === 1 ? "ONE POUCH" : `${pouchQty} POUCHES`}
+                </strong>
+              </p>
+              <div className="option-grid option-grid--pair">
+                {[1, 2].map((qty) => {
+                  const price = ladderPence(qty);
+                  const rrp = rrpPence(qty);
+                  const saving = bundleSavingPence(qty);
+                  const perMealPence = Math.round(price / (qty * SERVINGS_PER_POUCH));
+                  return (
+                    <label key={qty} className={`option-card${pouchQty === qty ? " is-selected" : ""}`}>
+                      <input
+                        type="radio"
+                        name="bundle"
+                        value={qty}
+                        checked={pouchQty === qty}
+                        onChange={() => selectQty(qty)}
+                      />
+                      <Image
+                        className="option-card__img"
+                        src={imageForCounts(qty, 0).url}
+                        alt=""
+                        width={56}
+                        height={56}
+                        sizes="56px"
+                      />
+                      <span className="option-card__name">
+                        {qty === 1 ? "One pouch" : "Two pouches"}
+                      </span>
+                      {showPrices ? (
+                        <>
+                          <span className="option-card__meta">
+                            {formatPence(perMealPence)} a meal
+                          </span>
+                          <span className="option-card__price">
+                            {/* Struck through only where there is a real saving.
+                                At one pouch the RRP IS the price, so striking it
+                                would be inventing a discount. */}
+                            {saving > 0 ? <Rrp>{formatPence(rrp)}</Rrp> : null}
+                            {formatPence(price)}
+                          </span>
+                          {saving > 0 ? (
+                            <span className="option-card__save">
+                              Save {formatPence(saving)}
+                            </span>
+                          ) : null}
+                        </>
+                      ) : (
+                        <span className="option-card__meta">
+                          {qty * SERVINGS_PER_POUCH} meals
+                        </span>
+                      )}
+                    </label>
+                  );
+                })}
+              </div>
+
+              {/* The two cards above are the quick picks and carry the price
+                  story; this is what makes any quantity reachable now that the
+                  ceiling is MAX_POUCHES rather than a pair. Above two the cards
+                  simply show as unselected, which is honest: the shopper is no
+                  longer on either of them. */}
+              <div className="pdp__qty">
+                <span className="pdp__qty-label" id="pdp-qty-label">
+                  Select more than two pouches:
+                </span>
+                <div className="qty-stepper" role="group" aria-labelledby="pdp-qty-label">
+                  <button
+                    type="button"
+                    onClick={() => selectQty(pouchQty - 1)}
+                    disabled={pouchQty <= 1}
+                    aria-label="One fewer pouch"
+                  >
+                    −
+                  </button>
+                  <span aria-live="polite">{pouchQty}</span>
+                  <button
+                    type="button"
+                    onClick={() => selectQty(pouchQty + 1)}
+                    disabled={pouchQty >= MAX_POUCHES}
+                    aria-label="One more pouch"
+                  >
+                    +
+                  </button>
+                </div>
+                {showPrices ? (
+                  <span className="pdp__qty-price">
+                    {formatPence(ladderPence(pouchQty))}
+                    {pouchQty > 2 ? (
+                      <em>
+                        {" "}
+                        ({formatPence(perPouchPence(pouchQty))} a pouch)
+                      </em>
+                    ) : null}
+                  </span>
+                ) : null}
+              </div>
+
+              <div className="pdp__includes">
+                <p className="pdp__includes-title">Includes:</p>
+                <div className="pdp__includes-row">
+                  <Image className="pdp__includes-img" src={POUCH_THUMB} alt="" width={28} height={28} sizes="28px" />
+                  <span>{pouchQty} × 300g pouch{pouchQty > 1 ? "es" : ""}</span>
+                </div>
+                {included.map((item) => (
+                  <div className="pdp__includes-row" key={item.title}>
+                    <Image className="pdp__includes-img" src={item.image} alt="" width={28} height={28} sizes="28px" />
+                    <span>{item.title}</span>
+                    {showPrices ? (
+                      <>
+                        {/* Same rule as the pouch prices: the jar and dabba have
+                            never been sold at these figures, so the struck value
+                            is an RRP and has to say so. */}
+                        <Rrp>{formatPence(item.valuePence)}</Rrp>
+                        <strong>Free</strong>
+                      </>
+                    ) : null}
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : null}
+
+          <button type="button" className="pdp__cta" onClick={handleAdd} disabled={isPending}>
+            {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket · ${formatMoney(selectedCurrent)}`}
+          </button>
+          </>
+        ) : (
+          <div className="pdp__waitlist" data-floating-cta-suppress>
             <div className="pdp__includes">
               <p className="pdp__includes-title">Includes:</p>
               <div className="pdp__includes-row">
                 <Image className="pdp__includes-img" src={POUCH_THUMB} alt="" width={28} height={28} sizes="28px" />
-                <span>{pouchQty} × 300g pouch{pouchQty > 1 ? "es" : ""}</span>
+                <span>1 × 300g pouch, {SERVINGS_PER_POUCH} meals</span>
               </div>
-              {included.map((item) => (
+              {includedItemsForPouches(1).map((item) => (
                 <div className="pdp__includes-row" key={item.title}>
                   <Image className="pdp__includes-img" src={item.image} alt="" width={28} height={28} sizes="28px" />
                   <span>{item.title}</span>
-                  {showPrices ? (
-                    <>
-                      {/* Same rule as the pouch prices: the jar and dabba have
-                          never been sold at these figures, so the struck value
-                          is an RRP and has to say so. */}
-                      <Rrp>{formatPence(item.valuePence)}</Rrp>
-                      <strong>Free</strong>
-                    </>
-                  ) : null}
                 </div>
               ))}
             </div>
-          </>
-        ) : null}
-
-        {mode === "live" ? (
-          <button type="button" className="pdp__cta" onClick={handleAdd} disabled={isPending}>
-            {justAdded ? "Added" : isPending ? "Adding…" : `Add to basket · ${formatMoney(selectedCurrent)}`}
-          </button>
-        ) : (
-          <button type="button" className="pdp__cta" data-floating-cta-suppress onClick={() => openWaitlist("popup-shop")}>
-            Join waitlist
-          </button>
+            <WaitlistForm
+              id="pdp-email"
+              placement="shop-khana"
+              buttonStyle="pill"
+              startExpanded
+              autoFocus={false}
+              joined={joined}
+              onJoin={() => setJoined(true)}
+            />
+          </div>
         )}
 
         <p className="pdp__promise">{shippingNote}</p>

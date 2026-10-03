@@ -272,7 +272,7 @@ The six named patterns, with canon examples:
 | `--cream` | `#f8f0de` | Light sections, card backgrounds |
 | `--terracotta` | `#a8432b` | Eyebrows, stats, active accents, hover states |
 | `--brown` | `#4a4238` | Body copy on cream/gold |
-| `--muted` | `#8a8378` | Footer secondary, story notes |
+| `--muted` | `#736b60` | Quiet text on cream or white: statutory lines, captions, story notes (4.6:1 on cream). Never on gold or ink: use `--brown` on gold, `--dark-muted` on ink. Darkened from `#8a8378` (3.3:1) in October 2026 |
 | `--dark-muted` | `#b5ad9f` | Body copy on ink sections |
 | warm dark | `#2c2418` | Hero sublines on marigold |
 | white | `#ffffff` | Nav card, sticker cards, pills |
@@ -384,7 +384,7 @@ product shots are AI-generated placeholders to be replaced with real photography
 
 | Route | Job | Registered in |
 |---|---|---|
-| `/` | Convert: hero reveal, pouch stats, stir gallery, the two-pouch range band (Khana for the bowl, Chai for the mug, `components/range-section.tsx`), how-it-works, gifting, truth teaser, menus, audience, vs-shaker, reviews, founder band, FAQ teaser, jar, waitlist CTA | `components/heldi-homepage.tsx` |
+| `/` | Convert: hero reveal, stir gallery, the two-pouch range band (Khana for the bowl, Chai for the mug, `components/range-section.tsx`), how-it-works, gifting, truth teaser, menus, reviews, founder band, vs-shaker, grouped FAQ teaser, jar, waitlist CTA | `components/heldi-homepage.tsx` |
 | `/truth` | Educate + rank for protein questions (interactive myth-busting) | `components/truth-page.tsx` |
 | `/our-story` | Founder trust: nani, kitchen trials, taste panel, what's next | `app/our-story/page.tsx` |
 | `/inside-the-pouch` | Provenance: suppliers, batch report, made in England | `app/inside-the-pouch/page.tsx` |
@@ -405,7 +405,9 @@ Plumbing worth knowing:
   (AggregateOffer only in live mode). New FAQ content should flow into these
   automatically because the schemas map over the same data files; keep it that way.
 - Nav links are duplicated four times (desktop + mobile, in both
-  `heldi-homepage.tsx` and `subpage-nav.tsx`); `app/sitemap.ts` lists routes again.
+  `heldi-homepage.tsx` and `subpage-nav.tsx`), and Our story, Inside the pouch
+  and FAQ a fifth time in `components/nav-more.tsx`, the "More" menu that holds
+  them between 900 and 1139px; `app/sitemap.ts` lists routes again.
 - The waitlist form stores nothing yet (top item in NEXT_STEPS.md).
 
 ## §10 Single sources of truth
@@ -472,7 +474,8 @@ list, for the next time:
    supplier sections, metadata description, batch report if supplier changes.
 3. `components/site-faqs.ts`: "What are the ingredients?", "Where do the ingredients
    come from?", "Is whey protein ultra-processed?" answers.
-4. `components/comparison-section.tsx`: the "Flavours" and "On the label" rows.
+4. `components/comparison-section.tsx`: the "Flavours" row (the "On the label" row
+   was cut in October 2026).
 5. `components/heldi-homepage.tsx`: truth-teaser ingredient line ("90% whey protein
    isolate. The rest, spices you already know.") and the "Will my food taste
    different?" FAQ in `home-faqs.ts` ("The spices are designed to disappear").
@@ -590,8 +593,10 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
   through it, including the pouch-life FAQ. Keep it that way.
 - **Health claim wording**: appears verbatim in at least 8 files; if regulation ever
   changes it, `grep -rl "contributes to the maintenance"`.
-- **Nav changes**: four link lists (§9) + `app/sitemap.ts`.
-- **FAQ question renames**: update `site-faqs.ts` `pick()` calls or the build throws.
+- **Nav changes**: four link lists (§9), `components/nav-more.tsx` for the three
+  folded links, + `app/sitemap.ts`. Re-check that the row fits at 900px.
+- **FAQ question renames**: update `site-faqs.ts` `pick()` calls, and for homepage
+  questions the group list `HOME_FAQ_GROUP_SPEC` in `home-faqs.ts`, or the build throws.
 - **Regenerated images**: bump the `?v=` versions (`IMAGE_VERSION` in
   `heldi-homepage.tsx` and `subpage-nav.tsx`; per-URL `?v=` in `catalog.ts`).
 - **Social share cards**: every route has an `opengraph-image.tsx` rendered from

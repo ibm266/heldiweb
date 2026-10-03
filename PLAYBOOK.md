@@ -51,9 +51,9 @@ looks considered at only one width is not done.
 
 | Surface | ≤899px | ≥900px |
 |---|---|---|
-| Nav | burger button + slide-down sheet (`.nav-links--mobile`), cart pinned right | floating white card with inline links (`.nav-links--desktop`) |
+| Nav | burger button + slide-down sheet (`.nav-links--mobile`), cart pinned right | floating white card with inline links (`.nav-links--desktop`); from 900 to 1139px Our story, Inside the pouch and FAQ fold into a "More" disclosure (`components/nav-more.tsx`) so the row never wraps |
 | Homepage CTA | floating pill bottom-right, suppressed while a CTA section is on screen (IntersectionObserver) | none; inline CTAs suffice |
-| Menu / audience galleries | horizontal **snap rail**: `overflow-x: auto` + `scroll-snap-type: x mandatory`, edge-bleed negative margins, dots underneath | centred grid, dots hidden |
+| Menu gallery | horizontal **snap rail**: `overflow-x: auto` + `scroll-snap-type: x mandatory`, edge-bleed negative margins, dots underneath | centred grid, dots hidden |
 | Hero card | one column: headline over the word badge, pouches, all three pills on one line, the two CTAs side by side with the offer ticket under them, then the story; the /hel-dee/ sticker on the card corner | white card up to 1120px: headline centred over the word badge, then story, pouches + pills, CTAs + offer ticket in three columns; sticker on the card corner |
 | Heldi vs shaker | scorecard (ticks) + stacked detail cards, a different information design | single comparison table |
 | How it works | its own H2 ("No shaking. No blending. More protein.") | a different H2 and lede |
@@ -99,7 +99,7 @@ just the boxes. Decide per section what the phone reader needs first.
 
 ### 1.5 The snap-rail recipe (copy-paste)
 
-JSX shape (see `components/audience-gallery.tsx` for the full version with
+JSX shape (see `components/menu-gallery.tsx` for the full version with
 reduced-motion handling):
 
 ```tsx
@@ -168,7 +168,7 @@ where intended, images sharp (right `sizes`). Screenshot both for the summary.
   component under `components/`.
 - **Copy is data.** Repeated or listy copy lives in typed const arrays either at
   the top of the component or in a sibling `*.ts` file (`home-faqs.ts`,
-  `MENUS`, `AUDIENCES`). Strings a lesser model must find later should not be
+  `MENUS`, `DISHES`). Strings a lesser model must find later should not be
   buried mid-JSX.
 - TypeScript is `strict`; use named exports; type props inline.
 - Images: `next/image` with `sizes` always; `priority` only for true LCP (BRAND.md
@@ -212,10 +212,12 @@ Every recipe ends with the finishing gate from the top of this file.
 1. Define the job and voice (BRAND.md §3, §4), then the two-line responsive spec
    (§1.3.1).
 2. Pick the ground colour by continuing the alternation. Current order on `/`:
-   gold hero + ink ticker → cream pouch → ink stir → gold range (the two
-   pouches) → cream how → ink gifting → gold truth → ink thali → gold audience →
-   ink vs-shaker → cream reviews → gold founder → cream faq → ink jar → gold
-   final CTA → ink footer. Slot in
+   gold hero + ink ticker → ink stir → gold range (the two pouches) → cream
+   how → ink gifting (live only) → gold truth → ink thali → cream reviews
+   (showcase only) → gold founder → ink vs-shaker → cream faq → ink jar → gold
+   final CTA → cream statutory → ink footer. The pouch-stats and audience bands
+   were cut in October 2026 (docs/ui-audit/homepage.md), which is why the
+   founder band now sits above vs-shaker. Slot in
    without creating two same-ground neighbours; copy the seam treatment
    (`.section--bordered` or nothing) from the nearest identical transition.
 3. Scaffold inside the `return` of `components/heldi-homepage.tsx`:
@@ -288,7 +290,7 @@ export default function MyPage() {
    ~12 lines over `components/og/card.tsx`) so shared links render branded.
 3. Add the nav link in **four places** (desktop + mobile lists in both
    `components/heldi-homepage.tsx` and `components/subpage-nav.tsx`), or decide
-   explicitly that it is footer-only (`FooterLegal`).
+   explicitly that it is footer-only (`FooterLegal`). R5 has the width check.
 4. Consider JSON-LD (FAQPage if it hosts FAQs, Article for editorial).
 5. Educational pages want question-shaped H2s (BRAND.md §5) for AI citability.
 
@@ -300,6 +302,11 @@ export default function MyPage() {
 2. `site-faqs.ts` imports shared questions **by exact question string** via
    `pick()`. Renaming a question in home/truth files without updating the `pick()`
    call breaks the build (that is the safety net, not a bug).
+   The homepage shows its FAQs in topic groups behind chips: a new or renamed
+   question in `home-faqs.ts` also goes into exactly one group in
+   `HOME_FAQ_GROUP_SPEC` in the same file, matched by exact text, or the build
+   throws. Every group's answers stay in the HTML (hidden, not omitted), so all
+   of them are crawlable and match the FAQPage JSON-LD.
 3. Answer style: first sentence answers the question; 2 to 5 sentences; medical
    topics hand off to a GP/dietitian; optional `more` link. Voice A.
 4. Schema updates itself (the FAQPage JSON-LD maps over these files). Never
@@ -325,9 +332,12 @@ export default function MyPage() {
 
 Update all four link lists (two in `heldi-homepage.tsx`, two in
 `subpage-nav.tsx`), keep order identical, add to `app/sitemap.ts`, and check the
-nav still fits at 900 to 1100px wide (the card wraps badly when links overflow;
-that width band is the tight spot). Anchors (`/#how`) work from subpages only with
-the leading slash.
+nav still fits on one row at 900px wide. From 900 to 1139px the row only fits
+because Our story, Inside the pouch and FAQ move into the "More" menu
+(`components/nav-more.tsx`, marked `.nav-links__foldable` in the desktop lists);
+a new desktop link either goes into that menu too or needs something else to
+move. At 900px the card has 812px and the row used about 600px in October 2026.
+Anchors (`/#how`) work from subpages only with the leading slash.
 
 ### R6 · New component style
 

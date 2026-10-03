@@ -9,15 +9,15 @@ import {
   useState,
   type CSSProperties
 } from "react";
-import { AudienceGallery } from "@/components/audience-gallery";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { useCart } from "@/components/cart/cart-context";
 import { ComparisonSection } from "@/components/comparison-section";
 import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
 import { FooterLegal } from "@/components/subpage-nav";
 import { CopyHighlight } from "@/components/copy-highlight";
-import { HOME_FAQS } from "@/components/home-faqs";
+import { HOME_FAQ_GROUPS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
+import { NavMore } from "@/components/nav-more";
 import { RangeSection } from "@/components/range-section";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
@@ -158,8 +158,6 @@ const WORDS = [
 const CHARSET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const COLS = 11;
 
-const FAQS = HOME_FAQS;
-
 // One ticker per commerce mode: waitlist carries the launch date, the waitlist
 // offer and no price lines; live carries the family-rate line and drops the
 // date. The launch date lives here (BRAND.md §11.5).
@@ -181,16 +179,12 @@ function waitlistTickerCopy(offerItems: string[]): string {
     ""
   ].join("  •  ");
 }
-
 const TICKER_COPY_LIVE =
   "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE BOWL, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
   allNatural: "/images/pouch-badges/all-natural.png",
-  lactoseFree: "/images/pouch-badges/lactose-free.png",
-  noSugar: "/images/pouch-badges/no-sugar.png",
-  glutenFree: "/images/pouch-badges/gluten-free.png",
   vegetarian: "/images/pouch-badges/vegetarian.png"
 } as const;
 
@@ -490,76 +484,6 @@ function PouchEquation() {
         </div>
       </div>
     </>
-  );
-}
-
-function PouchStats({ grams, className }: { grams: number; className: string }) {
-  return (
-    <div className={className}>
-      <div className="pouch-stat pouch-stat--gold">
-        <strong>{grams}g</strong>
-        <span>protein per bowl</span>
-      </div>
-      <div className="pouch-stat pouch-stat--white">
-        <strong>All natural</strong>
-        <span>ingredients</span>
-      </div>
-    </div>
-  );
-}
-
-function PouchBadgesList({ className }: { className: string }) {
-  return (
-    <ul className={className} aria-label="Product attributes">
-      <li className="pouch-badge">
-        <Image
-          className="pouch-badge__icon"
-          src={POUCH_BADGE_ICONS.lactoseFree}
-          alt=""
-          width={280}
-          height={377}
-          sizes="34px"
-          aria-hidden="true"
-        />
-        98% lactose-free
-      </li>
-      <li className="pouch-badge">
-        <Image
-          className="pouch-badge__icon"
-          src={POUCH_BADGE_ICONS.noSugar}
-          alt=""
-          width={386}
-          height={390}
-          sizes="34px"
-          aria-hidden="true"
-        />
-        No added sugar
-      </li>
-      <li className="pouch-badge">
-        <Image
-          className="pouch-badge__icon"
-          src={POUCH_BADGE_ICONS.glutenFree}
-          alt=""
-          width={328}
-          height={225}
-          sizes="34px"
-          aria-hidden="true"
-        />
-        Gluten free
-      </li>
-      <li className="pouch-badge">
-        <Image
-          className="pouch-badge__icon"
-          src={POUCH_BADGE_ICONS.vegetarian}
-          alt=""
-          width={286}
-          height={367}
-          sizes="34px"
-          aria-hidden="true"
-        />
-        Vegetarian
-      </li>
-    </ul>
   );
 }
 
@@ -1075,6 +999,7 @@ export function HeldiHomepage({
   ticker = true
 }: HeldiHomepageProps) {
   const [faqOpen, setFaqOpen] = useState(-1);
+  const [faqGroup, setFaqGroup] = useState<string>(HOME_FAQ_GROUPS[0].id);
   const [joined, setJoined] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroIntroComplete, setHeroIntroComplete] = useState(
@@ -1219,13 +1144,16 @@ export function HeldiHomepage({
               />
             </span>
           </a>
+          {/* The three .nav-links__foldable links move into NavMore between
+              900 and 1139px; keep them in step with components/nav-more.tsx. */}
           <div className="nav-links nav-links--desktop">
             <a href="#how">How it works</a>
             <Link href="/truth">The truth</Link>
-            <Link href="/our-story">Our story</Link>
+            <Link className="nav-links__foldable" href="/our-story">Our story</Link>
             <Link href="/heldi-living">Heldi Living</Link>
-            <Link href="/inside-the-pouch">Inside the pouch</Link>
-            <Link href="/faq">FAQ</Link>
+            <Link className="nav-links__foldable" href="/inside-the-pouch">Inside the pouch</Link>
+            <Link className="nav-links__foldable" href="/faq">FAQ</Link>
+            <NavMore />
             <Link href="/shop">Shop</Link>
             {mode !== "live" ? (
               <button
@@ -1377,21 +1305,6 @@ export function HeldiHomepage({
         <div className="double-rule" aria-hidden="true" />
       </section>
 
-      <section className="section section--cream" id="pouch">
-        <div className="pouch-section">
-          <div className="pouch-section__copy">
-            <h2>Made for the dinner already cooking.</h2>
-            <p>
-              Khana <CopyHighlight>vanishes clean</CopyHighlight> into gravy,
-              dal and yoghurt bases. No chalk, no aftertaste. Chai has its own
-              place: the mug.
-            </p>
-          </div>
-          <PouchStats grams={grams} className="pouch-section__stats" />
-          <PouchBadgesList className="pouch-section__badges" />
-        </div>
-      </section>
-
       <section
         className="section section--ink section--bordered"
         id="stir"
@@ -1444,20 +1357,10 @@ export function HeldiHomepage({
         <MenuGallery gramsPerTbsp={grams} />
       </section>
 
-      <section className="section section--gold section--bordered" id="audience">
-        <div className="content">
-          <h2 className="centered audience-heading">
-            Every appetite at the table.{" "}
-            <span className="audience-heading__line2">
-              Even the one who said they weren&apos;t hungry.
-            </span>
-          </h2>
-          <AudienceGallery />
-        </div>
-      </section>
-
-      <ComparisonSection />
-
+      {/* Founder band before the shaker comparison: with the audience band
+          gone, menus (ink) and the comparison (ink) would otherwise touch.
+          The showcase-only reviews band travels with it so the cream, gold,
+          ink order holds in showcase mode too (PLAYBOOK R1). */}
       <ReviewsSection
         id="reviews"
         tone="cream"
@@ -1492,32 +1395,62 @@ export function HeldiHomepage({
         </div>
       </section>
 
+      <ComparisonSection />
+
       <section className="section section--cream section--bordered" id="faq">
         <div className="faq">
           <h2 className="centered">The questions we hear most.</h2>
-          <div className="faq-list">
-            {FAQS.map((faq, index) => {
-              const open = faqOpen === index;
-              return (
-                <article key={faq.question}>
-                  <h3>
-                    <button
-                      type="button"
-                      aria-expanded={open}
-                      aria-controls={`faq-answer-${index}`}
-                      onClick={() => setFaqOpen(open ? -1 : index)}
-                    >
-                      <span>{faq.question}</span>
-                      <b aria-hidden="true">{open ? "–" : "+"}</b>
-                    </button>
-                  </h3>
-                  <p id={`faq-answer-${index}`} hidden={!open}>
-                    {faq.answer}
-                  </p>
-                </article>
-              );
-            })}
+          {/* One group shows at a time, but every group and every answer is
+              rendered (hidden, not left out), so crawlers read all thirteen
+              and they match the FAQPage JSON-LD in app/page.tsx. */}
+          <div className="faq-groups" role="radiogroup" aria-label="Question topics">
+            {HOME_FAQ_GROUPS.map((group) => (
+              <button
+                key={group.id}
+                type="button"
+                role="radio"
+                aria-checked={faqGroup === group.id}
+                aria-controls={`faq-group-${group.id}`}
+                className={`truth-chip${faqGroup === group.id ? " is-active" : ""}`}
+                onClick={() => {
+                  setFaqGroup(group.id);
+                  setFaqOpen(-1);
+                }}
+              >
+                {group.label}
+              </button>
+            ))}
           </div>
+          {HOME_FAQ_GROUPS.map((group) => (
+            <div
+              className="faq-list faq-list--grouped"
+              id={`faq-group-${group.id}`}
+              key={group.id}
+              hidden={faqGroup !== group.id}
+            >
+              {group.faqs.map(({ faq, index }) => {
+                const open = faqOpen === index;
+                return (
+                  <article key={faq.question}>
+                    <h3>
+                      <button
+                        type="button"
+                        aria-expanded={open}
+                        aria-controls={`faq-answer-${index}`}
+                        onClick={() => setFaqOpen(open ? -1 : index)}
+                      >
+                        <span>{faq.question}</span>
+                        <b aria-hidden="true">{open ? "–" : "+"}</b>
+                      </button>
+                    </h3>
+                    <p id={`faq-answer-${index}`} hidden={!open}>
+                      {faq.answer}
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
+          ))}
           <p className="faq-more">
             <a className="pill-link" href="/faq">
               See the full FAQ &#8594;
@@ -1566,7 +1499,17 @@ export function HeldiHomepage({
               <CopyHighlight>{offer.paragraphParts.highlight}</CopyHighlight>
               {offer.paragraphParts.after}
             </p>
-            <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
+            {/* Open from the start, as in the popup: this is the last ask on
+                the page, so the email field is on screen rather than one tap
+                away (docs/ui-audit/README.md item 7). Not focused on load. */}
+            <WaitlistForm
+              joined={joined}
+              onJoin={() => setJoined(true)}
+              id="footer-email"
+              buttonStyle="pill"
+              startExpanded
+              autoFocus={false}
+            />
           </div>
           <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
         </section>
@@ -1585,7 +1528,7 @@ export function HeldiHomepage({
         />
       </section>
 
-      <footer>
+      <footer data-floating-cta-suppress>
         <Wordmark footer onDark />
         <span>© 2026 Heldi · Made in the UK · They shake, we stir</span>
         <FooterLegal />

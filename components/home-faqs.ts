@@ -75,3 +75,85 @@ export const HOME_FAQS = [
       "For Heldi Khana, there is no added sugar; it contains naturally occurring sugars. Khana contains under 1g of carbohydrate per spoonful. Heldi Chai is different: it contains coconut sugar and has its own nutrition table. Those facts do not determine whether either product fits an individual's diabetes care. Show the specific ingredients and nutrition label to your GP or dietitian before adding it to your meals."
   }
 ];
+
+// The homepage shows HOME_FAQS in these four groups, one group at a time
+// behind chips (components/heldi-homepage.tsx). Every answer stays in the
+// HTML, so search engines and AI crawlers still read all of them, and the
+// FAQPage JSON-LD in app/page.tsx keeps listing all of them. Questions are
+// matched by exact text, like pick() in site-faqs.ts: the check below fails
+// the build if one is renamed, missing from every group, or in two.
+const HOME_FAQ_GROUP_SPEC = [
+  {
+    id: "why",
+    label: "Why Heldi",
+    questions: [
+      "Do I need more protein?",
+      "Why not just drink a protein shake?",
+      "Will my food taste different?"
+    ]
+  },
+  {
+    id: "using",
+    label: "Using it",
+    questions: [
+      "How do I use it?",
+      "Can I use it in dishes that are not on the pouch?",
+      "Is there a Heldi for chai?",
+      "Can I put Khana in my chai?"
+    ]
+  },
+  {
+    id: "diet",
+    label: "Diet",
+    questions: [
+      "Is whey protein vegetarian?",
+      "Is Heldi halal?",
+      "I am lactose intolerant. Can I have Heldi?"
+    ]
+  },
+  {
+    id: "who",
+    label: "Who can have it",
+    questions: [
+      "Can children have Heldi?",
+      "Can older adults have Heldi?",
+      "Can I use Heldi if I have diabetes?"
+    ]
+  }
+] as const;
+
+export type HomeFaq = (typeof HOME_FAQS)[number];
+
+export type HomeFaqGroup = {
+  id: string;
+  label: string;
+  faqs: { faq: HomeFaq; index: number }[];
+};
+
+function buildHomeFaqGroups(): HomeFaqGroup[] {
+  const placed = new Set<string>();
+  const groups = HOME_FAQ_GROUP_SPEC.map((group) => ({
+    id: group.id,
+    label: group.label,
+    faqs: group.questions.map((question) => {
+      const index = HOME_FAQS.findIndex((faq) => faq.question === question);
+      if (index === -1) {
+        throw new Error(`HOME_FAQ_GROUPS names "${question}", which is not in HOME_FAQS.`);
+      }
+      if (placed.has(question)) {
+        throw new Error(`HOME_FAQ_GROUPS lists "${question}" twice.`);
+      }
+      placed.add(question);
+      return { faq: HOME_FAQS[index], index };
+    })
+  }));
+  const missing = HOME_FAQS.filter((faq) => !placed.has(faq.question));
+  if (missing.length) {
+    throw new Error(
+      `HOME_FAQ_GROUPS leaves out: ${missing.map((faq) => `"${faq.question}"`).join(", ")}.`
+    );
+  }
+  return groups;
+}
+
+export const HOME_FAQ_GROUPS = buildHomeFaqGroups();
