@@ -1,9 +1,23 @@
 # UI audit, 3 October 2026
 
 A design review of the live waitlist-mode site at phone and desktop widths, with
-a ranked list of changes. **Nothing in this folder changes the site.** It is a
-proposal: each item says what I saw, why it matters, the fix, and which files it
-touches, so any item can be picked up as its own small PR.
+a ranked list of changes. Each item says what I saw, why it matters, the fix, and
+which files it touches.
+
+## Status
+
+| # | Item | Status |
+|---|---|---|
+| 1 | Desktop nav wrapping at 900 to 1135px | **Built** in this PR |
+| 2 | Gold band under the footer on phones | **Built** in this PR |
+| 3 | Desktop hero re-composition | **Not doing**: the current hero stays |
+| 4 | Floating pill over body copy | Open |
+| 5 | Contrast failures | **Built** in this PR |
+| 6 | Homepage length | Deep dive in [homepage.md](homepage.md); not built |
+| 7 | Email field in the closing CTA | Open |
+| 8 | Blog reading width | Open |
+| 9 | Tiny type and tap targets | **Built** in this PR |
+| 10 | Waitlist-mode buy box | Explained more plainly below; open |
 
 Mockups of the proposals (before and after, both widths) are on a Claude Design
 canvas: <https://claude.ai/artifact/MNFEWk6yjQV8LZm7yVmohk>. It is private to
@@ -47,6 +61,11 @@ Items 3, 6 and 10 change what people see and want a decision first.
 ![Nav at 1024px on the homepage](nav-1024-home.webp)
 ![Nav at 1024px on the Khana page](nav-1024-khana.webp)
 
+After, at 1024px, with the More menu open:
+
+![After: one-row nav with the More menu open](after-nav-1024-khana-open.webp)
+![After: the homepage nav at 1024px](after-nav-1024-home.webp)
+
 **What I saw.** Measured every 20px from 900 to 1300: the nav card is 54px tall
 from 1140px up, and 93 to 99px tall at every width from 900 to 1120, because the
 seven links and the join pill drop to a second row. The taller card then sits on
@@ -59,21 +78,27 @@ PLAYBOOK R5 already names 900 to 1100px as the tight spot.
 is capped at `calc(100vw - 5.5rem)` (`app/globals.css:129`), so when the links
 do not fit they wrap silently instead of failing visibly.
 
-**Fix.** Keep the one structural breakpoint at 900. Inside the nav only, below
-1140px, fold the three lowest-traffic links (Inside the pouch, Ways to use, FAQ)
-into a "More" disclosure button, and set `flex-wrap: nowrap` on the desktop list
-so a future link can never push the card onto two rows again. That is the
-"fine-tune inside a component" case PLAYBOOK §1.1.3 allows. Remember R5: the
-link lists live in four places (`heldi-homepage.tsx` and `subpage-nav.tsx`,
-desktop and mobile).
+**What was built.** At 900px the row needs about 1,005px and the card gets
+812, so folding two links was not enough. From 900 to 1139px only, **Our story,
+Inside the pouch and FAQ** fold into a "More" disclosure
+(`components/nav-more.tsx`): a real button with `aria-expanded`, closed by
+Escape (focus returns to the button), a click outside, a link click or a
+resize. The row then needs about 600px at 900. The structural breakpoint stays
+at 900; this is the "fine-tune inside a component" case PLAYBOOK §1.1.3 allows.
+The nav also got an ink focus ring, because the global white ring was invisible
+on the white card. `flex-wrap: nowrap` was **not** added: in a preview-unlocked
+browser the mode toggle joins the row and would then overflow the card instead.
 
 - Mobile: unchanged (burger sheet).
-- Desktop 900 to 1139px: five links, More, Join waitlist, one row.
+- Desktop 900 to 1139px: How it works, The truth, Heldi Living, More, Shop,
+  Join waitlist. One row, 54px tall at every width from 900 to 1300 (measured
+  every 20px).
 - Desktop 1140px up: unchanged.
 
 ### 2. A gold band under every footer on phones (bug)
 
 ![Bottom of the 404 page at 375px](footer-band-375.webp)
+![After: the page ends on the navy footer](after-footer-375.webp)
 
 **What I saw.** Every page on a phone ends navy footer, then a 72px strip of
 gold. It is most obvious on short pages like the 404, where the floating pill
@@ -86,10 +111,12 @@ band. It is also applied where the pill never appears: live mode, `/legal`,
 `/review` and `/preview` (`HIDDEN_PREFIXES` in
 `components/floating-waitlist-cta.tsx`).
 
-**Fix.** Move the reserve into the footer's own bottom padding so it is navy,
-and only add it when the pill is active (for example a `data-floating-cta`
-attribute on `<body>` set by `FloatingWaitlistCta`). Add the footer to the
-pill's `[data-floating-cta-suppress]` targets so it never sits on the address.
+**What was built.** Both footers now carry `data-floating-cta-suppress`, so the
+pill steps aside as the footer arrives and never sits on the address. With the
+pill out of the way there, `main` needs no bottom padding at all, so it is
+gone. Every phone page now ends on the navy footer (measured: 0px below it on
+the 404, `/truth` and the homepage), and the pill still appears mid-page as
+before.
 
 ### 3. Re-compose the desktop hero
 
@@ -149,12 +176,14 @@ Either way, item 2's fix gives it a navy place to land at the end of the page.
 The statutory wording is the one that matters most: it is the legally required
 supplement text and should be comfortably readable.
 
-**Fix.** Darken `--muted` (`app/globals.css:8`) to **#736b60**: 4.63:1 on
-cream and 5.25:1 on white, and still visibly quieter than `--brown`. Never put
-muted on gold; use `--brown` (4.63:1) or the warm dark #2c2418 (7.18:1). For
-eyebrows and the signature on gold, use `--brown`, or a deep terracotta
-#6e2a1a (4.91:1) if the red cast matters. Then add a line to BRAND.md §8.1 and
-the specimen.
+**What was built.** `--muted` is now **#736b60** (4.63:1 on cream, 5.25:1 on
+white). The footer, which sat muted-on-ink, moved to `--dark-muted` so it does
+not get darker on navy. Eyebrows and story notes straight on a gold section, and
+the founder signature, are now `--brown` (4.63:1), matching the truth sections;
+eyebrows inside cream sticker cards on gold keep terracotta, since they sit on
+cream. BRAND.md §8.1, the specimen, the print guide and the go-live checklist
+item are updated. A probe of every text node on 14 routes at 375 and 1280 now
+finds no text below AA.
 
 ### 6. The homepage is too long
 
@@ -174,7 +203,11 @@ Several sections say the same thing: the stir gallery and the menus are both
 the pouch stats repeat the hero pills and the shop page; the homepage carries
 thirteen FAQs, all of which `/faq` already holds.
 
-**Proposal** (board 6 on the canvas), keeping the ground colours alternating:
+**Deep dive:** [homepage.md](homepage.md) has the section-by-section verdicts and
+measured savings (14.5 to 9.8 phone screens without touching the hero). The
+first-pass proposal below is superseded by it.
+
+**First-pass proposal** (board 6 on the canvas), keeping the ground colours alternating:
 
 1. Hero
 2. One for the pot. One for the mug. (moved up: it is the first question a
@@ -241,32 +274,59 @@ your dal feels filling but you're hungry an hour later").
 (11.5px). The menu cards are where the grams story lives, and on a phone they
 are the hardest thing on the site to read.
 
+![After: a menu card at 375px with 12px labels](after-menu-card-375.webp)
+
 **Tap targets** below PLAYBOOK §1.3.5's 36px: the stir and ways gallery dots
 (10×10, `app/globals.css:3910` and `:9110`), menu and audience dots (30×30),
 the call-the-elephants button (30×30), blog card tags (24px tall) and the
 `/ways-to-use` jump chips (32px tall).
 
-**Fix.** A 12px floor for uppercase labels and 13px for anything meant to be
-read. Give every dot a 36px hit area while keeping the visible dot small
-(padding plus `background-clip: content-box`, or a `::before` hit box). Bump
-the chips and tags to `min-height: 36px`.
+**What was built.** Every label below 12px is now 12px (menu card tags,
+course labels, "of protein", "ON THE TABLE", "SELECT YOUR MAIN", stir card
+tags, hero pills, blog tags, truth bowl names, powder labels, the Our story
+badges, the "Shakes" header) and the vs-the-shaker sentences are 13px. All four
+gallery dot rows are 36px buttons painting the same small dot (the menu and
+audience galleries already used that pattern at 30px). The elephants button and
+the blog tags keep their drawn size with a 36px+ invisible tap area, the blog
+filter chips went from 34 to 36px, and the `/ways-to-use` jump chips to 36px.
+The hero pills still fit on one line at 360px.
+
+**Left alone:** the italic line inside the round /hel-dee/ sticker (10px on
+phones). It is set into a fixed-size stamp, and enlarging it would mean
+redrawing the sticker.
 
 ### 10. One clear ask on the waitlist-mode shop page
 
 ![Khana buy box at 375px](pdp-buybox-375.webp)
 
-**What I saw.** Before launch the Khana buy box still asks three things: size,
-how many, and "Need more than two?" with a stepper that reads 1 next to a
-selected "One pouch" card. There are no prices, and every path ends at the same
-"Join waitlist" button. It reads as two controls for one number, and as choices
-that do nothing.
+**What I saw, plainly.** Before launch, the box on the Khana page where you
+would normally buy asks three questions:
 
-**Fix.** In waitlist mode only (`components/shop/buy-box.tsx`), replace the
-pickers with: what comes in the box (the pouch and the jar, as the "Includes"
-card already shows), the offer ticket, and the email field with the pill. Keep
-the full picker for live mode untouched. If you would rather keep the picker as
-a preview, at least hide the stepper until "Two pouches" is selected. Board 10
-on the canvas.
+1. Which size? (300g pouch, or a sample)
+2. How many? (one pouch, or two)
+3. "Need more than two?" with a minus, a number and a plus
+
+But nothing can be bought yet. There are no prices, and whatever you pick, the
+only button underneath is "Join waitlist", which opens the same email popup as
+every other "Join waitlist" button on the site. Your choices are not sent with
+your email. So a visitor makes three decisions that change nothing.
+
+A smaller confusion on top: the counter shows "1" right next to the
+highlighted "One pouch" card, which looks like two controls for the same
+number.
+
+**The suggestion.** Until the shop opens, swap the three pickers for one simple
+box: what a pouch order includes (the 300g pouch and the free table jar, which
+the "Includes" card already lists), the waitlist offer, and the email field
+with the button. On launch day the full picker comes back exactly as it is
+today, because it is only hidden in waitlist mode (`components/shop/buy-box.tsx`).
+Board 10 on the canvas shows it.
+
+**The case for keeping it.** Picking a quantity fires the `tier_selected`
+analytics event even in waitlist mode, so the pickers tell you how many pouches
+people intend to buy before you have a single order. If that signal matters,
+keep the pickers but hide the counter until "Two pouches" is chosen, and add a
+line saying the choice is just for show until launch.
 
 ---
 
@@ -318,3 +378,4 @@ on the canvas.
 | `post-375.webp`, `post-empty-h1-1280.webp` | Item 8 |
 | `pdp-buybox-375.webp` | Item 10 |
 | `first-visit-375.webp` | First visit, consent modal over the hero |
+| `after-*.webp` | Items 1, 2 and 9 after the fixes in this PR |
