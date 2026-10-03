@@ -185,7 +185,7 @@ export function SubpageFooter() {
         height={609}
         sizes="120px"
       />
-      <span>© 2026 Heldi · Made in the UK · They shake, we stir</span>
+      <span>© 2026 Heldi · Blended and packed in the UK · They shake, we stir</span>
       <FooterLegal />
     </footer>
   );

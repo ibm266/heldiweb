@@ -46,7 +46,7 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
   basket: its formulation is settled but the label, gluten result and stock are not,
   so it is a waitlist surface rather than a second
   SKU. NEXT_STEPS.md §1b holds every open decision. There are no flavour SKUs.
-- **Stage**: pre-launch waitlist ("Launching autumn 2026" in the ticker), full storefront
+- **Stage**: pre-launch waitlist ("Launching winter 2026" in the ticker), full storefront
   UI built behind a mock cart. CTAs switch on `COMMERCE_MODE` ("waitlist" | "live").
 
 ## §2 Who we are talking to
@@ -556,7 +556,7 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
 ### 11.5 Launch date / launch state
 
 - Date lives in the waitlist ticker string in `heldi-homepage.tsx` ("LAUNCHING
-  AUTUMN 2026") and in `fable/brand-voice.md`. The ticker is one string per mode:
+  WINTER 2026") and in `fable/brand-voice.md`. The ticker is one string per mode:
   the waitlist ticker (`waitlistTickerCopy()`) carries the date, the waitlist offer's
   ticker items and no price lines; `TICKER_COPY_LIVE` carries "AUNTIES & UNCLES PAY
   LESS" and drops the date.

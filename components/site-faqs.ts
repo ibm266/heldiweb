@@ -224,7 +224,7 @@ export function siteFaqGroupsForMode(
             {
               question: "When does Heldi launch, and what does the waitlist do?",
               answer:
-                `Heldi launches in autumn 2026. The shop is available to browse now, and checkout switches on at launch. ${offer.faqAnswer}`
+                `Heldi launches in winter 2026. The shop is available to browse now, and checkout switches on at launch. ${offer.faqAnswer}`
             }
           ]
         : []),

@@ -169,18 +169,18 @@ const COLS = 11;
 function waitlistTickerCopy(offerItems: string[]): string {
   return [
     "THEY SHAKE, WE STIR",
-    "MADE IN THE UK",
+    "BLENDED AND PACKED IN THE UK",
     "FOR INDIAN KITCHENS",
     "KHANA FOR THE BOWL, CHAI FOR THE MUG",
     "100% VEGETARIAN",
     ...offerItems,
     "SAME RECIPES, SAME TASTE",
-    "LAUNCHING AUTUMN 2026",
+    "LAUNCHING WINTER 2026",
     ""
   ].join("  •  ");
 }
 const TICKER_COPY_LIVE =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE BOWL, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
+  "THEY SHAKE, WE STIR  •  BLENDED AND PACKED IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE BOWL, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -282,14 +282,12 @@ function HeroStory() {
     <div className="hero-card__story">
       <p className="hero-card__tagline">More from the food you love.</p>
       <p className="hero-card__support">
-        Khana stirs straight into home-cooked dal, curry, sabzi and raita,
-        adding{" "}
-        <strong>
-          <span className="hero-card__grams">10g of protein</span> per serving
-        </strong>
-        . Chai adds <strong>5g per serving</strong> to chai, tea, coffee or hot
-        chocolate. Both were made for the food and drinks your family already
-        loves.
+        Nobody should have to swap their mum&apos;s dal for a protein bar. So we
+        made protein you stir into your home-cooked favourites. A spoonful of
+        Heldi Khana adds{" "}
+        <strong className="hero-card__grams">10g of protein</strong> to your dal,
+        curry or sabzi, and a spoonful of Heldi Chai adds <strong>5g</strong> to
+        your chai, tea or coffee.
       </p>
       <p className="hero-card__claim">
         Developed by Indian home cooks for Indian families.
@@ -1530,7 +1528,7 @@ export function HeldiHomepage({
 
       <footer data-floating-cta-suppress>
         <Wordmark footer onDark />
-        <span>© 2026 Heldi · Made in the UK · They shake, we stir</span>
+        <span>© 2026 Heldi · Blended and packed in the UK · They shake, we stir</span>
         <FooterLegal />
       </footer>
     </main>
