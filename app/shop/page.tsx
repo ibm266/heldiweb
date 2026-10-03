@@ -70,16 +70,14 @@ export default function ShopPage() {
             <CopyHighlight>Khana</CopyHighlight> is the savoury one: whey
             protein isolate with warm spices for dal, curry, sabzi and raita.
             Stir a spoonful into your own bowl at the table, or take the pot
-            off the heat and stir it through for everyone. Khana is the pouch
-            on sale first.
+            off the heat and stir it through for everyone.
           </p>
           <p>
             <CopyHighlight>Chai</CopyHighlight> is the one for hot drinks:
-            whey and milk protein concentrate with cardamom, ginger, cinnamon
-            and clove, a
-            little coconut sugar, stirred into chai, tea, coffee or hot
-            chocolate once the cup is cool enough to drink. It is still in
-            development, so it has a page and no price yet.
+            whey and milk protein concentrate with ginger, cardamom, cinnamon,
+            black pepper and clove, a little coconut sugar, stirred into chai,
+            tea, coffee or hot chocolate once the cup is cool enough to drink.
+            It launches alongside Khana.
           </p>
           <p className="story-note">
             Both contain milk. Both are vegetarian. Both are food

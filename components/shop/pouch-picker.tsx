@@ -76,11 +76,11 @@ function status(id: Pouch["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
       ? { note: "Ready for the next bowl.", cta: "Shop Khana" }
-      : { note: "Khana is the pouch launching first.", cta: "See Khana" };
+      : { note: "Ready on launch day.", cta: "See Khana" };
   }
   return mode === "live"
     ? { note: "Read the method now. Chai is not on sale yet.", cta: "See Chai" }
-    : { note: "Read the method now. The waitlist hears first when Chai is ready.", cta: "See Chai" };
+    : { note: "Read the method now. Chai launches with Khana.", cta: "See Chai" };
 }
 
 export function PouchPicker() {

@@ -274,12 +274,11 @@ export default function OurStoryPage() {
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">WHAT&apos;S NEXT</p>
-          <h2>Khana is on the table. Chai is on the stove.</h2>
+          <h2>Two pouches, one launch day.</h2>
           <p>
-            Khana, our savoury blend, came first.{" "}
-            <CopyHighlight>Chai is in development now</CopyHighlight> and is
-            going through the same kitchen trials. Mama and Papa are still the
-            taste panel. Their standards have not moved.
+            Khana and Chai went through the same kitchen trials, with Mama and
+            Papa as the taste panel. Their standards have not moved.{" "}
+            <CopyHighlight>Both pouches launch together</CopyHighlight>.
           </p>
           <p className="story-note">
             <Link href="/shop/chai">Have a look at the Chai pouch</Link>.

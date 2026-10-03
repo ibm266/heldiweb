@@ -201,7 +201,7 @@ export function ChaiBuyBox() {
         <p className="pdp__promise">
           {mode === "live"
             ? "Chai is not on sale yet. Khana is ready for dal, curry, sabzi and raita."
-            : `We are finishing Chai before we sell it. Join the waitlist to hear when it is ready. ${offer.sentence}`}
+            : `Chai launches with Khana. Join the waitlist to hear the day it goes on sale. ${offer.sentence}`}
         </p>
 
         <StatutoryStatements

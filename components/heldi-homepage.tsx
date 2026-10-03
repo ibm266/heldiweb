@@ -1475,12 +1475,17 @@ export function HeldiHomepage({
             <p className="eyebrow eyebrow--gold">WITH EVERY ORDER</p>
             <h2>A jar for the table. On us.</h2>
             <p>
-              Every pouch order comes with a refillable jar for the{" "}
+              Every pouch order ships with a refillable jar for the{" "}
               <CopyHighlight>dinner table</CopyHighlight>. Not the cupboard.
-              Keep it <CopyHighlight>beside the dal</CopyHighlight> so everyone
-              can reach for a spoonful. It comes in gold, and only gold. We
-              considered silver for about four minutes, then remembered our
-              families would have the final say.
+              In our families nobody says &ldquo;I love you&rdquo; over dinner.
+              A plate is put down in front of you, and that is the whole
+              sentence. The jar goes round after it, with the rotis, and the
+              grown-ups each stir a spoonful into their own bowl. Heldi Chai
+              comes with the same jar, so one can sit{" "}
+              <CopyHighlight>by the kettle</CopyHighlight>{" "}
+              too, ready for a spoonful just before you drink. It comes in
+              gold, and only gold.
+              Who doesn&apos;t love gold?
             </p>
           </div>
           <div className="jar-card">

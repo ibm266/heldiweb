@@ -1,12 +1,21 @@
 import {
+  CHAI_LACTOSE_PER_100G,
   CHAI_MAX_DAILY_SERVINGS,
   CHAI_SERVING_GRAMS,
   CHAI_SERVING_SPOON
 } from "@/components/shop/chai-data";
 import {
   MAX_DAILY_SERVINGS,
+  NUTRITION_ROWS,
   SERVING_GRAMS
 } from "@/components/shop/nutrition-data";
+
+// Chai's lactose a mug, calculated (not tested) from CHAI_LACTOSE_PER_100G,
+// so it is stated as a figure and never as "lactose-free".
+const CHAI_LACTOSE_PER_MUG = ((CHAI_LACTOSE_PER_100G * CHAI_SERVING_GRAMS) / 100).toFixed(1);
+
+// Khana's salt a spoonful, as the nutrition declaration states it.
+const KHANA_SALT_PER_SERVING = NUTRITION_ROWS.find((row) => row.label === "Salt")!.perServing.replace(" ", "");
 
 export const HOME_FAQS = [
   {
@@ -27,7 +36,7 @@ export const HOME_FAQS = [
   {
     question: "I am lactose intolerant. Can I have Heldi?",
     answer:
-      "Lactose intolerance varies from person to person. Heldi Khana uses whey protein isolate that is 98% lactose-free. A spoonful contains roughly 0.3g of lactose, far less than traditional whey concentrate and a fraction of the amount in a glass of milk. That figure cannot predict how an individual will respond, so ask your GP or dietitian if you are unsure. Heldi Chai has a different milk-protein blend and no published lactose-free claim. A confirmed milk allergy is different: both products contain milk and are not suitable for someone with that allergy."
+      `Lactose intolerance varies from person to person. Heldi Khana uses whey protein isolate that is 98% lactose-free. A spoonful contains roughly 0.3g of lactose, far less than traditional whey concentrate and a fraction of the amount in a glass of milk. That figure cannot predict how an individual will respond, so ask your GP or dietitian if you are unsure. Heldi Chai also contains milk protein concentrate, which carries a little more lactose than whey isolate, but its smaller serving comes to about ${CHAI_LACTOSE_PER_MUG}g a mug, calculated from its ingredients and still far less than a traditional whey concentrate shake. A confirmed milk allergy is different: both products contain milk and are not suitable for someone with that allergy.`
   },
   {
     question: "Why not just drink a protein shake?",
@@ -57,17 +66,17 @@ export const HOME_FAQS = [
   {
     question: "Can children have Heldi?",
     answer:
-      "Both Heldi products contain milk. Heldi Khana has no sweeteners or caffeine. Heldi Chai contains coconut sugar, and the Chai blend itself is caffeine free, but tea and coffee usually are not, so the drink it goes into is the thing to check. Adding either product to shared food or drink means every person at the table receives some. Growing children usually get the protein they need from ordinary meals, so there may be no reason to add a food supplement. Ask a GP or dietitian who knows the child before doing so."
+      "Heldi Khana is whey, a protein from milk, the same milk their dahi and paneer come from, with kitchen spices and no sweeteners or caffeine. Most children already get the protein they need from ordinary family meals, so Heldi is not something they have to have. If you would like to add it to a child's bowl, ask a GP or dietitian who knows them first. If Heldi is going into the family pot, everyone at the table gets some, so dish up the children's portions first if you would rather they did not. Heldi Chai contains coconut sugar, and the Chai blend itself is caffeine free, but tea and coffee usually are not, so the drink it goes into is the thing to check. Both blends contain milk."
   },
   {
     question: "Can older adults have Heldi?",
     answer:
-      "Heldi is designed to be shared at the table. Protein contributes to the maintenance of muscle mass. Heldi Khana is 98% lactose-free and 100% vegetarian. It has no added sugar; it contains naturally occurring sugars. It is free from preservatives and gluten, and it contains milk. Heldi Chai has a different formula and serving, contains coconut sugar and has no published lactose-free or gluten claim. Those facts do not establish whether either product suits one person, so anyone with a medical condition or a prescribed diet should show the specific label to their GP or dietitian."
+      `Heldi is made for grown-ups of every age. The one rule: if they have a medical condition or a prescribed diet, show their GP or dietitian the label first. Heldi Khana is whey and the spices they have cooked with all their lives: cumin, coriander, garam masala, Kashmiri chilli and turmeric. It also has a pinch of fine sea salt, ${KHANA_SALT_PER_SERVING} of salt a spoonful in all, and sunflower lecithin. It contains milk, and it has no added sugar, though it contains naturally occurring sugars. Heldi Chai is its own recipe and contains coconut sugar.`
   },
   {
     question: "Can I use Heldi if I have diabetes?",
     answer:
-      "For Heldi Khana, there is no added sugar; it contains naturally occurring sugars. Khana contains under 1g of carbohydrate per spoonful. Heldi Chai is different: it contains coconut sugar and has its own nutrition table. Those facts do not determine whether either product fits an individual's diabetes care. Show the specific ingredients and nutrition label to your GP or dietitian before adding it to your meals."
+      "Ask your GP or dietitian first, and take the label with you. What we can tell you is that Heldi Khana has no added sugar and under 1g of carbohydrate per spoonful, though it contains naturally occurring sugars. Heldi Chai contains coconut sugar, and its label shows how much."
   }
 ];
 

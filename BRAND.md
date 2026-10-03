@@ -478,8 +478,9 @@ list, for the next time:
    was cut in October 2026).
 5. `components/heldi-homepage.tsx`: truth-teaser ingredient line ("90% whey protein
    isolate. The rest, spices you already know.") and the "Will my food taste
-   different?" FAQ in `home-faqs.ts`, which names the five kitchen spices (cumin,
-   coriander, garam masala, Kashmiri chilli, turmeric) since 3 Oct 2026.
+   different?" and "Can older adults have Heldi?" FAQs in `home-faqs.ts`, which
+   name the five kitchen spices (cumin, coriander, garam masala, Kashmiri chilli,
+   turmeric) since 3 Oct 2026.
 6. Blog posts under `content/heldi-living/` that name spices, and `posts.json`.
 7. Pack-facing docs: `fable/back-prompt-master.md`, `fable/compliance-requirements.md`.
 8. Allergen line stays "Contains: Milk." unless the new formula adds an allergen, in
