@@ -58,7 +58,8 @@ Hard rules that are cheap to break by accident:
   storage key, and the `/ingest` plumbing in `next.config.ts` are load-bearing;
   PLAYBOOK.md §7 lists what to preserve whenever you touch a tracked surface.
 - Renaming a FAQ question in `home-faqs.ts`/`truth-faqs.ts` breaks the /faq build
-  unless `site-faqs.ts` `pick()` calls are updated too.
+  unless `site-faqs.ts` `pick()` calls are updated too. A homepage FAQ also has to
+  sit in exactly one group in `HOME_FAQ_GROUP_SPEC` (same file), or the build fails.
 - Raw `<img>` is banned (use `next/image` with `sizes`); media budgets and encoding
   recipes are BRAND.md §15.
 - **Every new route under `app/api/` calls `guard()` from `lib/rate-limit.ts`

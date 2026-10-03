@@ -11,8 +11,10 @@ import { useWaitlistPopup } from "@/components/waitlist-popup";
 // the top and bottom: while the popup is open, on utility pages, and
 // whenever a section that carries its own join CTA is in view. Those
 // sections are tagged [data-floating-cta-suppress] (the hero, the footer
-// CTA, the page CTA bands, and the shop buy box) so the floating button
-// never doubles up with an in-place one.
+// CTA, the page CTA bands, the shop buy box, and the site footer itself) so
+// the floating button never doubles up with an in-place one or sits on the
+// footer's links. Because it steps aside for the footer, main needs no
+// bottom padding to make room for it.
 const HIDDEN_PREFIXES = ["/legal", "/preview", "/review"];
 
 export function FloatingWaitlistCta() {
