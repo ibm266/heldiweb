@@ -642,6 +642,33 @@
   </div>
   <span class="spec-caption">.range-card (white, 3px ink, 8px 8px 0 ink; 5px on mobile) · .range-card__media (2px ink tile, square crop) · .range-card__tag / __title / __line / __note · pill-link goes full-width under 900px. Homepage two-pouch band, components/range-section.tsx</span>
 
+  <div class="section--gold" style="margin-top:2rem;padding:1.5rem;border-radius:18px">
+    <ol class="know__grid" style="margin:0">
+      <li class="know-card">
+        <div class="know-card__text">
+          <span class="know-card__num" aria-hidden="true">1</span>
+          <h3 class="know-card__title">Let it cool before you stir.</h3>
+          <p class="know-card__body"><strong>Never stir Heldi Chai into boiling liquid.</strong> If it's cool enough to drink, you can stir Heldi in.</p>
+        </div>
+        <ol class="know-cups">
+          <li class="know-cup know-cup--no"><span class="know-cup__art" aria-hidden="true"><span class="know-cup__steam"><span></span><span></span><span></span></span><span class="know-cup__mug"></span></span><span class="know-cup__label">Boiling</span><span class="know-cup__verdict">Never</span></li>
+          <li class="know-cup know-cup--wait"><span class="know-cup__art" aria-hidden="true"><span class="know-cup__steam"><span></span><span></span></span><span class="know-cup__mug"></span></span><span class="know-cup__label">Too hot to sip</span><span class="know-cup__verdict">Not yet</span></li>
+          <li class="know-cup know-cup--yes"><span class="know-cup__art" aria-hidden="true"><span class="know-cup__steam"><span></span></span><span class="know-cup__mug"></span></span><span class="know-cup__label">Cool enough to drink</span><span class="know-cup__verdict">Stir it in</span></li>
+        </ol>
+      </li>
+      <li class="know-card">
+        <div class="know-card__text">
+          <span class="know-card__num" aria-hidden="true">2</span>
+          <h3 class="know-card__title">There's a little spice at the bottom.</h3>
+        </div>
+        <ul class="know-cups know-cups--one">
+          <li class="know-cup"><span class="know-cup__art" aria-hidden="true"><span class="know-cup__steam"></span><span class="know-cup__mug know-cup__mug--dregs"></span></span><span class="know-cup__label">Real spices settle</span><span class="know-cup__verdict">A good sign</span></li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+  <span class="spec-caption">.know-card (cream, 3px ink, 6px 6px 0 ink) · __num (ink disc, gold Rozha) · .know-cups / .know-cup (drawn mug + steam lines; --no / --wait / --yes verdict pills; __mug--dregs) · .know-card--lead spans the row on wide screens. Product pages' "Three things you should know before you buy", components/shop/before-you-buy.tsx</span>
+
   <div class="spec-ink-strip" style="margin-top:2rem">
     <div class="spec-menu-cards">
       <article class="menu-card menu-card--cream">

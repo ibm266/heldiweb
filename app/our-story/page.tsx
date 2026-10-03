@@ -117,10 +117,18 @@ export default function OurStoryPage() {
           </div>
 
           <p>
-            The problem was practical. I wanted to eat{" "}
+            For a while, I gave it up anyway. I swapped Mama&apos;s dal and
+            sabzi for protein shakes and bars. I missed the food more than I
+            expected, and I missed something else more. Mama still cooked for
+            all of us every evening, the way she always had, because cooking is
+            how she looks after us. I had stopped eating it, and{" "}
+            <CopyHighlight>I could feel the distance that put between us</CopyHighlight>.
+          </p>
+          <p>
+            So I set myself one stubborn requirement: eat{" "}
             <CopyHighlight>the same dinner with my family</CopyHighlight>,
             without adding another shake or making a separate plate. Heldi
-            came from that stubborn requirement:{" "}
+            came from that:{" "}
             <CopyHighlight>one spoonful, ten grams of protein</CopyHighlight>,
             stirred into the dishes already being passed round.
           </p>
@@ -240,7 +248,16 @@ export default function OurStoryPage() {
               <CopyHighlight>
                 as many long walks with my mama and papa as I can get
               </CopyHighlight>
-              . They are the family I had in mind while making Heldi.
+              . They are the family I had in mind while making Heldi, along with
+              every vegetarian parent I know who finds it hard to get enough
+              protein from the food on their plate.
+            </p>
+            <p>
+              Whenever I talk to friends, it comes up. We have known for years
+              that our parents should keep moving, and plenty of them do. The
+              conversation about protein is much newer: the research on how
+              much older adults should eat keeps pointing higher, and most of
+              our parents grew up never hearing it.
             </p>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BeforeYouBuy } from "@/components/shop/before-you-buy";
 import { ChaiBuyBox } from "@/components/shop/chai-buy-box";
 import { CHAI_IMAGES } from "@/components/shop/chai-data";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
@@ -42,6 +43,8 @@ export default function ChaiPage() {
       <section className="section section--cream" data-nav-hero>
         <ChaiBuyBox />
       </section>
+
+      <BeforeYouBuy product="chai" />
 
       <SubpageFooter />
 
