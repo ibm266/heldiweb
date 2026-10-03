@@ -32,17 +32,17 @@ export const HOME_FAQS = [
   {
     question: "Why not just drink a protein shake?",
     answer:
-      "A protein shake is one option. Heldi Khana is for people who would rather add protein to food they already eat, such as dal or raita. One spoonful adds 10g of protein to the dish, without requiring a separate drink."
+      "You can, if you like them. Most of our parents don't. Heldi puts the protein into the meals you were going to eat anyway: same dal, same raita, ten more grams in each bowl. Nothing new to swallow, nothing to give up."
   },
   {
     question: "Will my food taste different?",
     answer:
-      "Heldi Khana is designed to blend into savoury dishes rather than sit on top of their flavour. In the intended amount, its spices settle into dal, curry and raita without the chalky film or sweet aftertaste associated with many protein powders. The result will still depend on the dish and how much you add."
+      "No, not in the dishes it was made for. The spices are ones your masala dabba already holds (cumin, coriander, garam masala, Kashmiri chilli and turmeric), so in a dal, curry or raita they taste as if they were there all along. No chalky film, and none of that protein-shake aftertaste. The result will still depend on the dish and how much you add."
   },
   {
     question: "How do I use it?",
     answer:
-      `Dish up your dal, curry or sabzi as usual, then stir one spoonful of Heldi Khana into your own bowl or plate as you sit down to eat. One serving is ${SERVING_GRAMS}g, about one heaped tablespoon. The recommended daily intake is ${SERVING_GRAMS}g to ${SERVING_GRAMS * MAX_DAILY_SERVINGS}g, which is 1 to ${MAX_DAILY_SERVINGS} servings; do not exceed it. Cooking for everyone? Take the pot off the heat and let it cool a little, add one spoonful for each person eating it, then mix the pot thoroughly so the powder is shared across those portions. Heldi Chai is different: its serving is ${CHAI_SERVING_GRAMS}g, about one ${CHAI_SERVING_SPOON}, stirred into a hot drink once it is cool enough to drink, and its recommended daily intake is ${CHAI_SERVING_GRAMS}g to ${CHAI_SERVING_GRAMS * CHAI_MAX_DAILY_SERVINGS}g.`
+      `Serve your dal, curry or sabzi as usual, stir one heaped tablespoon of Heldi Khana into your bowl, and keep the jar on the table for next time. One serving is ${SERVING_GRAMS}g, about one heaped tablespoon. The recommended daily intake is ${SERVING_GRAMS}g to ${SERVING_GRAMS * MAX_DAILY_SERVINGS}g, which is 1 to ${MAX_DAILY_SERVINGS} servings; do not exceed it. Cooking for everyone? Take the pot off the heat and let it cool a little, add one spoonful for each person eating it, then mix the pot thoroughly so the powder is shared across those portions. In something smooth, like a big pot of dal or a bowl of dahi, the powder can clump, so a whisk does a better job than a spoon. In a dish with pieces in it, like a sabzi or chana masala, the pieces break the clumps up as you stir, and a spoon is all you need. Heldi Chai is different: its serving is ${CHAI_SERVING_GRAMS}g, about one ${CHAI_SERVING_SPOON}, stirred into a hot drink once it is cool enough to drink, and its recommended daily intake is ${CHAI_SERVING_GRAMS}g to ${CHAI_SERVING_GRAMS * CHAI_MAX_DAILY_SERVINGS}g.`
   },
   {
     question: "Can I use it in dishes that are not on the pouch?",
