@@ -11,11 +11,11 @@ which files it touches.
 | 1 | Desktop nav wrapping at 900 to 1135px | **Built** in this PR |
 | 2 | Gold band under the footer on phones | **Built** in this PR |
 | 3 | Desktop hero re-composition | **Not doing**: the current hero stays |
-| 4 | Floating pill over body copy | Open |
+| 4 | Floating pill over body copy | **Not doing**: no problems seen in use |
 | 5 | Contrast failures | **Built** in this PR |
 | 6 | Homepage length | **Built in part** (14.5 to 11.1 phone screens): see [homepage.md](homepage.md) |
-| 7 | Email field in the closing CTA | Open |
-| 8 | Blog reading width | Open |
+| 7 | Email field in the closing CTA | **Built** in this PR |
+| 8 | Blog reading width | **Built** in this PR |
 | 9 | Tiny type and tap targets | **Built** in this PR |
 | 10 | Waitlist-mode buy box | **Built** in this PR |
 
@@ -242,6 +242,10 @@ Desktop: the field and the pill on one row, max 560px, the weekly-letter
 checkbox under. Mobile: stacked, full width. The `waitlist_signup` event and
 its `placement` stay exactly as they are (PLAYBOOK §7). Board 7 on the canvas.
 
+**What was built.** Exactly that: the form starts open with a pill button, as
+in the popup, and with `autoFocus={false}` so the field does not take focus on
+page load. Placement is still `footer-email`.
+
 ### 8. Give blog posts a proper reading width
 
 ![A post at 375px](post-375.webp)
@@ -265,6 +269,13 @@ your dal feels filling but you're hungry an hour later").
 - Desktop: cap the body at `max-width: 66ch`.
 - Delete the empty `<h1>`. Renaming the slug is optional and needs a redirect
   in `next.config.ts` if you do it.
+
+**What was built.** Below 900px the card is gone: the article runs edge to edge
+on a cream band between two ink rules, its text column capped at 35rem, and the
+summary box, callouts and table headers turn white so they still stand out. At
+900px and up the card narrows to 41rem. Measured on a post: 335px and about 40
+characters a line at 375 (was 293px, 35), 67 at 768, 68 at 1280 (was 86). The
+empty `<h1>` is gone, so every post has one h1. The slug is unchanged.
 
 ### 9. Lift tiny type and small tap targets
 

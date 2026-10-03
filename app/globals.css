@@ -5733,13 +5733,55 @@ a.living-card__tag:hover {
   height: auto;
 }
 
+/* About 66 characters a line (PLAYBOOK §1.1.5): on desktop the card itself
+   narrows to roughly the hero image's width, so its 17px body text runs about
+   35rem wide instead of 726px (86 characters). */
 .living-post-panel {
+  max-width: 41rem;
+  margin: 0 auto;
   padding: clamp(1.5rem, 4vw, 2.75rem);
   border: 3px solid var(--ink);
   border-radius: 20px;
   background: #fff;
   box-shadow: 8px 8px 0 var(--ink);
   color: var(--ink);
+}
+
+/* Phones and small tablets: no card. The article runs edge to edge on a
+   cream band between two ink rules, like a section seam, which gives the text
+   the full width less the page gutter (335px at 375 instead of 293px). On a
+   wider tablet the band stays full width and the text column caps at 35rem,
+   the desktop measure (not 66ch: Gelasio's zero is wide, so 66ch came out at
+   about 83 real characters). */
+@media (max-width: 899px) {
+  .living-post-panel {
+    max-width: none;
+    margin: 0 calc(-1 * clamp(1.25rem, 5vw, 4rem));
+    padding: 1.75rem clamp(1.25rem, 5vw, 4rem) 2rem;
+    border-width: 3px 0;
+    border-radius: 0;
+    background: var(--cream);
+    box-shadow: none;
+  }
+
+  .living-post-panel > * {
+    max-width: 35rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .living-post-panel > .heldi-disclaimer {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Boxes that were cream inside the white card turn white on the cream band,
+     or they would disappear into it. */
+  .living-post-panel .heldi-tldr,
+  .living-post-panel .heldi-callout,
+  .living-post-panel .heldi-table th {
+    background: #fff;
+  }
 }
 
 .living-post-cta {
@@ -5954,12 +5996,6 @@ a.living-card__tag:hover {
 }
 
 @media (max-width: 600px) {
-  .living-post-panel {
-    padding: 1.25rem 1.125rem 1.5rem;
-    border-radius: 16px;
-    box-shadow: 5px 5px 0 var(--ink);
-  }
-
   .living-card {
     border-radius: 16px;
     box-shadow: 4px 4px 0 var(--ink);

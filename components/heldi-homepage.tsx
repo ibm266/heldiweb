@@ -1476,7 +1476,17 @@ export function HeldiHomepage({
               <CopyHighlight>{WAITLIST_OFFER_COPY.paragraphParts.highlight}</CopyHighlight>
               {WAITLIST_OFFER_COPY.paragraphParts.after}
             </p>
-            <WaitlistForm joined={joined} onJoin={() => setJoined(true)} id="footer-email" />
+            {/* Open from the start, as in the popup: this is the last ask on
+                the page, so the email field is on screen rather than one tap
+                away (docs/ui-audit/README.md item 7). Not focused on load. */}
+            <WaitlistForm
+              joined={joined}
+              onJoin={() => setJoined(true)}
+              id="footer-email"
+              buttonStyle="pill"
+              startExpanded
+              autoFocus={false}
+            />
           </div>
           <Image className="cta-elephant cta-elephant--right" src={imageSrc("/images/elephant-large-transparent.webp")} alt="" width={2048} height={2048} sizes="240px" />
         </section>
