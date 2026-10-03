@@ -197,3 +197,38 @@ export const KHANA_NUTRITION: NutritionProduct = {
   basisNote:
     "Average values calculated from the whey certificate of analysis and published values for each spice, as FIC Regulation 1169/2011 Article 31(4) allows."
 };
+
+/** One "how to use" step as both product pages show it under the photo
+ *  (components/shop/pdp-how-to.tsx). Chai's CHAI_METHOD has the same shape. */
+export type MethodStep = {
+  title: string;
+  body: string;
+  art: { src: string; width: number; height: number };
+};
+
+const METHOD_ART_SIZE = { width: 400, height: 400 };
+
+/** The three steps on the round-16 Khana back (BACK_COPY.steps in HeldiPM
+ *  design/pouch-v2/round16/r16_common.py): the captions word for word, the
+ *  titles cut to one word the way Chai's are (the pack says SERVE YOUR FOOD,
+ *  STIR THROUGH, STORE IN A JAR). Bowl first, as the pack teaches it
+ *  (BRAND.md §11.10.3). The drawings are the pack's own, rebuilt for the
+ *  site by `node scripts/method-art.mjs khana`. Change a caption on the pack
+ *  and here together. */
+export const KHANA_METHOD: MethodStep[] = [
+  {
+    title: "SERVE",
+    body: "Dish up your dal, curry or sabzi, just as always.",
+    art: { src: "/images/shop/khana-method/serve.webp", ...METHOD_ART_SIZE }
+  },
+  {
+    title: "STIR",
+    body: "Add one heaped tablespoon to your bowl and stir well.",
+    art: { src: "/images/shop/khana-method/stir.webp", ...METHOD_ART_SIZE }
+  },
+  {
+    title: "STORE",
+    body: "Keep it on the table, ready for next time.",
+    art: { src: "/images/shop/khana-method/store.webp", ...METHOD_ART_SIZE }
+  }
+];

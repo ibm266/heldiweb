@@ -194,7 +194,7 @@ export const CHAI_AMINO_ROWS: ChaiAminoRow[] = [
  *  on a transparent ground, so the tile colour comes from CSS. Each one is
  *  centred on its own square canvas, scaled to fill it, so the tile only has
  *  to centre the image and every drawing sits in the middle of its box.
- *  Rebuild with `node scripts/chai-method-art.mjs` (sources in HeldiPM, print
+ *  Rebuild with `node scripts/method-art.mjs chai` (sources in HeldiPM, print
  *  round 13). */
 export type ChaiMethodArt = { src: string; width: number; height: number };
 

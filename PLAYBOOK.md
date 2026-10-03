@@ -194,6 +194,7 @@ where intended, images sharp (right `sizes`). Screenshot both for the summary.
 | Tappable filter/reveal chips | `.truth-chip` (+ `--dark`), radio semantics | `components/truth-page.tsx` |
 | Purchase options | `.option-card` with real `<input type="radio">` | `components/shop/buy-box.tsx` |
 | Accordion | the `faq-list` / `pdp-accordion` button pattern (§5) | homepage / `product-accordions.tsx` |
+| Product page skeleton | `.pdp`: `.pdp__side` (`.pdp__gallery`, `<PdpHowTo>`, `<BeforeYouBuy>`) and `.pdp__buy` (`.pdp__head`, `.pdp__purchase`, `.pdp__more`). Two columns from 900px; on a phone the columns dissolve and the chunks order as photo, name, how to use, purchase, three things, the rest. `<BeforeYouBuyLink>` under the name jumps to the three things. Every product page uses the same chunks in the same order | `components/shop/pdp-how-to.tsx`, `before-you-buy.tsx`, `buy-box.tsx`, `chai-buy-box.tsx` |
 | Social proof | `<ReviewsSection tone=… heading=…>` | `components/reviews/reviews-section.tsx` |
 | Gifting/discount anything | `GiftingBand`, `GiftingPopup`, `GiftingCodePicker` | `components/shop/` |
 | Section sign-off / seam | `.double-rule`, `.section--bordered` | globals.css |

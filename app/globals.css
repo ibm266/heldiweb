@@ -6652,33 +6652,56 @@ a.living-card__tag:hover {
   background: var(--gold);
 }
 
-/* Product page (pdp) */
+/* Product page (pdp)
+
+   One skeleton for both product pages (buy-box.tsx, chai-buy-box.tsx):
+     .pdp__side: .pdp__gallery (photo, thumbs), .pdp__how (how to use),
+                 .know (three things to know before you buy)
+     .pdp__buy:  .pdp__head (name, legal name, lede, the two jump buttons),
+                 .pdp__purchase (pills, pickers or includes, CTA, promise),
+                 .pdp__more (reviews, description, questions, small print)
+   Wide (>=900px): those are simply the two columns, photo side on the left.
+   No rows are shared, so neither column's height can open a gap in the
+   other. The gallery is not sticky: with the steps and the three things
+   under it the left column is as tall as the right, and a sticky column
+   taller than the window would hide its own lower half.
+   Mobile (<=899px): both columns dissolve (display: contents) and the six
+   chunks are ordered for a phone: photo, name, how to use, purchase, the
+   three things, the rest. So the product name sits above the steps and the
+   three things come straight after the buy button. */
 
 .pdp {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: clamp(2rem, 5vw, 4rem);
   max-width: 1152px;
   margin: 0 auto;
 }
 
-.pdp__gallery {
-  flex: 1 1 24rem;
-  max-width: 34rem;
+.pdp__side,
+.pdp__buy {
+  min-width: 0;
 }
 
-/* Gallery stays pinned while the buy column (incl. accordions) scrolls. */
 @media (min-width: 900px) {
-  .pdp__gallery {
-    position: sticky;
-    top: 5.5rem;
+  .pdp {
+    grid-template-columns: minmax(0, 34rem) minmax(22rem, 1fr);
+    align-items: start;
   }
 }
 
-.pdp__buy {
-  flex: 1 1 22rem;
-  min-width: 0;
+@media (max-width: 899px) {
+  .pdp__side,
+  .pdp__buy {
+    display: contents;
+  }
+
+  .pdp__gallery { order: 1; }
+  .pdp__head { order: 2; }
+  .pdp__how { order: 3; }
+  .pdp__purchase { order: 4; }
+  .pdp .know { order: 5; }
+  .pdp__more { order: 6; }
 }
 
 .pdp__hero-image {
@@ -6970,44 +6993,69 @@ a.living-card__tag:hover {
   flex-shrink: 0;
 }
 
-/* Chai's three steps (BREW / COOL / STIR), where Khana's buy column carries
-   its bundle grid. Mobile reads them as a numbered list, one line each, so a
-   thumb scrolls past three short instructions rather than three cards. From
-   900px they become three cards across, which is how they sit on the pouch. */
+/* How to use: the three steps from the back of each pouch, under the photo on
+   both product pages (components/shop/pdp-how-to.tsx). Three cards across at
+   every width, the pouch's drawing as each card's top band, because the
+   drawings are the point and three icons read faster than three rows. What
+   changes is scale, against the row's own width (cqw on .pdp__how): on a phone
+   the band is ~72px and the caption 13px, so the row costs about 200px under
+   the thumbnails; at 1280 the band is ~120px and the caption 15px. */
+/* The tiles size against this box (cqw), not the window, so one card design
+   holds from a 335px phone column to a 544px desktop one. */
+.pdp__how {
+  container-type: inline-size;
+  margin-top: 1.5rem;
+}
+
+/* On a phone the grid gap spaces the chunks, so the box needs no margin. */
+@media (max-width: 899px) {
+  .pdp__how {
+    margin-top: 0;
+  }
+}
+
+.pdp__how .pdp__group-label {
+  margin-top: 0;
+}
+
 .pdp__method {
   display: grid;
-  gap: 0.5rem;
-  margin: 0 0 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.5rem, 2.2cqw, 0.75rem);
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-/* Mobile: a row per step, the drawing as a small terracotta tile on the left
-   and the title over the caption beside it. */
 .pdp__method-step {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0.9rem 0.5rem 0.5rem;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 0 clamp(0.5rem, 2.6cqw, 0.9rem) clamp(0.6rem, 2.6cqw, 0.9rem);
+  overflow: hidden;
   border: 2px solid var(--ink);
   border-radius: 14px;
   background: #fff;
+  box-shadow: 3px 3px 0 rgb(var(--ink-rgb) / 25%);
 }
 
-/* The drawing from the back of the pouch on the pouch's own ground. The image
-   carries the ink only (cream and gold on a transparent square canvas, the
-   drawing centred on it), so the ground is the CSS token and the art sits in
-   the middle of the tile at every size. */
+/* The drawing on the pouch's own ground. The image carries the ink only
+   (cream and gold on a transparent square canvas, the drawing centred on it),
+   so the ground is the CSS token and the art sits in the middle of the band at
+   every size. overflow: hidden on the card clips the band to its radius. */
 .pdp__method-art {
   display: flex;
-  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  width: 4.5rem;
-  height: 4.5rem;
-  padding: 0.3rem;
-  border-radius: 10px;
+  height: clamp(4.5rem, 22cqw, 7.5rem);
+  margin: 0 calc(-1 * clamp(0.5rem, 2.6cqw, 0.9rem)) 0.2rem;
+  padding: 0.4rem 0.5rem;
   background: var(--terracotta);
+}
+
+.pdp__how--ink .pdp__method-art {
+  background: var(--ink);
 }
 
 .pdp__method-art img {
@@ -7033,39 +7081,35 @@ a.living-card__tag:hover {
 }
 
 .pdp__method-body {
-  font-size: 0.9375rem;
+  font-size: clamp(0.8125rem, 2.8cqw, 0.9375rem);
+  line-height: 1.4;
 }
 
-@media (min-width: 900px) {
-  /* auto-fit rather than a fixed 3, because the buy column is only ~376px
-     just over the breakpoint and three cards there wrap "Stir in a heaped
-     tablespoon" onto five lines. It falls to two cards in the 900-1050 band
-     and settles at three from ~1100px, where they fit. Same trick as
-     .option-grid, and it adds no second structural breakpoint. */
-  .pdp__method {
-    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-    gap: 0.75rem;
-  }
+.pdp__how-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 2.25rem;
+  margin-top: 0.5rem;
+  color: var(--ink);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
 
-  /* Wide: the drawing becomes the card's top band, the way the three sit in
-     a row above their captions on the pack. overflow: hidden clips the band
-     to the card's radius. */
-  .pdp__method-step {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-    padding: 0 1rem 1rem;
-    overflow: hidden;
-    box-shadow: 4px 4px 0 rgb(var(--ink-rgb) / 25%);
-  }
+.pdp__how-more b {
+  color: var(--terracotta);
+  transition: transform 150ms ease;
+}
 
-  .pdp__method-art {
-    width: auto;
-    height: 7.75rem;
-    margin: 0 -1rem 0.25rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0;
-  }
+.pdp__how-more:hover {
+  color: var(--terracotta);
+}
+
+.pdp__how-more:hover b {
+  transform: translateX(3px);
 }
 
 .pdp__cta {
@@ -7448,6 +7492,23 @@ a.living-card__tag:hover {
   transform: translateX(3px);
 }
 
+.pdp__nutrition-link--down:hover b {
+  transform: translateY(3px);
+}
+
+/* The two jumps under the lede: the nutrition popup and the before-you-buy
+   section. They wrap onto two lines in a phone column and share one at 1280. */
+.pdp__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.pdp__links .pdp__nutrition-link {
+  margin-top: 0;
+}
+
 .nutri-overlay {
   position: fixed;
   inset: 0;
@@ -7598,7 +7659,10 @@ a.living-card__tag:hover {
     letter-spacing: 0.04em;
   }
 
-  .option-grid--size {
+  /* Two cards, two columns: the three-column default above dates from the
+     three-tier ladder and left the pouch pair two thirds wide. */
+  .option-grid--size,
+  .option-grid--pair {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -9418,52 +9482,73 @@ a.living-card__tag:hover {
 }
 
 /* ---------- Before you buy (product pages) ----------
-   Three honest notes from Mihir's before-you-buy films, on a gold band under
-   the buy box (components/shop/before-you-buy.tsx). Mobile (<=899px): header,
-   then the cards stacked. Wide (>=900px): Khana's three cards in a row; Chai's
-   first card (let it cool) spans the row, its cup scale beside the text, with
-   the other two under it. Capped at 1152px. */
-.know__inner {
-  max-width: 1152px;
-  margin: 0 auto;
+   Three honest notes from Mihir's before-you-buy films
+   (components/shop/before-you-buy.tsx), inside the product layout so they
+   sit near the top of the page. Wide (>=900px): a gold panel in the photo
+   column, under the how-to-use steps, the three cards stacked (the column is
+   ~34rem, too narrow for three across). Mobile (<=899px): a full-bleed gold
+   band straight after the buy button, the cards stacked. The jump button
+   under the product name lands here; scroll-margin clears the floating nav. */
+.know {
+  container-type: inline-size;
+  scroll-margin-top: 6rem;
+  background: var(--gold);
+}
+
+@media (min-width: 900px) {
+  .know {
+    margin-top: 2.5rem;
+    padding: 2rem 1.75rem;
+    border: 3px solid var(--ink);
+    border-radius: 20px;
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+}
+
+/* Edge to edge on a phone, cancelling the section's side padding, with the
+   house 3px ink rule top and bottom where it meets the cream. */
+@media (max-width: 899px) {
+  .know {
+    margin: 0 calc(-1 * clamp(1.25rem, 5vw, 4rem));
+    padding: clamp(2.5rem, 9vw, 3.5rem) clamp(1.25rem, 5vw, 4rem);
+    border-block: 3px solid var(--ink);
+  }
 }
 
 .know__head {
-  max-width: 46rem;
-  margin: 0 auto;
   text-align: center;
 }
 
 .know__head h2 {
-  margin-top: 0.5rem;
+  margin: 0.5rem 0 0;
+  font-size: clamp(1.625rem, 7cqw, 2.125rem);
   text-wrap: balance;
 }
 
 .know__lede {
-  max-width: 40rem;
   margin: 1rem auto 0;
   color: var(--brown);
-  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  font-size: clamp(1rem, 3.4cqw, 1.0625rem);
   line-height: 1.6;
 }
 
 .know__grid {
   display: grid;
-  margin: clamp(2rem, 5vw, 3rem) 0 0;
+  margin: 1.75rem 0 0;
   padding: 0;
-  gap: clamp(1.25rem, 3vw, 2rem);
-  grid-template-columns: 1fr;
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr);
   list-style: none;
 }
 
 .know-card {
   display: flex;
   flex-direction: column;
-  padding: clamp(1.5rem, 3vw, 2rem);
+  padding: clamp(1.125rem, 4.5cqw, 1.5rem);
   border: 3px solid var(--ink);
   border-radius: 18px;
   background: var(--cream);
-  box-shadow: 6px 6px 0 var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
   gap: 1.25rem;
 }
 
@@ -9490,7 +9575,7 @@ a.living-card__tag:hover {
   margin: 0;
   color: var(--ink);
   font-family: var(--font-display), serif;
-  font-size: clamp(1.375rem, 2.4vw, 1.6875rem);
+  font-size: clamp(1.25rem, 5.2cqw, 1.5rem);
   font-weight: 400;
   line-height: 1.2;
 }
@@ -9506,10 +9591,9 @@ a.living-card__tag:hover {
 }
 
 .know__close {
-  max-width: 40rem;
-  margin: clamp(2rem, 5vw, 3rem) auto 0;
+  margin: 1.75rem auto 0;
   color: var(--ink);
-  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+  font-size: clamp(1.0625rem, 3.6cqw, 1.1875rem);
   font-style: italic;
   text-align: center;
 }
@@ -9617,30 +9701,6 @@ a.living-card__tag:hover {
 .know-cup--yes .know-cup__verdict {
   background: var(--ink);
   color: var(--gold);
-}
-
-@media (min-width: 900px) {
-  .know__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .know__grid--lead {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .know-card--lead {
-    display: grid;
-    align-items: center;
-    column-gap: 2.5rem;
-    grid-column: 1 / -1;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-  }
-
-  .know-card--lead .know-cups {
-    padding: 0 0 0 2rem;
-    border-top: 0;
-    border-left: 2px dashed rgb(var(--ink-rgb) / 20%);
-  }
 }
 
 /* ---------- Shop front (/shop): the pouch picker ----------

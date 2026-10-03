@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
-import { BeforeYouBuy } from "@/components/shop/before-you-buy";
 import { BuyBox } from "@/components/shop/buy-box";
 import { GiftingBand } from "@/components/shop/gifting-band";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
@@ -68,11 +67,12 @@ export default async function ShopPage() {
         <BuyBox product={product} />
       </section>
 
-      <BeforeYouBuy product="khana" />
-
+      {/* Gold, so the cream buy section and the reviews do not sit cream on
+          cream. The three things to know live inside the buy section now
+          (components/shop/before-you-buy.tsx), not as a band between them. */}
       <ReviewsSection
         id="reviews"
-        tone="cream"
+        tone="gold"
         heading="How it went at their table."
         lede="Each card pairs the review with its dish and spoon count. Clips made in the Heldi kitchen are labelled, so you can tell them apart from customer ones."
         submitCta

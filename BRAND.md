@@ -879,7 +879,9 @@ quote the pack from `r16_common.py` and `typeset_compliance.py`, never from memo
    three steps teach it. `METHODS` order in `ways-to-use-methods.tsx` (table, pot,
    then the rest; grounds re-paired to keep the §8.3 alternation), `RAIL_IDS` and
    the lede in `ways-gallery.tsx`, the "How to use it" accordion in
-   `product-accordions.tsx`, "How do I use it?" in `home-faqs.ts`, the heat answer
+   `product-accordions.tsx`, the SERVE / STIR / STORE row under the /shop/khana
+   photo (`KHANA_METHOD` in `nutrition-data.ts`, the pack's three captions word
+   for word with its drawings), "How do I use it?" in `home-faqs.ts`, the heat answer
    in `site-faqs.ts`, the buy-box description, the pouch picker line, the Khana
    line in `public/llms.txt`, the /shop
    "Which one?" paragraph, the /shop/khana meta description and the catalogue

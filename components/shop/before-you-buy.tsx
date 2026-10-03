@@ -6,9 +6,14 @@ import type { ReactNode } from "react";
 // tells buyers how to get the best from each blend rather than pretending it
 // is perfect (BRAND.md §3, small-brand honesty).
 //
-// Mobile: the header, then the three cards stacked. Desktop: Khana's three
-// sit in a row; Chai's first card (let it cool) spans the row with its scale
-// beside the text, because it matters most, and the other two sit under it.
+// It lives inside the product layout rather than as a band below it, so it is
+// close to the top of the page (Mihir, 3 Oct 2026). From 900px it is a gold
+// panel in the photo column, under the how-to-use steps, the three cards
+// stacked. On a phone it is a full-width gold band straight after the buy
+// button, before the reviews and the rest. Either way the
+// "Things you should know before you buy" button under the product name
+// (BeforeYouBuyLink) jumps to it. The product pages place it; see the
+// skeleton note in buy-box.tsx and globals.css "Product page (pdp)".
 
 type Visual = "cool" | "spice" | "taste";
 
@@ -19,8 +24,6 @@ type BeforeYouBuyCopy = {
   lede: ReactNode;
   things: [Thing, Thing, Thing];
   close: string;
-  /** The first card spans the row on desktop (Chai's cooling rule). */
-  leadFirst?: boolean;
 };
 
 const COPY: Record<"khana" | "chai", BeforeYouBuyCopy> = {
@@ -80,7 +83,6 @@ const COPY: Record<"khana" | "chai", BeforeYouBuyCopy> = {
         you&apos;ve read this. Three things, and the first one matters most.
       </>
     ),
-    leadFirst: true,
     things: [
       {
         title: "Let it cool before you stir.",
@@ -196,42 +198,44 @@ function TasteCups() {
   );
 }
 
+export const BEFORE_YOU_BUY_ID = "before-you-buy";
+
+export function BeforeYouBuyLink() {
+  return (
+    <a className="pdp__nutrition-link pdp__nutrition-link--down" href={`#${BEFORE_YOU_BUY_ID}`}>
+      Things you should know before you buy <b aria-hidden="true">↓</b>
+    </a>
+  );
+}
+
 export function BeforeYouBuy({ product }: { product: "khana" | "chai" }) {
   const copy = COPY[product];
-  const headingId = `before-you-buy-${product}`;
+  const headingId = `${BEFORE_YOU_BUY_ID}-${product}`;
   return (
-    <section
-      className="section section--gold section--bordered know"
-      id="before-you-buy"
-      aria-labelledby={headingId}
-    >
-      <div className="know__inner">
-        <header className="know__head">
-          <p className="eyebrow">BEFORE YOU BUY</p>
-          <h2 id={headingId}>{copy.title}</h2>
-          <p className="know__lede">{copy.lede}</p>
-        </header>
-        <ol className={`know__grid${copy.leadFirst ? " know__grid--lead" : ""}`}>
-          {copy.things.map((thing, index) => (
-            <li
-              key={thing.title}
-              className={`know-card${copy.leadFirst && index === 0 ? " know-card--lead" : ""}`}
-            >
-              <div className="know-card__text">
-                <span className="know-card__num" aria-hidden="true">
-                  {index + 1}
-                </span>
-                <h3 className="know-card__title">{thing.title}</h3>
-                <p className="know-card__body">{thing.body}</p>
-              </div>
-              {thing.visual === "cool" ? <CoolScale /> : null}
-              {thing.visual === "spice" ? <SpiceCup /> : null}
-              {thing.visual === "taste" ? <TasteCups /> : null}
-            </li>
-          ))}
-        </ol>
-        <p className="know__close">{copy.close}</p>
-      </div>
+    <section className="know" id={BEFORE_YOU_BUY_ID} aria-labelledby={headingId}>
+      <header className="know__head">
+        <p className="eyebrow">BEFORE YOU BUY</p>
+        <h2 id={headingId}>{copy.title}</h2>
+        <p className="know__lede">{copy.lede}</p>
+      </header>
+      {/* Chai's cooling rule leads because it matters most; its lede says so. */}
+      <ol className="know__grid">
+        {copy.things.map((thing, index) => (
+          <li key={thing.title} className="know-card">
+            <div className="know-card__text">
+              <span className="know-card__num" aria-hidden="true">
+                {index + 1}
+              </span>
+              <h3 className="know-card__title">{thing.title}</h3>
+              <p className="know-card__body">{thing.body}</p>
+            </div>
+            {thing.visual === "cool" ? <CoolScale /> : null}
+            {thing.visual === "spice" ? <SpiceCup /> : null}
+            {thing.visual === "taste" ? <TasteCups /> : null}
+          </li>
+        ))}
+      </ol>
+      <p className="know__close">{copy.close}</p>
     </section>
   );
 }

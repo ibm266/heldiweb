@@ -1,6 +1,9 @@
 #!/usr/bin/env node
-// Rebuilds public/images/shop/chai-method/{brew,cool,stir}.webp from the
-// pouch-back drawings in HeldiPM (design/pouch-v2/generated, print round 13).
+// Rebuilds the "how to use" step drawings each product page shows under its
+// photo, from the pouch-back drawings in HeldiPM (design/pouch-v2/generated):
+//   chai  -> public/images/shop/chai-method/{brew,cool,stir}.webp  (print round 13)
+//   khana -> public/images/shop/khana-method/{serve,stir,store}.webp (round 16,
+//            STEP_DRAWINGS in round16/r16_common.py, the three on the Khana back)
 //
 // Each drawing becomes a two-ink cutout in the site's own tokens (cream
 // #f8f0de, gold #eda31d) on a transparent ground, so the tile colour comes from
@@ -12,25 +15,34 @@
 // box at a similar size. (The pack keeps a shared floor line instead; the site
 // deliberately does not, so the cups do not hang low in their tiles.)
 //
-// Run: node scripts/chai-method-art.mjs   (needs the HeldiPM checkout beside
-// this repo; masters land in the gitignored public/images/originals/ tree).
+// Run: node scripts/method-art.mjs [chai|khana]   (no argument rebuilds both;
+// needs the HeldiPM checkout beside this repo; masters land in the gitignored
+// public/images/originals/ tree). Chai's drawings are cream line work on
+// terracotta, Khana's gold line work on navy; the classifier below reads
+// either, because it samples the ground and both inks from each render.
 import sharp from "sharp";
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 
 const G = "/Users/mihir/Projects/HeldiPM/design/pouch-v2/generated/";
-const OUT = "public/images/shop/chai-method";
-const MASTERS = "public/images/originals/pre-webp/shop/chai-method";
 const CREAM = [0xf8, 0xf0, 0xde];
 const GOLD = [0xed, 0xa3, 0x1d];
 const CANVAS = 400;
 const MARGIN = 8;
 
-// Boxes from DRAWINGS_CHAI in compose_back_v8.py; BREW is the round-13 tea-bag override.
-const SPECS = [
-  { key: "brew", file: "chai-brew-teabag.png", box: null },
-  { key: "cool", file: "v3-chai-upper-r1-raw.png", box: [1804, 1187, 2364, 1792] },
-  { key: "stir", file: "v3-chai-upper-r1-raw.png", box: [2482, 977, 3341, 1793] }
-];
+const SKUS = {
+  // Boxes from DRAWINGS_CHAI in compose_back_v8.py; BREW is the round-13 tea-bag override.
+  chai: [
+    { key: "brew", file: "chai-brew-teabag.png", box: null },
+    { key: "cool", file: "v3-chai-upper-r1-raw.png", box: [1804, 1187, 2364, 1792] },
+    { key: "stir", file: "v3-chai-upper-r1-raw.png", box: [2482, 977, 3341, 1793] }
+  ],
+  // Standalone renders, one drawing each: SERVE YOUR FOOD, STIR THROUGH, STORE IN A JAR.
+  khana: [
+    { key: "serve", file: "r16-serve-ladle-hand-raw-1.png", box: null },
+    { key: "stir", file: "r16-stir-in-bowl-raw-2.png", box: null },
+    { key: "store", file: "v10-fill-pouch-raw-2.png", box: null }
+  ]
+};
 
 async function loadRGB(file, box) {
   let img = sharp(G + file).removeAlpha();
@@ -85,7 +97,14 @@ function cutout({ data, w, h }, { bg, cream, gold }) {
   return { out, w, h, bbox: [minX, minY, maxX + 1, maxY + 1] };
 }
 
-for (const s of SPECS) {
+const only = process.argv[2];
+if (only && !SKUS[only]) throw new Error(`Unknown product "${only}": use chai or khana`);
+for (const sku of only ? [only] : Object.keys(SKUS)) {
+const OUT = `public/images/shop/${sku}-method`;
+const MASTERS = `public/images/originals/pre-webp/shop/${sku}-method`;
+mkdirSync(OUT, { recursive: true });
+mkdirSync(MASTERS, { recursive: true });
+for (const s of SKUS[sku]) {
   const src = await loadRGB(s.file, s.box);
   const c = cutout(src, sampleInks(src));
   const [x0, y0, x1, y1] = c.bbox;
@@ -100,5 +119,6 @@ for (const s of SPECS) {
   await sharp(canvas).png({ compressionLevel: 9 }).toFile(`${MASTERS}/${s.key}.png`);
   const webp = await sharp(canvas).webp({ nearLossless: true, quality: 60 }).toBuffer();
   writeFileSync(`${OUT}/${s.key}.webp`, webp);
-  console.log(`${s.key}.webp ${CANVAS}x${CANVAS} (art ${w}x${h}) ${(webp.length / 1024).toFixed(1)}KB`);
+  console.log(`${OUT}/${s.key}.webp ${CANVAS}x${CANVAS} (art ${w}x${h}) ${(webp.length / 1024).toFixed(1)}KB`);
+}
 }
