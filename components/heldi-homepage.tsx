@@ -18,6 +18,7 @@ import { FooterLegal } from "@/components/subpage-nav";
 import { CopyHighlight } from "@/components/copy-highlight";
 import { HOME_FAQS } from "@/components/home-faqs";
 import { MenuGallery } from "@/components/menu-gallery";
+import { NavMore } from "@/components/nav-more";
 import { RangeSection } from "@/components/range-section";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
@@ -1195,13 +1196,16 @@ export function HeldiHomepage({
               />
             </span>
           </a>
+          {/* The three .nav-links__foldable links move into NavMore between
+              900 and 1139px; keep them in step with components/nav-more.tsx. */}
           <div className="nav-links nav-links--desktop">
             <a href="#how">How it works</a>
             <Link href="/truth">The truth</Link>
-            <Link href="/our-story">Our story</Link>
+            <Link className="nav-links__foldable" href="/our-story">Our story</Link>
             <Link href="/heldi-living">Heldi Living</Link>
-            <Link href="/inside-the-pouch">Inside the pouch</Link>
-            <Link href="/faq">FAQ</Link>
+            <Link className="nav-links__foldable" href="/inside-the-pouch">Inside the pouch</Link>
+            <Link className="nav-links__foldable" href="/faq">FAQ</Link>
+            <NavMore />
             <Link href="/shop">Shop</Link>
             {mode !== "live" ? (
               <button
@@ -1556,7 +1560,7 @@ export function HeldiHomepage({
         <StatutoryStatements servingGrams={SERVING_GRAMS} allergens="Contains milk (whey)." />
       </section>
 
-      <footer>
+      <footer data-floating-cta-suppress>
         <Wordmark footer onDark />
         <span>© 2026 Heldi · Made in the UK · They shake, we stir</span>
         <FooterLegal />

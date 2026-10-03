@@ -259,7 +259,7 @@ The six named patterns, with canon examples:
 | `--cream` | `#f8f0de` | Light sections, card backgrounds |
 | `--terracotta` | `#a8432b` | Eyebrows, stats, active accents, hover states |
 | `--brown` | `#4a4238` | Body copy on cream/gold |
-| `--muted` | `#8a8378` | Footer secondary, story notes |
+| `--muted` | `#736b60` | Quiet text on cream or white: statutory lines, captions, story notes (4.6:1 on cream). Never on gold or ink: use `--brown` on gold, `--dark-muted` on ink. Darkened from `#8a8378` (3.3:1) in October 2026 |
 | `--dark-muted` | `#b5ad9f` | Body copy on ink sections |
 | warm dark | `#2c2418` | Hero sublines on marigold |
 | white | `#ffffff` | Nav card, sticker cards, pills |
@@ -392,7 +392,9 @@ Plumbing worth knowing:
   (AggregateOffer only in live mode). New FAQ content should flow into these
   automatically because the schemas map over the same data files; keep it that way.
 - Nav links are duplicated four times (desktop + mobile, in both
-  `heldi-homepage.tsx` and `subpage-nav.tsx`); `app/sitemap.ts` lists routes again.
+  `heldi-homepage.tsx` and `subpage-nav.tsx`), and Our story, Inside the pouch
+  and FAQ a fifth time in `components/nav-more.tsx`, the "More" menu that holds
+  them between 900 and 1139px; `app/sitemap.ts` lists routes again.
 - The waitlist form stores nothing yet (top item in NEXT_STEPS.md).
 
 ## §10 Single sources of truth
@@ -580,7 +582,8 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
   through it, including the pouch-life FAQ. Keep it that way.
 - **Health claim wording**: appears verbatim in at least 8 files; if regulation ever
   changes it, `grep -rl "contributes to the maintenance"`.
-- **Nav changes**: four link lists (§9) + `app/sitemap.ts`.
+- **Nav changes**: four link lists (§9), `components/nav-more.tsx` for the three
+  folded links, + `app/sitemap.ts`. Re-check that the row fits at 900px.
 - **FAQ question renames**: update `site-faqs.ts` `pick()` calls or the build throws.
 - **Regenerated images**: bump the `?v=` versions (`IMAGE_VERSION` in
   `heldi-homepage.tsx` and `subpage-nav.tsx`; per-URL `?v=` in `catalog.ts`).

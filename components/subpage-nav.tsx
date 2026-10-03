@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { CartIcon } from "@/components/cart/cart-icon";
 import { useCart } from "@/components/cart/cart-context";
 import { DevModeToggle } from "@/components/cart/dev-mode-toggle";
+import { NavMore } from "@/components/nav-more";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 
@@ -92,13 +93,16 @@ export function SubpageNav({ tone: _tone = "gold" }: { tone?: NavTone }) {
             />
           </span>
         </Link>
+        {/* The three .nav-links__foldable links move into NavMore between
+            900 and 1139px; keep them in step with components/nav-more.tsx. */}
         <div className="nav-links nav-links--desktop">
           <Link href="/#how">How it works</Link>
           <Link href="/truth">The truth</Link>
-          <Link href="/our-story">Our story</Link>
+          <Link className="nav-links__foldable" href="/our-story">Our story</Link>
           <Link href="/heldi-living">Heldi Living</Link>
-          <Link href="/inside-the-pouch">Inside the pouch</Link>
-          <Link href="/faq">FAQ</Link>
+          <Link className="nav-links__foldable" href="/inside-the-pouch">Inside the pouch</Link>
+          <Link className="nav-links__foldable" href="/faq">FAQ</Link>
+          <NavMore />
           <Link href="/shop">Shop</Link>
           {mode !== "live" ? (
             <button
@@ -172,7 +176,7 @@ export function FooterLegal() {
 
 export function SubpageFooter() {
   return (
-    <footer>
+    <footer data-floating-cta-suppress>
       <Image
         className="heldi-logo heldi-logo--footer heldi-logo--on-dark"
         src={imageSrc("/images/heldi-wordmark.webp")}

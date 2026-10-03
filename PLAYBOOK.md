@@ -51,7 +51,7 @@ looks considered at only one width is not done.
 
 | Surface | ≤899px | ≥900px |
 |---|---|---|
-| Nav | burger button + slide-down sheet (`.nav-links--mobile`), cart pinned right | floating white card with inline links (`.nav-links--desktop`) |
+| Nav | burger button + slide-down sheet (`.nav-links--mobile`), cart pinned right | floating white card with inline links (`.nav-links--desktop`); from 900 to 1139px Our story, Inside the pouch and FAQ fold into a "More" disclosure (`components/nav-more.tsx`) so the row never wraps |
 | Homepage CTA | floating pill bottom-right, suppressed while a CTA section is on screen (IntersectionObserver) | none; inline CTAs suffice |
 | Menu / audience galleries | horizontal **snap rail**: `overflow-x: auto` + `scroll-snap-type: x mandatory`, edge-bleed negative margins, dots underneath | centred grid, dots hidden |
 | Hero card | one column: headline over the word badge, pouches, all three pills on one line, the two CTAs side by side with the offer ticket under them, then the story; the /hel-dee/ sticker on the card corner | white card up to 1120px: headline centred over the word badge, then story, pouches + pills, CTAs + offer ticket in three columns; sticker on the card corner |
@@ -288,7 +288,7 @@ export default function MyPage() {
    ~12 lines over `components/og/card.tsx`) so shared links render branded.
 3. Add the nav link in **four places** (desktop + mobile lists in both
    `components/heldi-homepage.tsx` and `components/subpage-nav.tsx`), or decide
-   explicitly that it is footer-only (`FooterLegal`).
+   explicitly that it is footer-only (`FooterLegal`). R5 has the width check.
 4. Consider JSON-LD (FAQPage if it hosts FAQs, Article for editorial).
 5. Educational pages want question-shaped H2s (BRAND.md §5) for AI citability.
 
@@ -325,9 +325,12 @@ export default function MyPage() {
 
 Update all four link lists (two in `heldi-homepage.tsx`, two in
 `subpage-nav.tsx`), keep order identical, add to `app/sitemap.ts`, and check the
-nav still fits at 900 to 1100px wide (the card wraps badly when links overflow;
-that width band is the tight spot). Anchors (`/#how`) work from subpages only with
-the leading slash.
+nav still fits on one row at 900px wide. From 900 to 1139px the row only fits
+because Our story, Inside the pouch and FAQ move into the "More" menu
+(`components/nav-more.tsx`, marked `.nav-links__foldable` in the desktop lists);
+a new desktop link either goes into that menu too or needs something else to
+move. At 900px the card has 812px and the row used about 600px in October 2026.
+Anchors (`/#how`) work from subpages only with the leading slash.
 
 ### R6 · New component style
 
