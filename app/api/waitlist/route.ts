@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { subscribeToKlaviyo } from "@/lib/klaviyo";
-import { WAITLIST_OFFER } from "@/lib/pricing";
 import { guard } from "@/lib/rate-limit";
 import { getSupabaseAdmin } from "@/lib/supabase/admin";
 import {
@@ -18,12 +17,12 @@ import {
 // backfilled once the account exists
 // (scripts/backfill-waitlist-to-klaviyo.mjs).
 //
-// The response also says whether this joiner is inside the first
-// WAITLIST_OFFER.freePairFirstJoiners, by joined_at order, so the form's
-// success line never tells someone a free sample pair might be waiting when
-// the hundred have already gone (BRAND.md §11.9). It is a courtesy on top of a
-// saved signup: when the count cannot be read the field is null and the form
-// falls back to the site-wide state.
+// The response says only that the signup landed. It deliberately does not work
+// out where this joiner sits on the list: the success line is the same for
+// everyone (BRAND.md §11.9), so nobody is told at the moment they type an
+// address whether they made the first hundred. Who did is settled at launch
+// from joined_at order, and told to people by the launch email that carries
+// the claim link.
 
 function cleanPlacement(value: unknown): string | null {
   if (typeof value !== "string") return null;
@@ -80,19 +79,15 @@ export async function POST(request: Request) {
   // Klaviyo call below subscribes to the same lists the row claims, rather
   // than to whatever this one submission happened to tick.
   let effectiveOptIn = marketingOptIn;
-  // A re-join keeps its original place on the list, so the place is counted
-  // from the row's first joined_at, not from this visit.
-  let joinedAt = now;
   try {
     const { data: existing, error: readError } = await supabase
       .from("waitlist")
-      .select("email, marketing_opt_in, joined_at")
+      .select("email, marketing_opt_in")
       .eq("email", email)
       .maybeSingle();
     if (readError) throw readError;
 
     if (existing) {
-      if (typeof existing.joined_at === "string") joinedAt = existing.joined_at;
       // Re-joining never revokes an earlier opt-in: withdrawal is the
       // unsubscribe link in every email, not an unticked box on a later visit.
       const firstOptIn = marketingOptIn && !existing.marketing_opt_in;
@@ -142,18 +137,5 @@ export async function POST(request: Request) {
     // Backfill picks it up.
   }
 
-  let firstJoiners: boolean | null = null;
-  try {
-    const { count, error: countError } = await supabase
-      .from("waitlist")
-      .select("email", { count: "exact", head: true })
-      .lte("joined_at", joinedAt);
-    if (!countError && typeof count === "number") {
-      firstJoiners = count <= WAITLIST_OFFER.freePairFirstJoiners;
-    }
-  } catch {
-    // The signup is saved either way; the form falls back to the site state.
-  }
-
-  return NextResponse.json({ ok: true, firstJoiners }, { status: 201 });
+  return NextResponse.json({ ok: true }, { status: 201 });
 }

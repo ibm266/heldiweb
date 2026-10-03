@@ -11,6 +11,11 @@
   re-point the flow message at TvLgd3 so it re-clones.
   The flow-owned clone gets a new template id every time the flow is re-pointed,
   so read its id from the flow message rather than recording it here.
+  THE PLAIN-TEXT PART IS A SEPARATE FIELD. Klaviyo does not regenerate it from
+  this HTML, so push waitlist-welcome.txt (beside this file) as the template's
+  text every time. On 3 Oct 2026 the live text part was found still carrying the
+  retired 5 Sep offer ("The first hundred ... Two sachets to try, posted free",
+  "15% off, postage on us") although the HTML had been corrected on 17 Sep.
 
   Two things Klaviyo does to this file on import, both expected:
     - it strips any external font <link>, so Rozha One never loads. Everything
@@ -161,7 +166,7 @@ One email on launch day. Here is exactly what is in it.
 
         <tr>
           <td class="heldi-pad" style="padding:0 38px 4px 38px;">
-            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">The pair is one Khana sachet for the pot and one Chai sachet for the mug, so you can try both before you commit to a pouch.</p>
+            <p style="margin:0 0 18px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">The pair is one Khana sachet for the bowl and one Chai sachet for the mug, so you can try both before you commit to a pouch.</p>
 
             <p style="margin:0 0 26px 0;font-family:'Gelasio',Georgia,'Times New Roman',serif;font-size:16px;line-height:1.62;color:#4a4238;">If you ticked the box for Heldi Living, a letter lands roughly weekly in between: honest reading about protein in Indian food, and recipes worth cooking. If you did not, this is the only email you get from me until launch.</p>
           </td>

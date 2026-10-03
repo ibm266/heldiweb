@@ -1,13 +1,15 @@
 # Waitlist offer: one promise, one wording, every surface
 
 **Status: APPLIED IN THE REPO on 17 September 2026, on branch
-`offer/waitlist-free-sample` (wording approved by Mihir the same day). NOT yet live:
-the cut-over in section 7 has not happened, so production still shows the old offer
-and Klaviyo still sends the 5 Sep welcome email.** Written after a four-way inventory
+`offer/waitlist-free-sample` (wording approved by Mihir the same day). The Klaviyo
+welcome email was pushed live the same day, once the connection authorised. NOT yet
+live: the rest of the cut-over in section 7 has not happened, so production still
+shows the old offer.** Written after a four-way inventory
 of the site, the cart mechanics, the docs and emails, and everything outside this
 repo (HeldiPM, building-heldi, the Heldi skills, Shopify, memory).
 
-Done: sections 3, 4A, 4B, 4C, 4D items 1, 2 and 4 (masters only), 4F, 4G (HeldiPM
+Done: sections 3, 4A, 4B, 4C, 4D items 1, 2, 3 and 4 (masters only; item 3 is live
+in Klaviyo), 4F, 4G (HeldiPM
 wording, both skills revised and this Mac's copies updated, memory) and section 5.
 Still open, all needing Mihir: everything in section 8 except item 1.
 
@@ -99,7 +101,7 @@ exist at all, and the free pair has no stock set.
 |---|---|---|
 | The list | "the waitlist" on first mention and on buttons ("Join waitlist"), then "the list" | wait list, waiting list, mailing list |
 | Who gets the pair | "the first 100 on the list" | first hundred, first 100 customers, first 100 people to join, founding 100 |
-| The sample | "a free sample pair", explained as "one Khana sachet for the pot, one Chai sachet for the mug" | trial pair, taster pack, Sample Duo, Sample Trio, two sachets to try |
+| The sample | "a free sample pair", explained as "one Khana sachet for the bowl, one Chai sachet for the mug" | trial pair, taster pack, Sample Duo, Sample Trio, two sachets to try |
 | Its postage | "we pay the postage" | posted free, free shipping, free delivery, postage on us, P&P, postage and packaging |
 | The 15% | "15% off your first order" | launch sale, launch price, 25%, 20%, founders, any code string while the site is in waitlist mode |
 | The email | "one email, the day we launch" | updates, newsletter (that is Heldi Living), we'll keep you posted |
@@ -123,12 +125,12 @@ Mihir's sign-off before any file is touched.
 | W1 | Popup title, final CTA heading | Be first to stir it in. (unchanged) |
 | W2 | Waitlist ticker, two items | FIRST 100 ON THE LIST GET A FREE SAMPLE PAIR  •  15% OFF YOUR FIRST ORDER |
 | W3 | Hero line under the Join button, both PDP notes, subpage CTA perk line, `llms.txt`, captions | The first 100 on the list get a free sample pair, and we pay the postage. Everyone on the list gets 15% off their first order. |
-| W4 | Popup lede and final CTA paragraph (identical in both) | One email, the day we launch. The first 100 on the list get a free sample pair, one for the pot and one for the mug, and we pay the postage. Everyone on the list gets 15% off their first order. |
-| W5 | Form success state | You're on the list. One email, the day we launch, with 15% off your first order inside. If you're one of the first 100, your free sample pair is in there too. Tell your mum we said hi. |
+| W4 | Popup lede and final CTA paragraph (identical in both) | One email, the day we launch. The first 100 on the list get a free sample pair, one for the bowl and one for the mug, and we pay the postage. Everyone on the list gets 15% off their first order. |
+| W5 | Form success state | You're on the list. One email, the day we launch, with 15% off your first order inside. Tell your mum we said hi. *(revised 17 Sep 2026: the line no longer places the joiner, so it is the same in the W13 form too)* |
 | W6 | The three-row block: welcome email, launch email, terms summary | Everyone on the list: First to know, the day we launch. The first 100: A free sample pair, and we pay the postage. Your first order: 15% off. |
-| W7 | Pair explainer: emails, product description | The pair is one Khana sachet for the pot and one Chai sachet for the mug, so you can try both before you commit to a pouch. |
+| W7 | Pair explainer: emails, product description | The pair is one Khana sachet for the bowl and one Chai sachet for the mug, so you can try both before you commit to a pouch. |
 | W8 | The launch FAQ answer (Voice A). The question text is a build key and does not change | Heldi launches in autumn 2026. The shop is available to browse now, and checkout switches on at launch. We send one email on the day the shop opens, so the waitlist is first to know. The first 100 people on the list get a free sample pair, one Khana sachet and one Chai sachet, and we pay the postage. Everyone on the list gets 15% off their first order. |
-| W9 | Free pair product copy, in `catalog.ts` and in Shopify | Title: Heldi sample pair, on us (unchanged). Short: A free sample pair for the first 100 on the list. Long: Two 30g sachets, one Khana for the pot and one Chai for the mug. Free for the first 100 on the list, and we pay the postage. |
+| W9 | Free pair product copy, in `catalog.ts` and in Shopify | Title: Heldi sample pair, on us (unchanged). Short: A free sample pair for the first 100 on the list. Long: Two 30g sachets, one Khana for the bowl and one Chai for the mug. Free for the first 100 on the list, and we pay the postage. |
 | W10 | New "Waitlist offer" section in the terms | See 4C |
 | W11 | The early joiners' launch email only | Your first order: 15% off, postage on us. (kept word for word, because it is what they were told) |
 | W12 | Cart message if the pairs run out | The free sample pairs have all been claimed. Your 15% still works on a pouch. |
@@ -223,9 +225,12 @@ sentence exists because the pair holds a Chai sachet and Chai's gates are still 
    value "A free sample pair, and we pay the postage", first order "15% off"), the
    explainer becomes W7, and the header comment swaps its 5 Sep provenance note for a
    pointer to `BRAND.md` §11.9. Subject, preheader, sign-off and P.S. stay.
-3. **Push it to Klaviyo.** Update library template `TvLgd3`, re-point flow `T6BYu5`
-   so it re-clones, read the new clone back and diff it against the master. **Blocked
-   today:** the Klaviyo connection failed to authorise in this session.
+3. **Push it to Klaviyo. Done 17 Sep 2026**, once the connection authorised. Library
+   template `TvLgd3` was updated from the master, the flow message (`StAVRs`, on action
+   `116519940`) was re-pointed at it, and Klaviyo re-cloned to a fresh flow-owned
+   template. The clone was read back and checked: it carries the three settled rows and
+   none of the retired wordings. The flow stayed live on its "added to list `Staq52`"
+   trigger, and the subject, preheader and sender were preserved.
 4. **The launch emails.** Klaviyo holds two drafts, `XGbTBU` (first hundred) and
    `YqrsCh` (the rest), which nobody has been able to read today. Rewrite both from
    W6 and W7 and track their masters in `docs/email/`:
@@ -310,9 +315,11 @@ Small code changes. Without them the copy promises things the cart will not do.
    must stop offering the pair to new joiners. Nothing counts today: the API returns
    `{ ok: true }` and nothing else. Recommended: a cached server-side count from
    Supabase passed into the homepage as a prop (no new API route, so no new
-   rate-limit rule), switching W2 to W5 over to their W13 forms. A nice extra: the
-   signup API returns whether this joiner made the first 100, so the success state
-   can say so outright.
+   rate-limit rule), switching W2 to W4 over to their W13 forms. **Superseded in part,
+   17 Sep 2026:** this plan proposed that the signup API also return whether the joiner
+   made the first 100, so the success state could say so outright. Mihir dropped that.
+   W5 is now one line for everyone, the API returns `{ ok: true }` and nothing else,
+   and nobody is told their place on the list. BRAND.md §11.9 owns the reasoning.
 6. **Who can claim.** The link needs no code and carries no identity, so a forwarded
    link lets strangers drain the 100 before the real first 100 claim. For run 1:
    send the link only to the first-100 segment, put "claimed with the email you

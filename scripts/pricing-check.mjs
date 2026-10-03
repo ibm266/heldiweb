@@ -273,6 +273,15 @@ check("the offer owns no percentage of its own", "percent" in WAITLIST_OFFER, fa
     if (typeof line !== "string") continue;
     check(`closed ${name} does not offer a pair`, /get a free sample pair|GET A FREE SAMPLE PAIR|your free sample pair/.test(line), false);
   }
+  // The success line never places a joiner (BRAND.md §11.9, settled 17 Sep 2026):
+  // one line in both forms, and no mention of the count. The route returns no
+  // place on the list for it to use, so a reintroduction breaks here first.
+  check("the success line is the same in both forms", open.success, closed.success);
+  check(
+    "the success line never places the joiner",
+    /first \d+|first hundred|one of the first/i.test(open.success),
+    false
+  );
   check("the closed ticker keeps the family rate", closed.tickerItems.join(" "), "15% OFF YOUR FIRST ORDER");
   check("the paragraph parts add up to the paragraph", Object.values(open.paragraphParts).join(""), open.paragraph);
   check("and in the closed form", Object.values(closed.paragraphParts).join(""), closed.paragraph);

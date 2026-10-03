@@ -17,10 +17,13 @@
 // glossary): "the first 100 on the list", "a free sample pair", "we pay the
 // postage", "15% off your first order", "first to know".
 //
-// Every line has two forms. While fewer than `firstJoiners` people are on the
+// Most lines have two forms. While fewer than `firstJoiners` people are on the
 // list the pair is on offer; once the list passes it, the site must stop
 // promising a pair a new joiner cannot have. lib/waitlist-count.ts decides
 // which form a visitor sees.
+//
+// `success` is the exception: one line, the same in both forms, because the
+// site never places a joiner on the list to their face.
 
 export type WaitlistOfferFacts = {
   /** WAITLIST_OFFER.freePairFirstJoiners */
@@ -40,7 +43,8 @@ export type WaitlistOfferCopy = {
   paragraph: string;
   /** The same paragraph, split around the phrase that takes <CopyHighlight>. */
   paragraphParts: { before: string; highlight: string; after: string };
-  /** The form's success state. */
+  /** The form's success state. The same line in both forms: it never tells a
+   *  joiner whether they made the first `firstJoiners`. */
   success: string;
   /** The offer half of the launch FAQ answer. The launch date stays with the FAQ. */
   faqAnswer: string;
@@ -51,7 +55,7 @@ export const WAITLIST_HEADLINE = "Be first to stir it in.";
 
 /** What the pair is, for the emails and the product description. */
 export const WAITLIST_PAIR_EXPLAINER =
-  "The pair is one Khana sachet for the pot and one Chai sachet for the mug, so you can try both before you commit to a pouch.";
+  "The pair is one Khana sachet for the bowl and one Chai sachet for the mug, so you can try both before you commit to a pouch.";
 
 export function waitlistOfferCopy(
   { firstJoiners, percent }: WaitlistOfferFacts,
@@ -60,7 +64,11 @@ export function waitlistOfferCopy(
   const everyone = `Everyone on the list gets ${percent}% off their first order.`;
   const everyoneStill = `Everyone on the list still gets ${percent}% off their first order.`;
   const gone = `The free sample pairs have all gone to the first ${firstJoiners}.`;
-  const success = `You're on the list. One email, the day we launch, with ${percent}% off your first order inside.`;
+  // Deliberately silent about the count. Telling someone they just missed the
+  // pair sours the moment they joined, and telling them they made it is a
+  // promise the form is not the place to make: the launch email carries the
+  // claim link, and joined_at order settles who gets one.
+  const success = `You're on the list. One email, the day we launch, with ${percent}% off your first order inside. Tell your mum we said hi.`;
   const heardFirst =
     "We send one email on the day the shop opens, so the waitlist is first to know.";
 
@@ -73,14 +81,14 @@ export function waitlistOfferCopy(
       sentence: `${gone} ${everyoneStill}`,
       paragraph: `${before}${highlight}.`,
       paragraphParts: { before, highlight, after: "." },
-      success: `${success} Tell your mum we said hi.`,
+      success,
       faqAnswer: `${heardFirst} The free sample pairs have all gone to the first ${firstJoiners} people on the list. ${everyone}`
     };
   }
 
   const before = `One email, the day we launch. The first ${firstJoiners} on the list get `;
   const highlight = "a free sample pair";
-  const after = `, one for the pot and one for the mug, and we pay the postage. ${everyone}`;
+  const after = `, one for the bowl and one for the mug, and we pay the postage. ${everyone}`;
   return {
     pairsOpen,
     tickerItems: [
@@ -90,7 +98,7 @@ export function waitlistOfferCopy(
     sentence: `The first ${firstJoiners} on the list get a free sample pair, and we pay the postage. ${everyone}`,
     paragraph: `${before}${highlight}${after}`,
     paragraphParts: { before, highlight, after },
-    success: `${success} If you're one of the first ${firstJoiners}, your free sample pair is in there too. Tell your mum we said hi.`,
+    success,
     faqAnswer: `${heardFirst} The first ${firstJoiners} people on the list get a free sample pair, one Khana sachet and one Chai sachet, and we pay the postage. ${everyone}`
   };
 }
@@ -119,7 +127,7 @@ export function freePairProductCopy({ firstJoiners }: WaitlistOfferFacts): {
   return {
     title: "Heldi sample pair, on us",
     shortDescription: `A free sample pair for the first ${firstJoiners} on the list.`,
-    description: `Two 30g sachets, one Khana for the pot and one Chai for the mug. Free for the first ${firstJoiners} on the list, and we pay the postage.`
+    description: `Two 30g sachets, one Khana for the bowl and one Chai for the mug. Free for the first ${firstJoiners} on the list, and we pay the postage.`
   };
 }
 
