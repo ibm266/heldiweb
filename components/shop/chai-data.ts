@@ -200,7 +200,7 @@ export const CHAI_METHOD: ChaiMethodStep[] = [
   },
   {
     title: "COOL",
-    body: "Let it come off the boil, then add your milk.",
+    body: "Add your milk and wait until it is cool enough to drink.",
     art: { src: "/images/shop/chai-method/cool.webp", ...METHOD_ART_SIZE }
   },
   {

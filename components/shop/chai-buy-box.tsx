@@ -209,7 +209,7 @@ export function ChaiBuyBox() {
             <strong>One spoonful, stirred in at the end.</strong> Heldi Chai
             is a high-protein blend made for the hot drinks you already make.
             Stir it into <strong>chai, tea, coffee or hot chocolate</strong>{" "}
-            once the pot is off the boil, and the cup still tastes like your
+            once the cup is cool enough to drink, and it still tastes like your
             cup: no chalk, no aftertaste, no shaker on the draining board.{" "}
             <strong>High in protein</strong>: {CHAI_PROTEIN_MARKETING_GRAMS}g
             in every mug, and protein contributes to the

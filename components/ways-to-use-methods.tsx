@@ -224,16 +224,17 @@ export const METHODS: Method[] = [
     intro: (
       <>
         This one is Heldi Chai, not Khana: a whey and casein blend with real
-        chai spices, made for the mug rather than the pot. The rule is the
-        pot&apos;s rule: <CopyHighlight>off the boil first</CopyHighlight>,
-        then stir. Whey does not enjoy a rolling boil, and neither does the
-        taste.
+        chai spices, made for the mug rather than the pot. The mug&apos;s rule
+        is stricter than the pot&apos;s: <CopyHighlight>if it is cool enough
+        to drink, you can stir Heldi in</CopyHighlight>. Any hotter and the
+        milk protein clumps into little white specks. If it does, the tea
+        strainer catches them.
       </>
     ),
     steps: [
       <>Brew your chai the way you always make it. Tea, coffee and hot chocolate count too.</>,
-      <>Take it off the boil and add your milk, so it is hot rather than boiling.</>,
-      <>Stir in a level tablespoon just before you drink. Gone in a few turns of the spoon.</>
+      <>Pour your cup and let it cool until you could drink it. A splash of cold milk gets it there sooner.</>,
+      <>Stir in a level tablespoon, gone in a few turns of the spoon. Spot white specks? It was still too hot: pour it through the tea strainer.</>
     ],
     serving: "1 level tbsp a mug",
     note: "A level tablespoon (8g) adds 5g of protein, calculated from the recipe; the figure from analysis of the finished blend follows.",
@@ -243,7 +244,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "In the mug",
-      captions: ["Brew like always.", "Off the boil.", "Stir one in.\nGone."],
+      captions: ["Brew like always.", "Cool enough\nto drink.", "Stir one in.\nGone."],
       anchors: [18, 50, 82],
       alt: "Engraved brass chai pan and tumbler in the Heldi pouch style, shown three times: brewing over a flame, off the heat beside a steaming cup, and with a bangled hand stirring a spoonful into the cup."
     }

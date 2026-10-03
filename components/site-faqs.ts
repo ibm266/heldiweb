@@ -50,7 +50,7 @@ export function siteFaqGroupsForMode(mode: CommerceMode): SiteFaqGroup[] {
       {
         question: "Does cooking destroy the protein?",
         answer:
-          "No. Heat changes the shape of the protein, which is harmless and happens during digestion anyway. The amino acids your body actually uses stay intact. We still suggest stirring Heldi in once the pot is off the heat and has cooled a little, simply because a rolling boil can make any milk protein clump."
+          "No. Heat changes the shape of the protein, which is harmless and happens during digestion anyway. The amino acids your body actually uses stay intact. We still suggest stirring Heldi in once the pot is off the heat and has cooled a little, simply because a rolling boil can make any milk protein clump. Heldi Chai waits longer: its milk protein clumps into little white specks well before the boil, so it goes in once the cup is cool enough to drink."
       },
       {
         question: "How do I add more protein to Indian food?",

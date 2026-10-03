@@ -51,13 +51,18 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     answer: (
       <>
         <p>
-          Make your chai as usual. Let it come{" "}
-          <strong>off the boil</strong>, add your milk, then stir in a{" "}
-          <strong>{CHAI_SERVING_SPOON}</strong> ({CHAI_SERVING_GRAMS}g) just
-          before you drink. Level, not heaped: a mug is not a pot, and
-          Khana&apos;s heaped spoon would be too much here. Off the boil
-          matters too: whey does not enjoy a rolling boil, and neither does
-          the taste.
+          Make your chai as usual and add your milk. Once the cup is{" "}
+          <strong>cool enough to drink</strong>, stir in a{" "}
+          <strong>{CHAI_SERVING_SPOON}</strong> ({CHAI_SERVING_GRAMS}g). Level,
+          not heaped: a mug is not a pot, and Khana&apos;s heaped spoon would
+          be too much here.
+        </p>
+        <p>
+          The waiting matters. The milk protein in Chai starts to clump into
+          little white specks well before the boil, so the rule is simple: if
+          it is cool enough to drink, you can stir Heldi in. If a few specks
+          do show up, pour the cup through a tea strainer and drink it as
+          normal.
         </p>
         <p>
           It goes into more than chai. Tea, coffee, hot chocolate, warm milk.

@@ -27,7 +27,7 @@ export const TRUTH_FAQS = [
   {
     question: "How do I use Heldi?",
     answer:
-      "Stir a spoonful straight into the pot once it has cooled a little: dal, curry, kadhi, sambar, raita, chai, anything with a gravy or a yoghurt base. If a spoon can stir it, Heldi can disappear into it. One spoonful adds about 10g of protein without changing the recipe, and it works whether you are vegetarian or not."
+      "Stir a spoonful straight into the pot once it has cooled a little: dal, curry, kadhi, sambar, raita, anything with a gravy or a yoghurt base. If a spoon can stir it, Heldi can disappear into it. One spoonful adds about 10g of protein without changing the recipe, and it works whether you are vegetarian or not. Chai has its own blend, Heldi Chai, stirred in once the cup is cool enough to drink."
   },
   {
     question: "What is the best protein source for vegetarians?",

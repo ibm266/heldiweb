@@ -72,7 +72,7 @@ export default function ShopPage() {
             <CopyHighlight>Chai</CopyHighlight> is the one for hot drinks:
             whey and casein with cardamom, ginger, cinnamon and clove, a
             little coconut sugar, stirred into chai, tea, coffee or hot
-            chocolate once the cup is off the boil. It is still in
+            chocolate once the cup is cool enough to drink. It is still in
             development, so it has a page and no price yet.
           </p>
           <p className="story-note">

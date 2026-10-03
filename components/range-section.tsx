@@ -45,7 +45,7 @@ const RANGE: RangeProduct[] = [
     id: "chai",
     tag: "FOR THE MUG",
     title: "Heldi Chai",
-    line: "Chai, tea, coffee, hot chocolate. Stirred into the mug once it is off the boil.",
+    line: "Chai, tea, coffee, hot chocolate. Stirred in once the cup is cool enough to drink.",
     image: {
       src: "/images/range/chai.webp?v=4",
       alt: "The terracotta Heldi Chai pouch on a linen table"
