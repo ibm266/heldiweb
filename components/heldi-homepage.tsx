@@ -1344,7 +1344,7 @@ export function HeldiHomepage({
           </p>
           <div className="pill-links">
             <a className="pill-link" href="/truth">
-              Read the full truth &#8594;
+              Why 6g isn&apos;t enough for most adults &#8594;
             </a>
             <a className="pill-link" href="/inside-the-pouch">
               See what&apos;s inside &#8594;
@@ -1387,6 +1387,16 @@ export function HeldiHomepage({
           <p className="founder-band__quote">
             My nani never said healthy. She said heldi. Warm food, made with
             care, made for you. That is where the name comes from.
+          </p>
+          {/* The brand values that live here (BRAND.md §1): time with
+              parents, made active, as a wish and never a health outcome;
+              family recipes kept cooking and passed on. */}
+          <p className="founder-band__quote">
+            I want more time with my mama and papa, and I want it to be the
+            active kind: long walks and full tables. I&apos;d love my
+            mama&apos;s palak paneer, the way my dadi taught it to her, to
+            still be cooking when it&apos;s my turn at the stove. I made Heldi
+            so nobody has to give up the food they grew up on.
           </p>
           <p className="founder-band__signature">&mdash; Mihir, founder</p>
           <a className="pill-link" href="/our-story">

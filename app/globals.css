@@ -4432,6 +4432,10 @@ footer {
   color: var(--ink);
 }
 
+.founder-band__quote + .founder-band__quote {
+  margin-top: 1.25rem;
+}
+
 .founder-band--gold .founder-band__signature {
   color: var(--brown);
 }
