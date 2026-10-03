@@ -126,13 +126,19 @@ export function isGiftLine(line: Pick<CartLine, "merchandise">): boolean {
 // stainless barrel with a domed lid, a rim notch for the spoon and a small
 // etched HELDI. It replaces the engraved brass jar the September shots
 // invented. Its reference photos are in HeldiPM design/merch/run1-jar-reference/.
+// The jar was redone again the same evening (HeldiPM design/site-photography/
+// 2026-10-round17-jar/, GPT Image 2 from Mihir's own photos of the jar): the
+// round-16 renders put the etched HELDI low on the body, and on the real jar
+// it sits halfway up, at the widest point. The real jar is also squatter and
+// rounder, like a small apple, and its spoon handle carries an engraved HELDI.
+// Only the jar and spoon pixels changed; pouches, tote and set are untouched.
 // The `triple` key survives only because TierId still has three members; it
 // now carries the mixed pair, which is a basket a customer can actually buy.
 // It goes when the tier model does.
 const TIER_IMAGES: Record<TierId, { url: string; altText: string }> = {
-  single: { url: "/images/shop/khana-1.webp?v=6", altText: "Navy Heldi Khana pouch beside the gold table jar and its gold spoon" },
-  double: { url: "/images/shop/khana-bundle-2.webp?v=7", altText: "Two navy Heldi Khana pouches with the gold table jar, its gold spoon and the cotton tote bag" },
-  triple: { url: "/images/shop/khana-chai-pair.webp?v=3", altText: "Navy Heldi Khana and terracotta Heldi Chai pouches with the gold table jar, its gold spoon and the cotton tote bag" }
+  single: { url: "/images/shop/khana-1.webp?v=7", altText: "Navy Heldi Khana pouch beside the gold table jar and its gold spoon" },
+  double: { url: "/images/shop/khana-bundle-2.webp?v=8", altText: "Two navy Heldi Khana pouches with the gold table jar, its gold spoon and the cotton tote bag" },
+  triple: { url: "/images/shop/khana-chai-pair.webp?v=4", altText: "Navy Heldi Khana and terracotta Heldi Chai pouches with the gold table jar, its gold spoon and the cotton tote bag" }
 };
 // One shot per sachet SKU, all three on the same set as the pouch range
 // (GPT Image 2, 4 Sep 2026). Before this the Chai sachet and both pair SKUs
@@ -157,8 +163,10 @@ export const POUCH_THUMB = "/images/shop/pouch-solo.webp?v=5";
 // them would have served the previous jar for a month. That happened twice:
 // gift-jar-brass.webp (4 Sep, the engraved brass jar) replaced the unengraved
 // jar, and gift-jar.webp (3 Oct, the real run-1 jar) replaced the brass one.
-// The older files stay on disk.
-export const JAR_THUMB = "/images/shop/gift-jar.webp";
+// The older files stay on disk. gift-jar.webp has carried a ?v= since its
+// second reshoot (3 Oct, HELDI moved up to the middle of the body), so the
+// next swap can be in place.
+export const JAR_THUMB = "/images/shop/gift-jar.webp?v=2";
 // ?v=2: reshot 4 Sep 2026 in place. The first solo tote carried an elephant
 // that was not the Heldi elephant, on a set of its own.
 //
@@ -182,7 +190,11 @@ export const TOTE_THUMB = "/images/shop/gift-tote.webp?v=2";
 
 // The jar photographed with its spoon, at gallery size rather than thumb size.
 // Not wired to a line yet: the £0 jar variant uses the tight JAR_THUMB crop.
-export const JAR_SPOON_IMAGE = "/images/shop/gift-jar-spoon.webp";
+export const JAR_SPOON_IMAGE = "/images/shop/gift-jar-spoon.webp?v=2";
+
+// The spoon on its own, close on the handle so the engraved HELDI reads.
+// It is a soup spoon, and it ships resting in the jar. Not wired yet either.
+export const SPOON_IMAGE = "/images/shop/gift-spoon.webp";
 /** @deprecated The dabba is withdrawn. Kept until the cart stops reading it. */
 export const DABBA_THUMB = TOTE_THUMB;
 export const SAMPLE_THUMB = "/images/shop/sample.webp?v=5";
