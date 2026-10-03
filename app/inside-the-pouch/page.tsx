@@ -112,7 +112,7 @@ export default function InsideThePouchPage() {
 
       <section className="section section--gold section--bordered story-pull">
         <p className="story-pull__line">
-          Blended in England. Packed in England.
+          Blended in the UK. Packed in the UK.
         </p>
       </section>
 
@@ -251,11 +251,11 @@ export default function InsideThePouchPage() {
 
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
-          <p className="eyebrow">MADE IN ENGLAND</p>
+          <p className="eyebrow">MADE IN THE UK</p>
           <h2>Blended here. Packed here.</h2>
           <p>
             Every pouch of Heldi is{" "}
-            <CopyHighlight>blended in England and packed in England</CopyHighlight>
+            <CopyHighlight>blended and packed in the UK</CopyHighlight>
             , in small batches. The founder can drive to the blending and
             packing site. If something looks wrong, we can speak directly to
             the people making it and inspect it there.

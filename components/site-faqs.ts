@@ -59,7 +59,7 @@ export function siteFaqGroupsForMode(
       {
         question: "Does cooking destroy the protein?",
         answer:
-          "No. Heat changes a protein's shape, a process called denaturing, and digestion changes it too. The amino acids remain. Stir Heldi Khana in once the pot is off the heat and has cooled a little, because a rolling boil can make milk protein clump."
+          "No. Heat changes a protein's shape, a process called denaturing, and digestion changes it too. The amino acids remain. Stir Heldi Khana into your own bowl once the food is served, or into the pot once it is off the heat and has cooled a little, because a rolling boil can make milk protein clump."
       },
       {
         question: "How do I add more protein to Indian food?",
@@ -175,7 +175,7 @@ export function siteFaqGroupsForMode(
       {
         question: "Where do the ingredients come from?",
         answer:
-          "The whey protein isolate comes from Arla, the farmer-owned dairy cooperative, and every incoming batch has a supplier certificate of analysis. That certificate covers the whey ingredient; it is not finished-product analysis or product certification. The single spices come from the British spice house Spice Entice. The garam masala comes from Buy Whole Foods Online because it is a blend, and the sunflower lecithin comes from the UK supplier Special Ingredients. Heldi Khana is blended and packed in England.",
+          "The whey protein isolate comes from Arla, the farmer-owned dairy cooperative, and every incoming batch has a supplier certificate of analysis. That certificate covers the whey ingredient; it is not finished-product analysis or product certification. The single spices come from the British spice house Spice Entice. The garam masala comes from Buy Whole Foods Online because it is a blend, and the sunflower lecithin comes from the UK supplier Special Ingredients. Heldi Khana is blended and packed in the UK.",
         more: { href: "/inside-the-pouch", label: "Read where it all comes from" }
       }
     ]

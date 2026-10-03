@@ -6,6 +6,7 @@ import {
   CHAI_FORMULA,
   CHAI_LACTOSE_PER_100G,
   CHAI_MUGS_PER_POUCH,
+  CHAI_NATURAL_LINE,
   CHAI_NUTRITION_ROWS,
   CHAI_POUCH_GRAMS,
   CHAI_PROTEIN_MARKETING_GRAMS,
@@ -31,8 +32,11 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
       <>
         <p>
           Whey protein isolate and milk protein concentrate both come from
-          milk. We blend them with chai spices and a little coconut sugar. In
-          full, largest first: {CHAI_FORMULA}.{" "}
+          milk. We blend them with chai spices and a little coconut sugar.{" "}
+          <strong>{CHAI_NATURAL_LINE}</strong> In full, largest first:{" "}
+          {CHAI_FORMULA}. Nothing in that list contains caffeine, so the blend
+          itself is <strong>caffeine free</strong>, though the tea or coffee
+          you stir it into usually is not.{" "}
           <strong>{CHAI_ALLERGENS}</strong> Blended and packed in the UK.
         </p>
         <p>

@@ -46,10 +46,17 @@ import type { NutritionProduct } from "./nutrition-data";
 //    Stated as a figure, never as a "lactose-free" badge.
 //  - Gluten and shelf life are tests, not calculations, and stay unpublished.
 
-/** One serving in grams. The recommended daily portion the statutory
- *  statements have to declare. Chai's spoonful is smaller than Khana's 12g
- *  because it goes into a mug, not a pot. */
+/** One serving in grams: the bottom of the recommended daily intake the
+ *  statutory statements declare (see CHAI_MAX_DAILY_SERVINGS for the top).
+ *  Chai's spoonful is smaller than Khana's 12g because it goes into a mug,
+ *  not a pot. */
 export const CHAI_SERVING_GRAMS = 8;
+
+/** The recommended daily intake runs from one serving to this many: "8g to
+ *  32g (1 to 4 servings)" on the round-16 pack. A range for the same reason
+ *  as Khana's MAX_DAILY_SERVINGS, and set separately because it is Chai's
+ *  own particular, even while the two agree. */
+export const CHAI_MAX_DAILY_SERVINGS = 4;
 
 /** How the serving is spooned. A LEVEL tablespoon: Chai's 8 g is a level
  *  spoon where Khana's 12.5 g is heaped. Every surface that names the spoon
@@ -81,6 +88,11 @@ export const CHAI_MUGS_PER_POUCH = 31;
  *  purchase, not only on the pack. Chai carries casein as well as whey, so
  *  this is not Khana's sentence. */
 export const CHAI_ALLERGENS = "Contains milk (whey and milk protein concentrate).";
+
+/** The natural claim, word for word as the round-16 Chai pack prints it (the
+ *  LET IT COOL caption). Settled by Mihir on 3 Oct 2026; Chai's pages say
+ *  this and never Khana's "All natural" badge. */
+export const CHAI_NATURAL_LINE = "Made with natural ingredients.";
 
 /** The descriptive legal name FIC Reg 1169/2011 requires next to the brand
  *  name, worded so it holds true under either candidate formulation. */
@@ -232,7 +244,11 @@ export type ChaiPill = {
 //  - "98% lactose-free" is substantiated against Khana's whey certificate at
 //    a 12 g spoonful and says nothing about a blend carrying MPC85, which is
 //    lactose-richer per gram and sits in a blend with a third less protein.
-//  - "All natural" already draws ASA scrutiny on the pack.
+//  - "All natural" stays a Khana badge. Chai's pack says it its own way,
+//    "Made with natural ingredients." (round 16), and the site repeats that
+//    line, CHAI_NATURAL_LINE above, rather than borrowing Khana's. The
+//    natural claims are settled (Mihir, 3 Oct 2026: sunflower lecithin is a
+//    natural ingredient); this note used to say the claim drew ASA scrutiny.
 //  - "Gluten free" is a legally defined claim (under 20mg/kg, Reg 828/2014).
 //    Chai's spices come from a different supplier to Khana's and no gluten
 //    result exists for this blend, so the badge waits for the test.
@@ -242,8 +258,16 @@ export type ChaiPill = {
 // "High in protein" is the one nutrition claim that holds under every
 // candidate blend (see the header note), and vegetarian is a fact about the
 // rennet, not a test result.
+//
+// CAFFEINE FREE IS THE BLEND, NEVER THE DRINK. The round-16 pack prints it
+// on the strip and ends its paragraph "100% caffeine free."; the
+// substantiation is CHAI_INGREDIENT_NAMES, not one of which contains
+// caffeine. But the same pack, and this site, tell people to stir it into
+// tea and coffee, which do. So every surface says the blend is caffeine
+// free and none implies the mug is (BRAND.md §12).
 export const CHAI_PILLS: ChaiPill[] = [
   { icon: "/images/pouch-badges/high-protein.png", label: "High protein", width: 256, height: 256 },
+  { icon: "/images/pouch-badges/caffeine-free.webp", label: "Caffeine free", width: 256, height: 256 },
   { icon: "/images/pouch-badges/vegetarian.png", label: "Vegetarian", width: 286, height: 367 }
 ];
 
@@ -253,20 +277,20 @@ export type ChaiImage = { url: string; altText: string };
  *  Regenerate with a ?v= bump so the image optimizer drops the old one. */
 export const CHAI_IMAGES: ChaiImage[] = [
   {
-    url: "/images/shop/chai-1.webp?v=5",
-    altText: "The terracotta Heldi Chai pouch beside the engraved brass table jar and its gold spoon"
+    url: "/images/shop/chai-1.webp?v=6",
+    altText: "The terracotta Heldi Chai pouch beside the gold table jar and its gold spoon"
   },
   {
-    url: "/images/shop/chai-pouch-solo.webp?v=3",
+    url: "/images/shop/chai-pouch-solo.webp?v=4",
     altText: "The Heldi Chai pouch on its own, front facing"
   },
   {
-    url: "/images/shop/chai-bundle-2.webp?v=5",
-    altText: "Two Heldi Chai pouches with the engraved brass jar, its gold spoon and the cotton tote bag"
+    url: "/images/shop/chai-bundle-2.webp?v=6",
+    altText: "Two Heldi Chai pouches with the gold table jar, its gold spoon and the cotton tote bag"
   },
   {
-    url: "/images/shop/khana-chai-pair.webp?v=2",
-    altText: "One Heldi Chai pouch and one Heldi Khana pouch with the engraved brass jar, its gold spoon and the cotton tote bag"
+    url: "/images/shop/khana-chai-pair.webp?v=3",
+    altText: "One Heldi Chai pouch and one Heldi Khana pouch with the gold table jar, its gold spoon and the cotton tote bag"
   }
 ];
 

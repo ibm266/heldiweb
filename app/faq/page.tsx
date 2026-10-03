@@ -4,7 +4,11 @@ import { siteFaqGroupsForMode } from "@/components/site-faqs";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { COMMERCE_MODE } from "@/lib/commerce/config";
 import { serializeJsonLd } from "@/lib/json-ld";
-import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
+import {
+  MAX_DAILY_SERVINGS,
+  NUTRITION_ROWS,
+  SERVING_GRAMS
+} from "@/components/shop/nutrition-data";
 import { StatutoryStatements } from "@/components/shop/statutory-statements";
 import { getWaitlistPairsOpen } from "@/lib/waitlist-count";
 
@@ -61,7 +65,12 @@ export default async function FaqPage() {
       <section className="section section--cream section--bordered">
         <FaqPageList />
         <div className="faq">
-          <StatutoryStatements servingGrams={SERVING_GRAMS} allergens="Contains milk (whey)." />
+          <StatutoryStatements
+            servingGrams={SERVING_GRAMS}
+            maxServings={MAX_DAILY_SERVINGS}
+            declaration={NUTRITION_ROWS}
+            allergens="Contains milk (whey)."
+          />
         </div>
       </section>
 

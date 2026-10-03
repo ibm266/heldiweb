@@ -6,8 +6,9 @@ import { WaysComicStrip } from "@/components/ways-comic-strip";
 import { METHODS } from "@/components/ways-to-use-methods";
 
 /**
- * The homepage "how it works" gallery: three of the /ways-to-use methods (the
- * pot, the cold bowls, the whole table) shown as animated pouch-style strips.
+ * The homepage "how it works" gallery: four of the /ways-to-use methods (the
+ * table, the pot, the cold bowls, the mug) shown as animated pouch-style
+ * strips. The table leads because the Khana pouch teaches that method first.
  * On mobile they sit in a swipeable horizontal rail (hint + dots); from 900px
  * up they become a static three-up grid so all three fit on one screen with no
  * scroll (CSS hides the hint and dots there). The section makes the "as easy as
@@ -15,7 +16,7 @@ import { METHODS } from "@/components/ways-to-use-methods";
  * Strip data and copy come straight from the shared METHODS source so the two
  * surfaces never drift.
  */
-const RAIL_IDS = ["pot", "dahi", "table", "mug"] as const;
+const RAIL_IDS = ["table", "pot", "dahi", "mug"] as const;
 
 const RAIL_METHODS = RAIL_IDS.map((id) => {
   const method = METHODS.find((candidate) => candidate.id === id);
@@ -81,8 +82,8 @@ export function WaysGallery() {
         <h2>When does Heldi go in?</h2>
         <p className="ways-gallery__lede">
           Pick what you are making. Each card gives you the{" "}
-          <CopyHighlight>three useful steps</CopyHighlight>, whether you have a
-          cooking pot, a cold bowl, the family table or a mug by the kettle.
+          <CopyHighlight>three useful steps</CopyHighlight>, whether you have
+          the family table, a cooking pot, a cold bowl or a mug by the kettle.
         </p>
       </header>
 

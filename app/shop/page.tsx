@@ -14,7 +14,7 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Shop · Heldi",
   description:
-    "Choose Heldi Khana for shared pots, or meet Heldi Chai for hot drinks. Two pouches for two everyday kitchen routines.",
+    "Choose Heldi Khana for the bowl at your table, or meet Heldi Chai for hot drinks. Two pouches for two everyday kitchen routines.",
   alternates: { canonical: "/shop" }
 };
 
@@ -52,7 +52,7 @@ export default function ShopPage() {
           <p className="story-hero__lede">
             Start with the routine your family repeats most:{" "}
             <CopyHighlight>
-              a shared dinner pot, or the mug you make every day.
+              a bowl at the dinner table, or a mug by the kettle.
             </CopyHighlight>{" "}
             Each page explains what goes in and when to stir.
           </p>
@@ -65,13 +65,13 @@ export default function ShopPage() {
       <section className="section section--gold story-copy">
         <div className="story-copy__inner">
           <p className="eyebrow">WHICH ONE?</p>
-          <h2>Will you use Heldi in a pot or a mug?</h2>
+          <h2>Will you use Heldi in a bowl or a mug?</h2>
           <p>
             <CopyHighlight>Khana</CopyHighlight> is the savoury one: whey
             protein isolate with warm spices for dal, curry, sabzi and raita.
-            Finish cooking, take the pot off the heat, then stir it through the
-            shared pot or add it to your own bowl. Khana is the pouch on sale
-            first.
+            Stir a spoonful into your own bowl at the table, or take the pot
+            off the heat and stir it through for everyone. Khana is the pouch
+            on sale first.
           </p>
           <p>
             <CopyHighlight>Chai</CopyHighlight> belongs beside the mugs. It

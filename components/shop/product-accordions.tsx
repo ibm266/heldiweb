@@ -23,7 +23,7 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         spices already familiar to a family kitchen, blended for savoury food.{" "}
         <strong>All natural</strong>, <strong>no added sugar</strong>, gluten
         free, vegetarian and 98% lactose-free.{" "}
-        <strong>Contains milk (whey).</strong> Blended and packed in England.{" "}
+        <strong>Contains milk (whey).</strong> Blended and packed in the UK.{" "}
         <a href="/inside-the-pouch">See where every ingredient comes from</a>,
         or <a href="/our-story">read why it started in our kitchen</a>.
       </p>
@@ -33,10 +33,11 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     question: "How to use it",
     answer: (
       <p>
-        Finish cooking first. Take the pot off the heat, then stir in a
-        spoonful <strong>while the food is cooling</strong>. For one person,
-        add it to the bowl at the table instead. Use it with dal, curry, sabzi,
-        raita or dahi, without rewriting the family recipe.{" "}
+        Dish up your food as usual, then stir a heaped tablespoon{" "}
+        <strong>into your own bowl at the table</strong>. Cooking for
+        everyone? Take the pot off the heat and stir in a spoonful per person
+        while the food is cooling. Use it with dal, curry, sabzi, raita or
+        dahi, without rewriting the family recipe.{" "}
         <a href="/ways-to-use">See every way to use it</a>, including rotis
         and Friday&apos;s takeaway.
       </p>

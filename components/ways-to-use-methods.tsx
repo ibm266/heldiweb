@@ -5,8 +5,14 @@ import type { ComicStrip, Serving } from "@/components/ways-comic-strip";
 /**
  * The seven ways to stir Heldi in (six for Khana, one for Chai). One source
  * of truth: the /ways-to-use page renders every method with its full copy,
- * and the homepage "how it works" gallery reuses four of them (pot, dahi,
- * table, mug) as animated cards. Editing a method here updates both surfaces.
+ * and the homepage "how it works" gallery reuses four of them (table, pot,
+ * dahi, mug) as animated cards. Editing a method here updates both surfaces.
+ *
+ * THE ORDER IS THE PACK'S. The Khana pouch (round 16) teaches one method:
+ * serve your food, stir a heaped tablespoon into your own bowl, keep the jar
+ * on the table. So `table` leads and `pot` comes second (Mihir, 3 Oct 2026).
+ * The grounds alternate ink and cream down the page (BRAND.md §8.3), so a
+ * reorder also means re-pairing them.
  */
 export type Method = {
   id: string;
@@ -23,11 +29,45 @@ export type Method = {
 
 export const METHODS: Method[] = [
   {
+    id: "table",
+    chip: "On the table",
+    eyebrow: "AT THE TABLE",
+    title: "How do you add it to your own bowl?",
+    ground: "ink",
+    intro: (
+      <>
+        Dish up your dal, curry or sabzi just as always. Then, as you sit down
+        to eat,{" "}
+        <CopyHighlight>stir a heaped tablespoon into your own bowl</CopyHighlight>.
+        The pot stays as it is. Keep the jar on the table beside the achaar
+        and pass it along, so a tablespoon can go into papa&apos;s dal and a
+        teaspoon into nani&apos;s raita.
+      </>
+    ),
+    steps: [
+      <>Dish up your dal, curry or sabzi just as always.</>,
+      <>Stir a heaped tablespoon into your own bowl. Start with a teaspoon if it is your first time.</>,
+      <>Keep the jar on the table and pass it along, ready for next time.</>
+    ],
+    serving: { start: "1 tsp each", upto: "1 heaped tbsp each" },
+    note: "This is why the jar belongs between the dishes.",
+    strip: {
+      video: "/videos/ways-to-use/table-strip.mp4",
+      poster: "/images/ways-to-use/table-strip.webp",
+      width: 1920,
+      height: 1080,
+      label: "On the table",
+      captions: ["Fill the\njar.", "Set it by\nthe achaar.", "Stir your\nown bowl."],
+      anchors: [20, 50, 80],
+      alt: "Engraved table jar in the Heldi pouch style, shown three times: a plain pouch pouring powder into the open jar, the closed jar parked beside a little achaar pot, and two bangled hands lifting spoonfuls toward their own bowls."
+    }
+  },
+  {
     id: "pot",
     chip: "In the pot",
     eyebrow: "THE POT",
-    title: "How do you add it to dal or curry?",
-    ground: "ink",
+    title: "What if you are cooking for everyone?",
+    ground: "cream",
     intro: (
       <>
         A heaped tablespoon adds 10g of protein. Finish cooking and take the
@@ -58,7 +98,7 @@ export const METHODS: Method[] = [
     chip: "Dahi and raita",
     eyebrow: "COLD BOWLS",
     title: "What about dahi and raita?",
-    ground: "cream",
+    ground: "ink",
     intro: (
       <>
         Dahi is already cool, so you can add Heldi as soon as the bowl is
@@ -85,39 +125,6 @@ export const METHODS: Method[] = [
       captions: ["Ready the\nbowl.", "Sprinkle\nevenly.", "Stir until\nsmooth."],
       anchors: [21, 50, 80],
       alt: "Engraved metal bowls of dahi in the Heldi pouch style, shown three times: a full bowl with a spoon resting beside it, a bangled hand sprinkling a spoonful across the surface, and another hand stirring it smooth with a spoon."
-    }
-  },
-  {
-    id: "table",
-    chip: "On the table",
-    eyebrow: "THE WHOLE TABLE",
-    title: "Why does the jar live on the table?",
-    ground: "ink",
-    intro: (
-      <>
-        Set the jar beside the achaar and let each person choose their amount.
-        A tablespoon can go into papa&apos;s dal and a teaspoon into
-        nani&apos;s raita.{" "}
-        <CopyHighlight>Everyone stirs their own bowl</CopyHighlight>, then
-        passes the jar along.
-      </>
-    ),
-    steps: [
-      <>Put the jar in the middle of the table, within everyone&apos;s reach.</>,
-      <>Everyone adds their own. Start with a teaspoon, work up to a heaped tablespoon.</>,
-      <>Stir it into your bowl and pass the jar along.</>
-    ],
-    serving: { start: "1 tsp each", upto: "1 heaped tbsp each" },
-    note: "This is why the jar belongs between the dishes.",
-    strip: {
-      video: "/videos/ways-to-use/table-strip.mp4",
-      poster: "/images/ways-to-use/table-strip.webp",
-      width: 1920,
-      height: 1080,
-      label: "On the table",
-      captions: ["Fill the\njar.", "Set it by\nthe achaar.", "Stir your\nown bowl."],
-      anchors: [20, 50, 80],
-      alt: "Engraved table jar in the Heldi pouch style, shown three times: a plain pouch pouring powder into the open jar, the closed jar parked beside a little achaar pot, and two bangled hands lifting spoonfuls toward their own bowls."
     }
   },
   {

@@ -36,12 +36,12 @@ const BADGES = "/images/pouch-badges";
 const POUCHES: Pouch[] = [
   {
     id: "khana",
-    tag: "FOR THE POT",
+    tag: "FOR THE BOWL",
     title: "Heldi Khana",
     legalName: "Whey protein isolate blend with warm spices. Food supplement.",
-    line: "For dal, curry, sabzi and raita. Stir a heaped tablespoon through the shared pot once it is off the heat, or add it to your own bowl.",
+    line: "For dal, curry, sabzi and raita. Stir a heaped tablespoon into your own bowl at the table, or through the shared pot once it is off the heat.",
     image: {
-      src: "/images/range/khana.webp?v=5",
+      src: "/images/range/khana.webp?v=6",
       alt: "The navy Heldi Khana pouch on a linen table"
     },
     pills: [
@@ -60,11 +60,12 @@ const POUCHES: Pouch[] = [
       "Whey protein and casein blend with chai spices and coconut sugar. Food supplement.",
     line: "For chai, tea, coffee and hot chocolate. Make the mug as usual, take it off the boil, then stir in a level tablespoon before drinking.",
     image: {
-      src: "/images/range/chai.webp?v=4",
+      src: "/images/range/chai.webp?v=5",
       alt: "The terracotta Heldi Chai pouch on a linen table"
     },
     pills: [
       { icon: `${BADGES}/high-protein.png`, label: "High protein", width: 256, height: 256 },
+      { icon: `${BADGES}/caffeine-free.webp`, label: "Caffeine free", width: 256, height: 256 },
       { icon: `${BADGES}/vegetarian.png`, label: "Vegetarian", width: 286, height: 367 }
     ],
     href: "/shop/chai"
@@ -74,7 +75,7 @@ const POUCHES: Pouch[] = [
 function status(id: Pouch["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
-      ? { note: "Ready for the next pot.", cta: "Shop Khana" }
+      ? { note: "Ready for the next bowl.", cta: "Shop Khana" }
       : { note: "Khana is the pouch launching first.", cta: "See Khana" };
   }
   return mode === "live"

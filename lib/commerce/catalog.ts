@@ -117,40 +117,48 @@ export function isGiftLine(line: Pick<CartLine, "merchandise">): boolean {
 }
 
 // ?v= busts the Next image-optimizer cache when a shot is regenerated in place.
-// Reshot 4 Sep 2026 for the new line-up: the engraved brass jar and its gold
-// spoon replace the plain unengraved jar, the cotton tote replaces the masala
+// Reshot 4 Sep 2026 for the new line-up: the cotton tote replaces the masala
 // dabba, and no shot shows more than two pouches, because two is the ceiling.
+// Reshot again 3 Oct 2026 (HeldiPM design/site-photography/2026-10-round16/,
+// whose README holds the method and generation ids): every pouch and sachet
+// now carries the round-16 front (SAVOURY PROTEIN BLEND / FOR INDIAN FOOD,
+// SPICED PROTEIN BLEND), and the jar is the real run-1 jar, a brushed gold
+// stainless barrel with a domed lid, a rim notch for the spoon and a small
+// etched HELDI. It replaces the engraved brass jar the September shots
+// invented. Its reference photos are in HeldiPM design/merch/run1-jar-reference/.
 // The `triple` key survives only because TierId still has three members; it
 // now carries the mixed pair, which is a basket a customer can actually buy.
 // It goes when the tier model does.
 const TIER_IMAGES: Record<TierId, { url: string; altText: string }> = {
-  single: { url: "/images/shop/khana-1.webp?v=5", altText: "Navy Heldi Khana pouch beside an engraved brass table jar and gold spoon" },
-  double: { url: "/images/shop/khana-bundle-2.webp?v=6", altText: "Two navy Heldi Khana pouches with an engraved brass jar, gold spoon and cotton tote bag" },
-  triple: { url: "/images/shop/khana-chai-pair.webp?v=2", altText: "Navy Heldi Khana and terracotta Heldi Chai pouches with an engraved brass jar, gold spoon and cotton tote bag" }
+  single: { url: "/images/shop/khana-1.webp?v=6", altText: "Navy Heldi Khana pouch beside the gold table jar and its gold spoon" },
+  double: { url: "/images/shop/khana-bundle-2.webp?v=7", altText: "Two navy Heldi Khana pouches with the gold table jar, its gold spoon and the cotton tote bag" },
+  triple: { url: "/images/shop/khana-chai-pair.webp?v=3", altText: "Navy Heldi Khana and terracotta Heldi Chai pouches with the gold table jar, its gold spoon and the cotton tote bag" }
 };
 // One shot per sachet SKU, all three on the same set as the pouch range
 // (GPT Image 2, 4 Sep 2026). Before this the Chai sachet and both pair SKUs
 // showed the navy Khana sachet, so a Chai sample looked like a Khana one in
 // the picker, the drawer and at checkout.
-const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=4", altText: "Navy Heldi Khana 30g sample sachet" };
+const SAMPLE_IMAGE = { url: "/images/shop/sample.webp?v=5", altText: "Navy Heldi Khana 30g sample sachet" };
 const CHAI_SAMPLE_IMAGE = {
-  url: "/images/shop/chai-sample.webp",
+  url: "/images/shop/chai-sample.webp?v=2",
   altText: "The terracotta Heldi Chai sample sachet beside a small pile of chai spice powder"
 };
 const SAMPLE_PAIR_IMAGE = {
-  url: "/images/shop/sample-pair.webp",
+  url: "/images/shop/sample-pair.webp?v=2",
   altText: "The navy Heldi Khana sample sachet and the terracotta Heldi Chai sample sachet side by side"
 };
 
 // Clean pouch-only shot for contents breakdowns (the gallery images show
 // the pouches with their jar and tote).
-export const POUCH_THUMB = "/images/shop/pouch-solo.webp?v=4";
+export const POUCH_THUMB = "/images/shop/pouch-solo.webp?v=5";
 
-// New filenames rather than in-place swaps: neither of the old gift thumbs
-// carried a ?v=, and next.config.ts holds optimized images for 31 days, so
-// overwriting them would have served the unengraved jar and the withdrawn
-// dabba for a month.
-export const JAR_THUMB = "/images/shop/gift-jar-brass.webp";
+// New filenames rather than in-place swaps: the old gift thumbs carried no
+// ?v=, and next.config.ts holds optimized images for 31 days, so overwriting
+// them would have served the previous jar for a month. That happened twice:
+// gift-jar-brass.webp (4 Sep, the engraved brass jar) replaced the unengraved
+// jar, and gift-jar.webp (3 Oct, the real run-1 jar) replaced the brass one.
+// The older files stay on disk.
+export const JAR_THUMB = "/images/shop/gift-jar.webp";
 // ?v=2: reshot 4 Sep 2026 in place. The first solo tote carried an elephant
 // that was not the Heldi elephant, on a set of its own.
 //
@@ -174,10 +182,10 @@ export const TOTE_THUMB = "/images/shop/gift-tote.webp?v=2";
 
 // The jar photographed with its spoon, at gallery size rather than thumb size.
 // Not wired to a line yet: the £0 jar variant uses the tight JAR_THUMB crop.
-export const JAR_SPOON_IMAGE = "/images/shop/gift-jar-brass-spoon.webp";
+export const JAR_SPOON_IMAGE = "/images/shop/gift-jar-spoon.webp";
 /** @deprecated The dabba is withdrawn. Kept until the cart stops reading it. */
 export const DABBA_THUMB = TOTE_THUMB;
-export const SAMPLE_THUMB = "/images/shop/sample.webp?v=4";
+export const SAMPLE_THUMB = "/images/shop/sample.webp?v=5";
 
 // A 300g pouch at a 12g serving (see the nutrition declaration; the gram is
 // the declared portion and the heaped tablespoon is an approximation of it,
@@ -207,7 +215,7 @@ const PRODUCTS: Product[] = [
     title: "Heldi Khana",
     shortDescription: "A spoonful for dal, curry, sabzi and raita.",
     description:
-      "Heldi Khana is a high-protein whey isolate blend with warm spices for dal, curry, sabzi and raita. Stir it through the shared pot once it is off the heat, or add it to your own bowl at the table. High in protein. Protein contributes to the maintenance of muscle mass. Contains milk (whey).",
+      "Heldi Khana is a high-protein whey isolate blend with warm spices for dal, curry, sabzi and raita. Stir it into your own bowl at the table, or through the shared pot once it is off the heat. High in protein. Protein contributes to the maintenance of muscle mass. Contains milk (whey).",
     images: [
       TIER_IMAGES.single,
       TIER_IMAGES.double,
@@ -799,7 +807,7 @@ const MIX_PRODUCTS: Product[] = [
     title: "Heldi pouches",
     shortDescription: "One pouch or two, in whatever mix you want.",
     description:
-      "One pouch or two, Khana for the pot and Chai for the mug, in whatever mix you want.",
+      "One pouch or two, Khana for the bowl and Chai for the mug, in whatever mix you want.",
     images: [TIER_IMAGES.single],
     tags: ["pouches"],
     variants: Object.entries(MIX_VARIANT_IDS).map(([sku, id]) => {
@@ -827,7 +835,7 @@ const MIX_PRODUCTS: Product[] = [
     title: "Heldi samples",
     shortDescription: "A 30g sachet to try before you buy a pouch.",
     description:
-      "A 30g sachet to try before you buy a pouch. Khana for the pot, Chai for the mug, or one of each.",
+      "A 30g sachet to try before you buy a pouch. Khana for the bowl, Chai for the mug, or one of each.",
     images: [SAMPLE_PAIR_IMAGE, SAMPLE_IMAGE, CHAI_SAMPLE_IMAGE],
     tags: ["samples"],
     variants: [

@@ -9376,7 +9376,7 @@ a.living-card__tag:hover {
 .range__head h2 {
   margin: 0.75rem 0 1rem;
   line-height: 1.1;
-  /* Two beats, two lines: "One for the pot." / "One for the mug." Without
+  /* Two beats, two lines: "One for the bowl." / "One for the mug." Without
      this the wide widths orphan "mug." on its own line. */
   text-wrap: balance;
 }

@@ -15,7 +15,11 @@ import { MenuGallery } from "@/components/menu-gallery";
 import { RangeSection } from "@/components/range-section";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
 import { GiftingBand } from "@/components/shop/gifting-band";
-import { SERVING_GRAMS } from "@/components/shop/nutrition-data";
+import {
+  MAX_DAILY_SERVINGS,
+  NUTRITION_ROWS,
+  SERVING_GRAMS
+} from "@/components/shop/nutrition-data";
 import { StatutoryStatements } from "@/components/shop/statutory-statements";
 import { StirGallery } from "@/components/stir-gallery";
 import { useNavScrollState } from "@/components/use-nav-scroll-hide";
@@ -148,7 +152,7 @@ function waitlistTickerCopy(offerItems: string[]): string {
     "THEY SHAKE, WE STIR",
     "MADE IN THE UK",
     "FOR INDIAN KITCHENS",
-    "KHANA FOR THE POT, CHAI FOR THE MUG",
+    "KHANA FOR THE BOWL, CHAI FOR THE MUG",
     "100% VEGETARIAN",
     ...offerItems,
     "SAME RECIPES, SAME TASTE",
@@ -158,7 +162,7 @@ function waitlistTickerCopy(offerItems: string[]): string {
 }
 
 const TICKER_COPY_LIVE =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE POT, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
+  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE BOWL, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -199,7 +203,7 @@ const HERO_SHOWCASE_PILLS: {
   }
 ];
 
-const IMAGE_VERSION = "ink-blue-12";
+const IMAGE_VERSION = "ink-blue-13";
 const IMAGE_BASE = "/images/variants/ink-blue";
 
 function imageSrc(path: string) {
@@ -828,7 +832,7 @@ function HeroReveal({
                 <Image
                   className="hero-reveal-pouch__image"
                   src={imageSrc("/images/hero-pair.webp")}
-                  alt="The Heldi Khana and Heldi Chai pouches side by side, one for the pot and one for the mug"
+                  alt="The Heldi Khana and Heldi Chai pouches side by side, one for the bowl and one for the mug"
                   width={1744}
                   height={2336}
                   priority
@@ -1390,7 +1394,7 @@ export function HeldiHomepage({
               <Image
                 className="jar-preview-image"
                 src={imageSrc("/images/jar-pouch.webp")}
-                alt="Heldi pouch beside the gold refillable table jar"
+                alt="The navy Heldi Khana pouch beside the gold table jar and its gold spoon"
                 width={768}
                 height={768}
                 sizes="(max-width: 560px) calc(100vw - 3rem), (max-width: 899px) min(92vw, 380px), 320px"
@@ -1422,7 +1426,12 @@ export function HeldiHomepage({
           have to be reachable here too, not only on /faq. See
           components/shop/statutory-statements.tsx. */}
       <section className="section section--cream">
-        <StatutoryStatements servingGrams={SERVING_GRAMS} allergens="Contains milk (whey)." />
+        <StatutoryStatements
+          servingGrams={SERVING_GRAMS}
+          maxServings={MAX_DAILY_SERVINGS}
+          declaration={NUTRITION_ROWS}
+          allergens="Contains milk (whey)."
+        />
       </section>
 
       <footer>

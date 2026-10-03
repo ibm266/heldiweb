@@ -245,9 +245,8 @@ The six named patterns, with canon examples:
   by `COMMERCE_MODE`, never hard-coded per surface; secondary "How it works" (outline);
   closing "Be first to stir it in." followed by the waitlist offer paragraph; waitlist
   success: "You're on the list. One email, the day we launch, with 15% off your first
-  order inside. If you're one of the first 100, your free sample pair is in there too.
-  Tell your mum we said hi." Those lines, and every other statement of the waitlist
-  offer, come from `lib/waitlist-offer.ts` (client surfaces read them through
+  order inside. Tell your mum we said hi." Those lines, and every other statement of
+  the waitlist offer, come from `lib/waitlist-offer.ts` (client surfaces read them through
   `useWaitlistOffer()`). §11.9 owns the offer. No surface types the offer, a number in
   it, or a code string.
 - **Pill-links** end with a spaced arrow: "Read the full truth →".
@@ -383,7 +382,7 @@ product shots are AI-generated placeholders to be replaced with real photography
 
 | Route | Job | Registered in |
 |---|---|---|
-| `/` | Convert: hero reveal, pouch stats, stir gallery, the two-pouch range band (Khana for the pot, Chai for the mug, `components/range-section.tsx`), how-it-works, gifting, truth teaser, menus, audience, vs-shaker, reviews, founder band, FAQ teaser, jar, waitlist CTA | `components/heldi-homepage.tsx` |
+| `/` | Convert: hero reveal, pouch stats, stir gallery, the two-pouch range band (Khana for the bowl, Chai for the mug, `components/range-section.tsx`), how-it-works, gifting, truth teaser, menus, audience, vs-shaker, reviews, founder band, FAQ teaser, jar, waitlist CTA | `components/heldi-homepage.tsx` |
 | `/truth` | Educate + rank for protein questions (interactive myth-busting) | `components/truth-page.tsx` |
 | `/our-story` | Founder trust: nani, kitchen trials, taste panel, what's next | `app/our-story/page.tsx` |
 | `/inside-the-pouch` | Provenance: suppliers, batch report, made in England | `app/inside-the-pouch/page.tsx` |
@@ -417,8 +416,8 @@ Change these files, and only these files, for their facts:
 | Shipping thresholds and rates | `SHIPPING` in `lib/pricing.ts` | £50 free threshold, £4.99 Tracked 48 (both set to match the live Shopify profile, 4 Sep 2026), sample letter absorbed |
 | Gifting discount + codes | `GIFTING`, `FOUNDERS`, `WELCOME_POSTAGE` in `lib/pricing.ts` | ACHABETA / RISHTA / SHABASH at 15% on any quantity; founders 25% for **close friends only** (not the waitlist, since 17 Sep 2026); welcome free postage, the only code that combines with a product discount. As of 17 Sep 2026 Shopify holds none of the family codes at all, and `WELCOME` is a fixed amount off rather than free shipping: rebuild both before live mode |
 | **The waitlist offer** | §11.9 of this file owns the offer. `WAITLIST_OFFER` in `lib/pricing.ts` holds its one number (the first 100); the 15% is `GIFTING.percent`; the words are `lib/waitlist-offer.ts` | First to know, a free sample pair for the first 100 with Heldi paying the postage, 15% off the first order. Never typed into a component, an email or a doc: every surface takes its line from the wording file or copies it from §11.9 |
-| Pack ink: what colour prints on each pouch | HeldiPM `design/pouch-v2/print/heldi-*-FRONT-sRGB.png` | **Khana is metallic gold on navy. Chai is CREAM on terracotta**, with gold only on "adj.", "healthy.", the 5g and the strapline, and a cream line-drawing elephant. The two packs are deliberately different; do not make Chai gold to "match". Chai's strapline is HIGH-PROTEIN SPICE BLEND, not "protein powder" |
-| The presents, and what they look like | `presentsForPouches` in `lib/pricing.ts`; `JAR_THUMB` / `TOTE_THUMB` in `lib/commerce/catalog.ts` | One set per order: a jar with a single, a jar and a tote with a pair. The jar is brushed brass with the italic HELDI lockup etched dark into the front and a gold spoon engraved along the handle. The tote is undyed cotton with a terracotta line-drawing elephant, no wordmark. The masala dabba is withdrawn |
+| Pack ink and pack names: what prints on each pouch | HeldiPM `design/pouch-v2/print/round16/current/heldi-*-160x240mm-FRONT-sRGB.png` (copy in `design/pouch-v2/round16/r16_common.py`) | **Khana is metallic gold on navy. Chai is CREAM on terracotta** with a cream line-drawing elephant, and since round 16 its accent ink is **navy** where it was gold ("Chai is blue"; the round-16 README lists each element). The two packs are deliberately different; do not make Chai gold to "match". The fronts read **SAVOURY PROTEIN BLEND / FOR INDIAN FOOD** (Khana) and **SPICED PROTEIN BLEND** (Chai; it was HIGH-PROTEIN SPICE BLEND until round 16), and the Khana back calls it "a seasoned protein blend". These are pack facts: they stay out of site copy unless Mihir says otherwise (§11.10) |
+| The presents, and what they look like | `presentsForPouches` in `lib/pricing.ts`; `JAR_THUMB` / `TOTE_THUMB` in `lib/commerce/catalog.ts` | One set per order: a jar with a single, a jar and a tote with a pair. The jar is the real run-1 jar (since 3 Oct 2026; references in HeldiPM `design/merch/run1-jar-reference/`): a brushed gold stainless barrel with a domed lift-off lid and a short knob, a notch in the rim where the long gold spoon's handle sits, and a small italic HELDI etched tone-on-tone low on the body. Alt text calls it "the gold table jar and its gold spoon", never "engraved" or "brass", which described a jar the September shots invented. The tote is undyed cotton with a terracotta line-drawing elephant, no wordmark. The masala dabba is withdrawn |
 | Servings per pouch / sachet | `SERVINGS_PER_POUCH`, `SAMPLE_GRAMS`, `SERVINGS_PER_SAMPLE`, `MUGS_PER_SAMPLE` in `lib/commerce/catalog.ts` | Pouch 25. Sachet fill 30g, confirmed 4 Sep 2026, giving 2 Khana meals at a 12g portion and 3 Chai mugs at 8g, both derived and rounded down. Feeds every per-meal price |
 | Formulation, nutrition table, amino profile | `components/shop/nutrition-data.ts` | `FORMULA` publishes the whey's 94% and names the rest without percentages (see §12). Real ratios: cumin 1.7, lecithin 1.5, coriander 1.25, salt 0.75, garam masala 0.5, chilli 0.2, turmeric 0.1. Protein 10.1g per 12g serving, 84.1g per 100g |
 | Precise protein per tbsp for maths | `PROTEIN_GRAMS_PER_TBSP` in `lib/reviews.ts` (10.1) | Keep in sync with nutrition-data |
@@ -500,7 +499,9 @@ list, for the next time:
 6. The serving gram itself is a separate sweep: `SERVING_GRAMS`, `SERVINGS_PER_POUCH`
    (300 ÷ 12 = 25), the sachet's servings (`SAMPLE_GRAMS` 30 ÷ 12 = 2, rounded
    down, and 30 ÷ 8 = 3 for Chai), and every "12g" in prose.
-   Moving the gram moves the whole per-serving column and the amino column with it.
+   Moving the gram moves the whole per-serving column and the amino column with it,
+   and the recommended daily intake with them (§11.10): its range is the serving
+   times `MAX_DAILY_SERVINGS`, and it is printed on the pack.
 
 ### 11.3 Price / tier / discount change
 
@@ -541,7 +542,7 @@ list, for the next time:
 `app/shop/page.tsx` metadata, `buy-box.tsx` H1 and its "Meet Heldi Chai" line,
 our-story "What's next" section ("Khana is on the table. Chai is on the stove."),
 the homepage range band (`components/range-section.tsx`: card titles, alts, the
-`/images/range/khana.webp` filename), the ticker line "KHANA FOR THE POT, CHAI
+`/images/range/khana.webp` filename), the ticker line "KHANA FOR THE BOWL, CHAI
 FOR THE MUG", the "Is there a Heldi for chai?" FAQ in `home-faqs.ts`, the
 Organization schema description in `app/page.tsx`, `public/llms.txt`, blog
 posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
@@ -604,10 +605,12 @@ Khana's from `components/shop/nutrition-data.ts`, Chai's from
 `components/shop/chai-data.ts`. Three components used to hard-code Khana and no
 longer do, so keep them that way:
 
-- `statutory-statements.tsx` takes `servingGrams` and `allergens` as **required
-  props**. The recommended daily portion and the allergen are per-product
-  mandatory particulars; a default would silently declare 12g of whey on an 8g
-  whey-and-casein product, which is a false particular, not a copy slip.
+- `statutory-statements.tsx` takes `servingGrams`, `maxServings`, `declaration`
+  and `allergens` as **required props**. The recommended daily intake and the
+  allergen are per-product mandatory particulars; a default would silently
+  declare 12g to 48g of whey on an 8g whey-and-casein product, which is a false
+  particular, not a copy slip. The intake's protein range is read from the
+  `declaration` rows passed in, so it cannot disagree with the table.
 - `pdp-accordion.tsx` is the shell only. The answers live with the product
   (`product-accordions.tsx` for Khana, `chai-accordions.tsx` for Chai).
 - `og/card.tsx` resolves its pouch art through `OG_ART_FILES`. A new SKU adds an
@@ -626,9 +629,21 @@ card (`stir-gallery.tsx`, counter reads "Chai" and "figure to follow"), the
 declaration lands, those are the places a number could be added; until then
 keep them figure-free.
 
+What Chai **does** say, and where it comes from: "High in protein" and
+"Vegetarian" (the `CHAI_PILLS` it shares with Khana); **caffeine free**, of
+the blend and never the drink, because it is stirred into tea and coffee (the
+round-16 pack's strip and paragraph; substantiation in §12; on the Chai pills,
+the "What's inside" accordion and the "Can children have Heldi?" FAQ); and
+**"Made with natural ingredients."**, word for word as the Chai pack prints it
+(`CHAI_NATURAL_LINE`, in the "What's inside" accordion and the buy-box
+description, settled by Mihir on 3 Oct 2026).
+
 What Chai deliberately does **not** repeat from Khana, and why: "No added sugar"
 (Chai carries coconut sugar), "98% lactose-free" (substantiated against Khana's
-whey certificate at a 12g spoonful), "All natural" (ASA exposure), "organic"
+whey certificate at a 12g spoonful), the "All natural" badge (Chai says it its
+own way: its pack carries *Made with natural ingredients.* since round 16, and
+the site repeats that line instead; the natural claims were settled on 3 Oct
+2026, before which this list cited ASA exposure), "organic"
 (uncertified, and no organic ground clove exists to buy), the 10.1g protein
 figure, the cumin ingredients list, the 18-month best-before, and the reviews
 band (`reviews-store.ts` does not filter by product and `PROTEIN_GRAMS_PER_TBSP`
@@ -694,7 +709,7 @@ use per customer, and a checkout holding only the free pair would spend it
 |---|---|---|
 | The list | "the waitlist" on first mention and on buttons ("Join waitlist"), then "the list" | wait list, waiting list, mailing list |
 | Who gets the pair | "the first 100 on the list" | first hundred, first 100 customers, first 100 people to join, founding 100 |
-| The sample | "a free sample pair", explained as "one Khana sachet for the pot, one Chai sachet for the mug" | trial pair, taster pack, Sample Duo, Sample Trio, two sachets to try |
+| The sample | "a free sample pair", explained as "one Khana sachet for the bowl, one Chai sachet for the mug" | trial pair, taster pack, Sample Duo, Sample Trio, two sachets to try |
 | Its postage | "we pay the postage" | posted free, free shipping, free delivery, postage on us, P&P, postage and packaging |
 | The 15% | "15% off your first order" | launch sale, launch price, 25%, 20%, founders, any code string in waitlist mode |
 | The email | "one email, the day we launch" | updates, newsletter (that is Heldi Living) |
@@ -709,21 +724,28 @@ are interpolated from `WAITLIST_OFFER` and `GIFTING`, never typed.
 | `WAITLIST_HEADLINE` | Popup title, final CTA heading | Be first to stir it in. |
 | `tickerItems` | Waitlist ticker | FIRST 100 ON THE LIST GET A FREE SAMPLE PAIR  •  15% OFF YOUR FIRST ORDER |
 | `sentence` | Hero line, both PDP notes, subpage CTA perk line, `llms.txt`, captions | The first 100 on the list get a free sample pair, and we pay the postage. Everyone on the list gets 15% off their first order. |
-| `paragraph` | Popup lede and final CTA paragraph, identical in both | One email, the day we launch. The first 100 on the list get a free sample pair, one for the pot and one for the mug, and we pay the postage. Everyone on the list gets 15% off their first order. |
-| `success` | Form success state | You're on the list. One email, the day we launch, with 15% off your first order inside. If you're one of the first 100, your free sample pair is in there too. Tell your mum we said hi. |
+| `paragraph` | Popup lede and final CTA paragraph, identical in both | One email, the day we launch. The first 100 on the list get a free sample pair, one for the bowl and one for the mug, and we pay the postage. Everyone on the list gets 15% off their first order. |
+| `success` | Form success state. One line in both forms: it never places the joiner | You're on the list. One email, the day we launch, with 15% off your first order inside. Tell your mum we said hi. |
 | `waitlistOfferRows()` | The three-row block in the welcome email, the launch emails and the terms | Everyone on the list: First to know, the day we launch. The first 100: A free sample pair, and we pay the postage. Your first order: 15% off. |
-| `WAITLIST_PAIR_EXPLAINER` | Emails, product description | The pair is one Khana sachet for the pot and one Chai sachet for the mug, so you can try both before you commit to a pouch. |
+| `WAITLIST_PAIR_EXPLAINER` | Emails, product description | The pair is one Khana sachet for the bowl and one Chai sachet for the mug, so you can try both before you commit to a pouch. |
 | `faqAnswer` | The offer half of the launch FAQ (Voice A) | We send one email on the day the shop opens, so the waitlist is first to know. The first 100 people on the list get a free sample pair, one Khana sachet and one Chai sachet, and we pay the postage. Everyone on the list gets 15% off their first order. |
-| `freePairProductCopy()` | `lib/commerce/catalog.ts` and the Shopify product | Title: Heldi sample pair, on us. Short: A free sample pair for the first 100 on the list. Long: Two 30g sachets, one Khana for the pot and one Chai for the mug. Free for the first 100 on the list, and we pay the postage. |
+| `freePairProductCopy()` | `lib/commerce/catalog.ts` and the Shopify product | Title: Heldi sample pair, on us. Short: A free sample pair for the first 100 on the list. Long: Two 30g sachets, one Khana for the bowl and one Chai for the mug. Free for the first 100 on the list, and we pay the postage. |
 | `pairsGoneMessage()` | The basket, if a claim arrives after the last pair | The free sample pairs have all been claimed. Your 15% still works on a pouch. |
 
-**Two forms of every line.** Once the list is longer than 100, offering a pair to a new
-joiner would be offering something they cannot have. `lib/waitlist-count.ts` reads the
-list length (cached ten minutes, fails open), the root layout hands it to
+**Two forms of every line but one.** Once the list is longer than 100, offering a pair
+to a new joiner would be offering something they cannot have. `lib/waitlist-count.ts`
+reads the list length (cached ten minutes, fails open), the root layout hands it to
 `WaitlistPopupProvider`, and `useWaitlistOffer()` returns the closed form: the ticker
 drops the pair item and the sentence becomes "The free sample pairs have all gone to
-the first 100. Everyone on the list still gets 15% off their first order." The signup
-API also returns whether that joiner made the first 100, so the success line is exact.
+the first 100. Everyone on the list still gets 15% off their first order."
+
+**`success` is the exception** (settled 17 Sep 2026): one line, the same whichever form
+is showing. The site says what the offer is; it never tells a joiner where they landed
+on it. That is why `/api/waitlist` answers with nothing but `ok`. Working out someone's
+place would either sour a signup in the second it happened or make a promise the form
+cannot keep, and the count is stale the moment it is read. Who is inside the first 100
+is settled at launch from `joined_at` order, and the launch email carrying the claim
+link is the thing that says so. Do not reintroduce a per-joiner place on the list.
 
 **If the offer changes, this is every place it lives:**
 
@@ -761,6 +783,75 @@ in copy, in `public/llms.txt` or in `docs/email/`. `npm run pricing-check` has a
 `posted free`, `postage on us`, `trial pair`, `launch sale`, `wait list`, `25% off`,
 `20% off`, `PEHLEAAP`, `firstJoiners`.
 
+### 11.10 What the pouch prints (round 16, 3 Oct 2026)
+
+Mihir compared the round-16 pouches (HeldiPM `design/pouch-v2/print/round16/current/`,
+revision 8) with the site on 3 Oct 2026 and brought the site into line. The pack
+and the site now agree on the facts below; change one and change the other, and
+quote the pack from `r16_common.py` and `typeset_compliance.py`, never from memory.
+
+1. **Recommended daily intake, 1 to 4 servings.** `MAX_DAILY_SERVINGS`
+   (`nutrition-data.ts`) and `CHAI_MAX_DAILY_SERVINGS` (`chai-data.ts`).
+   `statutory-statements.tsx` builds the sentence from them and from each
+   product's declaration rows (`dailyIntake()`), so it renders on the homepage,
+   /faq and both buy boxes with no literal figure. The "How do I use it?" answer in
+   `home-faqs.ts` (also on /faq) interpolates the same constants; `public/llms.txt`
+   repeats the range by hand. Pack side:
+   `daily_intake` in `typeset_compliance.py`. Always a range, never "1
+   recommended, 4 maximum".
+2. **"Blended and packed in the UK"**, never "in England": `product-accordions.tsx`,
+   `chai-accordions.tsx`, `/inside-the-pouch` (the pull line, the "MADE IN THE UK"
+   eyebrow and its paragraph) and the "Where do the ingredients come from?" answer
+   in `site-faqs.ts`. "(England)" inside a legal name, such as the Food Supplements
+   (England) Regulations 2003, is not provenance and never changes.
+3. **Khana's method: the bowl at the table first, the pot second**, as the pack's
+   three steps teach it. `METHODS` order in `ways-to-use-methods.tsx` (table, pot,
+   then the rest; grounds re-paired to keep the §8.3 alternation), `RAIL_IDS` and
+   the lede in `ways-gallery.tsx`, the "How to use it" accordion in
+   `product-accordions.tsx`, "How do I use it?" in `home-faqs.ts`, the heat answer
+   in `site-faqs.ts`, the buy-box description, the pouch picker line, the Khana
+   line in `public/llms.txt`, the /shop
+   "Which one?" paragraph, the /shop/khana meta description and the catalogue
+   description in `lib/commerce/catalog.ts` (mirror that one in Shopify by hand).
+   The strip videos and their captions stay as drawn.
+   **The positioning says "bowl" too** (Mihir, 3 Oct 2026: lean into the bowl,
+   not the pot): the ticker "KHANA FOR THE BOWL, CHAI FOR THE MUG", the range band
+   "One for the bowl. One for the mug." and its FOR THE BOWL tag (also on the
+   /shop picker, with "Ready for the next bowl."), the Khana share card "Same bowl.
+   More protein.", the buy box ("Made for the food already in your bowl."), /shop
+   (lede, "Will you use Heldi in a bowl or a mug?", meta), the comparison header
+   ("Keep the jar on the table.", the pack's STORE IN A JAR step, and "a bowl at
+   the table, a mug by the kettle"), the hero pair's alt, the "Is there a Heldi
+   for chai?" answer, the pouch and sachet catalogue copy, and the waitlist offer's
+   "one for the bowl and one for the mug" (§11.9, with its four email masters and
+   `docs/brand/specimen.html`). "Pot" survives only as the second method (the "In
+   the pot" section) and where it measures how much was cooked (the review form
+   and leaderboard, which must never invite a contest over one bowl).
+4. **Caffeine free, Chai only, the blend and never the drink**: the Chai pills
+   (`CHAI_PILLS`, and the hand-kept copy of them on the Chai card of the /shop
+   pouch picker, icon `pouch-badges/caffeine-free.webp`), the "What's inside" accordion in `chai-accordions.tsx`, and the
+   "Can children have Heldi?" answer in `home-faqs.ts`, which points at the tea it
+   goes into, and the Chai line in `public/llms.txt`. Substantiation in §12.
+5. **Natural claims**: Khana keeps "All natural"; Chai says `CHAI_NATURAL_LINE`
+   ("Made with natural ingredients.") in its "What's inside" accordion and buy-box
+   description. Settled 3 Oct 2026; see §12.
+6. **The QR code.** Both packs send people to `https://heldi.co.uk/ways-to-use`,
+   captioned "See more ways to use." **Never rename or remove the `/ways-to-use`
+   route**: printed pouches point at it for as long as they exist.
+7. **Product names** (pack only, §10): SAVOURY PROTEIN BLEND / FOR INDIAN FOOD,
+   SPICED PROTEIN BLEND, and "a seasoned protein blend" on the Khana back. Not in
+   site copy unless Mihir says so.
+8. **Product photography.** Every still that shows a pouch was redone on 3 Oct
+   2026 with the round-16 fronts and the real run-1 jar, from HeldiPM
+   `design/site-photography/2026-10-round16/` (its README and `batch2/README.md`
+   hold the method): the shop shots in `public/images/shop/`, the homepage hero
+   pair and jar card, the `public/images/range/` tiles, the comparison pouch and
+   the share-card arts in `assets/og/`. The live homepage intro (the gold elephant
+   run) shows no pouch. The retired hero film `heldi-hero-v3.mp4` does end on an
+   older marigold pouch, but it only plays in the unused `heroLayout="video"` and is
+   not deployed (NEXT_STEPS.md). Any pouch image made later must show the fronts in the
+   current print files, not an older shot.
+
 ## §12 Compliance guardrails (UK food supplement)
 
 - Only the three authorised protein claims (§5). No disease prevention, no weight-loss
@@ -768,7 +859,8 @@ in copy, in `public/llms.txt` or in `docs/email/`. `npm run pricing-check` has a
   situations always defer to GP / dietitian / midwife.
 - Allergen statement: **Contains milk (whey).** Keep it in the PDP description, the
   ingredients FAQ, the nutrition accordion and the FAQ-page disclaimer block.
-- The supplement disclaimer block (do not exceed the recommended daily intake; not a
+- The supplement disclaimer block (the recommended daily intake, stated as a range of 1
+  to 4 servings directly before "Do not exceed the recommended daily intake."; not a
   substitute for a varied and balanced diet; keep out of reach of children) must stay
   reachable from every commercial surface; today it renders on /faq and the truth
   page sources note, with statutory text specified in `fable/compliance-requirements.md`
@@ -779,7 +871,16 @@ in copy, in `public/llms.txt` or in `docs/email/`. `npm run pricing-check` has a
   real, verifiable submissions before launch (CMA / DMCC Act 2024). Do not seed fake
   reviews into any new surface, including screenshots for ads.
 - "98% lactose-free", "no added sugar", "gluten free", "vegetarian", "all natural"
-  are the approved badge claims; do not invent new badges without substantiation.
+  are the approved badge claims for Khana, and "high protein", "vegetarian" and
+  "caffeine free" for Chai; do not invent new badges without substantiation.
+  **Caffeine free (Chai only, added 3 Oct 2026)** is substantiated by the ingredient
+  list: whey protein isolate, milk protein concentrate, coconut sugar, ginger,
+  cardamom, Ceylon cinnamon, black pepper, clove, sunflower lecithin, none of which
+  contains caffeine. It is a claim about **the blend, never the drink**: Chai is
+  stirred into tea and coffee, which are not caffeine free, so no surface may imply
+  the mug is. **"All natural" is settled** (Mihir, 3 Oct 2026: sunflower lecithin is a
+  natural ingredient): it stays on Khana, and Chai says "Made with natural
+  ingredients." as its pack does.
   Substantiation: Arla Ultrawhey COA lactose ~2.2 to 2.4% (batch FF25466001
   2.28%); at 94% whey the finished pouch is 2.14g lactose per 100g, so **97.9%
   lactose-free** and the "98%" badge rounds rather than overstates. Per 12g spoon

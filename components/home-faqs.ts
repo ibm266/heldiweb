@@ -1,3 +1,13 @@
+import {
+  CHAI_MAX_DAILY_SERVINGS,
+  CHAI_SERVING_GRAMS,
+  CHAI_SERVING_SPOON
+} from "@/components/shop/chai-data";
+import {
+  MAX_DAILY_SERVINGS,
+  SERVING_GRAMS
+} from "@/components/shop/nutrition-data";
+
 export const HOME_FAQS = [
   {
     question: "Do I need more protein?",
@@ -32,7 +42,7 @@ export const HOME_FAQS = [
   {
     question: "How do I use it?",
     answer:
-      "Once the food has finished cooking and cooled a little, stir Heldi Khana through evenly. For one person's bowl, use one spoonful. The recommended daily portion is 12g, about one heaped tablespoon; do not exceed it. For a shared pot, allow one spoonful for each person eating it, then mix the pot thoroughly so the powder is shared across those portions. Heldi Chai is different: its serving is 8g, about one level tablespoon, stirred into a hot drink once it is off the boil."
+      `Dish up your dal, curry or sabzi as usual, then stir one spoonful of Heldi Khana into your own bowl or plate as you sit down to eat. One serving is ${SERVING_GRAMS}g, about one heaped tablespoon. The recommended daily intake is ${SERVING_GRAMS}g to ${SERVING_GRAMS * MAX_DAILY_SERVINGS}g, which is 1 to ${MAX_DAILY_SERVINGS} servings; do not exceed it. Cooking for everyone? Take the pot off the heat and let it cool a little, add one spoonful for each person eating it, then mix the pot thoroughly so the powder is shared across those portions. Heldi Chai is different: its serving is ${CHAI_SERVING_GRAMS}g, about one ${CHAI_SERVING_SPOON}, stirred into a hot drink once it is off the boil, and its recommended daily intake is ${CHAI_SERVING_GRAMS}g to ${CHAI_SERVING_GRAMS * CHAI_MAX_DAILY_SERVINGS}g.`
   },
   {
     question: "Can I use it in dishes that are not on the pouch?",
@@ -42,7 +52,7 @@ export const HOME_FAQS = [
   {
     question: "Is there a Heldi for chai?",
     answer:
-      "Yes. Heldi Chai is a whey protein and milk protein concentrate blend with real chai spices. It is made for chai, tea, coffee and hot chocolate, stirred in once the cup is off the boil. Contains milk (whey and milk protein concentrate). It is still in development, so it has a page but no price yet, and the waitlist hears first when it is ready. Khana is the savoury blend for the pot."
+      "Yes. Heldi Chai is a whey protein and milk protein concentrate blend with real chai spices. It is made for chai, tea, coffee and hot chocolate, stirred in once the cup is off the boil. Contains milk (whey and milk protein concentrate). It is still in development, so it has a page but no price yet, and the waitlist hears first when it is ready. Khana is the savoury blend for the bowl."
   },
   {
     question: "Can I put Khana in my chai?",
@@ -52,7 +62,7 @@ export const HOME_FAQS = [
   {
     question: "Can children have Heldi?",
     answer:
-      "Both Heldi products contain milk. Heldi Khana has no sweeteners or caffeine; Heldi Chai contains coconut sugar. Adding either product to shared food or drink means every person at the table receives some. Growing children usually get the protein they need from ordinary meals, so there may be no reason to add a food supplement. Ask a GP or dietitian who knows the child before doing so."
+      "Both Heldi products contain milk. Heldi Khana has no sweeteners or caffeine. Heldi Chai contains coconut sugar, and the Chai blend itself is caffeine free, but tea and coffee usually are not, so the drink it goes into is the thing to check. Adding either product to shared food or drink means every person at the table receives some. Growing children usually get the protein they need from ordinary meals, so there may be no reason to add a food supplement. Ask a GP or dietitian who knows the child before doing so."
   },
   {
     question: "Can older adults have Heldi?",

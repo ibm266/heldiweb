@@ -13,9 +13,12 @@ import {
   CHAI_DRINKS,
   CHAI_IMAGES,
   CHAI_LEGAL_NAME,
+  CHAI_MAX_DAILY_SERVINGS,
   CHAI_METHOD,
   CHAI_MUGS_PER_POUCH,
+  CHAI_NATURAL_LINE,
   CHAI_NUTRITION,
+  CHAI_NUTRITION_ROWS,
   CHAI_PILLS,
   CHAI_POUCH_GRAMS,
   CHAI_PROTEIN_MARKETING_GRAMS,
@@ -157,7 +160,7 @@ export function ChaiBuyBox() {
           <div className="pdp__includes-row">
             <Image
               className="pdp__includes-img"
-              src="/images/shop/chai-pouch-solo.webp?v=3"
+              src="/images/shop/chai-pouch-solo.webp?v=4"
               alt=""
               width={28}
               height={28}
@@ -203,6 +206,8 @@ export function ChaiBuyBox() {
 
         <StatutoryStatements
           servingGrams={CHAI_SERVING_GRAMS}
+          maxServings={CHAI_MAX_DAILY_SERVINGS}
+          declaration={CHAI_NUTRITION_ROWS}
           spoon={CHAI_SERVING_SPOON}
           allergens={CHAI_ALLERGENS}
           className="pdp__disclaimer"
@@ -212,7 +217,7 @@ export function ChaiBuyBox() {
           <p>
             <strong>Keep making your usual mug.</strong> Heldi Chai is a
             high-protein whey and casein blend with cardamom, ginger, cinnamon,
-            clove and a little coconut sugar. Take your{" "}
+            clove and a little coconut sugar. {CHAI_NATURAL_LINE} Take your{" "}
             <strong>chai, tea, coffee or hot chocolate</strong> off the boil,
             then stir in a level spoonful before drinking. No chalk, no
             aftertaste, no shaker on the draining board.{" "}

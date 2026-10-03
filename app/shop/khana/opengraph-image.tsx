@@ -8,7 +8,7 @@ export const alt =
 export default function Image() {
   return heldiOgImage({
     eyebrow: "The savoury pouch",
-    title: "Protein for the family pot.",
+    title: "Same bowl. More protein.",
     sub: "Stirs into dal, curry, sabzi and raita.",
     art: "pouch"
   });
