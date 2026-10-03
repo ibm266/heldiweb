@@ -60,10 +60,10 @@ const MENUS: Menu[] = [
     title: "The Weeknight Dinner",
     tag: "DINNER",
     scheme: "cream",
-    foodTotal: 36,
+    foodTotal: 30,
     heldiTbsp: 4,
     heldiTotal: 40,
-    tableTotal: 76,
+    tableTotal: 70,
     courses: [
       {
         label: "TO START",
@@ -71,7 +71,8 @@ const MENUS: Menu[] = [
       },
       {
         label: "THE MAIN",
-        dishes: [{ name: "Dal tadka", grams: 18, heldi: true }]
+        // Counted for a couple: two bowls of dal at the site's 6g a bowl.
+        dishes: [{ name: "Dal tadka", grams: 12, heldi: true }]
       },
       {
         label: "ON THE SIDE",
@@ -203,10 +204,10 @@ const MENUS: Menu[] = [
     title: "The Sunday Thali",
     tag: "DINNER",
     scheme: "cream",
-    foodTotal: 46,
+    foodTotal: 36,
     heldiTbsp: 6,
     heldiTotal: 60,
-    tableTotal: 106,
+    tableTotal: 96,
     courses: [
       {
         label: "TO START",
@@ -214,7 +215,8 @@ const MENUS: Menu[] = [
       },
       {
         label: "THE MAIN",
-        dishes: [{ name: "Dal makhani", grams: 22, heldi: true }]
+        // Two bowls at 6g, like every dal on the site.
+        dishes: [{ name: "Dal makhani", grams: 12, heldi: true }]
       },
       {
         label: "ON THE SIDE",

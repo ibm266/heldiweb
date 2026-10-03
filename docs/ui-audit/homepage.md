@@ -173,7 +173,10 @@ alternation.
   directly below says a bowl of dal "lands closer to 6g", and `/our-story`'s
   menu card says 6g. For a brand whose first pillar is honest numbers, a visitor
   who reads both will notice. Worth one decision and one edit, whatever happens
-  to the layout.
+  to the layout. **Resolved 3 October 2026: 6g everywhere.** The stir
+  gallery's dal tadka starts at 6g (16g with a spoonful), and the menus count
+  two bowls at 6g each: the Weeknight Dinner's dal tadka and the Sunday Thali's
+  dal makhani are both 12g for two, with their card totals moved to match.
 - **The phone-only stats section puts Khana's badges under Chai's name.** Its lede
   says "Chai does the same in the mug", but the badges beneath it (98%
   lactose-free, no added sugar, gluten free) are Khana-only claims. The hero

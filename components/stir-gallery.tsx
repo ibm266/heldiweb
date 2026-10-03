@@ -22,7 +22,10 @@ const DISHES: Dish[] = [
   {
     name: "Dal tadka",
     tag: "THE MAIN",
-    base: 9,
+    // 6g, the site's one figure for a standard bowl of cooked dal (the truth
+    // teaser, /truth, the FAQ, Our story). One spoonful takes it to 16g, the
+    // same sum as the homepage's 6g + 10g = 16g.
+    base: 6,
     image: "/images/stir-gallery/dal-tadka.webp",
     video: "/videos/stir-gallery/dal-tadka-stir.mp4"
   },
