@@ -13,11 +13,11 @@ which files it touches.
 | 3 | Desktop hero re-composition | **Not doing**: the current hero stays |
 | 4 | Floating pill over body copy | Open |
 | 5 | Contrast failures | **Built** in this PR |
-| 6 | Homepage length | Deep dive in [homepage.md](homepage.md); not built |
+| 6 | Homepage length | **Built in part** (14.5 to 11.1 phone screens): see [homepage.md](homepage.md) |
 | 7 | Email field in the closing CTA | Open |
 | 8 | Blog reading width | Open |
 | 9 | Tiny type and tap targets | **Built** in this PR |
-| 10 | Waitlist-mode buy box | Explained more plainly below; open |
+| 10 | Waitlist-mode buy box | **Built** in this PR |
 
 Mockups of the proposals (before and after, both widths) are on a Claude Design
 canvas: <https://claude.ai/artifact/MNFEWk6yjQV8LZm7yVmohk>. It is private to
@@ -327,6 +327,15 @@ analytics event even in waitlist mode, so the pickers tell you how many pouches
 people intend to buy before you have a single order. If that signal matters,
 keep the pickers but hide the counter until "Two pouches" is chosen, and add a
 line saying the choice is just for show until launch.
+
+**What was built.** In waitlist mode the box now shows "Includes: 1 × 300g
+pouch, 25 meals / 1 refillable table jar", then the email field, the weekly
+letter checkbox and the "Join waitlist" pill right there on the page (the
+shared `WaitlistForm`, placement `shop-khana`, opened but not focused on load so
+a phone keyboard does not pop up), then the offer line. Live mode is unchanged:
+the size and count pickers, the stepper, prices and "Add to basket" all come
+back the moment the shop opens. The trade-off is that `tier_selected` no longer
+fires before launch.
 
 ---
 

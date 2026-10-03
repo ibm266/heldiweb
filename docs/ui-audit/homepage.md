@@ -1,13 +1,79 @@
 # The homepage: what repeats, and how to get it to about nine screens
 
-A follow-up to item 6 in [README.md](README.md). This is a proposal only;
-nothing here is built yet.
+A follow-up to item 6 in [README.md](README.md). The first section says what
+was built; the rest is the original proposal and its measurements.
 
 **How the numbers were measured.** Production build, waitlist mode, after the
 item 1, 2, 5 and 9 fixes (the bigger type in item 9 added about 40px). Each cut
 was made in a live browser by removing or restyling that section in the page,
 and the page height read back at 375×812 and 1280×800. "Screens" is page height
 divided by the viewport height (812 on a phone, 800 on a laptop).
+
+## What was built (3 October 2026)
+
+Agreed with the owner and built in this PR:
+
+| Change | Decision |
+|---|---|
+| "Food you love. Nutrients you need." | **Cut** |
+| "Built for you. Made for the whole family." | **Cut** |
+| Lunch and dinner menus | **Kept** where they are |
+| Heldi vs the shaker | **Trimmed** to the four ticks plus Flavours and Washing up |
+| 6g + 10g = 16g | **One row** on phones too, signs in ink |
+| FAQs | **Grouped**, all thirteen kept (below) |
+
+Cutting "Built for you" left the menus and the shaker comparison, both ink,
+touching. The founder band (gold) moved up between them, and the showcase-only
+reviews band moved with it. The order is now: hero → stir → two pouches → how
+it works → the honest truth → menus → founder → vs the shaker → FAQ → jar → be
+first → statutory → footer, and no two neighbours share a ground.
+
+| | Before | After |
+|---|---|---|
+| Phone (375) | 11,740px · 14.5 screens | 9,013px · **11.1 screens** |
+| Laptop (1280) | 11,303px · 14.1 screens | 9,770px · **12.2 screens** |
+
+Keeping the menus is most of the gap to the 9.8 screens below: they are 988px
+on a phone and 1,533px on a laptop.
+
+### The FAQs: grouped, not cut
+
+All thirteen stay, in four topics behind chips, one topic open at a time
+(`HOME_FAQ_GROUP_SPEC` in `components/home-faqs.ts`):
+
+| Chip | Questions |
+|---|---|
+| Why Heldi | Why do I need more protein? · Why not just drink a protein shake? · Will my food taste different? |
+| Using it | How do I use it? · Can I use it in dishes that are not on the pouch? · Is there a Heldi for chai? · Can I put Khana in my chai? |
+| Diet | Is whey protein vegetarian? · Is Heldi halal? · I am lactose intolerant. Can I have Heldi? |
+| Who can have it | Is it safe for kids? · Is it safe for parents and grandparents? · I have diabetes. Is it OK for me? |
+
+Chips rather than drop-downs inside drop-downs: with chips, the questions of
+the open topic are on screen and an answer is one tap away. Nested drop-downs
+hide the questions too, so every answer is two taps away and a visitor cannot
+scan what is there. The section went from 1,360px to 668px on a phone.
+
+**Does it still work for search and AI answers?** Yes, and nothing changed for
+crawlers:
+
+- **All thirteen questions and answers are in the page's HTML.** The closed
+  topics and closed answers use the `hidden` attribute; they are not loaded on
+  click. Checked on the production build: all 13 questions and all 13 answers
+  are in the HTML that a crawler downloads.
+- **AI crawlers read that HTML.** GPTBot, ClaudeBot and PerplexityBot mostly do
+  not run JavaScript, so what counts is the text in the HTML, which is the same
+  as before. Google has said since its move to mobile-first indexing that text
+  inside tabs and accordions gets full weight.
+- **The FAQPage JSON-LD still lists all thirteen**, and it still matches what
+  is on the page, because nothing was removed. Cutting to five would have meant
+  cutting the schema to five as well.
+- **Before this change the answers were already hidden behind accordions.**
+  Grouping adds one more layer of the same `hidden` around the same text.
+- `robots.ts` allows every crawler, AI ones included.
+- One honest caveat: since 2023 Google only shows FAQ rich results for well-known
+  government and health sites, so the schema will not produce the drop-down
+  snippets in Google results. It still tells AI systems, and Bing, exactly which
+  text is a question and which is its answer.
 
 ## The short answer
 
