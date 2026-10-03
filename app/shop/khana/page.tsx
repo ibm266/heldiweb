@@ -18,7 +18,7 @@ import {
 export const metadata: Metadata = {
   title: "Heldi Khana · Heldi",
   description:
-    "A high-protein whey isolate blend with warm spices for dal, curry, sabzi and raita. Stir it into your own bowl at the table, or into the pot once it is off the heat.",
+    "More from the food you love. Heldi Khana stirs 10g of protein into your dal, curry, sabzi or raita, and the recipe stays exactly as your family makes it.",
   alternates: { canonical: "/shop/khana" }
 };
 

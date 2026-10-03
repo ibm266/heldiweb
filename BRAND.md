@@ -130,6 +130,62 @@ scenes rather than category-speak, and zero wellness jargon.
 | FAQ | A (B only in delivery/contact answers) | "replies come with opinions about dal" |
 | Legal, nutrition table | A only, no garnish | statutory wording |
 
+### 4.1 Mihir's ear (learned in the line-by-line review, 3 Oct 2026)
+
+Mihir went through the live copy line by line on 3 Oct 2026 (branch
+`copy/line-by-line`). These are the patterns behind his edits. Write to them and most
+copy will not need a line-by-line pass from him.
+
+1. **Lead with the feeling, then the fact.** Selling copy opens on why Heldi exists,
+   then says what it does. Bare spec sentences ("Khana belongs with the dal, curry,
+   sabzi and raita already in your week.") read as cold to him. Approved openers:
+   "Nobody should have to swap their mum's dal for a protein bar." / "Khana literally
+   means food, and food is life."
+2. **The core promise is "you don't change your food".** The protein comes to the
+   food; the recipe stays exactly as the family makes it. Say it plainly on every
+   selling surface and bold the one phrase you most want read (`CopyHighlight`).
+3. **Borrow the pouch's words** so site and pack sound like one brand: "More from the
+   food you love", "Khana literally means food, and food is life", "Chai is more than
+   just a drink: a daily ritual and a reason to sit together", "Same recipes. Same
+   food. Just a little Heldier.", the steps Serve, Stir, Store (Chai: Make tea, Let it
+   cool, Store in a jar), "Blended and packed in the UK". The round-16 wording lives in
+   HeldiPM `design/pouch-v2/round16/r16_common.py`.
+4. **Full names on first mention**: Heldi Khana, Heldi Chai.
+5. **Compliance out of the selling copy.** Legal names, allergen sentences, "not a
+   substitute for a varied and balanced diet" and qualifiers like "contains naturally
+   occurring sugars" go into small print at the foot of the page, tied by an asterisk
+   (`PouchSmallPrint` on /shop is the pattern). Authorised health claims are optional
+   in selling copy (he cut the muscle-mass line from the truth teaser); their home is
+   the nutrition fold-outs and FAQ answers about health. On a product page the legal
+   name stays by the title and the statutory block stays on the page, below the
+   selling copy and the fold-outs.
+6. **Confident, not hedged.** No "we are still finishing", "in development", "the
+   pouch launching first". Both pouches launch together.
+7. **Warm and cheeky, never twee and never sad.** He cut "Tell your mum we said hi."
+   (twee) and "A family's version of a dish is gone the year nobody cooks it any
+   more." (too sad). Subtle beats in-your-face. Jokes he kept: the Bond eyebrow, "Bends
+   into the dal like Beckham.", "You can, if you like them. Most of our parents
+   don't.", "Who doesn't love gold?"
+8. **Give the reader a reason to click.** "Read the full truth" became "Why 6g isn't
+   enough for most adults". Prefer a curiosity hook to a generic link label. Invite
+   people in: "Found a dish it works brilliantly in? Email info@heldi.co.uk and we will
+   pass it on to everyone else."
+9. **Practical tips earn their place** when they help at the stove: a whisk for smooth
+   dishes like a big pot of dal or dahi, dish up the children's portions first.
+10. **Leave button labels and UI microcopy alone** unless a fact changed.
+
+Phrases he rejects on sight: stiff connectives ("Here is the honest fix", "three
+useful steps"), caveat-first FAQ answers that sound like a leaflet (he chose the warmer
+answers for the shake, taste, older-adults and diabetes questions), and anything that
+calls Heldi something other than what it is ("no additional supplements": Heldi is a
+food supplement).
+
+Where the rules overrode his first draft, and he accepted it: no claim that Heldi
+benefits children (unauthorised claim, and the pack says keep out of reach of young
+children); no "the protein you need" (§12: nobody needs a supplement); figures stay
+exact (the 18g is about 75g of dry lentils, not 100g); never promise "the only email"
+(the weekly letter exists).
+
 ## §5 Writing mechanics
 
 - **No em dashes in copy, ever.** Restructure the sentence instead (commas, colons,
@@ -475,7 +531,9 @@ list, for the next time:
 2. `app/inside-the-pouch/page.tsx`: hero ingredient list, percentages in prose, the
    supplier sections, metadata description, batch report if supplier changes.
 3. `components/site-faqs.ts`: "What are the ingredients?", "Where do the ingredients
-   come from?", "Is whey protein ultra-processed?" answers.
+   come from?", "Is whey protein ultra-processed?" answers. The Khana "What's inside"
+   fold-out in `components/shop/product-accordions.tsx` names the five kitchen spices
+   since 3 Oct 2026.
 4. `components/comparison-section.tsx`: the "Flavours" row (the "On the label" row
    was cut in October 2026).
 5. `components/heldi-homepage.tsx`: truth-teaser ingredient line ("90% whey protein

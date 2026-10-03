@@ -60,7 +60,7 @@ const POUCHES: Pouch[] = [
     pills: [
       { icon: `${BADGES}/high-protein.png`, label: "High protein", width: 256, height: 256 },
       { icon: `${BADGES}/lactose-free.png`, label: "98% lactose-free", width: 280, height: 377 },
-      { icon: `${BADGES}/no-sugar.png`, label: "No added sugar", width: 386, height: 390 },
+      { icon: `${BADGES}/no-sugar.png`, label: "No added sugar*", width: 386, height: 390 },
       { icon: `${BADGES}/vegetarian.png`, label: "Vegetarian", width: 286, height: 367 }
     ],
     href: "/shop/khana"
@@ -179,8 +179,9 @@ export function PouchSmallPrint() {
   return (
     <p className="heldi-disclaimer" id="small-print">
       * {POUCHES.map((pouch) => `${pouch.title}: ${pouch.legalName}`).join(" ")}{" "}
-      Both contain milk. Food supplements are not a substitute for a varied and
-      balanced diet and a healthy lifestyle.
+      Both contain milk. No added sugar: Khana contains naturally occurring
+      sugars. Food supplements are not a substitute for a varied and balanced
+      diet and a healthy lifestyle.
     </p>
   );
 }

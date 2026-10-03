@@ -57,7 +57,7 @@ const PDP_PILLS: { icon: string; label: string; width: number; height: number }[
   { icon: "/images/pouch-badges/high-protein.png", label: "High protein", width: 256, height: 256 },
   { icon: "/images/pouch-badges/all-natural.png", label: "All natural", width: 256, height: 256 },
   { icon: "/images/pouch-badges/lactose-free.png", label: "98% lactose-free", width: 280, height: 377 },
-  { icon: "/images/pouch-badges/no-sugar.png", label: "No added sugar", width: 386, height: 390 },
+  { icon: "/images/pouch-badges/no-sugar.png", label: "No added sugar*", width: 386, height: 390 },
   { icon: "/images/pouch-badges/gluten-free.png", label: "Gluten free", width: 328, height: 225 },
   { icon: "/images/pouch-badges/vegetarian.png", label: "Vegetarian", width: 286, height: 367 }
 ];
@@ -158,7 +158,7 @@ export function BuyBox({ product }: { product: Product }) {
   // page instead of quoting one, then states the waitlist offer in the words
   // every other surface uses (lib/waitlist-offer.ts, BRAND.md §11.9).
   const shippingNote = !showPrices
-    ? `We will put the prices here when the shop opens. Join the waitlist to hear first. ${offer.sentence}`
+    ? `Prices go up here the day the shop opens. ${offer.sentence}`
     : isPouch && ladderPence(pouchQty) < SHIPPING.freeOverPence
       ? `Orders under ${formatPence(SHIPPING.freeOverPence)} ship for ${formatPence(SHIPPING.standardPence)}.`
       : "UK shipping is free.";
@@ -501,6 +501,30 @@ export function BuyBox({ product }: { product: Product }) {
 
         <PdpReviewTeasers />
 
+
+        <div className="pdp__desc">
+          <p>
+            <strong>Your recipes, exactly as they are.</strong> Khana literally
+            means food, and food is life, so all we want to do is add more
+            protein to the dishes your family already makes. Heldi Khana is
+            whey protein isolate and the warm spices you find in every Indian
+            kitchen, made to stir into <strong>dal, curry, sabzi and raita</strong>.
+            Serve as always, stir a heaped tablespoon into your bowl, and keep
+            the jar on the table.{" "}
+            <strong>Same recipes. Same food. Just a little Heldier.</strong>
+          </p>
+          <p>
+            New to Heldi?{" "}
+            <a href="/truth">Find out why 6g a bowl isn&apos;t enough for most adults</a>.
+            Making chai rather than dal? <a href="/shop/chai">Meet Heldi Chai</a>,
+            the blend for the mug.
+          </p>
+        </div>
+
+        <ProductAccordions />
+
+        {/* The compliance lines sit below the selling copy and the fold-outs,
+            still on the page before anyone buys (BRAND.md §4.1 item 5, §12). */}
         <StatutoryStatements
           servingGrams={SERVING_GRAMS}
           maxServings={MAX_DAILY_SERVINGS}
@@ -508,22 +532,9 @@ export function BuyBox({ product }: { product: Product }) {
           allergens="Contains milk (whey)."
           className="pdp__disclaimer"
         />
-
-        <div className="pdp__desc">
-          <p>
-            <strong>Made for the food already in your bowl.</strong> Heldi
-            Khana is a high-protein whey isolate blend with warm spices. Dish
-            up your <strong>dal, curry, sabzi or raita</strong> and stir a
-            spoonful into your own bowl, or stir it through the shared pot once
-            it is off the heat. Your recipe stays in charge. <strong>High in protein.</strong> Protein
-            contributes to the maintenance of muscle mass. Contains{" "}
-            <strong>milk</strong> (whey). If you want the numbers before the
-            pouch, <a href="/truth">start with the honest truth about protein</a>.
-            For the mugs in your family, <a href="/shop/chai">meet Heldi Chai</a>.
-          </p>
-        </div>
-
-        <ProductAccordions />
+        <p className="pdp__footnote">
+          * No added sugar: contains naturally occurring sugars.
+        </p>
       </div>
     </div>
   );

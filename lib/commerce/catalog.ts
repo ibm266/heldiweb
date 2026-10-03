@@ -213,7 +213,7 @@ const PRODUCTS: Product[] = [
     id: "gid://shopify/Product/15790466957695",
     handle: "khana",
     title: "Heldi Khana",
-    shortDescription: "A spoonful for dal, curry, sabzi and raita.",
+    shortDescription: "More from the food you love. One heaped tablespoon adds 10g of protein to your bowl.",
     description:
       "Heldi Khana is a high-protein whey isolate blend with warm spices for dal, curry, sabzi and raita. Stir it into your own bowl at the table, or through the shared pot once it is off the heat. High in protein. Protein contributes to the maintenance of muscle mass. Contains milk (whey).",
     images: [

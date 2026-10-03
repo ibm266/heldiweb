@@ -19,10 +19,13 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     question: "What's inside",
     answer: (
       <p>
-        Whey protein isolate comes from milk. Six of the eight ingredients are
-        spices already familiar to a family kitchen, blended for savoury food.{" "}
-        <strong>All natural</strong>, <strong>no added sugar</strong>, gluten
-        free, vegetarian and 98% lactose-free.{" "}
+        The protein is whey protein isolate, made from whey, the part of milk
+        that&apos;s left when paneer is made. The spices are the ones already in
+        your masala dabba: cumin, coriander, garam masala, Kashmiri chilli and
+        turmeric. A pinch of fine sea salt and a little sunflower lecithin,
+        which helps it stir in, make up the rest. <strong>All natural</strong>,{" "}
+        <strong>no added sugar</strong> (contains naturally occurring sugars),
+        gluten free, vegetarian and 98% lactose-free.{" "}
         <strong>Contains milk (whey).</strong> Blended and packed in the UK.{" "}
         <a href="/inside-the-pouch">See where every ingredient comes from</a>,
         or <a href="/our-story">read why it started in our kitchen</a>.
@@ -33,11 +36,12 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     question: "How to use it",
     answer: (
       <p>
-        Dish up your food as usual, then stir a heaped tablespoon{" "}
-        <strong>into your own bowl at the table</strong>. Cooking for
-        everyone? Take the pot off the heat and stir in a spoonful per person
-        while the food is cooling. Use it with dal, curry, sabzi, raita or
-        dahi, without rewriting the family recipe.{" "}
+        <strong>Serve</strong> your food just as always.{" "}
+        <strong>Stir</strong> a heaped tablespoon into your own bowl at the
+        table. <strong>Store</strong> the rest in the jar on the table, ready
+        for next time. Cooking for everyone? Take the pot off the heat and stir
+        in a spoonful per person. In something smooth, like a big pot of dal or
+        dahi, a whisk does a better job than a spoon.{" "}
         <a href="/ways-to-use">See every way to use it</a>, including rotis
         and Friday&apos;s takeaway.
       </p>
@@ -53,7 +57,7 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         around 6g on its own; adding Heldi brings it to{" "}
         <strong>16g in the same bowl</strong>. Protein contributes to the
         maintenance of muscle mass.{" "}
-        <a href="/truth">Read the honest truth about protein</a>.
+        <a href="/truth">Why 6g a bowl isn&apos;t enough for most adults</a>.
       </p>
     )
   },
@@ -152,8 +156,9 @@ function ShippingAnswer() {
       )}
       <p>
         Every pouch has an <strong>18-month best-before</strong> on the base.
-        After opening, reseal it and keep it cool and dry. Use it within{" "}
-        <strong>3 months</strong> for the best taste, and keep the spoon dry.
+        After opening, keep it in the table jar or the resealed pouch, cool and
+        dry, and use it within <strong>3 months</strong> for the best taste.
+        Keep the spoon dry.
       </p>
     </>
   );

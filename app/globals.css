@@ -6041,6 +6041,14 @@ a.living-card__tag:hover {
   margin-top: 1.5rem;
 }
 
+/* The asterisk notes under the statutory block (the "No added sugar*" pill). */
+.pdp__footnote {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
 .heldi-disclaimer {
   margin: 2rem 0 0 !important;
   padding-top: 1.25rem;
