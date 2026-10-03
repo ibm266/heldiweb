@@ -1545,7 +1545,7 @@ export function HeldiHomepage({
 
       <footer data-floating-cta-suppress>
         <Wordmark footer onDark />
-        <span>© 2026 Heldi · Blended and packed in the UK · They shake, we stir</span>
+        <span>© 2026 Heldi · Blended and packed in the UK · More from the food you love</span>
         <FooterLegal />
       </footer>
     </main>
