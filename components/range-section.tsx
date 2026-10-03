@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/components/cart/cart-context";
 import { CopyHighlight } from "@/components/copy-highlight";
+import { CHAI_SELLABLE } from "@/lib/commerce/config";
 
 // The two-pouch band on the homepage: Khana for the bowl, Chai for the mug.
 //
@@ -15,8 +16,9 @@ import { CopyHighlight } from "@/components/copy-highlight";
 // neither card carries one. The section's job is to say there are two
 // pouches, what each one is for, and where to go next.
 //
-// The Chai card is honest about the stage Chai is at (BRAND.md §3, pillar 1):
-// it has a page and no price, in either commerce mode.
+// The Chai card is honest about the stage Chai is at (BRAND.md §3, pillar 1).
+// Chai launches with Khana (Mihir, 3 Oct 2026), so once CHAI_SELLABLE is on in
+// live mode its card reads like Khana's.
 
 type RangeProduct = {
   id: "khana" | "chai";
@@ -57,18 +59,20 @@ const RANGE: RangeProduct[] = [
 ];
 
 // The note and the link label follow the commerce mode, the way every CTA on
-// the site does (BRAND.md §11.5). Khana is the product on sale; Chai is
-// browsable in both modes and buyable in neither, so its link never says
-// "Shop".
+// the site does (BRAND.md §11.5). Chai's link says "Shop" only once
+// CHAI_SELLABLE puts it in the shop.
 function cardCopy(id: RangeProduct["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
       ? { note: "Khana is in the shop now.", cta: "Shop Khana" }
       : { note: "Khana will be ready on launch day.", cta: "Meet Khana" };
   }
-  return mode === "live"
-    ? { note: "We are still finishing Chai, so it is not in the shop yet.", cta: "Meet Chai" }
-    : { note: "We are still finishing Chai. It will be ready for launch.", cta: "Meet Chai" };
+  if (mode === "live") {
+    return CHAI_SELLABLE
+      ? { note: "Chai is in the shop now.", cta: "Shop Chai" }
+      : { note: "Chai is not in the shop yet.", cta: "Meet Chai" };
+  }
+  return { note: "Chai is just about ready, and it launches with Khana.", cta: "Meet Chai" };
 }
 
 export function RangeSection() {

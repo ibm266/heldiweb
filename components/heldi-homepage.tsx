@@ -1325,11 +1325,13 @@ export function HeldiHomepage({
         <div className="truth-block">
           <p className="eyebrow">THE HONEST TRUTH</p>
           <h2>That 18g figure? It&apos;s for dry dal.</h2>
+          {/* 18g is about 75g of dry lentils, not 100g: the same figure and
+              basis as /truth and the "How much protein is in a bowl of dal?" FAQ. */}
           <p>
-            So the bowl you actually eat lands closer to 6g. We counted the
-            cooked bowl because that is the one you put on the table. Protein
-            contributes to the maintenance of muscle mass. Here is the{" "}
-            <CopyHighlight>honest fix</CopyHighlight>.
+            We looked at the bowl that actually lands on your table. A cooked
+            bowl of dal has{" "}
+            <CopyHighlight>closer to 6g of protein</CopyHighlight>, not the 18g
+            quoted on most sites, which is for about 75g of dry lentils.
           </p>
           <PouchEquation />
           {/* 94%, not 90%: the pouch is 94% whey protein isolate, while the

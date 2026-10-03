@@ -409,9 +409,11 @@ export function MenuGallery({ gramsPerTbsp }: MenuGalleryProps) {
         <p className="eyebrow eyebrow--gold">PUT IT ON THE TABLE</p>
         <h2>Here is what a whole table looks like.</h2>
         <p className="menu-gallery__lede">
-          <strong>We counted all five menus for a couple.</strong> The{" "}
-          <CopyHighlight>gold dishes</CopyHighlight> show where Heldi joins the
-          meal, <strong>including the chai at the end.</strong>
+          We took five of the meals we enjoy most over a week, from a weeknight
+          dal to the Sunday thali, to show you what Heldi adds.{" "}
+          <strong>Each one is counted for a couple.</strong> The{" "}
+          <CopyHighlight>gold dishes</CopyHighlight> are where Heldi goes in,
+          right down to the chai.
         </p>
       </header>
 
