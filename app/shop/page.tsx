@@ -70,7 +70,8 @@ export default function ShopPage() {
           </p>
           <p>
             <CopyHighlight>Chai</CopyHighlight> is the one for hot drinks:
-            whey and casein with cardamom, ginger, cinnamon and clove, a
+            whey and milk protein concentrate with cardamom, ginger, cinnamon
+            and clove, a
             little coconut sugar, stirred into chai, tea, coffee or hot
             chocolate once the cup is cool enough to drink. It is still in
             development, so it has a page and no price yet.

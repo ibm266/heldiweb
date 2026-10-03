@@ -223,8 +223,8 @@ export const METHODS: Method[] = [
     ground: "ink",
     intro: (
       <>
-        This one is Heldi Chai, not Khana: a whey and casein blend with real
-        chai spices, made for the mug rather than the pot. The mug&apos;s rule
+        This one is Heldi Chai, not Khana: whey and milk protein concentrate
+        with real chai spices, made for the mug rather than the pot. The mug&apos;s rule
         is stricter than the pot&apos;s: <CopyHighlight>if it is cool enough
         to drink, you can stir Heldi in</CopyHighlight>. Any hotter and the
         milk protein clumps into little white specks. If it does, the tea

@@ -91,7 +91,7 @@ const SHARED_CAPTIONS = [
 const MAX_SPOONS = 2;
 const MAX_CAPTION = "Protein sorted. Taste unchanged.";
 
-// One heaped tablespoon a mug is Chai's serving; the pot takes two.
+// One level tablespoon a mug is Chai's serving; the pot takes two.
 function maxSpoons(dish: Dish) {
   return dish.chai ? 1 : MAX_SPOONS;
 }

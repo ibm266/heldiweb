@@ -214,7 +214,7 @@ export function ChaiBuyBox() {
             <strong>High in protein</strong>: {CHAI_PROTEIN_MARKETING_GRAMS}g
             in every mug, and protein contributes to the
             maintenance of muscle mass. Contains{" "}
-            <strong>milk</strong> (whey and casein). New to Heldi?{" "}
+            <strong>milk</strong> (whey and milk protein concentrate). New to Heldi?{" "}
             <a href="/truth">Start with the honest truth about protein</a>, or{" "}
             <a href="/shop">meet Khana</a>, the blend for the food rather than
             the drink.

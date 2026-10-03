@@ -24,6 +24,11 @@ import { PdpAccordion, type PdpAccordionItem } from "./pdp-accordion";
 // different. The figures are calculated from the recipe (the header of
 // chai-data.ts says how) and say so where a reader would want to know.
 
+// Lactose in one serving, derived so it moves with the per-100g figure. It
+// was typed as 0.1g, which was right for micellar casein and went stale when
+// MPC85 took its place.
+const LACTOSE_PER_MUG = ((CHAI_LACTOSE_PER_100G * CHAI_SERVING_GRAMS) / 100).toFixed(1);
+
 const ACCORDION_ITEMS: PdpAccordionItem[] = [
   {
     question: "What's inside",
@@ -83,8 +88,9 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         </p>
         <p>
           Where the number comes from: the recipe, with the whey at the
-          figure on its certificate of analysis and the casein at its
-          specification, added up the way the labelling rules allow. The
+          figure on its certificate of analysis and the milk protein
+          concentrate at typical published values, added up the way the
+          labelling rules allow. The
           figure from analysis of the finished blend replaces it, here and
           on the pouch, before Chai is sold.{" "}
           <a href="/truth">Read the honest truth about protein</a>.
@@ -98,7 +104,8 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
       <>
         <p>
           <strong>Vegetarian, not vegan.</strong> The protein is whey and
-          casein, both from milk, made without animal rennet. Heldi is{" "}
+          milk protein concentrate, both from milk, made without animal
+          rennet. Heldi is{" "}
           <strong>not yet formally halal certified</strong>; it contains no
           meat, no alcohol and no animal rennet. If certification matters to
           your table, email{" "}
@@ -106,12 +113,13 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
         </p>
         <p>
           <strong>Dairy allergy?</strong> Heldi Chai{" "}
-          <strong>contains milk</strong>, as whey and as casein, so it is not
-          for you. <strong>Lactose intolerant rather than allergic?</strong>{" "}
-          Chai carries about {CHAI_LACTOSE_PER_100G}g of lactose per 100g,
-          which is 0.1g in a mug: a figure calculated from the whey
-          certificate and the casein specification, not a test, so we say
-          the number and do not call it lactose-free.
+          <strong>contains milk</strong>, as whey and as milk protein
+          concentrate, so it is not for you.{" "}
+          <strong>Lactose intolerant rather than allergic?</strong> Chai
+          carries about {CHAI_LACTOSE_PER_100G}g of lactose per 100g, which is{" "}
+          {LACTOSE_PER_MUG}g in a mug: a figure calculated from the whey
+          certificate and typical values for the milk protein concentrate,
+          not a test, so we say the number and do not call it lactose-free.
         </p>
         <p>
           <strong>Watching sugar?</strong> Chai is sweetened with{" "}

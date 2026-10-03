@@ -600,7 +600,8 @@ longer do, so keep them that way:
 - `statutory-statements.tsx` takes `servingGrams` and `allergens` as **required
   props**. The recommended daily portion and the allergen are per-product
   mandatory particulars; a default would silently declare 12g of whey on an 8g
-  whey-and-casein product, which is a false particular, not a copy slip.
+  product of whey and milk protein concentrate, which is a false particular, not
+  a copy slip.
 - `pdp-accordion.tsx` is the shell only. The answers live with the product
   (`product-accordions.tsx` for Khana, `chai-accordions.tsx` for Chai).
 - `og/card.tsx` resolves its pouch art through `OG_ART_FILES`. A new SKU adds an

@@ -15,7 +15,7 @@
 //
 // `servingGrams` and `allergens` are required props, deliberately. The portion
 // and the allergen are per-product mandatory particulars: Khana is a 12g
-// spoonful of whey, Chai is an 8g spoonful of whey and casein. A default here
+// spoonful of whey, Chai is an 8g spoonful of whey and milk protein concentrate. A default here
 // would silently declare the wrong portion on a second SKU, which is a false
 // mandatory particular rather than a copy slip.
 //

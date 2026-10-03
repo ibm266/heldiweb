@@ -29,7 +29,7 @@ export default function ChaiPage() {
     "@type": "Product",
     name: "Heldi Chai",
     description:
-      "A high-protein whey and casein blend with real chai spices, made to stir into chai, tea, coffee and hot chocolate. Contains milk.",
+      "A high-protein blend of whey and milk protein concentrate with real chai spices, made to stir into chai, tea, coffee and hot chocolate. Contains milk.",
     image: CHAI_IMAGES.map((image) => `${SITE_URL}${image.url}`),
     brand: { "@type": "Brand", name: "Heldi" }
   };

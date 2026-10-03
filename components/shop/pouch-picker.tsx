@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/components/cart/cart-context";
+import { CHAI_LEGAL_NAME, CHAI_SERVING_SPOON } from "@/components/shop/chai-data";
 
 // The two product tiles on /shop. Same card family as the homepage range
 // band (`.range-card`), grown into a full product tile: pack shot, the FIC
@@ -56,9 +57,8 @@ const POUCHES: Pouch[] = [
     id: "chai",
     tag: "FOR THE MUG",
     title: "Heldi Chai",
-    legalName:
-      "Whey protein and casein blend with chai spices and coconut sugar. Food supplement.",
-    line: "Chai, tea, coffee, hot chocolate. A level tablespoon stirred into the mug once it is cool enough to drink, and the cup still tastes like your cup.",
+    legalName: CHAI_LEGAL_NAME,
+    line: `Chai, tea, coffee, hot chocolate. A ${CHAI_SERVING_SPOON} stirred into the mug once it is cool enough to drink, and the cup still tastes like your cup.`,
     image: {
       src: "/images/range/chai.webp?v=4",
       alt: "The terracotta Heldi Chai pouch on a linen table"
