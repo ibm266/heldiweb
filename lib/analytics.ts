@@ -9,6 +9,7 @@
 //                     rotates per page load (DUAA statistical posture).
 //   analytics on    - persistent id + session replay + heatmaps.
 
+import type { BeforeSendEvent } from "@vercel/analytics/next";
 import posthog from "posthog-js";
 import {
   captureFirstTouch,
@@ -173,4 +174,25 @@ export function analyticsIds(): { distinctId: string; sessionId: string } | null
     distinctId: posthog.get_distinct_id(),
     sessionId: posthog.get_session_id()
   };
+}
+
+// Vercel Web Analytics (mounted by <VercelAnalytics /> on Vercel deploys) is
+// cookieless page-view counting, so it belongs to the statistics category with
+// PostHog's anonymous mode: on by default, off the moment a visitor opts out
+// on the cookies page. Checked on every page view, so a change applies
+// mid-visit. Query strings and fragments are dropped except utm_*: email links
+// can carry a personal identifier (Klaviyo's _kx), and the dashboard needs
+// only the campaign tags.
+export function vercelBeforeSend(event: BeforeSendEvent): BeforeSendEvent | null {
+  if (!hasConsent("statistics")) return null;
+  try {
+    const url = new URL(event.url);
+    for (const key of [...url.searchParams.keys()]) {
+      if (!key.startsWith("utm_")) url.searchParams.delete(key);
+    }
+    url.hash = "";
+    return { ...event, url: url.toString() };
+  } catch {
+    return null;
+  }
 }

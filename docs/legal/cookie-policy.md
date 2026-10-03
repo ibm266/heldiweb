@@ -1,6 +1,6 @@
 # Cookie Policy
 
-**Last updated:** 20 July 2026
+**Last updated:** 3 October 2026
 
 Heldi LTD, 71-75 Shelton Street, Covent Garden, London, United Kingdom,
 WC2H 9JQ.
@@ -9,14 +9,17 @@ WC2H 9JQ.
 
 By default we count visits **anonymously and without cookies**. Our analytics
 tool (PostHog, hosted in the EU) receives events with no cross-visit
-identifier, and we have switched off the storage of IP addresses. We use this
-only to produce aggregate statistics about how the site is used, relying on
+identifier, and we have switched off the storage of IP addresses. We also use
+Vercel Web Analytics, from the company that hosts our website, which counts
+page views without cookies or anything stored on your device and tells visits
+apart only by a code that changes every day. We use both only to produce
+aggregate statistics about how the site is used, relying on
 the statistical-purposes provision of the Privacy and Electronic
 Communications Regulations as amended by the Data (Use and Access) Act 2025.
 
 You can switch even that off. Use the
 [analytics choices panel](./cookie-policy.md#analytics-choices) at the bottom
-of this page; it applies immediately and is free.
+of this page; it applies immediately to both tools and is free.
 
 If you choose **"Accept all"** in our cookie window, we additionally set analytics
 storage so we can recognise your browser between visits, and we record

@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last updated:** 19 July 2026
+**Last updated:** 3 October 2026
 
 ## Who we are
 
@@ -32,7 +32,7 @@ consent.
 We use a small number of service providers who process data on our behalf:
 
 - **Shopify** — checkout, payments and order management
-- **Vercel** — website hosting
+- **Vercel** — website hosting, and anonymous page-view counts (Vercel Web Analytics: no cookies, covered by the same free opt-out on the Cookie Policy page)
 - **PostHog** — website analytics, hosted in the EU (Frankfurt); receives usage events and, only with your consent, session replays with typed text hidden
 - **Royal Mail** — delivery (name and address on the parcel)
 - **Supabase** — secure database storage for waitlist signups and review submissions

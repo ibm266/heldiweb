@@ -415,6 +415,14 @@ silently blind the analytics. Rules, in order of how likely you are to hit them:
    hydration. The replay recorder stays a lazy import of
    `posthog-js/dist/posthog-recorder` (not `dist/recorder`, which the SDK
    ignores). No `<Script src="...analytics...">` anywhere, ever.
+   **The one exception is Vercel Web Analytics** (`components/vercel-analytics.tsx`,
+   mounted in the root layout only when `process.env.VERCEL` is set). It is
+   cookieless page views on a same-origin endpoint (`/_vercel/insights`), and it
+   appends its script to `<head>` after hydration, so it neither needs a CSP
+   entry nor corrupts hydration. Keep its `beforeSend` pointed at
+   `vercelBeforeSend` in `lib/analytics.ts`: that is the statistics-consent gate
+   and the query-string scrub (only `utm_*` survives). Custom events are not
+   sent to it; `track()` stays PostHog-only.
 7. **Do not touch the plumbing in `next.config.ts`**: the `/ingest` rewrites,
    `skipTrailingSlashRedirect: true`, and `worker-src 'self' blob:` in the
    CSP all exist for analytics. Removing any of them breaks capture or replay

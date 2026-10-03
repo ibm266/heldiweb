@@ -5,6 +5,7 @@ import { CartProvider } from "@/components/cart/cart-context";
 import { CartDrawer } from "@/components/cart/cart-drawer";
 import { ConsentModal } from "@/components/consent-modal";
 import { FloatingWaitlistCta } from "@/components/floating-waitlist-cta";
+import { VercelAnalytics } from "@/components/vercel-analytics";
 import { WaitlistPopupProvider } from "@/components/waitlist-popup";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -55,6 +56,8 @@ export default function RootLayout({
             <FloatingWaitlistCta />
             <CartDrawer />
             <ConsentModal />
+            {/* VERCEL is set on Vercel builds and functions only. */}
+            {process.env.VERCEL ? <VercelAnalytics /> : null}
           </WaitlistPopupProvider>
         </CartProvider>
       </body>
