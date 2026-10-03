@@ -504,8 +504,8 @@ export function BuyBox({ product }: { product: Product }) {
 
         <div className="pdp__desc">
           <p>
-            <strong>Your recipes, exactly as they are.</strong> Khana literally
-            means food, and food is life, so all we want to do is add more
+            <strong>Your recipes, exactly as they are.</strong>{" "}
+            Khana literally means food, and food is life, so all we want to do is add more
             protein to the dishes your family already makes. Heldi Khana is
             whey protein isolate and the warm spices you find in every Indian
             kitchen, made to stir into <strong>dal, curry, sabzi and raita</strong>.

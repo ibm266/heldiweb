@@ -80,8 +80,8 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
           <strong>contains milk (whey)</strong>, so it is not suitable.
         </p>
         <p>
-          <strong>Diabetes?</strong> Khana has no added sugar and contains
-          under 1g of carbohydrate per spoonful. We can&apos;t give medical
+          <strong>Diabetes?</strong>{" "}
+          Khana has no added sugar and contains under 1g of carbohydrate per spoonful. We can&apos;t give medical
           advice, so show the label to your GP or dietitian. More on{" "}
           <a href="/faq">kids, pregnancy and kidneys in the full FAQ</a>.
         </p>

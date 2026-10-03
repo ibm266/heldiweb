@@ -8,8 +8,8 @@ export const alt =
 export default function Image() {
   return heldiOgImage({
     eyebrow: "Heldi",
-    title: "Desi protein for Indian food.",
-    sub: "For the recipes your family already cooks.",
+    title: "More from the food you love.",
+    sub: "Protein for the recipes your family already cooks.",
     art: "pouches",
     titleSize: 64
   });

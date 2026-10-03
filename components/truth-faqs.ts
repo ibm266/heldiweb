@@ -27,7 +27,7 @@ export const TRUTH_FAQS = [
   {
     question: "How do I use Heldi?",
     answer:
-      "For Heldi Khana, let the cooked food cool a little, then stir a spoonful into dal, curry, kadhi, sambar, raita or another gravy or yoghurt-based dish. One spoonful adds about 10g of protein, and Khana can also be used in meat dishes. Heldi Chai is the separate blend for chai and other hot drinks; stir it in once the cup is cool enough to drink."
+      "For Heldi Khana, serve your food as usual, then stir a heaped tablespoon into your bowl of dal, curry, kadhi, sambar, raita or another gravy or yoghurt-based dish, and keep the jar on the table for next time. One spoonful adds about 10g of protein, and Khana works in meat dishes too. Heldi Chai is the separate blend for chai and other hot drinks: never add it to boiling liquid, and stir it in once the cup is cool enough to drink."
   },
   {
     question: "How does whey isolate compare with other vegetarian proteins?",

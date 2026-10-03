@@ -58,11 +58,13 @@ const ACCORDION_ITEMS: PdpAccordionItem[] = [
     answer: (
       <>
         <p>
-          Make your chai as usual and add your milk. Once the cup is{" "}
-          <strong>cool enough to drink</strong>, stir in a{" "}
-          <strong>{CHAI_SERVING_SPOON}</strong> ({CHAI_SERVING_GRAMS}g). Level,
-          not heaped: a mug is not a pot, and Khana&apos;s heaped spoon would
-          be too much here.
+          <strong>Make</strong> your chai, tea or coffee just as always.{" "}
+          <strong>Let it cool</strong>: never add Heldi to boiling liquid. Once
+          the cup is cool enough to drink, stir in a{" "}
+          <strong>{CHAI_SERVING_SPOON}</strong> ({CHAI_SERVING_GRAMS}g) just
+          before you drink. <strong>Store</strong>{" "}
+          the rest in the jar by the kettle, ready for next time. Level, not heaped: a mug is not a pot,
+          and Khana&apos;s heaped spoon would be too much here.
         </p>
         <p>
           The waiting matters. The milk protein in Chai starts to clump into
@@ -186,15 +188,14 @@ function ShippingAnswer() {
   return (
     <>
       <p>
-        We plan to send Chai in the UK by{" "}
-        <strong>Royal Mail Tracked 48</strong>. It is not in the shop yet, so
-        the rates will appear{" "}
-        {mode === "live" ? "when it goes on sale" : "when the shop opens"}.
+        We send UK orders by <strong>Royal Mail Tracked 48</strong>. The rates
+        will appear here{" "}
+        {mode === "live" ? "when Chai goes on sale" : "when the shop opens"}.
       </p>
       <p>
-        Every pouch carries a best-before on the base. Once open, reseal it,
-        keep it cool and dry, and use a dry spoon. Keep the open pouch away
-        from the steam above the mug.
+        Every pouch carries a best-before on the base. Once open, keep it in
+        the jar by the kettle or the resealed pouch, cool and dry and away
+        from the steam above the mug, and use a dry spoon.
       </p>
     </>
   );

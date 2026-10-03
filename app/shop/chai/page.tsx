@@ -8,7 +8,7 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Heldi Chai · Heldi",
   description:
-    "A high-protein blend of whey and milk protein concentrate with chai spices and coconut sugar for chai, tea, coffee and hot chocolate.",
+    "More from the drinks you love. Heldi Chai stirs 5g of protein into your chai, tea or coffee, blended with real chai spices, and your cup still tastes like your cup.",
   alternates: { canonical: "/shop/chai" }
 };
 

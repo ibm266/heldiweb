@@ -251,7 +251,7 @@ export default function InsideThePouchPage() {
 
       <section className="section section--cream section--bordered story-copy">
         <div className="story-copy__inner">
-          <p className="eyebrow">MADE IN THE UK</p>
+          <p className="eyebrow">CLOSE TO HOME</p>
           <h2>Blended here. Packed here.</h2>
           <p>
             Every pouch of Heldi is{" "}

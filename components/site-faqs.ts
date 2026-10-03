@@ -215,7 +215,7 @@ export function siteFaqGroupsForMode(
       {
         question: "How long does a pouch keep?",
         answer:
-          `This answer is for Heldi Khana. Each pouch has an 18-month best-before date printed on the base. After opening, reseal it after each use, store it somewhere cool and dry, and use it within 3 months for the best taste and texture. Keep wet spoons out of the pouch. A 300g pouch provides about ${SERVINGS_PER_POUCH} meals, so many kitchens will finish it within that period. Heldi Chai has a different pouch and no published shelf-life figure yet.`
+          `This answer is for Heldi Khana. Each pouch has an 18-month best-before date printed on the base. After opening, keep it in the table jar or reseal the pouch after each use, store it somewhere cool and dry, and use it within 3 months for the best taste and texture. Keep wet spoons out of the pouch. A 300g pouch provides about ${SERVINGS_PER_POUCH} meals, so many kitchens will finish it within that period. Heldi Chai has a different pouch and no published shelf-life figure yet.`
       },
       // Only makes sense before launch; live mode drops it.
       ...(mode === "waitlist"

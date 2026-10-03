@@ -236,7 +236,7 @@ export default function OurStoryPage() {
               That was the verdict I needed.
             </p>
             <p>
-              Protein contributes to the maintenance of muscle mass. I want{" "}
+              I want{" "}
               <CopyHighlight>
                 as many long walks with my mama and papa as I can get
               </CopyHighlight>

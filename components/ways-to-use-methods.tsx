@@ -157,7 +157,7 @@ export const METHODS: Method[] = [
       width: 1920,
       height: 1080,
       label: "The takeaway",
-      captions: ["Plate your\nportion.", "Sprinkle\nevenly.", "Stir to the\nbottom."],
+      captions: ["Serve your\nportion.", "Sprinkle\nevenly.", "Stir to the\nbottom."],
       anchors: [20, 50, 77],
       alt: "Engraved takeaway curry in the Heldi pouch style, shown three times: a steaming foil container, a plated bowl with a bangled hand sprinkling a spoonful over it, and another hand stirring the bowl smooth."
     }

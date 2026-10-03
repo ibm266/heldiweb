@@ -86,7 +86,7 @@ const POUCHES: Pouch[] = [
     },
     pills: [
       { icon: `${BADGES}/high-protein.png`, label: "High protein", width: 256, height: 256 },
-      { icon: `${BADGES}/caffeine-free.webp`, label: "Caffeine free", width: 256, height: 256 },
+      { icon: `${BADGES}/caffeine-free.webp`, label: "Caffeine free*", width: 256, height: 256 },
       { icon: `${BADGES}/vegetarian.png`, label: "Vegetarian", width: 286, height: 367 }
     ],
     href: "/shop/chai"
@@ -180,7 +180,8 @@ export function PouchSmallPrint() {
     <p className="heldi-disclaimer" id="small-print">
       * {POUCHES.map((pouch) => `${pouch.title}: ${pouch.legalName}`).join(" ")}{" "}
       Both contain milk. No added sugar: Khana contains naturally occurring
-      sugars. Food supplements are not a substitute for a varied and balanced
+      sugars. Caffeine free: the Chai blend is, but tea and coffee are not, so
+      the drink it goes into may still contain caffeine. Food supplements are not a substitute for a varied and balanced
       diet and a healthy lifestyle.
     </p>
   );

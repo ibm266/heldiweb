@@ -202,22 +202,24 @@ export type ChaiMethodStep = { title: string; body: string; art: ChaiMethodArt }
 
 const METHOD_ART_SIZE = { width: 400, height: 400 };
 
-/** The three steps printed on the back of the pouch, reworded for the site.
- *  The pack says "dose" in its statutory footer; the site never does. */
+/** The three steps on the back of the pouch (MAKE TEA, LET IT COOL, STORE IN
+ *  A JAR), in the pouch's words where the drawings allow: the third drawing is
+ *  the stir, so the jar rides along in its line. The pack says "dose" in its
+ *  statutory footer; the site never does. */
 export const CHAI_METHOD: ChaiMethodStep[] = [
   {
-    title: "BREW",
-    body: "Make your chai the way you always make it.",
+    title: "MAKE TEA",
+    body: "Make your chai, tea or coffee just as always.",
     art: { src: "/images/shop/chai-method/brew.webp", ...METHOD_ART_SIZE }
   },
   {
-    title: "COOL",
-    body: "Add your milk and wait until it is cool enough to drink.",
+    title: "LET IT COOL",
+    body: "Never add Heldi to boiling liquid. Wait until the cup is cool enough to drink.",
     art: { src: "/images/shop/chai-method/cool.webp", ...METHOD_ART_SIZE }
   },
   {
     title: "STIR",
-    body: "Stir in a level tablespoon just before you drink.",
+    body: "Stir in a level tablespoon just before you drink, and keep the jar by the kettle for next time.",
     art: { src: "/images/shop/chai-method/stir.webp", ...METHOD_ART_SIZE }
   }
 ];
@@ -267,7 +269,7 @@ export type ChaiPill = {
 // free and none implies the mug is (BRAND.md §12).
 export const CHAI_PILLS: ChaiPill[] = [
   { icon: "/images/pouch-badges/high-protein.png", label: "High protein", width: 256, height: 256 },
-  { icon: "/images/pouch-badges/caffeine-free.webp", label: "Caffeine free", width: 256, height: 256 },
+  { icon: "/images/pouch-badges/caffeine-free.webp", label: "Caffeine free*", width: 256, height: 256 },
   { icon: "/images/pouch-badges/vegetarian.png", label: "Vegetarian", width: 286, height: 367 }
 ];
 

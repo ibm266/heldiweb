@@ -14,7 +14,7 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Shop · Heldi",
   description:
-    "Choose Heldi Khana for the bowl at your table, or meet Heldi Chai for hot drinks. Two pouches for two everyday kitchen routines.",
+    "Heldi Khana for the bowl, Heldi Chai for the mug, or both. Two protein blends that stir into the food and drinks your family already makes.",
   alternates: { canonical: "/shop" }
 };
 

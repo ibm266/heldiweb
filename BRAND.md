@@ -27,8 +27,9 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
 - **Name**: /hel-dee/, *adj.* how my nani says "healthy." The founder's nani's
   pronunciation, adopted as the brand. This line appears verbatim on the hero and pack.
 - **Slogan**: **They shake, we stir.** (A Bond allusion. It is in the ticker, the stir
-  gallery eyebrow, the meta description, and the Organization schema. Since 3 Oct 2026
-  the footer carries the brand line, "More from the food you love", instead.)
+  gallery eyebrow and the Organization schema. Since 3 Oct 2026 the footer, the
+  site-wide meta description and the home share card carry the brand line, "More from
+  the food you love", instead.)
 - **Tagline family**: "The same food, just a little Heldier." · "Bringing something new
   to the table." · "Same recipes. Same taste. More protein." (the gold v1 pack front;
   the navy v2 front, on every product shot since 2 Sep 2026, reads "Protein powder for
