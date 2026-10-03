@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ReviewsSection } from "@/components/reviews/reviews-section";
+import { BeforeYouBuy } from "@/components/shop/before-you-buy";
 import { BuyBox } from "@/components/shop/buy-box";
 import { GiftingBand } from "@/components/shop/gifting-band";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
@@ -18,7 +19,7 @@ import {
 export const metadata: Metadata = {
   title: "Heldi Khana · Heldi",
   description:
-    "A high-protein whey isolate blend with warm spices for dal, curry, sabzi and raita. Stir it into your own bowl at the table, or into the pot once it is off the heat.",
+    "More from the food you love. Heldi Khana stirs 10g of protein into your dal, curry, sabzi or raita, and the recipe stays exactly as your family makes it.",
   alternates: { canonical: "/shop/khana" }
 };
 
@@ -67,9 +68,11 @@ export default async function ShopPage() {
         <BuyBox product={product} />
       </section>
 
+      <BeforeYouBuy product="khana" />
+
       <ReviewsSection
         id="reviews"
-        tone="gold"
+        tone="cream"
         heading="How it went at their table."
         lede="Each card pairs the review with its dish and spoon count. Clips made in the Heldi kitchen are labelled, so you can tell them apart from customer ones."
         submitCta

@@ -169,18 +169,18 @@ const COLS = 11;
 function waitlistTickerCopy(offerItems: string[]): string {
   return [
     "THEY SHAKE, WE STIR",
-    "MADE IN THE UK",
+    "BLENDED AND PACKED IN THE UK",
     "FOR INDIAN KITCHENS",
     "KHANA FOR THE BOWL, CHAI FOR THE MUG",
     "100% VEGETARIAN",
     ...offerItems,
     "SAME RECIPES, SAME TASTE",
-    "LAUNCHING AUTUMN 2026",
+    "LAUNCHING WINTER 2026",
     ""
   ].join("  •  ");
 }
 const TICKER_COPY_LIVE =
-  "THEY SHAKE, WE STIR  •  MADE IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE BOWL, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
+  "THEY SHAKE, WE STIR  •  BLENDED AND PACKED IN THE UK  •  FOR INDIAN KITCHENS  •  KHANA FOR THE BOWL, CHAI FOR THE MUG  •  100% VEGETARIAN  •  AUNTIES & UNCLES PAY LESS  •  SAME RECIPES, SAME TASTE  •  ";
 
 const POUCH_BADGE_ICONS = {
   highProtein: "/images/pouch-badges/high-protein.png",
@@ -282,14 +282,12 @@ function HeroStory() {
     <div className="hero-card__story">
       <p className="hero-card__tagline">More from the food you love.</p>
       <p className="hero-card__support">
-        Khana stirs straight into home-cooked dal, curry, sabzi and raita,
-        adding{" "}
-        <strong>
-          <span className="hero-card__grams">10g of protein</span> per serving
-        </strong>
-        . Chai adds <strong>5g per serving</strong> to chai, tea, coffee or hot
-        chocolate. Both were made for the food and drinks your family already
-        loves.
+        Nobody should have to swap their mum&apos;s dal for a protein bar. So we
+        made protein you stir into your home-cooked favourites. A spoonful of
+        Heldi Khana adds{" "}
+        <strong className="hero-card__grams">10g of protein</strong> to your dal,
+        curry or sabzi, and a spoonful of Heldi Chai adds <strong>5g</strong> to
+        your chai, tea or coffee.
       </p>
       <p className="hero-card__claim">
         Developed by Indian home cooks for Indian families.
@@ -1327,11 +1325,13 @@ export function HeldiHomepage({
         <div className="truth-block">
           <p className="eyebrow">THE HONEST TRUTH</p>
           <h2>That 18g figure? It&apos;s for dry dal.</h2>
+          {/* 18g is about 75g of dry lentils, not 100g: the same figure and
+              basis as /truth and the "How much protein is in a bowl of dal?" FAQ. */}
           <p>
-            So the bowl you actually eat lands closer to 6g. We counted the
-            cooked bowl because that is the one you put on the table. Protein
-            contributes to the maintenance of muscle mass. Here is the{" "}
-            <CopyHighlight>honest fix</CopyHighlight>.
+            We looked at the bowl that actually lands on your table. A cooked
+            bowl of dal has{" "}
+            <CopyHighlight>closer to 6g of protein</CopyHighlight>, not the 18g
+            quoted on most sites, which is for about 75g of dry lentils.
           </p>
           <PouchEquation />
           {/* 94%, not 90%: the pouch is 94% whey protein isolate, while the
@@ -1344,7 +1344,7 @@ export function HeldiHomepage({
           </p>
           <div className="pill-links">
             <a className="pill-link" href="/truth">
-              Read the full truth &#8594;
+              Why 6g isn&apos;t enough for most adults &#8594;
             </a>
             <a className="pill-link" href="/inside-the-pouch">
               See what&apos;s inside &#8594;
@@ -1388,6 +1388,16 @@ export function HeldiHomepage({
             My nani never said healthy. She said heldi. Warm food, made with
             care, made for you. That is where the name comes from.
           </p>
+          {/* The brand values that live here (BRAND.md §1): time with
+              parents, made active, as a wish and never a health outcome;
+              family recipes kept cooking and passed on. */}
+          <p className="founder-band__quote">
+            I want more time with my mama and papa, and I want it to be the
+            active kind: long walks and full tables. I&apos;d love my
+            mama&apos;s palak paneer, the way my dadi taught it to her, to
+            still be cooking when it&apos;s my turn at the stove. I made Heldi
+            so nobody has to give up the food they grew up on.
+          </p>
           <p className="founder-band__signature">&mdash; Mihir, founder</p>
           <a className="pill-link" href="/our-story">
             Read our story &#8594;
@@ -1401,7 +1411,7 @@ export function HeldiHomepage({
         <div className="faq">
           <h2 className="centered">The questions we hear most.</h2>
           {/* One group shows at a time, but every group and every answer is
-              rendered (hidden, not left out), so crawlers read all thirteen
+              rendered (hidden, not left out), so crawlers read all twelve
               and they match the FAQPage JSON-LD in app/page.tsx. */}
           <div className="faq-groups" role="radiogroup" aria-label="Question topics">
             {HOME_FAQ_GROUPS.map((group) => (
@@ -1465,12 +1475,17 @@ export function HeldiHomepage({
             <p className="eyebrow eyebrow--gold">WITH EVERY ORDER</p>
             <h2>A jar for the table. On us.</h2>
             <p>
-              Every pouch order comes with a refillable jar for the{" "}
+              Every pouch order ships with a refillable jar for the{" "}
               <CopyHighlight>dinner table</CopyHighlight>. Not the cupboard.
-              Keep it <CopyHighlight>beside the dal</CopyHighlight> so everyone
-              can reach for a spoonful. It comes in gold, and only gold. We
-              considered silver for about four minutes, then remembered our
-              families would have the final say.
+              In our families nobody says &ldquo;I love you&rdquo; over dinner.
+              A plate is put down in front of you, and that is the whole
+              sentence. The jar goes round after it, with the rotis, and the
+              grown-ups each stir a spoonful into their own bowl. Heldi Chai
+              comes with the same jar, so one can sit{" "}
+              <CopyHighlight>by the kettle</CopyHighlight>{" "}
+              too, ready for a spoonful just before you drink. It comes in
+              gold, and only gold.
+              Who doesn&apos;t love gold?
             </p>
           </div>
           <div className="jar-card">
@@ -1530,7 +1545,7 @@ export function HeldiHomepage({
 
       <footer data-floating-cta-suppress>
         <Wordmark footer onDark />
-        <span>© 2026 Heldi · Made in the UK · They shake, we stir</span>
+        <span>© 2026 Heldi · Blended and packed in the UK · More from the food you love</span>
         <FooterLegal />
       </footer>
     </main>

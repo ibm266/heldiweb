@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BeforeYouBuy } from "@/components/shop/before-you-buy";
 import { ChaiBuyBox } from "@/components/shop/chai-buy-box";
 import { CHAI_IMAGES } from "@/components/shop/chai-data";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
@@ -8,7 +9,7 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Heldi Chai · Heldi",
   description:
-    "A high-protein blend of whey and milk protein concentrate with chai spices and coconut sugar for chai, tea, coffee and hot chocolate.",
+    "More from the drinks you love. Heldi Chai stirs 5g of protein into your chai, tea or coffee, blended with real chai spices, and your cup still tastes like your cup.",
   alternates: { canonical: "/shop/chai" }
 };
 
@@ -42,6 +43,8 @@ export default function ChaiPage() {
       <section className="section section--cream" data-nav-hero>
         <ChaiBuyBox />
       </section>
+
+      <BeforeYouBuy product="chai" />
 
       <SubpageFooter />
 

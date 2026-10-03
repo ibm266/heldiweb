@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { useCart } from "@/components/cart/cart-context";
+import { CopyHighlight } from "@/components/copy-highlight";
 import { CHAI_LEGAL_NAME, CHAI_SERVING_SPOON } from "@/components/shop/chai-data";
 
 // The two product tiles on /shop. Same card family as the homepage range
@@ -23,8 +25,10 @@ type Pouch = {
   id: "khana" | "chai";
   tag: string;
   title: string;
+  /** The legal name. It sits in the page's small print (PouchSmallPrint),
+   *  tied to the card title by an asterisk, not in the card itself. */
   legalName: string;
-  line: string;
+  line: ReactNode;
   image: { src: string; alt: string };
   pills: Pill[];
   href: string;
@@ -40,7 +44,15 @@ const POUCHES: Pouch[] = [
     tag: "FOR THE BOWL",
     title: "Heldi Khana",
     legalName: "Whey protein isolate blend with warm spices. Food supplement.",
-    line: "For dal, curry, sabzi and raita. Stir a heaped tablespoon into your own bowl at the table, or through the shared pot once it is off the heat.",
+    line: (
+      <>
+        Khana literally means food, and food is life. We want to bring
+        something new to the table without moving anything already on it.{" "}
+        <CopyHighlight>Serve your dal, curry or sabzi just as always</CopyHighlight>,
+        stir a heaped tablespoon into your bowl, and{" "}
+        <CopyHighlight>the recipe stays exactly as your family makes it</CopyHighlight>.
+      </>
+    ),
     image: {
       src: "/images/range/khana.webp?v=6",
       alt: "The navy Heldi Khana pouch on a linen table"
@@ -48,7 +60,7 @@ const POUCHES: Pouch[] = [
     pills: [
       { icon: `${BADGES}/high-protein.png`, label: "High protein", width: 256, height: 256 },
       { icon: `${BADGES}/lactose-free.png`, label: "98% lactose-free", width: 280, height: 377 },
-      { icon: `${BADGES}/no-sugar.png`, label: "No added sugar", width: 386, height: 390 },
+      { icon: `${BADGES}/no-sugar.png`, label: "No added sugar*", width: 386, height: 390 },
       { icon: `${BADGES}/vegetarian.png`, label: "Vegetarian", width: 286, height: 367 }
     ],
     href: "/shop/khana"
@@ -58,14 +70,23 @@ const POUCHES: Pouch[] = [
     tag: "FOR THE MUG",
     title: "Heldi Chai",
     legalName: CHAI_LEGAL_NAME,
-    line: `Chai, tea, coffee, hot chocolate. A ${CHAI_SERVING_SPOON} stirred into the mug once it is cool enough to drink, and the cup still tastes like your cup.`,
+    line: (
+      <>
+        Chai is more than just a drink: it&apos;s a daily ritual and a reason
+        to sit together.{" "}
+        <CopyHighlight>Make your chai, tea or coffee exactly how you always do</CopyHighlight>,
+        let it cool a little, then stir in a {CHAI_SERVING_SPOON} just before
+        you drink.{" "}
+        <CopyHighlight>Your cup still tastes like your cup.</CopyHighlight>
+      </>
+    ),
     image: {
       src: "/images/range/chai.webp?v=5",
       alt: "The terracotta Heldi Chai pouch on a linen table"
     },
     pills: [
       { icon: `${BADGES}/high-protein.png`, label: "High protein", width: 256, height: 256 },
-      { icon: `${BADGES}/caffeine-free.webp`, label: "Caffeine free", width: 256, height: 256 },
+      { icon: `${BADGES}/caffeine-free.webp`, label: "Caffeine free*", width: 256, height: 256 },
       { icon: `${BADGES}/vegetarian.png`, label: "Vegetarian", width: 286, height: 367 }
     ],
     href: "/shop/chai"
@@ -76,11 +97,11 @@ function status(id: Pouch["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
       ? { note: "Ready for the next bowl.", cta: "Shop Khana" }
-      : { note: "Khana is the pouch launching first.", cta: "See Khana" };
+      : { note: "Ready on launch day.", cta: "See Khana" };
   }
   return mode === "live"
     ? { note: "Read the method now. Chai is not on sale yet.", cta: "See Chai" }
-    : { note: "Read the method now. The waitlist hears first when Chai is ready.", cta: "See Chai" };
+    : { note: "Read the method now. Chai launches with Khana.", cta: "See Chai" };
 }
 
 export function PouchPicker() {
@@ -110,8 +131,16 @@ export function PouchPicker() {
             </Link>
             <div className="range-card__body">
               <p className="range-card__tag">{pouch.tag}</p>
-              <h2 className="range-card__title">{pouch.title}</h2>
-              <p className="range-card__legal">{pouch.legalName}</p>
+              <h2 className="range-card__title">
+                {pouch.title}
+                <a
+                  className="range-card__mark"
+                  href="#small-print"
+                  aria-label="See the small print"
+                >
+                  *
+                </a>
+              </h2>
               <p className="range-card__line">{pouch.line}</p>
               <ul className="range-card__pills" aria-label="Product attributes">
                 {pouch.pills.map((pill) => (
@@ -138,5 +167,22 @@ export function PouchPicker() {
         );
       })}
     </ul>
+  );
+}
+
+// The compliance lines for both cards, at the foot of /shop: each pouch's
+// legal name, the allergen and the not-a-substitute statement. The cards
+// point here with an asterisk (Mihir, 3 Oct 2026: compliance text belongs in
+// the small print, not in the selling copy). The product pages keep their
+// own full statements by the buy button.
+export function PouchSmallPrint() {
+  return (
+    <p className="heldi-disclaimer" id="small-print">
+      * {POUCHES.map((pouch) => `${pouch.title}: ${pouch.legalName}`).join(" ")}{" "}
+      Both contain milk. No added sugar: Khana contains naturally occurring
+      sugars. Caffeine free: the Chai blend is, but tea and coffee are not, so
+      the drink it goes into may still contain caffeine. Food supplements are not a substitute for a varied and balanced
+      diet and a healthy lifestyle.
+    </p>
   );
 }

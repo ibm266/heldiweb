@@ -1813,6 +1813,17 @@ h2 {
   font-style: italic;
 }
 
+.waitlist-success__more {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+}
+
+.waitlist-success__more a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .double-rule {
   height: 7px;
   border-block: 3px solid var(--ink);
@@ -4432,6 +4443,10 @@ footer {
   color: var(--ink);
 }
 
+.founder-band__quote + .founder-band__quote {
+  margin-top: 1.25rem;
+}
+
 .founder-band--gold .founder-band__signature {
   color: var(--brown);
 }
@@ -6024,6 +6039,14 @@ a.living-card__tag:hover {
 
 .pdp__disclaimer {
   margin-top: 1.5rem;
+}
+
+/* The asterisk notes under the statutory block (the "No added sugar*" pill). */
+.pdp__footnote {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.55;
 }
 
 .heldi-disclaimer {
@@ -9394,6 +9417,232 @@ a.living-card__tag:hover {
   }
 }
 
+/* ---------- Before you buy (product pages) ----------
+   Three honest notes from Mihir's before-you-buy films, on a gold band under
+   the buy box (components/shop/before-you-buy.tsx). Mobile (<=899px): header,
+   then the cards stacked. Wide (>=900px): Khana's three cards in a row; Chai's
+   first card (let it cool) spans the row, its cup scale beside the text, with
+   the other two under it. Capped at 1152px. */
+.know__inner {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+.know__head {
+  max-width: 46rem;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.know__head h2 {
+  margin-top: 0.5rem;
+  text-wrap: balance;
+}
+
+.know__lede {
+  max-width: 40rem;
+  margin: 1rem auto 0;
+  color: var(--brown);
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  line-height: 1.6;
+}
+
+.know__grid {
+  display: grid;
+  margin: clamp(2rem, 5vw, 3rem) 0 0;
+  padding: 0;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  grid-template-columns: 1fr;
+  list-style: none;
+}
+
+.know-card {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  background: var(--cream);
+  box-shadow: 6px 6px 0 var(--ink);
+  gap: 1.25rem;
+}
+
+.know-card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.know-card__num {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--gold);
+  font-family: var(--font-display), serif;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.know-card__title {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display), serif;
+  font-size: clamp(1.375rem, 2.4vw, 1.6875rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.know-card__body {
+  margin: 0;
+  color: var(--brown);
+  line-height: 1.6;
+}
+
+.know-card__body strong {
+  color: var(--ink);
+}
+
+.know__close {
+  max-width: 40rem;
+  margin: clamp(2rem, 5vw, 3rem) auto 0;
+  color: var(--ink);
+  font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+  font-style: italic;
+  text-align: center;
+}
+
+/* The drawn cups: a mug with a handle, and up to three steam lines. */
+.know-cups {
+  display: grid;
+  margin: 0;
+  padding: 1rem 0.5rem 0;
+  border-top: 2px dashed rgb(var(--ink-rgb) / 20%);
+  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+}
+
+.know-cup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--brown);
+  font-size: 0.875rem;
+  line-height: 1.3;
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.know-cup__art {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.know-cup__steam {
+  display: flex;
+  height: 1.5rem;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.know-cup__steam span {
+  width: 3px;
+  height: 100%;
+  border-radius: 3px;
+  background: rgb(var(--ink-rgb) / 40%);
+}
+
+.know-cup__steam span:nth-child(2) {
+  height: 70%;
+}
+
+.know-cup__mug {
+  position: relative;
+  width: 2.75rem;
+  height: 2.25rem;
+  margin-top: 0.25rem;
+  margin-right: 0.75rem;
+  border: 3px solid var(--ink);
+  border-radius: 0 0 0.8rem 0.8rem;
+  background: var(--gold);
+}
+
+/* An empty cup with the spice settled in a dotted line along its base. */
+.know-cup__mug--dregs {
+  background:
+    radial-gradient(circle, var(--brown) 1.6px, transparent 2px) 0 100% / 7px 7px repeat-x,
+    var(--cream);
+}
+
+.know-cup__mug::after {
+  position: absolute;
+  top: 0.3rem;
+  right: -0.85rem;
+  width: 0.7rem;
+  height: 1rem;
+  border: 3px solid var(--ink);
+  border-left: 0;
+  border-radius: 0 0.6rem 0.6rem 0;
+  content: "";
+}
+
+.know-cup__label {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.know-cups--one {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.know-cup__verdict {
+  padding: 0.15rem 0.6rem;
+  border: 2px solid var(--ink);
+  border-radius: 1rem;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.know-cup--no .know-cup__verdict {
+  border-color: var(--terracotta);
+  color: var(--terracotta);
+}
+
+.know-cup--yes .know-cup__verdict {
+  background: var(--ink);
+  color: var(--gold);
+}
+
+@media (min-width: 900px) {
+  .know__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .know__grid--lead {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .know-card--lead {
+    display: grid;
+    align-items: center;
+    column-gap: 2.5rem;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+
+  .know-card--lead .know-cups {
+    padding: 0 0 0 2rem;
+    border-top: 0;
+    border-left: 2px dashed rgb(var(--ink-rgb) / 20%);
+  }
+}
+
 /* ---------- Shop front (/shop): the pouch picker ----------
    Mobile (<=899px): one full-width tile per pouch, stacked, so each product
    gets a whole screen. Wide (>=900px): the two tiles side by side, capped at
@@ -9435,12 +9684,13 @@ a.living-card__tag:hover {
   font-size: clamp(1.75rem, 3vw, 2.25rem);
 }
 
-.range-card__legal {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.9375rem;
-  font-style: italic;
-  line-height: 1.4;
+/* The asterisk on a /shop card title, pointing at the page's small print. */
+.range-card__mark {
+  margin-left: 0.05em;
+  color: inherit;
+  font-size: 0.7em;
+  text-decoration: none;
+  vertical-align: super;
 }
 
 .range-card--page .range-card__line {

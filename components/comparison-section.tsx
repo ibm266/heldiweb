@@ -17,7 +17,7 @@ type ComparisonRow = TickRow | TextRow;
 
 const TICK_ROWS: TickRow[] = [
   { kind: "tick", label: "Stirs straight into home cooking" },
-  { kind: "tick", label: "Developed with desi home cooks" },
+  { kind: "tick", label: "Developed by Indian home cooks" },
   { kind: "tick", label: "Aunty & uncle approved" },
   { kind: "tick", label: "Zero new habits required" }
 ];
@@ -258,9 +258,9 @@ export function ComparisonSection() {
             <CopyHighlight>Keep the jar on the table.</CopyHighlight>
           </h2>
           <p className="vs__lede">
-            We made Heldi for the way our families eat: a bowl at the table, a
-            mug by the kettle and no separate shake waiting afterwards. The
-            scorecard shows where it fits.
+            We made Heldi for the way our families eat: breakfast, lunch and
+            dinner, a cup of chai in between, and no separate shake waiting
+            afterwards. The scorecard shows where it fits.
           </p>
         </header>
 

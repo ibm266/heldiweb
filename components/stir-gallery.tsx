@@ -78,6 +78,7 @@ const CHAI_CAPTIONS = [
 
 const DAL_CAPTIONS = [
   "The dal did not even notice.",
+  "Bends into the dal like Beckham.",
   "The tadka still gets all the attention."
 ];
 

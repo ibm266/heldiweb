@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { CopyHighlight } from "@/components/copy-highlight";
-import { PouchPicker } from "@/components/shop/pouch-picker";
+import { PouchPicker, PouchSmallPrint } from "@/components/shop/pouch-picker";
 import { SubpageFooter, SubpageNav } from "@/components/subpage-nav";
 import { WaitlistOrShopCta } from "@/components/waitlist-or-shop-cta";
 import { serializeJsonLd } from "@/lib/json-ld";
@@ -14,7 +14,7 @@ import { SITE_URL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Shop · Heldi",
   description:
-    "Choose Heldi Khana for the bowl at your table, or meet Heldi Chai for hot drinks. Two pouches for two everyday kitchen routines.",
+    "Heldi Khana for the bowl, Heldi Chai for the mug, or both. Two protein blends that stir into the food and drinks your family already makes.",
   alternates: { canonical: "/shop" }
 };
 
@@ -50,11 +50,11 @@ export default function ShopPage() {
             Pick the pouch that fits your kitchen.
           </h1>
           <p className="story-hero__lede">
-            Start with the routine your family repeats most:{" "}
+            A bowl at the dinner table, or a mug by the kettle. Whichever you
+            reach for,{" "}
             <CopyHighlight>
-              a bowl at the dinner table, or a mug by the kettle.
-            </CopyHighlight>{" "}
-            Each page explains what goes in and when to stir.
+              the recipes stay exactly as your family makes them.
+            </CopyHighlight>
           </p>
         </div>
         <PouchPicker />
@@ -70,28 +70,28 @@ export default function ShopPage() {
             <CopyHighlight>Khana</CopyHighlight> is the savoury one: whey
             protein isolate with warm spices for dal, curry, sabzi and raita.
             Stir a spoonful into your own bowl at the table, or take the pot
-            off the heat and stir it through for everyone. Khana is the pouch
-            on sale first.
+            off the heat and stir it through for everyone.
           </p>
           <p>
             <CopyHighlight>Chai</CopyHighlight> is the one for hot drinks:
-            whey and milk protein concentrate with cardamom, ginger, cinnamon
-            and clove, a
-            little coconut sugar, stirred into chai, tea, coffee or hot
-            chocolate once the cup is cool enough to drink. It is still in
-            development, so it has a page and no price yet.
-          </p>
-          <p className="story-note">
-            Both contain milk. Both are vegetarian. Both are food
-            supplements, not a substitute for a varied and balanced diet.
+            whey and milk protein concentrate with ginger, cardamom, cinnamon,
+            black pepper and clove, a little coconut sugar, stirred into chai,
+            tea, coffee or hot chocolate once the cup is cool enough to drink.
+            It launches alongside Khana.
           </p>
         </div>
       </section>
 
       <section className="final-cta section--bordered story-final">
         <div className="final-cta-copy">
-          <h2>Start with the pouch your family will use first.</h2>
+          <h2>The bowl, the mug, or both. Your call.</h2>
           <WaitlistOrShopCta />
+        </div>
+      </section>
+
+      <section className="section section--cream">
+        <div className="content">
+          <PouchSmallPrint />
         </div>
       </section>
 

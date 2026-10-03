@@ -7,6 +7,7 @@ import { useCart } from "@/components/cart/cart-context";
 import { useWaitlistOffer } from "@/components/waitlist-offer-context";
 import { useWaitlistPopup } from "@/components/waitlist-popup";
 import { track } from "@/lib/analytics";
+import { includedItemsForPouches } from "@/lib/commerce/catalog";
 import { ChaiAccordions } from "./chai-accordions";
 import {
   CHAI_ALLERGENS,
@@ -97,7 +98,8 @@ export function ChaiBuyBox() {
             the page rather than only in the block at the bottom. */}
         <p className="pdp__legal-name">{CHAI_LEGAL_NAME}</p>
         <p className="pdp__lede">
-          A level spoonful for the mug you make every day.
+          More from the drinks you love. One level tablespoon adds{" "}
+          {CHAI_PROTEIN_MARKETING_GRAMS}g of protein to your mug.
         </p>
 
         <button
@@ -156,7 +158,7 @@ export function ChaiBuyBox() {
         </ol>
 
         <div className="pdp__includes">
-          <p className="pdp__includes-title">In the pouch:</p>
+          <p className="pdp__includes-title">Includes:</p>
           <div className="pdp__includes-row">
             <Image
               className="pdp__includes-img"
@@ -170,6 +172,14 @@ export function ChaiBuyBox() {
               1 × {CHAI_POUCH_GRAMS}g pouch, about {CHAI_MUGS_PER_POUCH} mugs
             </span>
           </div>
+          {/* Every pouch order comes with the table jar, Chai's too (Mihir,
+              3 Oct 2026): it lives by the kettle. */}
+          {includedItemsForPouches(1).map((item) => (
+            <div className="pdp__includes-row" key={item.title}>
+              <Image className="pdp__includes-img" src={item.image} alt="" width={28} height={28} sizes="28px" />
+              <span>{item.title}</span>
+            </div>
+          ))}
           <p className="pdp__includes-note">
             One mug uses an {CHAI_SERVING_GRAMS}g serving, about one{" "}
             {CHAI_SERVING_SPOON}, and adds {CHAI_PROTEIN_MARKETING_GRAMS}g of
@@ -201,9 +211,36 @@ export function ChaiBuyBox() {
         <p className="pdp__promise">
           {mode === "live"
             ? "Chai is not on sale yet. Khana is ready for dal, curry, sabzi and raita."
-            : `We are finishing Chai before we sell it. Join the waitlist to hear when it is ready. ${offer.sentence}`}
+            : `Chai launches with Khana. Join the waitlist to hear the day it goes on sale. ${offer.sentence}`}
         </p>
 
+
+        <div className="pdp__desc">
+          <p>
+            <strong>Your chai, exactly as you make it.</strong>{" "}
+            Chai is more than just a drink. It&apos;s a daily ritual, a reason to sit
+            together, and a familiar part of home. Heldi Chai is whey protein
+            and milk protein concentrate, blended with the chai spices your
+            kitchen knows well: ginger, cardamom, cinnamon, black pepper and
+            clove. {CHAI_NATURAL_LINE} Make your{" "}
+            <strong>chai, tea, coffee or hot chocolate</strong> just as always,
+            let it cool a little, then stir in a level tablespoon just before
+            you drink. Your cup still tastes like your cup: no chalk, no
+            aftertaste, no shaker on the draining board.{" "}
+            <strong>Same recipes. Same drinks. Just a little Heldier.</strong>
+          </p>
+          <p>
+            New to Heldi?{" "}
+            <a href="/truth">Find out why 6g a bowl of dal isn&apos;t enough for most adults</a>.
+            Cooking dal rather than chai? <a href="/shop/khana">Meet Heldi Khana</a>,
+            the blend for the bowl.
+          </p>
+        </div>
+
+        <ChaiAccordions />
+
+        {/* The compliance lines sit below the selling copy and the fold-outs,
+            still on the page before anyone buys (BRAND.md §4.1 item 5, §12). */}
         <StatutoryStatements
           servingGrams={CHAI_SERVING_GRAMS}
           maxServings={CHAI_MAX_DAILY_SERVINGS}
@@ -212,26 +249,10 @@ export function ChaiBuyBox() {
           allergens={CHAI_ALLERGENS}
           className="pdp__disclaimer"
         />
-
-        <div className="pdp__desc">
-          <p>
-            <strong>One spoonful, stirred in at the end.</strong> Heldi Chai
-            is a high-protein blend made for the hot drinks you already make.{" "}
-            {CHAI_NATURAL_LINE} Stir it into{" "}
-            <strong>chai, tea, coffee or hot chocolate</strong> once the cup is
-            cool enough to drink, and it still tastes like your cup: no chalk,
-            no aftertaste, no shaker on the draining board.{" "}
-            <strong>High in protein</strong>: {CHAI_PROTEIN_MARKETING_GRAMS}g
-            in every mug, and protein contributes to the
-            maintenance of muscle mass. Contains{" "}
-            <strong>milk</strong> (whey and milk protein concentrate). New to Heldi?{" "}
-            <a href="/truth">Start with the honest truth about protein</a>, or{" "}
-            <a href="/shop">meet Khana</a>, the blend for the food rather than
-            the drink.
-          </p>
-        </div>
-
-        <ChaiAccordions />
+        <p className="pdp__footnote">
+          * Caffeine free: the Chai blend contains no caffeine. Tea and coffee
+          usually do, so the drink you stir it into may still contain caffeine.
+        </p>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/components/cart/cart-context";
 import { CopyHighlight } from "@/components/copy-highlight";
+import { CHAI_SELLABLE } from "@/lib/commerce/config";
 
 // The two-pouch band on the homepage: Khana for the bowl, Chai for the mug.
 //
@@ -15,8 +16,9 @@ import { CopyHighlight } from "@/components/copy-highlight";
 // neither card carries one. The section's job is to say there are two
 // pouches, what each one is for, and where to go next.
 //
-// The Chai card is honest about the stage Chai is at (BRAND.md §3, pillar 1):
-// it has a page and no price, in either commerce mode.
+// The Chai card is honest about the stage Chai is at (BRAND.md §3, pillar 1).
+// Chai launches with Khana (Mihir, 3 Oct 2026), so once CHAI_SELLABLE is on in
+// live mode its card reads like Khana's.
 
 type RangeProduct = {
   id: "khana" | "chai";
@@ -32,7 +34,7 @@ const RANGE: RangeProduct[] = [
     id: "khana",
     tag: "FOR THE BOWL",
     title: "Heldi Khana",
-    line: "Khana belongs with the dal, curry, sabzi and raita already in your week.",
+    line: "Khana literally means food, and food is life. We want to bring something new to the table: whey protein and warm spices that stir straight into the dal, curry, sabzi and raita already in your week.",
     image: {
       // Cropped from the /shop gallery shot; masters in the gitignored
       // public/images/originals/pre-webp/shop/.
@@ -45,7 +47,9 @@ const RANGE: RangeProduct[] = [
     id: "chai",
     tag: "FOR THE MUG",
     title: "Heldi Chai",
-    line: "Chai, tea, coffee, hot chocolate. Stirred in once the cup is cool enough to drink.",
+    // The five spices of CHAI_INGREDIENT_NAMES (components/shop/chai-data.ts),
+    // in the same order. Change both together.
+    line: "Made with the spices we love in our chai: ginger, cardamom, cinnamon, black pepper and clove. Stir it into chai, tea, coffee or hot chocolate once the cup is cool enough to drink.",
     image: {
       src: "/images/range/chai.webp?v=5",
       alt: "The terracotta Heldi Chai pouch on a linen table"
@@ -55,18 +59,20 @@ const RANGE: RangeProduct[] = [
 ];
 
 // The note and the link label follow the commerce mode, the way every CTA on
-// the site does (BRAND.md §11.5). Khana is the product on sale; Chai is
-// browsable in both modes and buyable in neither, so its link never says
-// "Shop".
+// the site does (BRAND.md §11.5). Chai's link says "Shop" only once
+// CHAI_SELLABLE puts it in the shop.
 function cardCopy(id: RangeProduct["id"], mode: "waitlist" | "live") {
   if (id === "khana") {
     return mode === "live"
       ? { note: "Khana is in the shop now.", cta: "Shop Khana" }
-      : { note: "Khana will be the first pouch out of our kitchen.", cta: "Meet Khana" };
+      : { note: "Khana will be ready on launch day.", cta: "Meet Khana" };
   }
-  return mode === "live"
-    ? { note: "We are still finishing Chai, so it is not in the shop yet.", cta: "Meet Chai" }
-    : { note: "We are still finishing Chai. The waitlist hears first.", cta: "Meet Chai" };
+  if (mode === "live") {
+    return CHAI_SELLABLE
+      ? { note: "Chai is in the shop now.", cta: "Shop Chai" }
+      : { note: "Chai is not in the shop yet.", cta: "Meet Chai" };
+  }
+  return { note: "Chai is just about ready, and it launches with Khana.", cta: "Meet Chai" };
 }
 
 export function RangeSection() {

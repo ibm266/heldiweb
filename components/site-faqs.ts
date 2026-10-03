@@ -53,7 +53,6 @@ export function siteFaqGroupsForMode(
       pick(HOME_FAQS, "How do I use it?"),
       pick(HOME_FAQS, "Will my food taste different?"),
       pick(HOME_FAQS, "Can I use it in dishes that are not on the pouch?"),
-      pick(HOME_FAQS, "Is there a Heldi for chai?"),
       pick(HOME_FAQS, "Can I put Khana in my chai?"),
       pick(HOME_FAQS, "Why not just drink a protein shake?"),
       {
@@ -216,7 +215,7 @@ export function siteFaqGroupsForMode(
       {
         question: "How long does a pouch keep?",
         answer:
-          `This answer is for Heldi Khana. Each pouch has an 18-month best-before date printed on the base. After opening, reseal it after each use, store it somewhere cool and dry, and use it within 3 months for the best taste and texture. Keep wet spoons out of the pouch. A 300g pouch provides about ${SERVINGS_PER_POUCH} meals, so many kitchens will finish it within that period. Heldi Chai has a different pouch and no published shelf-life figure yet.`
+          `This answer is for Heldi Khana. Each pouch has an 18-month best-before date printed on the base. After opening, keep it in the table jar or reseal the pouch after each use, store it somewhere cool and dry, and use it within 3 months for the best taste and texture. Keep wet spoons out of the pouch. A 300g pouch provides about ${SERVINGS_PER_POUCH} meals, so many kitchens will finish it within that period. Heldi Chai has a different pouch and no published shelf-life figure yet.`
       },
       // Only makes sense before launch; live mode drops it.
       ...(mode === "waitlist"
@@ -224,7 +223,7 @@ export function siteFaqGroupsForMode(
             {
               question: "When does Heldi launch, and what does the waitlist do?",
               answer:
-                `Heldi launches in autumn 2026. The shop is available to browse now, and checkout switches on at launch. ${offer.faqAnswer}`
+                `Heldi launches in winter 2026. The shop is available to browse now, and checkout switches on at launch. ${offer.faqAnswer}`
             }
           ]
         : []),

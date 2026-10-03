@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Heldi, desi protein for Indian food",
   description:
-    "Vegetarian whey protein blends for Indian home cooking. Khana is for savoury dishes; Chai is for hot drinks. They shake, we stir.",
+    "More from the food you love. Heldi Khana and Heldi Chai stir protein into the dal, curry and chai your family already makes, and the recipes stay exactly as they are.",
   alternates: {
     types: { "application/rss+xml": "/feed.xml" }
   },

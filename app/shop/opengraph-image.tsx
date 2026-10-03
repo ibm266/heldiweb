@@ -8,8 +8,8 @@ export const alt =
 export default function Image() {
   return heldiOgImage({
     eyebrow: "The Heldi range",
-    title: "Pick the pouch for your kitchen.",
-    sub: "Compare Khana and Chai, then see what goes in and when to stir.",
+    title: "The bowl, the mug, or both.",
+    sub: "Heldi Khana for food, Heldi Chai for drinks. The recipes stay yours.",
     art: "pouches",
     titleSize: 64
   });

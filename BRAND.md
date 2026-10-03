@@ -26,8 +26,10 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
 
 - **Name**: /hel-dee/, *adj.* how my nani says "healthy." The founder's nani's
   pronunciation, adopted as the brand. This line appears verbatim on the hero and pack.
-- **Slogan**: **They shake, we stir.** (A Bond allusion. It is in the ticker, the footer,
-  the meta description, and the Organization schema. Treat it as locked.)
+- **Slogan**: **They shake, we stir.** (A Bond allusion. It is in the ticker, the stir
+  gallery eyebrow and the Organization schema. Since 3 Oct 2026 the footer, the
+  site-wide meta description and the home share card carry the brand line, "More from
+  the food you love", instead.)
 - **Tagline family**: "The same food, just a little Heldier." · "Bringing something new
   to the table." · "Same recipes. Same taste. More protein." (the gold v1 pack front;
   the navy v2 front, on every product shot since 2 Sep 2026, reads "Protein powder for
@@ -46,7 +48,7 @@ carry more protein. No shaker, no new habits, no separate "healthy" cooking.
   basket: its formulation is settled but the label, gluten result and stock are not,
   so it is a waitlist surface rather than a second
   SKU. NEXT_STEPS.md §1b holds every open decision. There are no flavour SKUs.
-- **Stage**: pre-launch waitlist ("Launching autumn 2026" in the ticker), full storefront
+- **Stage**: pre-launch waitlist ("Launching winter 2026" in the ticker), full storefront
   UI built behind a mock cart. CTAs switch on `COMMERCE_MODE` ("waitlist" | "live").
 
 ## §2 Who we are talking to
@@ -128,6 +130,62 @@ scenes rather than category-speak, and zero wellness jargon.
 | Cart + gifting | B | "Copied. Good beta." / "Copied. Rishta sorted." / "Copied. Shabash." |
 | FAQ | A (B only in delivery/contact answers) | "replies come with opinions about dal" |
 | Legal, nutrition table | A only, no garnish | statutory wording |
+
+### 4.1 Mihir's ear (learned in the line-by-line review, 3 Oct 2026)
+
+Mihir went through the live copy line by line on 3 Oct 2026 (branch
+`copy/line-by-line`). These are the patterns behind his edits. Write to them and most
+copy will not need a line-by-line pass from him.
+
+1. **Lead with the feeling, then the fact.** Selling copy opens on why Heldi exists,
+   then says what it does. Bare spec sentences ("Khana belongs with the dal, curry,
+   sabzi and raita already in your week.") read as cold to him. Approved openers:
+   "Nobody should have to swap their mum's dal for a protein bar." / "Khana literally
+   means food, and food is life."
+2. **The core promise is "you don't change your food".** The protein comes to the
+   food; the recipe stays exactly as the family makes it. Say it plainly on every
+   selling surface and bold the one phrase you most want read (`CopyHighlight`).
+3. **Borrow the pouch's words** so site and pack sound like one brand: "More from the
+   food you love", "Khana literally means food, and food is life", "Chai is more than
+   just a drink: a daily ritual and a reason to sit together", "Same recipes. Same
+   food. Just a little Heldier.", the steps Serve, Stir, Store (Chai: Make tea, Let it
+   cool, Store in a jar), "Blended and packed in the UK". The round-16 wording lives in
+   HeldiPM `design/pouch-v2/round16/r16_common.py`.
+4. **Full names on first mention**: Heldi Khana, Heldi Chai.
+5. **Compliance out of the selling copy.** Legal names, allergen sentences, "not a
+   substitute for a varied and balanced diet" and qualifiers like "contains naturally
+   occurring sugars" go into small print at the foot of the page, tied by an asterisk
+   (`PouchSmallPrint` on /shop is the pattern). Authorised health claims are optional
+   in selling copy (he cut the muscle-mass line from the truth teaser); their home is
+   the nutrition fold-outs and FAQ answers about health. On a product page the legal
+   name stays by the title and the statutory block stays on the page, below the
+   selling copy and the fold-outs.
+6. **Confident, not hedged.** No "we are still finishing", "in development", "the
+   pouch launching first". Both pouches launch together.
+7. **Warm and cheeky, never twee and never sad.** He cut "Tell your mum we said hi."
+   (twee) and "A family's version of a dish is gone the year nobody cooks it any
+   more." (too sad). Subtle beats in-your-face. Jokes he kept: the Bond eyebrow, "Bends
+   into the dal like Beckham.", "You can, if you like them. Most of our parents
+   don't.", "Who doesn't love gold?"
+8. **Give the reader a reason to click.** "Read the full truth" became "Why 6g isn't
+   enough for most adults". Prefer a curiosity hook to a generic link label. Invite
+   people in: "Found a dish it works brilliantly in? Email info@heldi.co.uk and we will
+   pass it on to everyone else."
+9. **Practical tips earn their place** when they help at the stove: a whisk for smooth
+   dishes like a big pot of dal or dahi, dish up the children's portions first.
+10. **Leave button labels and UI microcopy alone** unless a fact changed.
+
+Phrases he rejects on sight: stiff connectives ("Here is the honest fix", "three
+useful steps"), caveat-first FAQ answers that sound like a leaflet (he chose the warmer
+answers for the shake, taste, older-adults and diabetes questions), and anything that
+calls Heldi something other than what it is ("no additional supplements": Heldi is a
+food supplement).
+
+Where the rules overrode his first draft, and he accepted it: no claim that Heldi
+benefits children (unauthorised claim, and the pack says keep out of reach of young
+children); no "the protein you need" (§12: nobody needs a supplement); figures stay
+exact (the 18g is about 75g of dry lentils, not 100g); never promise "the only email"
+(the weekly letter exists).
 
 ## §5 Writing mechanics
 
@@ -247,7 +305,8 @@ The six named patterns, with canon examples:
   by `COMMERCE_MODE`, never hard-coded per surface; secondary "How it works" (outline);
   closing "Be first to stir it in." followed by the waitlist offer paragraph; waitlist
   success: "You're on the list. One email, the day we launch, with 15% off your first
-  order inside. Tell your mum we said hi." Those lines, and every other statement of
+  order inside." followed by a quiet link, "While you wait, meet the nani who named
+  it →", to /our-story (not shown on /our-story itself). Those lines, and every other statement of
   the waitlist offer, come from `lib/waitlist-offer.ts` (client surfaces read them through
   `useWaitlistOffer()`). §11.9 owns the offer. No surface types the offer, a number in
   it, or a code string.
@@ -473,12 +532,16 @@ list, for the next time:
 2. `app/inside-the-pouch/page.tsx`: hero ingredient list, percentages in prose, the
    supplier sections, metadata description, batch report if supplier changes.
 3. `components/site-faqs.ts`: "What are the ingredients?", "Where do the ingredients
-   come from?", "Is whey protein ultra-processed?" answers.
+   come from?", "Is whey protein ultra-processed?" answers. The Khana "What's inside"
+   fold-out in `components/shop/product-accordions.tsx` names the five kitchen spices
+   since 3 Oct 2026.
 4. `components/comparison-section.tsx`: the "Flavours" row (the "On the label" row
    was cut in October 2026).
 5. `components/heldi-homepage.tsx`: truth-teaser ingredient line ("90% whey protein
    isolate. The rest, spices you already know.") and the "Will my food taste
-   different?" FAQ in `home-faqs.ts` ("The spices are designed to disappear").
+   different?" and "Can older adults have Heldi?" FAQs in `home-faqs.ts`, which
+   name the five kitchen spices (cumin, coriander, garam masala, Kashmiri chilli,
+   turmeric) since 3 Oct 2026.
 6. Blog posts under `content/heldi-living/` that name spices, and `posts.json`.
 7. Pack-facing docs: `fable/back-prompt-master.md`, `fable/compliance-requirements.md`.
 8. Allergen line stays "Contains: Milk." unless the new formula adds an allergen, in
@@ -548,7 +611,7 @@ list, for the next time:
 our-story "What's next" section ("Khana is on the table. Chai is on the stove."),
 the homepage range band (`components/range-section.tsx`: card titles, alts, the
 `/images/range/khana.webp` filename), the ticker line "KHANA FOR THE BOWL, CHAI
-FOR THE MUG", the "Is there a Heldi for chai?" FAQ in `home-faqs.ts`, the
+FOR THE MUG", the "Can I put Khana in my chai?" FAQ in `home-faqs.ts`, the
 Organization schema description in `app/page.tsx`, `public/llms.txt`, blog
 posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
 (cosmetic), Shopify product. Grep `Khana|khana`.
@@ -556,7 +619,7 @@ posts and `posts.json`, `cart-drawer`/`cart-context` identifier names
 ### 11.5 Launch date / launch state
 
 - Date lives in the waitlist ticker string in `heldi-homepage.tsx` ("LAUNCHING
-  AUTUMN 2026") and in `fable/brand-voice.md`. The ticker is one string per mode:
+  WINTER 2026") and in `fable/brand-voice.md`. The ticker is one string per mode:
   the waitlist ticker (`waitlistTickerCopy()`) carries the date, the waitlist offer's
   ticker items and no price lines; `TICKER_COPY_LIVE` carries "AUNTIES & UNCLES PAY
   LESS" and drops the date.
@@ -627,8 +690,8 @@ longer do, so keep them that way:
 Chai also appears on three surfaces away from its own page, all written to
 stay true under every candidate blend and to carry **no figure**: the homepage
 range band (`components/range-section.tsx`, which names what each pouch is
-for and nothing else), the "Is there a Heldi for chai?" answer in
-`home-faqs.ts` (picked into /faq by `site-faqs.ts`), and the Chai lines in
+for and, since 3 Oct 2026, Chai's five spices), the "Can I put Khana in my chai?" answer in
+`home-faqs.ts` (picked into /faq by `site-faqs.ts`; "Is there a Heldi for chai?" was cut on 3 Oct 2026), and the Chai lines in
 `public/llms.txt`, the "To finish · Masala chai" line on every homepage menu
 card (`menu-gallery.tsx`), the "In the mug" method (`ways-to-use-methods.tsx`,
 on /ways-to-use and the homepage how-it-works rail), the "Masala chai" stir
@@ -733,7 +796,7 @@ are interpolated from `WAITLIST_OFFER` and `GIFTING`, never typed.
 | `tickerItems` | Waitlist ticker | FIRST 100 ON THE LIST GET A FREE SAMPLE PAIR  •  15% OFF YOUR FIRST ORDER |
 | `sentence` | Hero line, both PDP notes, subpage CTA perk line, `llms.txt`, captions | The first 100 on the list get a free sample pair, and we pay the postage. Everyone on the list gets 15% off their first order. |
 | `paragraph` | Popup lede and final CTA paragraph, identical in both | One email, the day we launch. The first 100 on the list get a free sample pair, one for the bowl and one for the mug, and we pay the postage. Everyone on the list gets 15% off their first order. |
-| `success` | Form success state. One line in both forms: it never places the joiner | You're on the list. One email, the day we launch, with 15% off your first order inside. Tell your mum we said hi. |
+| `success` | Form success state. One line in both forms: it never places the joiner. The form adds the Our story link under it | You're on the list. One email, the day we launch, with 15% off your first order inside. |
 | `waitlistOfferRows()` | The three-row block in the welcome email, the launch emails and the terms | Everyone on the list: First to know, the day we launch. The first 100: A free sample pair, and we pay the postage. Your first order: 15% off. |
 | `WAITLIST_PAIR_EXPLAINER` | Emails, product description | The pair is one Khana sachet for the bowl and one Chai sachet for the mug, so you can try both before you commit to a pouch. |
 | `faqAnswer` | The offer half of the launch FAQ (Voice A) | We send one email on the day the shop opens, so the waitlist is first to know. The first 100 people on the list get a free sample pair, one Khana sachet and one Chai sachet, and we pay the postage. Everyone on the list gets 15% off their first order. |
@@ -821,7 +884,11 @@ quote the pack from `r16_common.py` and `typeset_compliance.py`, never from memo
    line in `public/llms.txt`, the /shop
    "Which one?" paragraph, the /shop/khana meta description and the catalogue
    description in `lib/commerce/catalog.ts` (mirror that one in Shopify by hand).
-   The strip videos and their captions stay as drawn.
+   The strip videos stay as drawn. Since 3 Oct 2026 their captions borrow the
+   pack's step words wherever the drawn panel allows (Khana: Serve, Stir, Store;
+   Chai: Make tea, Let it cool). The table strip was redrawn on 3 Oct 2026 in the
+   pack's order (serve, stir, store); its job ids are in
+   `fable/ways-to-use-strips/table-v2/NOTES.md`.
    **The positioning says "bowl" too** (Mihir, 3 Oct 2026: lean into the bowl,
    not the pot): the ticker "KHANA FOR THE BOWL, CHAI FOR THE MUG", the range band
    "One for the bowl. One for the mug." and its FOR THE BOWL tag (also on the
