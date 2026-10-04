@@ -41,7 +41,7 @@ import {
   giftCountsForPouches
 } from "../lib/pricing.ts";
 // Import-free on purpose, so this script can read the site's real offer wording.
-import { waitlistOfferCopy, waitlistOfferRows } from "../lib/waitlist-offer.ts";
+import { waitlistOfferCopy, waitlistOfferRows, WAITLIST_PAIR_EXPLAINER } from "../lib/waitlist-offer.ts";
 import { SERVING_GRAMS } from "../components/shop/nutrition-data.ts";
 import { CHAI_SERVING_GRAMS } from "../components/shop/chai-data.ts";
 
@@ -297,6 +297,14 @@ check("the offer owns no percentage of its own", "percent" in WAITLIST_OFFER, fa
     check(`welcome email carries "${row.who}"`, welcome.includes(row.who), true);
     check(`welcome email carries "${row.what}"`, welcome.includes(row.what), true);
   }
+  // Klaviyo keeps the plain-text part as a separate field and never rebuilds
+  // it from the HTML, which is how the retired offer outlived the 17 Sep fix.
+  const welcomeText = email("waitlist-welcome.txt");
+  for (const row of [everyone, firstJoiners, firstOrder]) {
+    check(`welcome plain text carries "${row.who} ... ${row.what}"`, welcomeText.includes(`${row.who} ... ${row.what}`), true);
+  }
+  check("welcome plain text carries the pair explainer", welcomeText.includes(WAITLIST_PAIR_EXPLAINER), true);
+  check("welcome HTML carries the pair explainer", welcome.includes(WAITLIST_PAIR_EXPLAINER), true);
 
   // The three launch emails, one per audience. They are mutually exclusive, so
   // each must carry exactly the rows its audience is owed and no others.
