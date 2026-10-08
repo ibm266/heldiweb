@@ -27,9 +27,16 @@ import { getSupabaseAdmin, REVIEW_MEDIA_BUCKET } from "@/lib/supabase/admin";
 const WELL_VALUES = WENT_WELL_CHIPS.map((chip) => chip.value);
 const WRONG_VALUES = WENT_WRONG_CHIPS.map((chip) => chip.value);
 
+// Control characters other than tab and line breaks. Postgres text refuses
+// U+0000 outright, so one of these in any field used to turn a valid-looking
+// submission into a failed insert (see the media note further down).
+const CONTROL_CHARACTERS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
+
 function fieldString(data: FormData, key: string, max: number): string {
   const value = data.get(key);
-  return typeof value === "string" ? value.trim().slice(0, max) : "";
+  return typeof value === "string"
+    ? value.replace(CONTROL_CHARACTERS, "").trim().slice(0, max)
+    : "";
 }
 
 function fieldList(data: FormData, key: string, allowed: string[]): string[] {
@@ -112,6 +119,28 @@ export async function POST(request: Request) {
       );
     }
 
+    // Then that no review already owns it. A published review's media path
+    // is public (it sits inside the signed URL on the shop page), so without
+    // this a stranger could attach someone else's photo to their own
+    // submission. Checked before anything below can remove an object, so no
+    // path a review points at is ever deleted from here.
+    const { count: owners, error: ownerError } = await supabase
+      .from("reviews")
+      .select("id", { count: "exact", head: true })
+      .eq("media_path", claimedPath);
+    if (ownerError) {
+      return NextResponse.json(
+        { error: "Could not store the review. Try again shortly." },
+        { status: 500 }
+      );
+    }
+    if (owners) {
+      return NextResponse.json(
+        { error: "That upload has already been used. Try attaching it again." },
+        { status: 400 }
+      );
+    }
+
     // Then existence and the real metadata. The bucket is private with no
     // policies, so an object being here at all means we minted its URL. And
     // reading size and type from storage rather than the form means a crafted
@@ -176,13 +205,13 @@ export async function POST(request: Request) {
       media_bytes: media?.bytes ?? null,
       publish_consent: true
     });
-    if (insertError) {
-      // Don't orphan the just-uploaded media if the row failed to write.
-      if (mediaPath) {
-        await supabase.storage.from(REVIEW_MEDIA_BUCKET).remove([mediaPath]);
-      }
-      throw insertError;
-    }
+    // The media is deliberately NOT removed when the insert fails. It used to
+    // be, and that was the hole: a crafted submission naming a published
+    // review's path, plus a field Postgres would refuse, deleted that review's
+    // photo. Leaving it also lets the shopper retry with the same upload. An
+    // unused object is the abandoned-upload case docs/security.md already
+    // covers, bounded by the mint route's cap.
+    if (insertError) throw insertError;
   } catch {
     return NextResponse.json(
       { error: "Could not store the review. Try again shortly." },

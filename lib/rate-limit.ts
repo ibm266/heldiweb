@@ -59,9 +59,19 @@ let callsSinceSweep = 0;
 const SWEEP_EVERY = 500;
 const MAX_KEYS = 10_000;
 
-function sweep(now: number, windowMs: number): void {
+/** The rule a "rule:ip" key was counted under. */
+function ruleForKey(key: string): RateRule | undefined {
+  return RATE_RULES[key.slice(0, key.indexOf(":")) as keyof typeof RATE_RULES];
+}
+
+function sweep(now: number): void {
   for (const [key, stamps] of hits) {
-    // A bucket whose newest hit is older than the window can never block.
+    // A bucket whose newest hit is older than ITS OWN window can never block.
+    // Each key is judged by its own rule, never by the rule of whichever call
+    // happened to trigger the sweep: judged by the cart's 60s window, the
+    // hourly upload and review buckets were wiped after a minute, so ~500
+    // cheap cart reads reset the one cap that guards storage.
+    const windowMs = ruleForKey(key)?.windowMs ?? 0;
     if (stamps.length === 0 || now - stamps[stamps.length - 1] > windowMs) {
       hits.delete(key);
     }
@@ -99,7 +109,7 @@ export function checkRate(
 
   if (++callsSinceSweep >= SWEEP_EVERY) {
     callsSinceSweep = 0;
-    sweep(now, rule.windowMs);
+    sweep(now);
   }
 
   const key = `${name}:${clientIp(request)}`;

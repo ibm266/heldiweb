@@ -11,6 +11,7 @@
 import { analyticsIds } from "./analytics";
 import { firstTouchForCart } from "./attribution";
 import { COMMERCE_PROVIDER } from "./commerce/config";
+import { HANDOFF_ATTRIBUTE_KEYS } from "./commerce/handoff-attributes";
 import { getCommerceProvider } from "./commerce/provider";
 import type { Cart } from "./commerce/types";
 
@@ -22,8 +23,8 @@ export async function prepareCheckoutHandoff(cart: Cart): Promise<void> {
   if (!ids) return;
 
   await getCommerceProvider().updateAttributes(cart.id, [
-    { key: "_heldi_ph_id", value: ids.distinctId },
-    { key: "_heldi_ph_session", value: ids.sessionId },
-    { key: "_heldi_utm", value: firstTouchForCart() }
+    { key: HANDOFF_ATTRIBUTE_KEYS.distinctId, value: ids.distinctId },
+    { key: HANDOFF_ATTRIBUTE_KEYS.sessionId, value: ids.sessionId },
+    { key: HANDOFF_ATTRIBUTE_KEYS.firstTouch, value: firstTouchForCart() }
   ]);
 }

@@ -70,6 +70,18 @@ function isSachetLine(line: Pick<CartLine, "merchandise">): boolean {
   );
 }
 
+/** The priced sachets with Chai inside. The free pair holds Chai too, but it
+ *  is matched before this and gated on its own (pouchRepairs). */
+const CHAI_SACHET_SKUS: string[] = [SAMPLE_CHAI_SKU, SAMPLE_PAIR_SKU];
+
+function isChaiSachetLine(line: Pick<CartLine, "merchandise">): boolean {
+  const sku = line.merchandise.sku;
+  return (
+    (!!sku && CHAI_SACHET_SKUS.includes(sku)) ||
+    CHAI_SACHET_SKUS.some((chaiSku) => SAMPLE_VARIANT_IDS[chaiSku] === line.merchandise.id)
+  );
+}
+
 /** The free lines. The dabba is withdrawn but a cart made before it was
  *  withdrawn can still be carrying one, so it is still recognised here: that
  *  is the only way it can be taken back out. */
@@ -129,7 +141,14 @@ function pouchRepairs(lines: CartLine[]): Repairs {
       continue;
     }
 
-    if (isSachetLine(line)) continue; // outside the ladder entirely.
+    if (isSachetLine(line)) {
+      // Outside the ladder entirely, but not outside the Chai gate: the Chai
+      // sachet and the sample pair (which holds one) are Chai we cannot ship
+      // yet, the same as a Chai pouch. The storefront never adds them while
+      // the flag is off, so this only meets a crafted request.
+      if (!CHAI_SELLABLE && isChaiSachetLine(line)) removals.push(line.id);
+      continue;
+    }
 
     // Deliberately the same reader as pouchCounts and the drawer: a line whose
     // SKU will not parse is a line nothing in the app can price or count, even

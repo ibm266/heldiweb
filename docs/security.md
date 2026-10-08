@@ -50,17 +50,34 @@ them before touching Shopify:
 
 | Route | Cap | Per element |
 | --- | --- | --- |
-| `/api/cart/create` | 10 lines | `{ merchandiseId, quantity 1 to 10 }` |
-| `/api/cart/add-lines` | 10 lines | `{ merchandiseId, quantity 1 to 10 }` |
-| `/api/cart/update-lines` | 10 lines | `{ id, quantity 0 to 10 }` (0 removes) |
+| `/api/cart/create` | 10 lines | `{ merchandiseId, quantity 1 to 24 }`, variant on the allowlist |
+| `/api/cart/add-lines` | 10 lines | `{ merchandiseId, quantity 1 to 24 }`, variant on the allowlist |
+| `/api/cart/update-lines` | 10 lines | `{ id, quantity 0 to 24 }` (0 removes) |
 | `/api/cart/remove-lines` | 10 line ids | a string id, 256 characters |
-| `/api/cart/attributes` | 10 attributes | key 64 characters, value 1024 |
+| `/api/cart/attributes` | 10 attributes | one of the three `_heldi_*` handoff keys, value 1024 |
 | `/api/cart/discount-codes` | 5 codes | a string code, 64 characters |
 
 Ten is far above any basket the site can build (one pouch line, a jar, a tote
 and a sachet or two) and far below anything that costs money. An element that
 is not the expected shape is a 400, not something forwarded and left for
 Shopify to reject: a rejected mutation still spends the API allowance.
+
+Three more rules, added 8 Oct 2026 after an audit:
+
+- **Only the storefront's own variants.** `ADDABLE_VARIANT_IDS` in
+  `lib/commerce/catalog.ts` lists what the site adds (the five mixes, the
+  sachets, the free pair, the jar and the tote). Any other variant on the store
+  is a 400. A new product the site sells has to be added there, or its
+  add-to-basket fails.
+- **Rebuilt, never forwarded.** The routes pass Shopify fresh
+  `{ merchandiseId, quantity }`, `{ id, quantity }` and `{ key, value }`
+  objects, so extra fields a caller adds (line attributes, a selling plan, a
+  new variant on an update) never reach Shopify.
+- **Only the handoff's attribute keys** (`lib/commerce/handoff-attributes.ts`),
+  because every attribute lands on the order as a note attribute that the
+  packing staff read.
+
+The 503 and 502 bodies are generic; the detail goes to the function log.
 
 The one deliberately generous number is the 1024-character attribute value.
 It carries the first-touch attribution written at checkout handoff, which
@@ -70,7 +87,11 @@ losing a real one loses the channel a sale came from.
 ## The cart clamp, and why its error handling is split
 
 `lib/commerce/shopify/cart-policy.ts` (`enforceCartPolicy`) runs on the result
-of **create, add-lines, update-lines and remove-lines**, all four. It reduces a
+of **every cart route**: create, add-lines, update-lines, remove-lines, get,
+and (since 8 Oct 2026) attributes and discount-codes, because those two hand
+back the whole cart and its `checkoutUrl` too. It costs no extra Shopify call
+on a cart that needs no repair. The Chai gate covers the Chai sachet and the
+sample pair as well as the Chai pouches. It reduces a
 cart to something Heldi actually sells: one pouch line at quantity one, the
 presents that pouch count earns (`presentsForPouches`), sachets, and nothing
 else. It never adds a line, because the storefront owns additions and adding
@@ -272,7 +293,11 @@ Keep **Attack Mode** in mind as a break-glass switch during a live incident.
   display. So this is defence in depth, not an open hole.
 - **Abandoned uploads are never cleaned up.** A signed URL is minted, the file
   lands in `uploads/`, and if the customer closes the tab before submitting,
-  that object stays there with no row referencing it. The mint rate limit bounds
+  that object stays there with no row referencing it. The same happens when a
+  submission's insert fails: `/api/reviews` deliberately no longer deletes the
+  media then, because a crafted submission naming a published review's path
+  used that delete to remove someone else's photo (fixed 8 Oct 2026, along
+  with refusing a path another review already owns). The mint rate limit bounds
   how fast this can grow, but it only ever grows. A periodic sweep of
   `uploads/*` objects with no matching `reviews.media_path` (and older than the
   2h signed-URL lifetime) is the fix; there is no script for it yet.

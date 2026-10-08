@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { guard } from "@/lib/rate-limit";
 import { MAX_POUCHES } from "@/lib/pricing";
+import { ADDABLE_VARIANT_IDS } from "../catalog";
+import { isHandoffAttributeKey } from "../handoff-attributes";
 import { ShopifyConfigError, ShopifyUserError } from "./client";
 
 // Every /api/cart route proxies to the Shopify Storefront API with our own
@@ -30,6 +32,12 @@ export function badRequest(message: string): NextResponse {
 // Uniform error mapping for the /api/cart handlers: missing configuration is
 // 503 (the mock provider should be in use instead), a Shopify userError is
 // the caller's fault (400), anything else is upstream (502).
+//
+// The 503 and 502 bodies are deliberately generic, with the detail going to
+// the function log instead. They used to carry the env var names and
+// Shopify's raw GraphQL errors, which tell a stranger how the shop is wired
+// and help nobody shopping: the storefront never reads these bodies, only the
+// status (lib/commerce/shopify-provider.ts).
 export async function cartResponse(
   action: () => Promise<unknown>
 ): Promise<NextResponse> {
@@ -37,13 +45,20 @@ export async function cartResponse(
     return NextResponse.json(await action());
   } catch (error) {
     if (error instanceof ShopifyConfigError) {
-      return NextResponse.json({ error: error.message }, { status: 503 });
+      console.error("[cart]", error.message);
+      return NextResponse.json(
+        { error: "The basket is not available right now." },
+        { status: 503 }
+      );
     }
     if (error instanceof ShopifyUserError) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
-    const message = error instanceof Error ? error.message : "Cart request failed";
-    return NextResponse.json({ error: message }, { status: 502 });
+    console.error("[cart]", error instanceof Error ? error.message : error);
+    return NextResponse.json(
+      { error: "The basket could not be updated. Try again shortly." },
+      { status: 502 }
+    );
   }
 }
 
@@ -109,13 +124,18 @@ function isQuantity(value: unknown, min: number): value is number {
   );
 }
 
-/** `{ merchandiseId, quantity }` for cartLinesAdd and cartCreate. */
+/** `{ merchandiseId, quantity }` for cartLinesAdd and cartCreate. The variant
+ *  has to be one the storefront itself adds (ADDABLE_VARIANT_IDS). */
 export function isLineInput(
   value: unknown
 ): value is { merchandiseId: string; quantity: number } {
   if (typeof value !== "object" || value === null) return false;
   const line = value as { merchandiseId?: unknown; quantity?: unknown };
-  return isId(line.merchandiseId) && isQuantity(line.quantity, 1);
+  return (
+    isId(line.merchandiseId) &&
+    ADDABLE_VARIANT_IDS.has(line.merchandiseId) &&
+    isQuantity(line.quantity, 1)
+  );
 }
 
 /** `{ id, quantity }` for cartLinesUpdate. Quantity zero is legitimate: it is
@@ -128,7 +148,8 @@ export function isLineUpdate(
   return isId(line.id) && isQuantity(line.quantity, 0);
 }
 
-/** `{ key, value }` for cartAttributesUpdate. */
+/** `{ key, value }` for cartAttributesUpdate. Only the checkout handoff's own
+ *  keys: anything else would land on the order as a note attribute. */
 export function isAttribute(
   value: unknown
 ): value is { key: string; value: string } {
@@ -136,11 +157,34 @@ export function isAttribute(
   const attribute = value as { key?: unknown; value?: unknown };
   return (
     typeof attribute.key === "string" &&
-    attribute.key.length > 0 &&
     attribute.key.length <= MAX_ATTRIBUTE_KEY_LENGTH &&
+    isHandoffAttributeKey(attribute.key) &&
     typeof attribute.value === "string" &&
     attribute.value.length <= MAX_ATTRIBUTE_VALUE_LENGTH
   );
+}
+
+// The checks above look at two fields, but the objects they pass used to be
+// forwarded whole, and Shopify accepts more on a line than we check (line
+// attributes of any size, a selling plan, a new merchandiseId on an update).
+// So the routes forward these rebuilt copies, never the caller's objects.
+
+export function toLineInputs(
+  lines: { merchandiseId: string; quantity: number }[]
+): { merchandiseId: string; quantity: number }[] {
+  return lines.map(({ merchandiseId, quantity }) => ({ merchandiseId, quantity }));
+}
+
+export function toLineUpdates(
+  lines: { id: string; quantity: number }[]
+): { id: string; quantity: number }[] {
+  return lines.map(({ id, quantity }) => ({ id, quantity }));
+}
+
+export function toAttributes(
+  attributes: { key: string; value: string }[]
+): { key: string; value: string }[] {
+  return attributes.map(({ key, value }) => ({ key, value }));
 }
 
 /** The 400 for an array longer than its cap. One wording, five routes. */

@@ -1,4 +1,5 @@
 import { updateAttributes } from "@/lib/commerce/shopify/cart-actions";
+import { enforceCartPolicy } from "@/lib/commerce/shopify/cart-policy";
 import {
   MAX_ATTRIBUTES,
   badRequest,
@@ -7,6 +8,7 @@ import {
   isAttribute,
   isCartId,
   readJson,
+  toAttributes,
   tooManyItems
 } from "@/lib/commerce/shopify/route-helpers";
 
@@ -28,7 +30,12 @@ export async function POST(request: Request) {
     return badRequest("That is not a cart attribute.");
   }
 
-  // No clamp: attributes carry the analytics handoff and cannot change what is
-  // in the basket. An empty array is valid, and clears them.
-  return cartResponse(() => updateAttributes(cartId, attributes));
+  // An empty array is valid, and clears them. Attributes cannot change what is
+  // in the basket, but this route hands back the whole cart, checkoutUrl
+  // included, so it is clamped like the rest: otherwise a basket whose earlier
+  // repair failed comes back through here untouched. A cart that needs no
+  // repair costs no extra Shopify call.
+  return cartResponse(async () =>
+    enforceCartPolicy(await updateAttributes(cartId, toAttributes(attributes)))
+  );
 }

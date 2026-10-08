@@ -8,6 +8,7 @@ import {
   isCartId,
   isLineInput,
   readJson,
+  toLineInputs,
   tooManyItems
 } from "@/lib/commerce/shopify/route-helpers";
 
@@ -26,6 +27,6 @@ export async function POST(request: Request) {
   if (!lines.every(isLineInput)) return badRequest("That is not a cart line.");
 
   return cartResponse(async () =>
-    enforceCartPolicy(await addLines(cartId, lines))
+    enforceCartPolicy(await addLines(cartId, toLineInputs(lines)))
   );
 }

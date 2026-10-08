@@ -1,4 +1,5 @@
 import { updateDiscountCodes } from "@/lib/commerce/shopify/cart-actions";
+import { enforceCartPolicy } from "@/lib/commerce/shopify/cart-policy";
 import {
   badRequest,
   cartResponse,
@@ -41,7 +42,10 @@ export async function POST(request: Request) {
     return badRequest("That does not look like a discount code.");
   }
 
-  // An empty array is valid: it clears every discount code from the cart. No
-  // clamp either, for the same reason as attributes: a code cannot add a line.
-  return cartResponse(() => updateDiscountCodes(cartId, codes as string[]));
+  // An empty array is valid: it clears every discount code from the cart. A
+  // code cannot add a line, but the response is the whole cart with its
+  // checkoutUrl, so it is clamped for the same reason as attributes.
+  return cartResponse(async () =>
+    enforceCartPolicy(await updateDiscountCodes(cartId, codes as string[]))
+  );
 }

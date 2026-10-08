@@ -1,6 +1,10 @@
 import { getCart } from "@/lib/commerce/shopify/cart-actions";
 import { enforceCartPolicy } from "@/lib/commerce/shopify/cart-policy";
-import { badRequest, cartResponse } from "@/lib/commerce/shopify/route-helpers";
+import {
+  badRequest,
+  cartResponse,
+  isCartId
+} from "@/lib/commerce/shopify/route-helpers";
 import { checkRate, tooManyRequests } from "@/lib/rate-limit";
 
 export async function GET(request: Request) {
@@ -12,8 +16,11 @@ export async function GET(request: Request) {
   const rate = checkRate(request, "cart");
   if (!rate.ok) return tooManyRequests(rate.retryAfterSeconds);
 
+  // Same shape check as the POST routes, so an oversized id is refused here
+  // rather than forwarded to the Storefront API. The client reads any non-200
+  // as "no cart" and starts a fresh one.
   const cartId = new URL(request.url).searchParams.get("cartId");
-  if (!cartId) return badRequest("cartId is required");
+  if (!isCartId(cartId)) return badRequest("cartId is required");
 
   // An expired or unknown cart returns JSON null; the client provider then
   // starts a fresh cart (same contract as the mock provider).

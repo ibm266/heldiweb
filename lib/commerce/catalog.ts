@@ -603,6 +603,21 @@ export const TOTE_PRODUCT_ID = "gid://shopify/Product/15876954128767";
 export const TOTE_VARIANT_ID = "gid://shopify/ProductVariant/58362101268863";
 export const TOTE_SKU = "HELDI-TOTE";
 
+/**
+ * Every variant a request to /api/cart may ask for by id: the five mixes, the
+ * sachets, the free pair and the two presents. What the storefront adds today
+ * and nothing else, so a crafted request cannot name some other variant on the
+ * store (a retired tier, the withdrawn dabba, a product never meant for this
+ * basket). The clamp in cart-policy.ts still decides how many of each.
+ */
+export const ADDABLE_VARIANT_IDS: ReadonlySet<string> = new Set([
+  ...Object.values(MIX_VARIANT_IDS),
+  ...Object.values(SAMPLE_VARIANT_IDS),
+  FREE_PAIR_VARIANT_ID,
+  JAR_VARIANT_ID,
+  TOTE_VARIANT_ID
+]);
+
 export function isToteGiftLine(line: Pick<CartLine, "merchandise">): boolean {
   return (
     line.merchandise.id === TOTE_VARIANT_ID || line.merchandise.sku === TOTE_SKU
